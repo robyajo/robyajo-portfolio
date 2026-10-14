@@ -4,6 +4,6 @@
         "email": "robyfull.dev@gmail.com"
     },
     "records": {
-        "TXT": ["txt-record-here"]
+        "TXT": "vc-domain-verify=ajoroby.is-a.dev,c19c1fcb8d028e168f61"
     }
 }
