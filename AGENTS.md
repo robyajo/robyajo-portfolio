@@ -20,3 +20,12 @@ Set up this app on Neon.
 4. Wire each service into the app's code using those env vars. Consult the installed Neon agent skills for best practices, e.g., what database driver to use given the app architecture and hosting runtime.
 5. Prove it works: `npm run build` must pass, then start the app, each wired service must be tested to prove it works end to end.
 6. Report what changed, the command output that proves step 5, and anything that failed.
+
+## Protokol Catatan Rilis (wajib setiap ada perubahan yang dirasakan pengguna)
+
+Setiap penambahan fitur atau perbaikan bug yang **dirasakan pengguna** harus dicatat di direktori `releases/` — maksimal **1 berkas JSON per hari** (konsolidasi harian). Lihat skill terinstal: `.agents/skills/release-notes/SKILL.md`.
+
+1. **Periksa tanggal hari ini**: cek apakah `releases/YYYY-MM-DD-*.json` sudah ada.
+2. **Jika SUDAH ADA**: JANGAN buat berkas baru. Tambahkan poin ke array `items`, perbarui `title`/`body`, naikkan `type` bila perlu (`important` > `feature` > `fix` > `improvement`).
+3. **Jika BELUM ADA**: buat `releases/YYYY-MM-DD-nama-singkat.json` dengan format dwibahasa (`id` + `en`) untuk `title`, `body`, dan tiap item.
+4. **Bahasa publik, bebas istilah teknis internal**: DILARANG menulis nama library/framework/database/middleware/file kode atau mekanisme internal. Rumuskan sebagai pemberitahuan pelayanan yang ramah dan berfokus pada dampak bagi pengguna (kemudahan, kecepatan, hemat kuota, kerahasiaan data).

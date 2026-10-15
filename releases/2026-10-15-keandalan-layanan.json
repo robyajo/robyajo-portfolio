@@ -1,0 +1,25 @@
+{
+    "date": "2026-10-15",
+    "type": "improvement",
+    "status": "published",
+    "title": {
+        "id": "Layanan situs makin andal dan data tersimpan aman",
+        "en": "More reliable site service with safely stored data"
+    },
+    "body": {
+        "id": "Pesan buku tamu dan daftar proyek kini tersimpan aman sehingga tidak hilang, dan pembaruan situs selalu sampai ke pengunjung dengan andal.",
+        "en": "Guestbook messages and the project list are now stored safely so nothing is lost, and site updates reliably reach every visitor."
+    },
+    "items": [
+        {
+            "type": "improvement",
+            "id": "Pesan buku tamu dan daftar proyek kini tersimpan aman di layanan penyimpanan situs sehingga tidak hilang saat halaman dimuat ulang.",
+            "en": "Guestbook messages and the project list are now kept in the site's safe storage so they are never lost when pages reload."
+        },
+        {
+            "type": "fix",
+            "id": "Perbaikan kegagalan tayang otomatis sehingga setiap pembaruan situs langsung dapat dinikmati pengunjung tanpa halaman tertinggal versi lama.",
+            "en": "Fixed automatic publishing failures so every site update reaches visitors promptly without anyone stuck on an outdated page."
+        }
+    ]
+}
