@@ -10,7 +10,6 @@
 Browser ──▶ Vercel (Next.js 16, Turbopack) ──▶ Neon Postgres (via drizzle-orm)
    │                    │
    │                    ├─▶ Clerk (auth: guestbook, komentar blog, /admin)
-   │                    ├─▶ Spotify API (widget now-playing)
    │                    └─▶ Umami Cloud (analytics, via rewrite /stats/*)
 ```
 
@@ -104,14 +103,13 @@ Konten: `content/blog/*.mdx` (4 postingan, frontmatter `title/description/date/t
 | Kartu SVG dinamis + playground (`/svg`, `/svg/preview`) | takumi-js, zod | `src/app/svg`, `src/lib/svg` |
 | Download resume (`/api/resume*`) | react-pdf, Neon (cache) | `src/app/api/resume` |
 | Analytics privat | Umami Cloud via rewrite `/stats/*` (anti-adblock), hanya di production | `next.config.mjs`, `src/app/layout.tsx` |
-| Now-playing Spotify | Spotify API (`getNowPlaying`, gagal → diam) | `src/lib/spotify.ts` |
 
 ## 9. Tooling (tidak masuk runtime)
 
 | Teknologi | Kegunaan |
 |---|---|
 | `vitest` + `@faker-js/faker` | Unit test (`pnpm test`, 171 test) + data palsu untuk seed guestbook |
-| `tsx` | Menjalankan script seeding/token (`scripts/seed-*.ts`, `get-spotify-refresh-token.ts`) dengan `.env.local` |
+| `tsx` | Menjalankan script seeding (`scripts/seed-*.ts`) dengan `.env.local` |
 | `eslint` + `eslint-config-next` + `@shadcn/lint` | Lint (`core-web-vitals`, aturan `shadcn/no-*` sebagai error) |
 | `knip` | Deteksi export/dependensi tak terpakai (`knip.config.mjs`, `knip.json`) |
 | `postcss` | Peer dari `@tailwindcss/postcss` |
@@ -124,7 +122,6 @@ Konten: `content/blog/*.mdx` (4 postingan, frontmatter `title/description/date/t
 | `DATABASE_URL` | Opsional (degradasi) | Neon Postgres: guestbook, komentar, projects, links |
 | `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` / `CLERK_SECRET_KEY` / `CLERK_WEBHOOK_SECRET` | Opsional (degradasi) | Sign-in, proteksi `/admin`, webhook user |
 | `OWNER_CLERK_USER_ID` | Jika Clerk dipakai | Akun pemilik untuk `/admin` |
-| `SPOTIFY_CLIENT_ID` / `SPOTIFY_CLIENT_SECRET` / `SPOTIFY_REFRESH_TOKEN` | Opsional | Widget now-playing |
 | `GITHUB_TOKEN` | Opsional | Menaikkan rate-limit API GitHub (kartu repo/profil) |
 | `WAKATIME_API_KEY` | Opsional | Statistik coding |
 | `NEXT_PUBLIC_UMAMI_WEBSITE_ID` | Opsional | Analytics Umami |

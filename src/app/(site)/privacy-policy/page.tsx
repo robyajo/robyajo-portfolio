@@ -347,29 +347,6 @@ export default function PrivacyPolicyPage() {
             </TypographyP>
           </div>
           <div className="space-y-2">
-            <Heading as="h3" level="h4" divider>Spotify</Heading>
-            <TypographyP>
-              The footer displays what I&apos;m currently listening to (or last
-              listened to) via the{" "}
-              <a
-                href="https://developer.spotify.com/documentation/web-api"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="link-external"
-              >
-                Spotify Web API
-              </a>
-              . This is a{" "}
-              <TypographyMark>read-only, server-side</TypographyMark> call using
-              my own account credentials, and no data about you is sent to
-              Spotify. The currently playing track is cached for{" "}
-              <TypographyMark>60 seconds</TypographyMark> on the server, and
-              the footer refreshes it through this site rather than contacting
-              Spotify from your browser. No Spotify data is stored in the
-              database.
-            </TypographyP>
-          </div>
-          <div className="space-y-2">
             <Heading as="h3" level="h4" divider>Cloudinary</Heading>
             <TypographyP>
               Video in blog posts streams directly from{" "}

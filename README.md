@@ -47,14 +47,14 @@ On every page:
 
 - <kbd>⌘</kbd> <kbd>K</kbd> (or <kbd>Ctrl</kbd> <kbd>K</kbd>) opens a command palette for navigation, theme switching, the resume, and socials. <kbd>⇧</kbd> <kbd>⌘</kbd> <kbd>D</kbd> flips the theme without opening anything.
 - A floating quick menu, fronted by the logo mascot. On a post it shows reading progress and jumps to the comments; on `/resume` it downloads the PDF; on the blog and guestbook it holds the sign-in pass. Drag it anywhere and it remembers the spot.
-- The footer shows what I'm listening to on Spotify, refreshed every minute through the server.
+- The footer links to socials and site sections.
 
 A few things worth calling out (spesifik fork ini):
 
 - Reactions and view counts are anonymous, no account needed. Identity is a SHA-256 of `ip:IP_HASH_SALT` (see [`src/lib/ip.ts`](src/lib/ip.ts)). The raw IP is never stored.
 - Comments and the guestbook need Clerk. Deleting your Clerk account cleans up your rows via webhook.
 - Projects, links, and engagement all live in Postgres, and posts live in `content/blog`. Nothing is hardcoded that shouldn't be.
-- **Semua layanan eksternal bersifat opsional di fork ini**: tanpa `DATABASE_URL`/Clerk/Spotify, site tetap build & tayang — guestbook/komentar read-only dan kosong, `/admin` redirect ke home, widget Spotify diam. Implementasi: [`src/lib/db.ts`](src/lib/db.ts) (lazy init), [`src/lib/auth.ts`](src/lib/auth.ts) + [`src/components/shared/clerk-optional.tsx`](src/components/shared/clerk-optional.tsx). Lihat [`DOCS/infra.md`](DOCS/infra.md) untuk peta teknologi lengkap.
+- **Semua layanan eksternal bersifat opsional di fork ini**: tanpa `DATABASE_URL`/Clerk, site tetap build & tayang — guestbook/komentar read-only dan kosong, `/admin` redirect ke home. Implementasi: [`src/lib/db.ts`](src/lib/db.ts) (lazy init), [`src/lib/auth.ts`](src/lib/auth.ts) + [`src/components/shared/clerk-optional.tsx`](src/components/shared/clerk-optional.tsx). Lihat [`DOCS/infra.md`](DOCS/infra.md) untuk peta teknologi lengkap.
 - The artwork is authored directly in code rather than imported as raster exports. See [The art](#the-art).
 
 ---
@@ -74,11 +74,8 @@ pnpm dev                     # http://localhost:3000
 | ------ | ---------------------- | --------------------------------------------------------- |
 | PostgreSQL | guestbook, comments, projects, links | [neon.tech](https://neon.tech) (free tier works) |
 | Auth   | guestbook posting, comments, `/admin` | [clerk.com](https://clerk.com) |
-| Spotify | footer now-playing    | run `pnpm spotify:token` once                             |
 
 Full variable reference: [`.env.example`](.env.example). Clerk webhook: point `https://ajoroby.is-a.dev/api/webhooks/clerk` at `user.deleted` to keep the DB clean when users delete their accounts.
-
-Spotify token: `pnpm spotify:token` prints the authorize URL to open, then swaps the code it gives back for a refresh token. Register `http://127.0.0.1:3000` as a redirect URI in the Spotify dashboard first, or the exchange fails.
 
 ---
 
@@ -87,7 +84,7 @@ Spotify token: `pnpm spotify:token` prints the authorize URL to open, then swaps
 ```
 content/blog/          MDX posts — the only place posts live
 drizzle/               committed SQL migrations + meta
-scripts/               one-off tsx scripts (seeding, Spotify token)
+scripts/               one-off tsx scripts (seeding)
 tests/                 vitest, node environment, pure logic plus the /svg route contract
 DOCS/                  project docs (technology map in infra.md)
 .github/               CI workflow and the README artwork

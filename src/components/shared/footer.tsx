@@ -5,7 +5,6 @@ import {
   ThemeNudge,
 } from "@/components/shared/doodles";
 import { Logo } from "@/components/shared/logo";
-import { NowPlaying } from "@/components/shared/now-playing";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,7 +16,6 @@ import { siteConfig } from "@/lib/config";
 import { getPlatformIcon } from "@/components/shared/platform-icons";
 import { currentYear } from "@/lib/date";
 import Link from "next/link";
-import { Suspense } from "react";
 import type { Route } from "next";
 
 const linkGroups = [
@@ -80,17 +78,6 @@ export function Footer() {
                   </Button>
                 ))}
               </nav>
-
-              <Suspense
-                fallback={
-                  <div className="flex items-center gap-1.5" aria-hidden="true">
-                    <div className="size-9 rounded-full bg-muted animate-pulse shrink-0" />
-                    <div className="h-2.5 w-36 rounded bg-muted animate-pulse" />
-                  </div>
-                }
-              >
-                <NowPlaying />
-              </Suspense>
             </div>
 
             <div className="grid grid-cols-2 gap-8 sm:gap-12">

@@ -25,6 +25,11 @@
             "type": "fix",
             "id": "Perbaikan kegagalan tayang otomatis sehingga setiap pembaruan situs langsung dapat dinikmati pengunjung tanpa halaman tertinggal versi lama.",
             "en": "Fixed automatic publishing failures so every site update reaches visitors promptly without anyone stuck on an outdated page."
+        },
+        {
+            "type": "removed",
+            "id": "Info lagu yang sedang diputar dihapus dari bagian bawah halaman agar tampilan lebih ringan dan tidak ada lagi pesan galat yang mengganggu.",
+            "en": "Removed the now-playing song info from the page footer for a lighter layout with no more distracting error messages."
         }
     ]
 }

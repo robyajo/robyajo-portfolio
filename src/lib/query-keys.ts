@@ -1,6 +1,5 @@
 export const queryKeys = {
   guestbook: ["guestbook"] as const,
-  nowPlaying: ["now-playing"] as const,
   reactions: (slug: string) => ["reactions", slug] as const,
   admin: {
     stats: ["admin", "stats"] as const,
