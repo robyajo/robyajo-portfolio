@@ -87,8 +87,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       suppressHydrationWarning
     >
       <head>
-        <link rel="preconnect" href="https://img.clerk.com" />
-        <link rel="dns-prefetch" href="https://img.clerk.com" />
       </head>
       <body className="relative flex flex-col min-h-screen">
         {process.env.NODE_ENV === "production" && (

@@ -31,7 +31,7 @@ Source code for [ajoroby.is-a.dev](https://ajoroby.is-a.dev): portfolio, blog, d
 | `/blogs`, `/blog/*`          | MDX posts via [fumadocs](https://fumadocs.dev), isometric covers, reading time, anonymous reactions, view counts, threaded comments |
 | `/projects`                  | Pulled from the database, not a hardcoded array; ordered and toggled from the admin                                 |
 | `/resume`                    | PDF rendered inline with react-pdf, streamed from the latest GitHub release; `/api/resume/download` saves it         |
-| `/guestbook`                 | Clerk-authenticated messages with likes, pinning, and soft delete                                                    |
+| `/guestbook`                 | OAuth-authenticated messages (GitHub/Google) with likes, pinning, and soft delete                                 |
 | `/branding`                  | Type scale, logo downloads (SVG or PNG, 16 to 512 px), the doodle set, and a live OG preview                         |
 | `/privacy-policy`            | What gets stored, where, and why                                                                                     |
 | `/admin/*`                   | Owner-only dashboard for comments, guestbook, links, and projects                                                    |
@@ -52,9 +52,9 @@ On every page:
 A few things worth calling out (spesifik fork ini):
 
 - Reactions and view counts are anonymous, no account needed. Identity is a SHA-256 of `ip:IP_HASH_SALT` (see [`src/lib/ip.ts`](src/lib/ip.ts)). The raw IP is never stored.
-- Comments and the guestbook need Clerk. Deleting your Clerk account cleans up your rows via webhook.
+- Comments and the guestbook need sign-in (GitHub/Google OAuth, no middle layer). Your display name and avatar are saved with your entry at posting time.
 - Projects, links, and engagement all live in Postgres, and posts live in `content/blog`. Nothing is hardcoded that shouldn't be.
-- **Semua layanan eksternal bersifat opsional di fork ini**: tanpa `DATABASE_URL`/Clerk, site tetap build & tayang — guestbook/komentar read-only dan kosong, `/admin` redirect ke home. Implementasi: [`src/lib/db.ts`](src/lib/db.ts) (lazy init), [`src/lib/auth.ts`](src/lib/auth.ts) + [`src/components/shared/clerk-optional.tsx`](src/components/shared/clerk-optional.tsx). Lihat [`DOCS/infra.md`](DOCS/infra.md) untuk peta teknologi lengkap.
+- **Semua layanan eksternal bersifat opsional di fork ini**: tanpa `DATABASE_URL`/OAuth, site tetap build & tayang — guestbook/komentar read-only dan kosong, `/admin` redirect ke home. Implementasi: [`src/lib/db.ts`](src/lib/db.ts) (lazy init), [`src/lib/auth.ts`](src/lib/auth.ts) + [`src/components/shared/auth-session.tsx`](src/components/shared/auth-session.tsx). Lihat [`DOCS/infra.md`](DOCS/infra.md) untuk peta teknologi lengkap.
 - The artwork is authored directly in code rather than imported as raster exports. See [The art](#the-art).
 
 ---
@@ -73,9 +73,9 @@ pnpm dev                     # http://localhost:3000
 | Need   | For                    | Where                                                     |
 | ------ | ---------------------- | --------------------------------------------------------- |
 | PostgreSQL | guestbook, comments, projects, links | [neon.tech](https://neon.tech) (free tier works) |
-| Auth   | guestbook posting, comments, `/admin` | [clerk.com](https://clerk.com) |
+| Auth   | guestbook posting, comments, `/admin` | OAuth GitHub/Google via NextAuth (lihat `.env.example`) |
 
-Full variable reference: [`.env.example`](.env.example). Clerk webhook: point `https://ajoroby.is-a.dev/api/webhooks/clerk` at `user.deleted` to keep the DB clean when users delete their accounts.
+Full variable reference: [`.env.example`](.env.example). Sign-in uses GitHub/Google OAuth directly; penghapusan data bisa diminta via email di halaman privacy-policy.
 
 ---
 
@@ -89,10 +89,10 @@ tests/                 vitest, node environment, pure logic plus the /svg route 
 DOCS/                  project docs (technology map in infra.md)
 .github/               CI workflow and the README artwork
 src/
-  proxy.ts             Clerk middleware (skipped when unconfigured) + short-link domain routing
+  proxy.ts             short-link domain routing
   app/(site)/          public pages
   app/admin/           owner-only dashboard
-  app/api/             resume proxy + Clerk webhook
+  app/api/             resume proxy + NextAuth (`/api/auth/[...nextauth]`)
   app/[...link]/       short-link resolver (catch-all, keep it last)
   app/og/              OpenGraph image route
   app/svg/             SVG card route + dev-only /svg/preview
@@ -159,7 +159,7 @@ Every post gets an isometric cover. Give it a bespoke scene by adding the slug t
 
 ## Admin
 
-`/admin` is gated on `OWNER_CLERK_USER_ID` matching the signed-in Clerk user. There's no role system, just the one ID. It gives you stats, comment and guestbook moderation (pin, soft delete), project CRUD with ordering, short-link management, and a button to bust the cached resume PDF. Without Clerk configured, `/admin` redirects to `/`.
+`/admin` is gated on `OWNER_USER_ID` matching the signed-in OAuth user. There's no role system, just the one ID. It gives you stats, comment and guestbook moderation (pin, soft delete), project CRUD with ordering, short-link management, and a button to bust the cached resume PDF. Without OAuth configured, `/admin` redirects to `/`.
 
 ---
 

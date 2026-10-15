@@ -1,13 +1,9 @@
-import { clerkMiddleware } from "@clerk/nextjs/server";
 import {
     NextResponse,
-    type NextFetchEvent,
     type NextRequest,
 } from "next/server";
 import { siteConfig } from "@/lib/config";
 import { RESERVED_SEGMENTS } from "@/lib/reserved-segments";
-
-const withClerk = process.env.CLERK_SECRET_KEY ? clerkMiddleware() : null;
 
 function configuredShortLinkHost(): string | null {
     const raw =
@@ -35,7 +31,7 @@ function belongsToMainSite(pathname: string): boolean {
     return !first || RESERVED_SEGMENTS.has(first.toLowerCase());
 }
 
-export default function proxy(request: NextRequest, event: NextFetchEvent) {
+export default function proxy(request: NextRequest) {
     if (isShortLinkHost(request)) {
         if (belongsToMainSite(request.nextUrl.pathname)) {
             const target = new URL(
@@ -47,8 +43,7 @@ export default function proxy(request: NextRequest, event: NextFetchEvent) {
         return NextResponse.next();
     }
 
-    if (!withClerk) return NextResponse.next();
-    return withClerk(request, event);
+    return NextResponse.next();
 }
 
 export const config = {

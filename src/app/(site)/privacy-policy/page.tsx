@@ -62,8 +62,8 @@ export default function PrivacyPolicyPage() {
             <TypographyMark>{siteConfig.domain}</TypographyMark>. The site has
             a <TypographyMark>guestbook</TypographyMark> and a{" "}
             <TypographyMark>blog comments section</TypographyMark>, both of
-            which require signing in via <TypographyMark>Clerk</TypographyMark>{" "}
-            (GitHub, Google, or Discord) to leave a message, post a comment, or
+            which require signing in with <TypographyMark>GitHub or Google</TypographyMark>{" "}
+            to leave a message, post a comment, or
             like an entry. Everything else, including blog posts, reactions,
             projects, and the resume, is fully public and requires no account.
           </TypographyP>
@@ -123,18 +123,19 @@ export default function PrivacyPolicyPage() {
               If you sign in and leave a guestbook message, the following is
               stored in the database:{" "}
               <TypographyMark>
-                your Clerk user ID, your message text, and a timestamp
+                your account ID, your message text, and a timestamp
               </TypographyMark>
-              . If you like an entry, your Clerk user ID and the entry ID are
+              . If you like an entry, your account ID and the entry ID are
               stored. Entries removed during moderation are{" "}
               <TypographyMark>soft-deleted</TypographyMark>: hidden from the
               page but kept in the database until you ask for them to be
-              erased. Your{" "}
+              erased.               Your{" "}
               <TypographyMark>
-                name, username, and profile picture
+                name and profile picture
               </TypographyMark>{" "}
-              are fetched live from Clerk when rendering the guestbook, not
-              stored in the database. Both actions are{" "}
+              are saved together with your entry at the time you post, so the
+              guestbook keeps showing who wrote what even if you disconnect
+              your account later. Both actions are{" "}
               <TypographyMark>fully voluntary</TypographyMark>. If you
               don&apos;t sign in, nothing is stored.
             </TypographyP>
@@ -145,19 +146,17 @@ export default function PrivacyPolicyPage() {
               If you sign in and post a comment on a blog post, the following is
               stored in the database:{" "}
               <TypographyMark>
-                your Clerk user ID, your comment text, the post it belongs to,
+                your account ID, your comment text, the post it belongs to,
                 an optional parent comment ID (for replies), and a timestamp
               </TypographyMark>
-              . If you like a comment, your Clerk user ID and the comment ID are
+              . If you like a comment, your account ID and the comment ID are
               stored. Deleted comments are{" "}
               <TypographyMark>soft-deleted</TypographyMark>: the text is hidden
               but the record is kept so the reply thread stays intact. Full
               deletion is honoured on request (see Your rights below). Your{" "}
-              <TypographyMark>
-                name, username, and profile picture
-              </TypographyMark>{" "}
-              are fetched live from Clerk when rendering comments, not stored
-              in the database. Both actions are{" "}
+              <TypographyMark>name and profile picture</TypographyMark>{" "}
+              are saved together with your comment, not fetched from elsewhere
+              when rendering. Both actions are{" "}
               <TypographyMark>fully voluntary</TypographyMark>. If you
               don&apos;t sign in, nothing is stored.
             </TypographyP>
@@ -168,9 +167,10 @@ export default function PrivacyPolicyPage() {
               There is no browser fingerprinting, no tracking pixels, and{" "}
               <TypographyMark>no third-party ad networks</TypographyMark>. No
               email addresses or passwords are stored in this site&apos;s own
-              database, because authentication is fully delegated to{" "}
-              <TypographyMark>Clerk</TypographyMark> (see Third-party services
-              below). If you never sign in to the guestbook or comments, no
+              database, because sign-in happens directly with the{" "}
+              <TypographyMark>OAuth provider you choose</TypographyMark> (GitHub
+              or Google) — this site never sees your password (see Third-party
+              services below). If you never sign in to the guestbook or comments, no
               personally identifiable information about you is stored anywhere
               by this site.
             </TypographyP>
@@ -190,14 +190,15 @@ export default function PrivacyPolicyPage() {
             <TypographyMark>floating quick-menu button</TypographyMark> to, and,
             once you&apos;ve played a video in a post, the player&apos;s{" "}
             <TypographyMark>volume, mute, and subtitle settings</TypographyMark>
-            . Clerk&apos;s script also keeps a copy of its own configuration
-            there. Clearing this site&apos;s data in your browser removes all
+            . A <TypographyMark>session cookie</TypographyMark> is set only
+            after you sign in, to remember that you&apos;re signed in.
+            Clearing this site&apos;s data in your browser removes all
             of it.
           </TypographyP>
           <TypographyP>
-            This site sets <TypographyMark>no cookies of its own</TypographyMark>.
-            The only cookies come from Clerk and are covered under Third-party
-            services below.
+            This site sets <TypographyMark>no cookies of its own</TypographyMark>{" "}
+            beyond that session cookie, and no tracking or advertising cookies
+            at all.
           </TypographyP>
         </div>
       </Section>
@@ -222,20 +223,12 @@ export default function PrivacyPolicyPage() {
           <TypographyP>
             Guestbook entries, likes, blog comments, and comment likes are all
             stored in the same Neon PostgreSQL database. These records contain
-            your <TypographyMark>Clerk user ID</TypographyMark>, message or
-            comment text, the post they belong to, and timestamps. Your Clerk
-            user ID is an opaque identifier assigned by Clerk, not your email,
-            name, or any other human-readable detail. Your profile information
-            (name, username, avatar) is stored and managed by{" "}
-            <a
-              href="https://clerk.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="link-external"
-            >
-              Clerk
-            </a>
-            , not in this site&apos;s database.
+            your <TypographyMark>account ID</TypographyMark>, message or
+            comment text, the post they belong to, and timestamps. Your account
+            ID is an opaque identifier assigned by the sign-in provider, not
+            your email, name, or any other human-readable detail. The display
+            name and avatar shown next to your words are saved with your entry
+            at posting time, not in a separate profile store.
           </TypographyP>
         </div>
       </Section>
@@ -298,52 +291,31 @@ export default function PrivacyPolicyPage() {
             </TypographyP>
           </div>
           <div className="space-y-2">
-            <Heading as="h3" level="h4" divider>Clerk (Authentication)</Heading>
+            <Heading as="h3" level="h4" divider>Sign-in (OAuth)</Heading>
             <TypographyP>
-              Sign-in for the guestbook and blog comments is handled by{" "}
-              <a
-                href="https://clerk.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="link-external"
-              >
-                Clerk
-              </a>
-              . When you sign in, Clerk collects and stores your{" "}
-              <TypographyMark>
-                name, email address, username, and profile picture
-              </TypographyMark>{" "}
-              depending on the OAuth provider you use (GitHub, Google, etc.).
-              This data is stored on Clerk&apos;s infrastructure and is subject
-              to{" "}
-              <a
-                href="https://clerk.com/legal/privacy"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="link-external"
-              >
-                Clerk&apos;s Privacy Policy
-              </a>
-              . This site only stores the opaque Clerk user ID in its own
-              database.
+              Sign-in for the guestbook and blog comments goes{" "}
+              <TypographyMark>directly to GitHub or Google</TypographyMark> —
+              there is no middle layer. When you sign in, the provider shares
+              your <TypographyMark>name, email address, and profile picture</TypographyMark>{" "}
+              with this site so it can show who wrote what. Your password never
+              touches this site. Each provider&apos;s handling of your data is
+              covered by its own privacy policy.
             </TypographyP>
             <TypographyP>
-              Because the sign-in button is available from the quick menu on
-              every page, Clerk&apos;s script loads site-wide from{" "}
-              <TypographyMark>clerk.{siteConfig.domain}</TypographyMark>, which
-              is Clerk&apos;s service running under this domain&apos;s name.
-              Clerk uses <TypographyMark>cookies</TypographyMark> to know
-              whether you&apos;re signed in, and some of them can be set before
-              you ever sign in. They exist for authentication only, not for
-              advertising or analytics.
+              This site keeps you signed in with an{" "}
+              <TypographyMark>encrypted session cookie</TypographyMark>. It
+              exists for authentication only, not for advertising or analytics.
             </TypographyP>
             <TypographyP>
-              Profile pictures next to comments and guestbook entries load{" "}
-              <TypographyMark>directly from Clerk&apos;s image CDN</TypographyMark>{" "}
-              (img.clerk.com). That includes the guestbook preview on the home
-              page, so viewing the home page, the guestbook, or a post with
-              comments lets Clerk see your IP address and user agent, the way
-              any image host does.
+              Profile pictures next to comments and guestbook entries were
+              provided by you at posting time and load{" "}
+              <TypographyMark>directly from the provider&apos;s image CDN</TypographyMark>{" "}
+              (such as GitHub or Google avatars). That includes the guestbook
+              preview on the home page, so viewing the home page, the
+              guestbook, or a post with comments lets that image host see your
+              IP address and user agent, the way any image host does. To stop
+              sharing new data, disconnect this site in your GitHub or Google
+              account settings.
             </TypographyP>
           </div>
           <div className="space-y-2">
@@ -397,12 +369,14 @@ export default function PrivacyPolicyPage() {
             <a href={`mailto:${siteConfig.email}`} className="link-external">
               {siteConfig.email}
             </a>
-            . I can also delete your Clerk account and the profile data Clerk
-            holds (name, email, avatar). When a Clerk account is deleted, your{" "}
-            <TypographyMark>
-              guestbook entries, comments, and likes are removed automatically
-            </TypographyMark>
-            , soft-deleted ones included. Depending on your jurisdiction, you
+            . To remove your words from this site, email{" "}
+            <a href={`mailto:${siteConfig.email}`} className="link-external">
+              {siteConfig.email}
+            </a>
+            . You can also disconnect this site from your GitHub or Google
+            account settings at any time to stop sharing new data; entries you
+            already posted stay until you ask for them to be erased.
+            Depending on your jurisdiction, you
             may have rights to access, correct, or erase your personal data
             under laws such as <TypographyMark>GDPR (EU)</TypographyMark>,{" "}
             <TypographyMark>CCPA (California)</TypographyMark>, or{" "}

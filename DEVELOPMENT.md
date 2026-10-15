@@ -16,7 +16,7 @@
 | Framework | Next.js 16 + React 19 + TypeScript (package manager `pnpm`) |
 | Hosting | Vercel — project `robyajo-portfolio`, team `roys-projects-393b79bd` |
 | Database | Neon Postgres — org `org-dawn-leaf-80546672`, project `falling-river-69990935`, branch `production`, database `db_ajoroby` (region ap-southeast-1) |
-| Auth | Clerk — aplikasi `applikasi-auth` (`app_2YTO10xEkc54GDhx4JwPl4Sv4A3`) |
+| Auth | NextAuth v4, OAuth GitHub/Google langsung |
 | Format catatan rilis | `releases/YYYY-MM-DD-*.json` (1 file/hari, dwibahasa, bahasa publik) |
 
 ---
@@ -57,17 +57,18 @@ Salin dari `.env.example`. Status tiap variabel:
 |---|---|---|
 | `DATABASE_URL` | Ya (fitur DB) | Dashboard Neon → branch `production` → database `db_ajoroby` → pooled connection string. Atau: `neon connection-string --project-id falling-river-69990935 --branch production --database-name db_ajoroby --pooled` |
 | `IP_HASH_SALT` | Ya (fitur engagement) | Buat acak: `openssl rand -hex 32`. Boleh beda tiap PC |
-| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Ya (login) | `npx -y clerk@latest auth login` lalu `npx -y clerk@latest env pull` (app sudah ter-link) |
-| `CLERK_SECRET_KEY` | Ya (login) | Sama seperti di atas |
-| `OWNER_CLERK_USER_ID` | Untuk `/admin` | Clerk Dashboard → Users → salin `user_...` milik sendiri |
-| `CLERK_WEBHOOK_SECRET` | Untuk webhook | Clerk Dashboard → Webhooks → Signing Secret; endpoint: `https://ajoroby.is-a.dev/api/webhooks/clerk` (`user.deleted`) |
+| `NEXTAUTH_SECRET` | Ya (login) | Acak panjang: `openssl rand -hex 32` |
+| `NEXTAUTH_URL` | Ya (login) | Lokal `http://localhost:3000`, produksi `https://ajoroby.is-a.dev` |
+| `GITHUB_ID` / `GITHUB_SECRET` | Salah satu wajib | GitHub Settings → Developer settings → OAuth Apps (callback `{NEXTAUTH_URL}/api/auth/callback/github`) |
+| `GOOGLE_ID` / `GOOGLE_SECRET` | Salah satu wajib | Google Cloud Console → Credentials (callback `{NEXTAUTH_URL}/api/auth/callback/google`) |
+| `OWNER_USER_ID` | Untuk `/admin` | Subject ID OAuth sendiri (terlihat setelah login pertama; format angka) |
 | `GITHUB_TOKEN` | Opsional | GitHub → Settings → Developer settings → token klasik (`ghp_...`) |
 | `WAKATIME_API_KEY` | Opsional | Dashboard WakaTime |
 | `NEXT_PUBLIC_UMAMI_WEBSITE_ID` | Opsional | Dashboard Umami Cloud |
 | `SHORTLINK_DOMAIN` / `NEXT_PUBLIC_SHORTLINK_DOMAIN` | Opsional | Domain pendek sendiri (harus ditambahkan ke project Vercel yang sama) |
 | `NEXT_PUBLIC_BASE_URL` | Opsional | Default ikut URL produksi Vercel, lalu `http://localhost:3000` |
 
-Tanpa DB/Clerk, aplikasi tetap build & jalan (mode degradasi: buku tamu/komentar read-only, `/admin` redirect ke home).
+Tanpa DB/OAuth, aplikasi tetap build & jalan (mode degradasi: buku tamu/komentar read-only, `/admin` redirect ke home).
 
 ---
 
@@ -77,7 +78,7 @@ Tanpa DB/Clerk, aplikasi tetap build & jalan (mode degradasi: buku tamu/komentar
 pnpm db:migrate              # terapkan migrasi drizzle/ (wajib pertama kali)
 pnpm db:push                 # alternatif: push skema langsung (dev saja)
 pnpm db:studio               # GUI database
-pnpm db:seed:guestbook       # data palsu buku tamu (butuh Clerk backend key)
+pnpm db:seed:guestbook       # data palsu buku tamu (tanpa butuh layanan auth)
 pnpm db:seed:guestbook:cleanup
 pnpm db:seed:links           # contoh shortlink
 ```
@@ -87,19 +88,19 @@ Tes koneksi cepat: `pnpm tsx --env-file=.env.local -e "import{neon}from'@neondat
 
 ---
 
-## 6. Auth (Clerk)
+## 6. Auth (NextAuth v4, OAuth langsung)
 
-- Aplikasi ter-link otomatis via git remote. Cek: `npx -y clerk@latest doctor`.
-- Ambil/refresh keys: `npx -y clerk@latest auth login` → `npx -y clerk@latest env pull`.
-- Produksi butuh aplikasi yang sudah di-claim + production instance (`env pull --instance prod`); JANGAN taruh dev keys ke Production.
-- Tema Clerk: `@clerk/ui` (shadcn), diterapkan di `src/components/shared/clerk-optional.tsx`. Jika login dimatikan (tanpa keys), tombol masuk hilang otomatis — bukan bug.
+- Tanpa perantara: GitHub dan/atau Google, aktif bila env-nya diisi (`src/lib/auth.ts`, rute `/api/auth/[...nextauth]`).
+- Identitas penulis disimpan sebagai snapshot (`author_name`/`author_image`) saat tulis — tidak ada direktori user eksternal.
+- Produksi: `NEXTAUTH_SECRET` acak sendiri + `NEXTAUTH_URL=https://ajoroby.is-a.dev` + callback URL didaftarkan di dashboard provider.
+- Tanpa provider terkonfigurasi, tombol masuk mengarah ke halaman bantuan NextAuth — bukan bug, berarti env OAuth belum diisi.
 
 ---
 
 ## 7. Deploy (Vercel)
 
 - Deploy otomatis setiap push ke `master`. Framework preset **harus Next.js** — dipin di `vercel.json` (`"framework": "nextjs"`). Jangan hapus file itu (pernah menyebabkan `STATIC_BUILD_NO_OUT_DIR` saat preset nyasar ke Astro).
-- Env yang wajib ada di Dashboard (Production + Preview, sebagai Secret): `DATABASE_URL`, `IP_HASH_SALT`. Tambah Clerk saat produksi butuh login.
+- Env yang wajib ada di Dashboard (Production + Preview): `DATABASE_URL`, `IP_HASH_SALT` (Secret); `NEXTAUTH_SECRET`, `NEXTAUTH_URL` bila produksi butuh login.
 - Build tidak pernah migrasi DB — jalankan `pnpm db:migrate` manual ke database produksi saat skema berubah.
 
 ---

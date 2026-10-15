@@ -7,7 +7,7 @@ import {
   FloatingHubServer,
   FloatingHubFallback,
 } from "@/components/shared/floating-hub-server";
-import { OptionalClerkProvider } from "@/components/shared/clerk-optional";
+import { AuthProvider } from "@/components/shared/auth-session";
 import { Suspense } from "react";
 
 export default function SiteLayout({
@@ -16,7 +16,7 @@ export default function SiteLayout({
   children: React.ReactNode;
 }) {
   return (
-    <OptionalClerkProvider>
+    <AuthProvider>
       <JsonLd type="person" />
       <JsonLd type="website" />
       <PageLayout>
@@ -41,6 +41,6 @@ export default function SiteLayout({
       <Suspense fallback={<FloatingHubFallback />}>
         <FloatingHubServer />
       </Suspense>
-    </OptionalClerkProvider>
+    </AuthProvider>
   );
 }

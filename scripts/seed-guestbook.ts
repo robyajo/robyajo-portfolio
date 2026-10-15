@@ -1,4 +1,3 @@
-import { createClerkClient } from "@clerk/backend";
 import { neon } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
 import { inArray } from "drizzle-orm";
@@ -10,12 +9,6 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const SEED_IDS_FILE = resolve(__dirname, ".seed-guestbook-ids.json");
-
-function getClerk() {
-    const key = process.env.CLERK_SECRET_KEY;
-    if (!key) throw new Error("CLERK_SECRET_KEY not set");
-    return createClerkClient({ secretKey: key });
-}
 
 function getDb() {
     const url = process.env.DATABASE_URL;
@@ -35,60 +28,44 @@ function fakeMessage() {
     return templates[Math.floor(Math.random() * templates.length)]();
 }
 
+function fakeSeedUser() {
+    const firstName = faker.person.firstName();
+    const lastName = faker.person.lastName();
+    return {
+        userId: `seed_${faker.string.uuid()}`,
+        authorName: `${firstName} ${lastName}`,
+        authorImage: faker.image.avatar(),
+    };
+}
+
 async function seed(count: number) {
-    const clerk = getClerk();
     const db = getDb();
 
-    console.log(`Creating ${count} Clerk users...\n`);
+    console.log(`Seeding ${count} fake guestbook entries (no auth provider needed)...\n`);
 
-    const createdIds: string[] = [];
+    const oneYearAgo = Date.now() - 365 * 24 * 60 * 60 * 1000;
     const now = Date.now();
 
-    for (let i = 0; i < count; i++) {
-        const firstName = faker.person.firstName();
-        const lastName = faker.person.lastName();
+    const rows = Array.from({ length: count }, () => ({
+        ...fakeSeedUser(),
+        message: fakeMessage(),
+        isPinned: false,
+        isDeleted: false,
+        createdAt: new Date(faker.number.int({ min: oneYearAgo, max: now })),
+    }));
 
-        try {
-            const user = await clerk.users.createUser({
-                firstName,
-                lastName,
-                publicMetadata: { isSeeded: true },
-            });
-            createdIds.push(user.id);
-            process.stdout.write(`  [${i + 1}/${count}] ${firstName} ${lastName} → ${user.id}\n`);
-        } catch (err: unknown) {
-            const detail = err && typeof err === "object" && "errors" in err
-                ? JSON.stringify((err as { errors: unknown }).errors)
-                : err instanceof Error ? err.message : String(err);
-            console.warn(`  [${i + 1}/${count}] Failed: ${detail}`);
-        }
-    }
+    const inserted = await db
+        .insert(guestbookEntries)
+        .values(rows)
+        .returning({ id: guestbookEntries.id });
+    const insertedIds = inserted.map((r) => r.id);
 
-    if (createdIds.length === 0) {
-        console.error("No users created. Aborting.");
-        process.exit(1);
-    }
-
-    console.log(`\nInserting ${createdIds.length} guestbook entries...`);
-
-    const oneYearAgo = now - 365 * 24 * 60 * 60 * 1000;
-
-    await db.insert(guestbookEntries).values(
-        createdIds.map((clerkUserId) => ({
-            clerkUserId,
-            message: fakeMessage(),
-            isPinned: false,
-            isDeleted: false,
-            createdAt: new Date(faker.number.int({ min: oneYearAgo, max: now })),
-        })),
-    );
-
-    const existing: string[] = existsSync(SEED_IDS_FILE)
+    const existing: number[] = existsSync(SEED_IDS_FILE)
         ? JSON.parse(readFileSync(SEED_IDS_FILE, "utf8"))
         : [];
-    writeFileSync(SEED_IDS_FILE, JSON.stringify([...existing, ...createdIds], null, 2));
+    writeFileSync(SEED_IDS_FILE, JSON.stringify([...existing, ...insertedIds], null, 2));
 
-    console.log(`\nSeeded ${createdIds.length} entries.`);
+    console.log(`\nSeeded ${insertedIds.length} entries.`);
 }
 
 async function cleanup() {
@@ -97,32 +74,19 @@ async function cleanup() {
         process.exit(0);
     }
 
-    const ids: string[] = JSON.parse(readFileSync(SEED_IDS_FILE, "utf8"));
+    const ids: number[] = JSON.parse(readFileSync(SEED_IDS_FILE, "utf8"));
     if (ids.length === 0) {
         console.log("Nothing to clean up.");
         process.exit(0);
     }
 
-    const clerk = getClerk();
     const db = getDb();
 
-    console.log(`Deleting ${ids.length} entries from DB...`);
-    await db.delete(guestbookEntries).where(inArray(guestbookEntries.clerkUserId, ids));
-
-    console.log(`Deleting ${ids.length} Clerk users...`);
-    let deleted = 0;
-    for (const id of ids) {
-        try {
-            await clerk.users.deleteUser(id);
-            deleted++;
-            process.stdout.write(`  Deleted ${id}\n`);
-        } catch {
-            console.warn(`  Could not delete ${id}`);
-        }
-    }
+    console.log(`Deleting ${ids.length} seeded entries from DB...`);
+    await db.delete(guestbookEntries).where(inArray(guestbookEntries.id, ids));
 
     writeFileSync(SEED_IDS_FILE, JSON.stringify([]));
-    console.log(`\nCleaned up ${deleted} users.`);
+    console.log(`\nCleaned up ${ids.length} entries.`);
 }
 
 const args = process.argv.slice(2);

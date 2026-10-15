@@ -14,7 +14,7 @@ import {
 import { adminMutation } from "@/lib/admin-action";
 import type { ActionResult } from "@/lib/action-result";
 import { assertAdmin } from "@/lib/assert-admin";
-import { getClerkUserMap, resolveUser } from "@/lib/clerk-users";
+import { resolveUser } from "@/lib/users";
 import { PROJECTS_CACHE_TAG } from "@/lib/projects";
 import { safeQuery } from "@/lib/safe-query";
 import { projectInputSchema, type ProjectInput } from "@/lib/projects-schema";
@@ -87,7 +87,9 @@ async function loadAdminGuestbookEntries(): Promise<GuestbookEntryWithMeta[]> {
     const rows = await db
         .select({
             id: guestbookEntries.id,
-            clerkUserId: guestbookEntries.clerkUserId,
+            userId: guestbookEntries.userId,
+            authorName: guestbookEntries.authorName,
+            authorImage: guestbookEntries.authorImage,
             message: guestbookEntries.message,
             isPinned: guestbookEntries.isPinned,
             createdAt: guestbookEntries.createdAt,
@@ -101,8 +103,6 @@ async function loadAdminGuestbookEntries(): Promise<GuestbookEntryWithMeta[]> {
 
     if (rows.length === 0) return [];
 
-    const userMap = await getClerkUserMap(rows.map((r) => r.clerkUserId));
-
     return rows.map((row) => ({
         id: row.id,
         message: row.message,
@@ -110,7 +110,7 @@ async function loadAdminGuestbookEntries(): Promise<GuestbookEntryWithMeta[]> {
         createdAt: row.createdAt.toISOString(),
         likeCount: row.likeCount,
         likedByMe: false,
-        user: resolveUser(userMap, row.clerkUserId),
+        user: resolveUser(row),
     }));
 }
 
@@ -125,7 +125,9 @@ async function loadAdminComments(): Promise<AdminCommentRow[]> {
             id: blogComments.id,
             postSlug: blogPosts.slug,
             parentId: blogComments.parentId,
-            clerkUserId: blogComments.clerkUserId,
+            userId: blogComments.userId,
+            authorName: blogComments.authorName,
+            authorImage: blogComments.authorImage,
             body: blogComments.body,
             isPinned: blogComments.isPinned,
             createdAt: blogComments.createdAt,
@@ -140,8 +142,6 @@ async function loadAdminComments(): Promise<AdminCommentRow[]> {
 
     if (rows.length === 0) return [];
 
-    const userMap = await getClerkUserMap(rows.map((r) => r.clerkUserId));
-
     return rows.map((row) => ({
         id: row.id,
         postSlug: row.postSlug ?? "unknown",
@@ -150,7 +150,7 @@ async function loadAdminComments(): Promise<AdminCommentRow[]> {
         isPinned: row.isPinned,
         createdAt: row.createdAt.toISOString(),
         likeCount: row.likeCount,
-        user: resolveUser(userMap, row.clerkUserId),
+        user: resolveUser(row),
     }));
 }
 

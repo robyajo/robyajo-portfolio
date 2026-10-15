@@ -1,4 +1,4 @@
-import { OptionalClerkProvider } from "@/components/shared/clerk-optional";
+import { AuthProvider } from "@/components/shared/auth-session";
 import { getAuth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
@@ -22,10 +22,10 @@ export default async function AdminLayout({
   const { userId } = await getAuth();
 
   if (!userId) return redirect("/");
-  if (userId !== process.env.OWNER_CLERK_USER_ID) return <AdminUnauthorized />;
+  if (userId !== process.env.OWNER_USER_ID) return <AdminUnauthorized />;
 
   return (
-    <OptionalClerkProvider>
+    <AuthProvider>
       <SidebarProvider>
         <AdminSidebar />
         <SidebarInset>
@@ -33,6 +33,6 @@ export default async function AdminLayout({
           {children}
         </SidebarInset>
       </SidebarProvider>
-    </OptionalClerkProvider>
+    </AuthProvider>
   );
 }

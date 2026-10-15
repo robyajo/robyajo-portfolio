@@ -48,7 +48,7 @@ ok "dependensi terinstal"
 say "4/5  Cek .env.local"
 [[ -f .env.local ]] || die ".env.local tidak ada. Buat dengan: cp .env.example .env.local lalu isi sesuai DEVELOPMENT.md bagian 4."
 MISSING=()
-for v in DATABASE_URL IP_HASH_SALT NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY CLERK_SECRET_KEY; do
+for v in DATABASE_URL IP_HASH_SALT NEXTAUTH_SECRET; do
     if has_var "$v"; then
         ok "$v terisi"
     else
@@ -56,7 +56,7 @@ for v in DATABASE_URL IP_HASH_SALT NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY CLERK_SECRE
     fi
 done
 if [[ "${#MISSING[@]}" -gt 0 ]]; then
-    die "Variabel kosong: ${MISSING[*]}. Ambil dengan: npx vercel pull (DATABASE_URL, IP_HASH_SALT) dan npx clerk env pull (CLERK_*). Detail: DEVELOPMENT.md bagian 4."
+    die "Variabel kosong: ${MISSING[*]}. Lihat cara mengisi di DEVELOPMENT.md bagian 4 (DATABASE_URL/IP_HASH_SALT via Neon atau vercel pull; NEXTAUTH_SECRET dibuat dengan: openssl rand -hex 32)."
 fi
 
 say "5/5  Migrasi database"

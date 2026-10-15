@@ -1,5 +1,5 @@
 import { count, desc, eq } from "drizzle-orm";
-import { getClerkUserMap, resolveUser } from "@/lib/clerk-users";
+import { resolveUser } from "@/lib/users";
 import { db } from "@/lib/db";
 import { guestbookEntries } from "@/lib/schema";
 import { toDataUri } from "@/lib/svg/data/image";
@@ -35,7 +35,9 @@ export async function loadGuestbook(limit: number): Promise<Guestbook> {
   const [rows, [totalRow]] = await Promise.all([
     db
       .select({
-        clerkUserId: guestbookEntries.clerkUserId,
+        userId: guestbookEntries.userId,
+        authorName: guestbookEntries.authorName,
+        authorImage: guestbookEntries.authorImage,
         message: guestbookEntries.message,
         createdAt: guestbookEntries.createdAt,
       })
@@ -47,11 +49,10 @@ export async function loadGuestbook(limit: number): Promise<Guestbook> {
   ]);
 
   const total = totalRow?.count ?? 0;
-  const users = await getClerkUserMap(rows.map((row) => row.clerkUserId));
 
   const signatures = await Promise.all(
     rows.map(async (row, index) => {
-      const user = resolveUser(users, row.clerkUserId);
+      const user = resolveUser(row);
       return {
         number: total - index,
         name: user.name,

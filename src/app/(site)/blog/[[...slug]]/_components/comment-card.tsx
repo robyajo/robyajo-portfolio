@@ -23,7 +23,7 @@ import {
 import { Spinner } from "@/components/ui/spinner";
 import { cn } from "@/lib/cn";
 import { timeAgo } from "@/lib/date";
-import { SafeSignInButton as SignInButton } from "@/components/shared/clerk-optional";
+import { SafeSignInButton as SignInButton } from "@/components/shared/auth-session";
 import { useEffect, useRef, useState, useTransition } from "react";
 
 const COMMENT_MAX_LENGTH = 1000;

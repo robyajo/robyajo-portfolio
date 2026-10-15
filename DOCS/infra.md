@@ -9,7 +9,7 @@
 ```
 Browser ──▶ Vercel (Next.js 16, Turbopack) ──▶ Neon Postgres (via drizzle-orm)
    │                    │
-   │                    ├─▶ Clerk (auth: guestbook, komentar blog, /admin)
+   │                    └─▶ OAuth GitHub/Google (auth: guestbook, komentar blog, /admin)
    │                    └─▶ Umami Cloud (analytics, via rewrite /stats/*)
 ```
 
@@ -47,11 +47,9 @@ Konten: `content/blog/*.mdx` (4 postingan, frontmatter `title/description/date/t
 
 | Teknologi | Versi | Kegunaan di app ini |
 |---|---|---|
-| `@clerk/nextjs` | ^6.39.7 | Auth: `ClerkProvider` (layout site + admin), `clerkMiddleware` (`src/proxy.ts`), `auth()` server, `SignInButton`/`useUser` client — untuk guestbook, komentar/like blog, dan gerbang `/admin` |
-| `@clerk/backend` | ^2.33.7 | Hanya di `scripts/seed-guestbook.ts` (membuat user palsu untuk seeding) |
-| `svix` | ^1.99.1 | Verifikasi signature webhook Clerk di `src/app/api/webhooks/clerk/route.ts` |
+| `next-auth` | ^4.24.15 | Auth: `[...nextauth]` route, `getServerSession` (`src/lib/auth.ts`), `SessionProvider` + adapter (`src/components/shared/auth-session.tsx`) — untuk guestbook, komentar/like blog, dan gerbang `/admin`. Provider GitHub/Google aktif bila env-nya diisi |
 
-> Catatan: auth dibuat opsional via `src/lib/auth.ts` + `src/components/shared/clerk-optional.tsx` — tanpa Clerk keys, site tampil signed-out dan fitur tulis nonaktif.
+> Catatan: tanpa OAuth terkonfigurasi, site tampil signed-out dan fitur tulis nonaktif. Identitas penulis disimpan sebagai snapshot (`author_name`/`author_image`) saat tulis — tanpa direktori user eksternal.
 
 ## 5. Styling & komponen UI
 
@@ -97,8 +95,8 @@ Konten: `content/blog/*.mdx` (4 postingan, frontmatter `title/description/date/t
 | Fitur | Teknologi pendukung | Lokasi |
 |---|---|---|
 | Blog + RSS/LLM (`/feed.xml`, `/llms.txt`, `/blog/*.mdx`) | fumadocs, MDX | `src/app/(site)/blog`, `content/blog` |
-| Guestbook + komentar/like blog | Clerk, Neon, react-query, react-virtual | `src/app/(site)/guestbook`, `.../blog/[[...slug]]` |
-| Panel admin (`/admin/*`: overview, guestbook, comments, projects, links) | Clerk (owner-only), react-table, react-hook-form | `src/app/admin` |
+| Guestbook + komentar/like blog | NextAuth, Neon, react-query, react-virtual | `src/app/(site)/guestbook`, `.../blog/[[...slug]]` |
+| Panel admin (`/admin/*`: overview, guestbook, comments, projects, links) | NextAuth (owner-only), react-table, react-hook-form | `src/app/admin` |
 | Shortlink multi-domain | `SHORTLINK_DOMAIN` di `src/proxy.ts` + tabel `links`/`link_slugs` | `src/app/[...link]` |
 | Kartu SVG dinamis + playground (`/svg`, `/svg/preview`) | takumi-js, zod | `src/app/svg`, `src/lib/svg` |
 | Download resume (`/api/resume*`) | react-pdf, Neon (cache) | `src/app/api/resume` |
@@ -120,8 +118,9 @@ Konten: `content/blog/*.mdx` (4 postingan, frontmatter `title/description/date/t
 | Var | Wajib? | Untuk |
 |---|---|---|
 | `DATABASE_URL` | Opsional (degradasi) | Neon Postgres: guestbook, komentar, projects, links |
-| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` / `CLERK_SECRET_KEY` / `CLERK_WEBHOOK_SECRET` | Opsional (degradasi) | Sign-in, proteksi `/admin`, webhook user |
-| `OWNER_CLERK_USER_ID` | Jika Clerk dipakai | Akun pemilik untuk `/admin` |
+| `NEXTAUTH_SECRET` / `NEXTAUTH_URL` | Ya (login) | Secret sesi (acak) + URL situs untuk callback OAuth |
+| `GITHUB_ID` / `GITHUB_SECRET` / `GOOGLE_ID` / `GOOGLE_SECRET` | Salah satu wajib (login) | OAuth Apps GitHub / kredensial Google Cloud |
+| `OWNER_USER_ID` | Jika auth dipakai | Subject ID OAuth pemilik untuk `/admin` |
 | `GITHUB_TOKEN` | Opsional | Menaikkan rate-limit API GitHub (kartu repo/profil) |
 | `WAKATIME_API_KEY` | Opsional | Statistik coding |
 | `NEXT_PUBLIC_UMAMI_WEBSITE_ID` | Opsional | Analytics Umami |

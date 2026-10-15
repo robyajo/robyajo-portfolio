@@ -85,6 +85,20 @@
       "when": 1789357525073,
       "tag": "0011_overconfident_nehzno",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1792106470307,
+      "tag": "0012_nextauth-user-columns",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1792106483486,
+      "tag": "0013_nextauth-drop-clerk-columns",
+      "breakpoints": true
     }
   ]
 }

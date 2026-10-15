@@ -30,6 +30,11 @@
             "type": "removed",
             "id": "Info lagu yang sedang diputar dihapus dari bagian bawah halaman agar tampilan lebih ringan dan tidak ada lagi pesan galat yang mengganggu.",
             "en": "Removed the now-playing song info from the page footer for a lighter layout with no more distracting error messages."
+        },
+        {
+            "type": "improvement",
+            "id": "Cara masuk ke situs diperbarui: tombol masuk kini mengantar langsung ke akun GitHub atau Google Anda tanpa perantara, lebih cepat dan simpel.",
+            "en": "Site sign-in has been updated: the sign-in button now takes you straight to your GitHub or Google account with no middleman — faster and simpler."
         }
     ]
 }

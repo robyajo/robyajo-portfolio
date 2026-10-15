@@ -1,6 +1,6 @@
 "use server";
 
-import { getClerkUserMap, resolveUser, type PublicUser } from "@/lib/clerk-users";
+import { resolveUser, type PublicUser } from "@/lib/users";
 import { db } from "@/lib/db";
 import { guestbookEntries, guestbookLikes } from "@/lib/schema";
 import { resolvePagination } from "@/lib/pagination";
@@ -57,7 +57,9 @@ async function loadGuestbookEntries(
         db
             .select({
                 id: guestbookEntries.id,
-                clerkUserId: guestbookEntries.clerkUserId,
+                userId: guestbookEntries.userId,
+                authorName: guestbookEntries.authorName,
+                authorImage: guestbookEntries.authorImage,
                 message: guestbookEntries.message,
                 isPinned: guestbookEntries.isPinned,
                 createdAt: guestbookEntries.createdAt,
@@ -84,14 +86,12 @@ async function loadGuestbookEntries(
             .from(guestbookLikes)
             .where(
                 and(
-                    eq(guestbookLikes.clerkUserId, userId),
+                    eq(guestbookLikes.userId, userId),
                     inArray(guestbookLikes.entryId, rows.map((r) => r.id)),
                 ),
             );
         likedEntryIds = new Set(likes.map((l) => l.entryId));
     }
-
-    const userMap = await getClerkUserMap(rows.map((r) => r.clerkUserId));
 
     const entries: GuestbookEntryWithMeta[] = rows.map((row) => ({
         id: row.id,
@@ -100,7 +100,7 @@ async function loadGuestbookEntries(
         createdAt: row.createdAt.toISOString(),
         likeCount: row.likeCount,
         likedByMe: likedEntryIds.has(row.id),
-        user: resolveUser(userMap, row.clerkUserId),
+        user: resolveUser(row),
         number: row.number,
     }));
 
@@ -125,7 +125,9 @@ async function loadGuestbookPreview(limit: number): Promise<GuestbookPreviewEntr
     const pool = await db
         .select({
             id: guestbookEntries.id,
-            clerkUserId: guestbookEntries.clerkUserId,
+            userId: guestbookEntries.userId,
+            authorName: guestbookEntries.authorName,
+            authorImage: guestbookEntries.authorImage,
             message: guestbookEntries.message,
             isPinned: guestbookEntries.isPinned,
             createdAt: guestbookEntries.createdAt,
@@ -143,10 +145,8 @@ async function loadGuestbookPreview(limit: number): Promise<GuestbookPreviewEntr
 
     if (rows.length === 0) return [];
 
-    const userMap = await getClerkUserMap(rows.map((r) => r.clerkUserId));
-
     return rows.map((row) => {
-        const user = resolveUser(userMap, row.clerkUserId);
+        const user = resolveUser(row);
         return {
             id: row.id,
             message: row.message,
@@ -160,7 +160,7 @@ export async function submitGuestbookEntry(
     rawMessage: string,
 ): Promise<{ success: true; id: number } | { success: false; error: string }> {
     try {
-        const { userId } = await auth();
+        const { userId, name, image } = await auth();
         if (!userId) return { success: false, error: "You must be signed in to leave a message." };
 
         const message = sanitizeText(rawMessage);
@@ -168,7 +168,7 @@ export async function submitGuestbookEntry(
 
         const [inserted] = await db
             .insert(guestbookEntries)
-            .values({ clerkUserId: userId, message })
+            .values({ userId, authorName: name, authorImage: image, message })
             .returning({ id: guestbookEntries.id });
 
         revalidatePath("/guestbook");
@@ -188,15 +188,15 @@ export async function deleteGuestbookEntry(
         if (!userId) return { success: false, error: "Not authenticated." };
 
         const [entry] = await db
-            .select({ clerkUserId: guestbookEntries.clerkUserId })
+            .select({ userId: guestbookEntries.userId })
             .from(guestbookEntries)
             .where(and(eq(guestbookEntries.id, entryId), eq(guestbookEntries.isDeleted, false)))
             .limit(1);
 
         if (!entry) return { success: false, error: "Entry not found." };
 
-        const isOwner = entry.clerkUserId === userId;
-        const isSiteOwner = userId === process.env.OWNER_CLERK_USER_ID;
+        const isOwner = entry.userId === userId;
+        const isSiteOwner = userId === process.env.OWNER_USER_ID;
 
         if (!isOwner && !isSiteOwner) {
             return { success: false, error: "You don't have permission to delete this entry." };
@@ -219,7 +219,7 @@ export async function togglePinEntry(
 ): Promise<{ success: true } | { success: false; error: string }> {
     try {
         const { userId } = await auth();
-        if (!userId || userId !== process.env.OWNER_CLERK_USER_ID) {
+        if (!userId || userId !== process.env.OWNER_USER_ID) {
             return { success: false, error: "Not authorized." };
         }
 
@@ -253,18 +253,18 @@ export async function toggleLike(
         const [existing] = await db
             .select()
             .from(guestbookLikes)
-            .where(and(eq(guestbookLikes.entryId, entryId), eq(guestbookLikes.clerkUserId, userId)))
+            .where(and(eq(guestbookLikes.entryId, entryId), eq(guestbookLikes.userId, userId)))
             .limit(1);
 
         if (existing) {
             await db
                 .delete(guestbookLikes)
-                .where(and(eq(guestbookLikes.entryId, entryId), eq(guestbookLikes.clerkUserId, userId)));
+                .where(and(eq(guestbookLikes.entryId, entryId), eq(guestbookLikes.userId, userId)));
             revalidatePath("/guestbook");
             return { success: true, liked: false };
         }
 
-        await db.insert(guestbookLikes).values({ entryId, clerkUserId: userId });
+        await db.insert(guestbookLikes).values({ entryId, userId });
         revalidatePath("/guestbook");
         return { success: true, liked: true };
     } catch {

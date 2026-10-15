@@ -9,7 +9,7 @@ import { TypingBubble } from "@/components/shared/doodles";
 import { SignInIcon, SignOutIcon } from "@/components/shared/icons";
 import { Button } from "@/components/ui/button";
 import { TypographyMuted, TypographySmall } from "@/components/ui/typography";
-import { SafeSignInButton as SignInButton } from "@/components/shared/clerk-optional";
+import { SafeSignInButton as SignInButton } from "@/components/shared/auth-session";
 import Link from "next/link";
 
 const COMMENT_MAX_LENGTH = 1000;

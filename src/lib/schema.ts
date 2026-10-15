@@ -62,7 +62,9 @@ export const guestbookEntries = pgTable(
     "guestbook_entries",
     {
         id: serial("id").primaryKey(),
-        clerkUserId: varchar("clerk_user_id", { length: 256 }).notNull(),
+        userId: varchar("user_id", { length: 256 }).notNull(),
+        authorName: varchar("author_name", { length: 256 }),
+        authorImage: varchar("author_image", { length: 2048 }),
         message: text("message").notNull(),
         isPinned: boolean("is_pinned").default(false).notNull(),
         isDeleted: boolean("is_deleted").default(false).notNull(),
@@ -70,7 +72,7 @@ export const guestbookEntries = pgTable(
         updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
     },
     (table) => [
-        index("guestbook_entries_clerk_user_idx").on(table.clerkUserId),
+        index("guestbook_entries_user_idx").on(table.userId),
         index("guestbook_entries_created_at_idx").on(table.createdAt),
     ],
 );
@@ -81,11 +83,11 @@ export const guestbookLikes = pgTable(
         entryId: integer("entry_id")
             .notNull()
             .references(() => guestbookEntries.id, { onDelete: "cascade" }),
-        clerkUserId: varchar("clerk_user_id", { length: 256 }).notNull(),
+        userId: varchar("user_id", { length: 256 }).notNull(),
         createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
     },
     (table) => [
-        primaryKey({ columns: [table.entryId, table.clerkUserId] }),
+        primaryKey({ columns: [table.entryId, table.userId] }),
         index("guestbook_likes_entry_idx").on(table.entryId),
     ],
 );
@@ -101,7 +103,9 @@ export const blogComments = pgTable(
             (): AnyPgColumn => blogComments.id,
             { onDelete: "cascade" },
         ),
-        clerkUserId: varchar("clerk_user_id", { length: 256 }).notNull(),
+        userId: varchar("user_id", { length: 256 }).notNull(),
+        authorName: varchar("author_name", { length: 256 }),
+        authorImage: varchar("author_image", { length: 2048 }),
         body: text("body").notNull(),
         isPinned: boolean("is_pinned").default(false).notNull(),
         isDeleted: boolean("is_deleted").default(false).notNull(),
@@ -121,11 +125,11 @@ export const blogCommentLikes = pgTable(
         commentId: integer("comment_id")
             .notNull()
             .references(() => blogComments.id, { onDelete: "cascade" }),
-        clerkUserId: varchar("clerk_user_id", { length: 256 }).notNull(),
+        userId: varchar("user_id", { length: 256 }).notNull(),
         createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
     },
     (table) => [
-        primaryKey({ columns: [table.commentId, table.clerkUserId] }),
+        primaryKey({ columns: [table.commentId, table.userId] }),
         index("blog_comment_likes_comment_idx").on(table.commentId),
     ],
 );

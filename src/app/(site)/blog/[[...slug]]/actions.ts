@@ -1,6 +1,6 @@
 "use server";
 
-import { getClerkUserMap, resolveUser, type PublicUser } from "@/lib/clerk-users";
+import { resolveUser, type PublicUser } from "@/lib/users";
 import { db } from "@/lib/db";
 import { getClientIp, hashIp } from "@/lib/ip";
 import { safeQuery } from "@/lib/safe-query";
@@ -232,7 +232,9 @@ async function loadComments(slug: string): Promise<GetCommentsResult> {
             id: blogComments.id,
             postId: blogComments.postId,
             parentId: blogComments.parentId,
-            clerkUserId: blogComments.clerkUserId,
+            userId: blogComments.userId,
+            authorName: blogComments.authorName,
+            authorImage: blogComments.authorImage,
             body: blogComments.body,
             isPinned: blogComments.isPinned,
             createdAt: blogComments.createdAt,
@@ -253,14 +255,12 @@ async function loadComments(slug: string): Promise<GetCommentsResult> {
             .from(blogCommentLikes)
             .where(
                 and(
-                    eq(blogCommentLikes.clerkUserId, userId),
+                    eq(blogCommentLikes.userId, userId),
                     inArray(blogCommentLikes.commentId, rows.map((r) => r.id)),
                 ),
             );
         likedIds = new Set(likes.map((l) => l.commentId));
     }
-
-    const userMap = await getClerkUserMap(rows.map((r) => r.clerkUserId));
 
     const flat: CommentWithMeta[] = rows.map((row) => ({
         id: row.id,
@@ -271,7 +271,7 @@ async function loadComments(slug: string): Promise<GetCommentsResult> {
         createdAt: row.createdAt.toISOString(),
         likeCount: row.likeCount,
         likedByMe: likedIds.has(row.id),
-        user: resolveUser(userMap, row.clerkUserId),
+        user: resolveUser(row),
         replies: [],
     }));
 
@@ -295,7 +295,7 @@ export async function submitComment(
     parentId?: number,
 ): Promise<{ success: true; id: number } | { success: false; error: string }> {
     try {
-        const { userId } = await auth();
+        const { userId, name, image } = await auth();
         if (!userId) return { success: false, error: "You must be signed in to leave a comment." };
 
         const trimmed = sanitizeText(body);
@@ -328,7 +328,7 @@ export async function submitComment(
 
         const [inserted] = await db
             .insert(blogComments)
-            .values({ postId, clerkUserId: userId, body: trimmed, parentId: resolvedParentId })
+            .values({ postId, userId, authorName: name, authorImage: image, body: trimmed, parentId: resolvedParentId })
             .returning({ id: blogComments.id });
 
         revalidatePath(`/blog/${slug}`);
@@ -348,15 +348,15 @@ export async function deleteComment(
         if (!userId) return { success: false, error: "Not authenticated." };
 
         const [comment] = await db
-            .select({ clerkUserId: blogComments.clerkUserId, postId: blogComments.postId })
+            .select({ userId: blogComments.userId, postId: blogComments.postId })
             .from(blogComments)
             .where(and(eq(blogComments.id, commentId), eq(blogComments.isDeleted, false)))
             .limit(1);
 
         if (!comment) return { success: false, error: "Comment not found." };
 
-        const isOwner = comment.clerkUserId === userId;
-        const isSiteOwner = userId === process.env.OWNER_CLERK_USER_ID;
+        const isOwner = comment.userId === userId;
+        const isSiteOwner = userId === process.env.OWNER_USER_ID;
 
         if (!isOwner && !isSiteOwner)
             return { success: false, error: "You don't have permission to delete this comment." };
@@ -384,7 +384,7 @@ export async function togglePinComment(
 ): Promise<{ success: true } | { success: false; error: string }> {
     try {
         const { userId } = await auth();
-        if (!userId || userId !== process.env.OWNER_CLERK_USER_ID)
+        if (!userId || userId !== process.env.OWNER_USER_ID)
             return { success: false, error: "Not authorized." };
 
         const [comment] = await db
@@ -423,17 +423,17 @@ export async function toggleCommentLike(
         const [existing] = await db
             .select()
             .from(blogCommentLikes)
-            .where(and(eq(blogCommentLikes.commentId, commentId), eq(blogCommentLikes.clerkUserId, userId)))
+            .where(and(eq(blogCommentLikes.commentId, commentId), eq(blogCommentLikes.userId, userId)))
             .limit(1);
 
         if (existing) {
             await db
                 .delete(blogCommentLikes)
-                .where(and(eq(blogCommentLikes.commentId, commentId), eq(blogCommentLikes.clerkUserId, userId)));
+                .where(and(eq(blogCommentLikes.commentId, commentId), eq(blogCommentLikes.userId, userId)));
             return { success: true, liked: false };
         }
 
-        await db.insert(blogCommentLikes).values({ commentId, clerkUserId: userId });
+        await db.insert(blogCommentLikes).values({ commentId, userId });
         return { success: true, liked: true };
     } catch {
         return { success: false, error: "Something went wrong." };

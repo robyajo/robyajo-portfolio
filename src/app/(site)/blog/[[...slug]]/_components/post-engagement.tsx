@@ -19,7 +19,7 @@ import { Panel, PanelRow } from "@/components/layouts/page";
 import { SectionLabel } from "@/components/ui/typography";
 import { nowISO } from "@/lib/date";
 import { classifyError, typedToast } from "@/lib/toast";
-import { useSafeClerk as useClerk, useSafeUser as useUser } from "@/components/shared/clerk-optional";
+import { useSafeSignOut as useSignOut, useSafeUser as useUser } from "@/components/shared/auth-session";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "@/lib/query-keys";
 import { useCallback, useMemo, useRef, useState } from "react";
@@ -110,7 +110,7 @@ export function PostEngagement({
   currentUserId,
 }: PostEngagementProps) {
   const { user, isSignedIn, isLoaded } = useUser();
-  const { signOut } = useClerk();
+  const { signOut } = useSignOut();
 
   const queryClient = useQueryClient();
   const reactionsKey = useMemo(() => queryKeys.reactions(slug), [slug]);

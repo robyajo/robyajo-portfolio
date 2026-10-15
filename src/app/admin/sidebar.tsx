@@ -22,7 +22,7 @@ import {
   FolderOpenIcon,
 } from "@/components/shared/icons";
 import { LogoIcon } from "@/components/shared/logo-icon";
-import { useSafeClerk as useClerk } from "@/components/shared/clerk-optional";
+import { useSafeSignOut as useSignOut } from "@/components/shared/auth-session";
 import Link from "next/link";
 import type { Route } from "next";
 import { usePathname } from "next/navigation";
@@ -37,7 +37,7 @@ const navItems = [
 
 export function AdminSidebar() {
   const pathname = usePathname();
-  const { signOut } = useClerk();
+  const { signOut } = useSignOut();
 
   return (
     <Sidebar collapsible="icon">

@@ -12,12 +12,12 @@ import {
   TypographyMark,
   TypographyMuted,
 } from "@/components/ui/typography";
-import { useSafeClerk as useClerk } from "@/components/shared/clerk-optional";
+import { useSafeSignOut as useSignOut } from "@/components/shared/auth-session";
 import Link from "next/link";
 import { useRef } from "react";
 
 export function AdminUnauthorized() {
-  const { signOut } = useClerk();
+  const { signOut } = useSignOut();
   const containerRef = useRef<HTMLDivElement>(null);
 
   return (

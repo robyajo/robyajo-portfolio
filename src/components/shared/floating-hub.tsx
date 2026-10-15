@@ -32,7 +32,7 @@ import {
   ReadingProgress,
 } from "@/components/shared/hub-widgets";
 import { Avatar } from "@/components/engagement/avatar";
-import { SafeSignInButton as SignInButton, useSafeClerk as useClerk, useSafeUser as useUser } from "@/components/shared/clerk-optional";
+import { SafeSignInButton as SignInButton, useSafeSignOut as useSignOut, useSafeUser as useUser } from "@/components/shared/auth-session";
 import { useDraggable } from "@/hooks/use-draggable";
 import { useEngagementAnchor } from "@/hooks/use-engagement-anchor";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -116,7 +116,7 @@ function DragTip() {
 function AuthSection({ onClose }: { onClose: () => void }) {
   const pathname = usePathname();
   const { user, isSignedIn, isLoaded } = useUser();
-  const { signOut } = useClerk();
+  const { signOut } = useSignOut();
 
   return (
     <section className="flex flex-col gap-2">

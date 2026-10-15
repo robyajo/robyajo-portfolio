@@ -7,9 +7,11 @@ import { Button } from "@/components/ui/button";
 import { TypographyMuted } from "@/components/ui/typography";
 import { formatShortDate } from "@/lib/date";
 
-function isClerkImageHost(url: string): boolean {
+const AVATAR_HOSTS = new Set(["avatars.githubusercontent.com", "lh3.googleusercontent.com"]);
+
+function isOAuthAvatarHost(url: string): boolean {
   try {
-    return new URL(url).hostname === "img.clerk.com";
+    return AVATAR_HOSTS.has(new URL(url).hostname);
   } catch {
     return false;
   }
@@ -24,8 +26,8 @@ function EntryAvatar({ entry }: { entry: GuestbookPreviewEntry }) {
     .toUpperCase();
 
   if (entry.user.imageUrl) {
-    const src = isClerkImageHost(entry.user.imageUrl)
-      ? `${entry.user.imageUrl}?width=56`
+    const src = isOAuthAvatarHost(entry.user.imageUrl)
+      ? `${entry.user.imageUrl}${entry.user.imageUrl.includes("?") ? "&" : "?"}width=56`
       : entry.user.imageUrl;
     return (
       // eslint-disable-next-line @next/next/no-img-element

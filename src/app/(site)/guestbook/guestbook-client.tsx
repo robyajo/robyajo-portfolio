@@ -23,7 +23,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { TypographyMuted, TypographySmall } from "@/components/ui/typography";
 import { nowISO } from "@/lib/date";
 import { toastError } from "@/lib/toast";
-import { SafeSignInButton as SignInButton, useSafeClerk as useClerk, useSafeUser as useUser } from "@/components/shared/clerk-optional";
+import { SafeSignInButton as SignInButton, useSafeSignOut as useSignOut, useSafeUser as useUser } from "@/components/shared/auth-session";
 import {
   useInfiniteQuery,
   useMutation,
@@ -54,7 +54,7 @@ interface GuestbookClientProps {
 
 export function GuestbookClient({ currentUserId }: GuestbookClientProps) {
   const { user, isSignedIn, isLoaded } = useUser();
-  const { signOut } = useClerk();
+  const { signOut } = useSignOut();
 
   const queryClient = useQueryClient();
 
