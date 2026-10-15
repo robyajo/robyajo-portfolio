@@ -35,4 +35,6 @@ skills-lock.json
 
 # Seed artifacts
 scripts/.seed-guestbook-ids.json
-.env*
+
+# Local env files (keeps secrets out; .env.example stays tracked)
+.env*.local
