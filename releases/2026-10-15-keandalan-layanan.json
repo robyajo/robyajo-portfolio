@@ -1,16 +1,21 @@
 {
     "date": "2026-10-15",
-    "type": "improvement",
+    "type": "feature",
     "status": "published",
     "title": {
-        "id": "Layanan situs makin andal dan data tersimpan aman",
-        "en": "More reliable site service with safely stored data"
+        "id": "Masuk akun tersedia, layanan makin andal",
+        "en": "Account sign-in available, more reliable service"
     },
     "body": {
-        "id": "Pesan buku tamu dan daftar proyek kini tersimpan aman sehingga tidak hilang, dan pembaruan situs selalu sampai ke pengunjung dengan andal.",
-        "en": "Guestbook messages and the project list are now stored safely so nothing is lost, and site updates reliably reach every visitor."
+        "id": "Pengunjung kini dapat masuk untuk menandatangani buku tamu dan mengomentari tulisan. Pesan tersimpan aman, dan pembaruan situs selalu sampai dengan andal.",
+        "en": "Visitors can now sign in to leave guestbook messages and comment on posts. Messages are stored safely, and site updates reliably reach everyone."
     },
     "items": [
+        {
+            "type": "new",
+            "id": "Tombol masuk kini tersedia: pengunjung dapat masuk untuk menandatangani buku tamu serta menyukai dan mengomentari tulisan blog.",
+            "en": "Sign-in is now available: visitors can sign in to leave guestbook messages and to like and comment on blog posts."
+        },
         {
             "type": "improvement",
             "id": "Pesan buku tamu dan daftar proyek kini tersimpan aman di layanan penyimpanan situs sehingga tidak hilang saat halaman dimuat ulang.",

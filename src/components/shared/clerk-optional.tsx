@@ -7,6 +7,7 @@ import {
     useUser as useUserOriginal,
 } from "@clerk/nextjs";
 import type { ReactNode } from "react";
+import { shadcn } from "@clerk/ui/themes";
 
 function isConfigured(): boolean {
     return Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY);
@@ -19,7 +20,7 @@ function isConfigured(): boolean {
  */
 export function OptionalClerkProvider({ children }: { children: ReactNode }) {
     if (!isConfigured()) return <>{children}</>;
-    return <ClerkProvider>{children}</ClerkProvider>;
+    return <ClerkProvider appearance={{ theme: shadcn }}>{children}</ClerkProvider>;
 }
 
 /** Sign-in button that renders nothing when auth is not configured. */
