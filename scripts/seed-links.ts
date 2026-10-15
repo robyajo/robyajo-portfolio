@@ -17,9 +17,9 @@ type SeedLink = {
 };
 
 const SEED_LINKS: SeedLink[] = [
-    { slug: "github", target: "https://github.com/anishshobithps" },
-    { slug: "linkedin", target: "https://linkedin.com/in/anishshobithps" },
-    { slug: "mail", target: "mailto:anish.shobith19@gmail.com" },
+    { slug: "github", target: "https://github.com/robyajo" },
+    { slug: "linkedin", target: "https://id.linkedin.com/in/robykartis" },
+    { slug: "mail", target: "mailto:robyfull.dev@gmail.com" },
 ];
 
 function label(tag: string, slug: string) {

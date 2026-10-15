@@ -40,8 +40,8 @@ export const README: Block[] = [
   {
     kind: "list",
     items: [
-      `Shipping v3 of [anishshobithps.com](https://github.com/anishshobithps/anishshobithps.com): isometric art drawn in code, a guestbook, and these cards.`,
-      "Studying cryptology and ethical hacking at MSIS, Manipal. Breaking things, but with a syllabus.",
+      `Shipping v3 of [ajoroby.is-a.dev](https://github.com/robyajo/robyajo-portfolio): isometric art drawn in code, a guestbook, and these cards.`,
+      "Studying software development in Pekanbaru, Indonesia. Breaking things, but with a syllabus.",
       "Looking for a full-time role. Also open to collaborations that make sense, or at least teach me something.",
     ],
   },
@@ -49,7 +49,7 @@ export const README: Block[] = [
     kind: "card",
     type: "calendar",
     alt: "Contributions over the last 12 months, with my current and longest streak.",
-    href: "https://github.com/anishshobithps",
+      href: "https://github.com/robyajo",
   },
   { kind: "heading", n: 2, title: "When I code" },
   {
@@ -60,7 +60,7 @@ export const README: Block[] = [
     kind: "card",
     type: "activity",
     alt: "When I code: a weekday by hour grid of my commits in local time.",
-    href: "https://github.com/anishshobithps",
+      href: "https://github.com/robyajo",
   },
   { kind: "heading", n: 3, title: "Off the main branch" },
   {
@@ -90,7 +90,7 @@ export const README: Block[] = [
   { kind: "heading", n: 5, title: "Say hello" },
   {
     kind: "paragraph",
-    text: `If you're building something ambitious and need an engineer who prefers clarity over chaos, we'll probably get along. [anish.shobith19@gmail.com](mailto:anish.shobith19@gmail.com) / [LinkedIn](https://www.linkedin.com/in/anishshobithps/) / [X](https://x.com/n10nce)`,
+      text: `If you're building something ambitious and need an engineer who prefers clarity over chaos, we'll probably get along. [robyfull.dev@gmail.com](mailto:robyfull.dev@gmail.com) / [LinkedIn](https://id.linkedin.com/in/robykartis/) / [Instagram](https://www.instagram.com/roby_karti)`,
   },
   {
     kind: "card",

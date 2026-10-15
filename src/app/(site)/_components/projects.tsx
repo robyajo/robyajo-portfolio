@@ -158,7 +158,7 @@ export function BuiltThings() {
         </TypographyLead>
         <Button asChild size="lg" className="rounded-lg font-semibold">
           <Link
-            href="https://github.com/anishshobithps"
+            href="https://github.com/robyajo"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Explore the chaos, view all projects on GitHub"
