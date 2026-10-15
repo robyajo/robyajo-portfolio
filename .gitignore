@@ -1,24 +1,37 @@
-# build output
-dist/
+# deps
+/node_modules
 
-# generated types
-.astro/
+# generated content
+.source
 
-# dependencies
-node_modules/
+# test & build
+/coverage
+/.next/
+/out/
+/build
+*.tsbuildinfo
 
-# logs
+# misc
+.DS_Store
+*.pem
+/.pnp
+.pnp.js
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-pnpm-debug.log*
 
-# environment variables
+# others
+.env*.local
+.vercel
+next-env.d.ts
+
 .env
-.env.production
+/.agents
+/.claude
+/plans
+.impeccable/
+skills-lock.json
+.unlighthouse/
 
-# macOS-specific files
-.DS_Store
-
-# jetbrains setting folder
-.idea/
+# Seed artifacts
+scripts/.seed-guestbook-ids.json

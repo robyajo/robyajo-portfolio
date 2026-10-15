@@ -1,0 +1,46 @@
+import { Content, PageLayout } from "@/components/layouts/page";
+import { Footer } from "@/components/shared/footer";
+import { Header } from "@/components/shared/header";
+import { JsonLd } from "@/components/shared/json-ld";
+import { MouseGlow } from "@/components/shared/mouse-glow";
+import {
+  FloatingHubServer,
+  FloatingHubFallback,
+} from "@/components/shared/floating-hub-server";
+import { OptionalClerkProvider } from "@/components/shared/clerk-optional";
+import { Suspense } from "react";
+
+export default function SiteLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <OptionalClerkProvider>
+      <JsonLd type="person" />
+      <JsonLd type="website" />
+      <PageLayout>
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[var(--z-skip-link)] focus:px-4 focus:py-2 focus:bg-background focus:border focus:border-border focus:rounded-md focus:text-foreground focus:text-sm focus:font-medium"
+        >
+          Skip to content
+        </a>
+        <Header />
+        <Content
+          id="main-content"
+          tabIndex={-1}
+          // eslint-disable-next-line shadcn/no-arbitrary-values
+          className="scroll-smooth pt-[calc(3.5rem+1px)] outline-none"
+        >
+          {children}
+        </Content>
+        <Footer />
+      </PageLayout>
+      <MouseGlow />
+      <Suspense fallback={<FloatingHubFallback />}>
+        <FloatingHubServer />
+      </Suspense>
+    </OptionalClerkProvider>
+  );
+}
