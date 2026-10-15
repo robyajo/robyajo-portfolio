@@ -21,11 +21,24 @@ Set up this app on Neon.
 5. Prove it works: `npm run build` must pass, then start the app, each wired service must be tested to prove it works end to end.
 6. Report what changed, the command output that proves step 5, and anything that failed.
 
-## Protokol Catatan Rilis (wajib setiap ada perubahan yang dirasakan pengguna)
+⚡ Protokol Catatan Rilis: 1 Berkas JSON Per Hari
 
-Setiap penambahan fitur atau perbaikan bug yang **dirasakan pengguna** harus dicatat di direktori `releases/` — maksimal **1 berkas JSON per hari** (konsolidasi harian). Lihat skill terinstal: `.agents/skills/release-notes/SKILL.md`.
+Setiap penambahan fitur atau perbaikan bug yang **dirasakan pengguna** harus dicatat di direktori `releases/` dengan aturan:
 
-1. **Periksa tanggal hari ini**: cek apakah `releases/YYYY-MM-DD-*.json` sudah ada.
-2. **Jika SUDAH ADA**: JANGAN buat berkas baru. Tambahkan poin ke array `items`, perbarui `title`/`body`, naikkan `type` bila perlu (`important` > `feature` > `fix` > `improvement`).
-3. **Jika BELUM ADA**: buat `releases/YYYY-MM-DD-nama-singkat.json` dengan format dwibahasa (`id` + `en`) untuk `title`, `body`, dan tiap item.
-4. **Bahasa publik, bebas istilah teknis internal**: DILARANG menulis nama library/framework/database/middleware/file kode atau mekanisme internal. Rumuskan sebagai pemberitahuan pelayanan yang ramah dan berfokus pada dampak bagi pengguna (kemudahan, kecepatan, hemat kuota, kerahasiaan data).
+### Aturan Konsolidasi Harian (1 JSON Per Hari)
+
+1. **Periksa Tanggal Hari Ini**: Cek apakah berkas `releases/YYYY-MM-DD-*.json` sudah ada.
+2. **Jika SUDAH ADA**:
+    - **JANGAN** membuat berkas baru!
+    - Buka berkas tersebut dan tambahkan poin baru ke dalam array `items: [...]`.
+    - Perbarui ringkasan `title` dan `body` harian secara terpadu.
+    - Naikkan `type` jika terdapat kategori yang lebih tinggi (`important` > `feature` > `fix` > `improvement`).
+3. **Jika BELUM ADA**:
+4. **Format Dwibahasa (`id` & `en`)**:
+    - Wajib menyertakan `id` (Bahasa Indonesia) dan `en` (Bahasa Inggris) untuk `title`, `body`, dan tiap elemen dalam `items`.
+5. **Wajib Bahasa Publik & Bebas Istilah Teknis Internal (Security-Safe & Citizen-Facing)**:
+    - **DILARANG KERAS** menuliskan istilah teknis arsitektur inti, nama library/package pihak ketiga, nama framework, database, middleware, nama file kode sumber, atau mekanisme internal (seperti _Prisma, Arcjet, Security Guard, Tiptap, CSRF, CSP, Next.js, React, Turbopack, Zod, TanStack, rate limiter, deepmerge, dsb._) di dalam berkas rilis.
+    - **Tujuan Keamanan**: Mencegah pihak luar menganalisis atau menebak struktur komponen internal dan potensi celah keamanan sistem dari catatan rilis publik.
+    - **Orientasi Pelayanan Warga**: Seluruh `title`, `body`, dan butir `items` wajib dirumuskan sebagai **pemberitahuan pelayanan publik** yang ramah, sopan, dan berfokus pada dampak langsung bagi masyarakat (misalnya: kemudahan pengurusan berkas, kecepatan buka halaman, penghematan kuota ponsel, dan perlindungan kerahasiaan data warga).
+
+---
