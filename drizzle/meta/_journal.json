@@ -134,6 +134,13 @@
       "when": 1792186993714,
       "tag": "0018_shared-project-key",
       "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1792188672474,
+      "tag": "0019_project-slug-sync-key",
+      "breakpoints": true
     }
   ]
 }

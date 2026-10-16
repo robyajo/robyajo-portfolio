@@ -17,12 +17,20 @@ function pick(locale: Locale, id: string, en: string): string {
     return locale === "id" ? id : en;
 }
 
-export async function ActivityFeed({ limit = 6 }: { limit?: number }) {
+export async function ActivityFeed({
+    limit = 6,
+    projectKey,
+    showLead = true,
+}: {
+    limit?: number;
+    projectKey?: string;
+    showLead?: boolean;
+}) {
     const locale = await getLocale();
     const dict = await getDictionary(locale);
     const content = dict.activity;
     const dateLocale = locale === "id" ? "id-ID" : "en-US";
-    const items = await getRecentActivities(limit);
+    const items = await getRecentActivities(limit, projectKey);
 
     return (
         <Section aria-label={content.section}>
@@ -38,13 +46,15 @@ export async function ActivityFeed({ limit = 6 }: { limit?: number }) {
             />
             <TypographyH2 className="sr-only">{content.section}</TypographyH2>
             <Reveal className="group/iso">
-                <div className="mb-8 max-w-2xl">
-                    <TypographyLead>
-                        {content.leadPrefix}{" "}
-                        <TypographyMark>{content.leadHighlight}</TypographyMark>
-                        {content.leadSuffix}
-                    </TypographyLead>
-                </div>
+                {showLead && (
+                    <div className="mb-8 max-w-2xl">
+                        <TypographyLead>
+                            {content.leadPrefix}{" "}
+                            <TypographyMark>{content.leadHighlight}</TypographyMark>
+                            {content.leadSuffix}
+                        </TypographyLead>
+                    </div>
+                )}
                 {items.length === 0 ? (
                     <TypographyMuted className="font-mono text-sm">{content.empty}</TypographyMuted>
                 ) : (

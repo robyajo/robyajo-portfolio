@@ -8,6 +8,8 @@ export const PROJECTS_CACHE_TAG = "public-projects";
 export type Project = {
     id: number;
     title: string;
+    slug: string;
+    syncKey: string | null;
     description: string;
     highlights: string[];
     live: string | null;
@@ -22,6 +24,8 @@ export const getPublicProjects = unstable_cache(
             .select({
                 id: projectsTable.id,
                 title: projectsTable.title,
+                slug: projectsTable.slug,
+                syncKey: projectsTable.syncKey,
                 description: projectsTable.description,
                 highlights: projectsTable.highlights,
                 live: projectsTable.live,
@@ -36,3 +40,23 @@ export const getPublicProjects = unstable_cache(
     ["public-projects"],
     { revalidate: 3600, tags: [PROJECTS_CACHE_TAG] },
 );
+
+export async function getProjectBySlug(slug: string): Promise<Project | null> {
+    const [row] = await db
+        .select({
+            id: projectsTable.id,
+            title: projectsTable.title,
+            slug: projectsTable.slug,
+            syncKey: projectsTable.syncKey,
+            description: projectsTable.description,
+            highlights: projectsTable.highlights,
+            live: projectsTable.live,
+            github: projectsTable.github,
+            enabled: projectsTable.enabled,
+            sortOrder: projectsTable.sortOrder,
+        })
+        .from(projectsTable)
+        .where(eq(projectsTable.slug, slug))
+        .limit(1);
+    return row ?? null;
+}

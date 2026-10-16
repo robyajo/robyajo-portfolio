@@ -47,6 +47,11 @@
             "en": "Project news now flows in automatically: other projects can send their updates straight here, and later revisions update the same item instead of duplicating it."
         },
         {
+            "type": "new",
+            "id": "Setiap proyek kini punya halaman detail sendiri: klik kartu proyek untuk melihat info lengkap plus semua kabar terkininya di satu tempat.",
+            "en": "Every project now has its own detail page: click a project card to see full info plus all its latest news in one place."
+        },
+        {
             "type": "fix",
             "id": "Halaman resume kini menampilkan berkas resume asli yang bisa dibaca langsung dan diunduh, sebelumnya gagal dimuat.",
             "en": "The resume page now shows the real resume file that can be read and downloaded directly; it previously failed to load."

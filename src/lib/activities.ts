@@ -1,6 +1,6 @@
 import { and, desc, eq, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
-import { activities, syncProjects } from "@/lib/schema";
+import { activities, projects, syncProjects } from "@/lib/schema";
 import { safeQuery } from "@/lib/safe-query";
 import type { ActivityIngest } from "@/lib/activities-schema";
 
@@ -97,6 +97,31 @@ export interface IngestResult {
     project: string;
     createdProject: boolean;
     updated: boolean;
+}
+
+/**
+ * Kunci valid bila ada di registry env ATAU sudah tercatat di database
+ * (dibuat dari admin). Artinya menambah proyek tidak butuh ubah env/rebuild.
+ */
+export async function isValidProjectKey(key: string): Promise<boolean> {
+    const { resolveProjectName } = await import("./activities-schema");
+    if (resolveProjectName(process.env.ACTIVITY_PROJECT_KEYS, key)) return true;
+    try {
+        const [sync] = await db
+            .select({ id: syncProjects.id })
+            .from(syncProjects)
+            .where(eq(syncProjects.key, key))
+            .limit(1);
+        if (sync) return true;
+        const [proj] = await db
+            .select({ id: projects.id })
+            .from(projects)
+            .where(eq(projects.syncKey, key))
+            .limit(1);
+        return !!proj;
+    } catch {
+        return false;
+    }
 }
 
 /**

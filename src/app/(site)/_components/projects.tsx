@@ -33,6 +33,7 @@ export async function ProjectGrid({
 }) {
   const dict = await getDictionary();
   const content = dict.home.projects;
+  const detail = dict.projectsDetail;
   let projects: Awaited<ReturnType<typeof getPublicProjects>>;
   try {
     projects = await getPublicProjects();
@@ -80,6 +81,20 @@ export async function ProjectGrid({
               </ul>
               <nav aria-label={`${content.linksFor} ${project.title}`} className="pt-4">
                 <ButtonGroup>
+                  <Button asChild size="sm" variant="default">
+                    <Link
+                      href={`/projects/${project.slug}` as Route}
+                      aria-label={detail.detailAria.replace("{title}", project.title)}
+                    >
+                      <ArrowUpRightIcon
+                        data-icon="inline-start"
+                        className="size-4"
+                        aria-hidden="true"
+                      />
+                      <span>{detail.detail}</span>
+                    </Link>
+                  </Button>
+                  <ButtonGroupSeparator />
                   {project.live && (
                     <>
                       <Button asChild size="sm" variant="default">

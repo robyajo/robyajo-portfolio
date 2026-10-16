@@ -3,11 +3,32 @@ import { isHttpUrl } from "@/lib/links-schema";
 
 export const PROJECT_LIMITS = {
   title: 256,
+  slug: 256,
+  syncKey: 64,
   description: 2000,
   highlight: 300,
   highlights: 12,
   url: 512,
 } as const;
+
+const slugField = z
+  .string()
+  .trim()
+  .toLowerCase()
+  .max(PROJECT_LIMITS.slug, `Slug must be ${PROJECT_LIMITS.slug} characters or fewer.`)
+  .refine((v) => v === "" || /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(v), {
+    message: "Slug may only contain lowercase letters, numbers, and dashes.",
+  });
+
+const syncKeyField = z
+  .string()
+  .trim()
+  .max(PROJECT_LIMITS.syncKey, `Sync key must be ${PROJECT_LIMITS.syncKey} characters or fewer.`)
+  .refine((v) => v === "" || /^pk_[0-9a-f]{32}$/.test(v), {
+    message: "Sync key must look like pk_ + 32 hex characters.",
+  })
+  .transform((v) => (v === "" ? null : v))
+  .nullable();
 
 const optionalUrl = z
   .string()
@@ -25,6 +46,8 @@ export const projectInputSchema = z.object({
     .trim()
     .min(1, "Title is required.")
     .max(PROJECT_LIMITS.title, `Title must be ${PROJECT_LIMITS.title} characters or fewer.`),
+  slug: slugField,
+  syncKey: syncKeyField,
   description: z
     .string()
     .trim()

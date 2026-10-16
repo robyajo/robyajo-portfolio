@@ -1,31 +1,31 @@
 # Sinkron Kegiatan Antar-Proyek (Activity Sync)
 
 Portfolio ini (`https://ajoroby.is-a.dev`) bisa menerima kabar kegiatan dari
-proyek-proyek lain dan menampilkannya otomatis di bagian Kegiatan Terbaru.
+proyek-proyek lain dan menampilkannya otomatis di **halaman detail tiap proyek**
+(`/projects/<slug>`).
 
 ## Cara pakai di proyek lain (untuk AI)
 
-1. Salin folder skill ini ke proyek tersebut:
+1. Pemilik membuat proyek di `/admin/projects` (isi judul + slug) lalu menekan
+   **Buat** pada kolom kunci sinkron dan **menyalin** hasilnya.
+2. Salin folder skill ini ke proyek tersebut:
    `.agents/skills/activity-sync/` (cukup berkas `SKILL.md`).
-2. Pastikan AI di proyek itu memuat skill saat ada perubahan yang dirasakan
-   pengguna — sesuai bagian `description` (triggers) di `SKILL.md`.
-3. Beri AI di sana dua hal:
-    - **URL API**: `https://ajoroby.is-a.dev/api/activities`
-    - **Kunci `X-project`** proyek tersebut (lihat di bawah).
+3. Tempel kunci ke konfigurasi AI proyek itu, lalu AI mengirim tiap ada
+   perubahan yang dirasakan pengguna (lihat `SKILL.md`).
 
-## Kunci proyek (`X-project`) — mode kunci bersama
+## Kunci proyek (`X-project`) — dibuat dari admin, bukan manual
 
-- **Satu kunci untuk semua proyek Anda.** Kunci yang sama boleh dipakai dari
-  banyak proyek; yang membedakan adalah `project.name` di payload. Menambah
-  proyek baru = cukup kirim dengan nama berbeda — **tanpa ubah env, tanpa
-  rebuild/redeploy portfolio**.
-- Daftar kunci hidup di env portfolio: `ACTIVITY_PROJECT_KEYS` dengan format
-  `kunci:Nama Bawaan,kunci2:Nama Bawaan 2` (lokal: `.env.local`, produksi: env Vercel).
-  Nama bawaan dipakai bila kiriman pertama tak menyertakan `project.name`.
-- Membuat kunci baru (bila butuh): `openssl rand -hex 16`, beri awalan `pk_`,
-  tambahkan ke kedua env, beri tahu AI proyek terkait.
-- Kunci yang bocor: hapus dari registry + redeploy — kiriman dengan kunci
-  salah ditolak (`403`) tanpa menyentuh database.
+- Alur resmi: `/admin/projects` → tambah/ubah proyek → **Buat** → **salin**.
+  Kunci per proyek showcase; kegiatan berkunci itu tampil **hanya di halaman
+  detail proyek tersebut**.
+- Format kunci `pk_` + 32 hex (boleh dibuat manual via `openssl rand -hex 16`
+  bila perlu, mis. untuk proyek tanpa halaman showcase).
+- Daftar kunci hidup di env portfolio: `ACTIVITY_PROJECT_KEYS` (lokal:
+  `.env.local`, produksi: env Vercel) — hanya cadangan untuk proyek tanpa
+  halaman showcase. Kunci dari admin otomatis valid tanpa sentuh env,
+  sehingga menambah proyek tidak butuh rebuild portfolio.
+- Kunci yang bocor: regenerate dari dialog proyek + redeploy — kiriman dengan
+  kunci salah ditolak (`403`) tanpa menyentuh database.
 
 ## Data proyek & revisi (disimpan di database)
 

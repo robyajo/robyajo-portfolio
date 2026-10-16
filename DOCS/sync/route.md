@@ -10,7 +10,10 @@ dengan offset (contoh `2026-10-16T10:00:00+07:00`).
 | Header | Isi |
 |---|---|
 | `Content-Type` | `application/json` |
-| `X-project` | kunci statis proyek (terdaftar di `ACTIVITY_PROJECT_KEYS`) |
+| `X-project` | kunci proyek (dibuat dari `/admin/projects`, atau terdaftar di `ACTIVITY_PROJECT_KEYS`) |
+
+Kunci valid bila tercatat di database (dibuat via admin) ATAU ada di registry
+env — jadi menambah proyek tidak butuh ubah env maupun rebuild portfolio.
 
 **Body (JSON)**
 

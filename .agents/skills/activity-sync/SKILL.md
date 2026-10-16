@@ -7,7 +7,15 @@ description: "ACTIVATE setiap kali selesai mengerjakan perubahan yang dilihat pe
 
 Setiap selesai mengerjakan perubahan yang **dirasakan pengguna** di proyek ini,
 kirim **satu** entri kegiatan ke API portfolio. Portfolio menampilkannya otomatis
-di bagian Kegiatan Terbaru (dwibahasa, sesuai bahasa pengunjung).
+di **halaman detail proyek** (dwibahasa, sesuai bahasa pengunjung).
+
+## Kunci: buat di admin portfolio, bukan di sini
+
+1. Pemilik membuka `/admin/projects` → tambah/ubah proyek → tekan **Buat** pada
+   kolom kunci sinkron → **salin** kuncinya.
+2. Tempel kunci itu ke konfigurasi AI proyek ini (jangan commit ke git publik).
+3. Satu kunci = satu proyek showcase. Kegiatan berkunci itu hanya tampil di
+   halaman detail proyek tersebut (`/projects/<slug>`), bukan di beranda.
 
 ## Kapan WAJIB kirim
 
@@ -102,5 +110,6 @@ curl "https://ajoroby.is-a.dev/api/activities?limit=3"
 curl "https://ajoroby.is-a.dev/api/projects"
 ```
 
-Entri harus muncul di daftar (dan di halaman utama portfolio dalam hitungan menit,
-mengikuti cache). Daftar proyek TIDAK pernah memuat kunci API.
+Entri harus muncul di daftar dan di halaman detail proyeknya (dan daftar proyek
+TIDAK pernah memuat kunci API). Admin portfolio juga bisa mengubah/menghapus
+kegiatan manual dari dialog proyek.

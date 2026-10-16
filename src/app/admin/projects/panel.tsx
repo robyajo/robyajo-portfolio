@@ -63,7 +63,11 @@ import {
   TrashIcon,
   PlusIcon,
   FolderOpenIcon,
+  EyeIcon,
+  CopyIcon,
+  CheckIcon,
 } from "@/components/shared/icons";
+import { generateSyncKey, slugifyTitle } from "@/lib/sync-keys";
 import {
   Empty,
   EmptyContent,
@@ -81,6 +85,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { ProjectActivities } from "@/app/admin/projects/activities";
 import { cn } from "@/lib/cn";
 import { TypographyMuted, TypographySmall } from "@/components/ui/typography";
 
@@ -93,6 +98,8 @@ const optionalUrlField = z
 
 const projectFormSchema = z.object({
   title: projectInputSchema.shape.title,
+  slug: z.string().trim().max(256),
+  syncKey: z.string().trim().max(64),
   description: projectInputSchema.shape.description,
   highlights: z.string(),
   live: optionalUrlField,
@@ -103,6 +110,8 @@ type FormData = z.input<typeof projectFormSchema>;
 
 const emptyForm: FormData = {
   title: "",
+  slug: "",
+  syncKey: "",
   description: "",
   highlights: "",
   live: "",
@@ -205,6 +214,30 @@ function ProjectForm({
   const t = useDictionary().admin.projects;
   const textFields = useTextFields();
   const [titleField, ...restFields] = textFields;
+  const [keyVisible, setKeyVisible] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  function fillSlugFromTitle() {
+    const current = form.getValues("slug").trim();
+    if (current) return;
+    const slug = slugifyTitle(form.getValues("title"));
+    if (slug) form.setValue("slug", slug, { shouldValidate: true });
+  }
+
+  function generateKey() {
+    form.setValue("syncKey", generateSyncKey(), { shouldValidate: true });
+    setKeyVisible(true);
+  }
+
+  async function copyKey() {
+    try {
+      await navigator.clipboard.writeText(form.getValues("syncKey"));
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      /* clipboard unavailable */
+    }
+  }
 
   return (
     <Form {...form}>
@@ -217,6 +250,92 @@ function ProjectForm({
           control={form.control}
           field={titleField}
           disabled={submitting}
+        />
+        <FormField
+          control={form.control}
+          name="slug"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t.slugLabel}</FormLabel>
+              <FormControl>
+                <div className="flex gap-2">
+                  <Input
+                    autoComplete="off"
+                    {...field}
+                    placeholder={t.slugPlaceholder}
+                    disabled={submitting}
+                    className="font-mono"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={fillSlugFromTitle}
+                    disabled={submitting}
+                    className="shrink-0"
+                  >
+                    {t.slugAuto}
+                  </Button>
+                </div>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="syncKey"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t.syncKeyLabel}</FormLabel>
+              <FormControl>
+                <div className="flex gap-2">
+                  <Input
+                    autoComplete="off"
+                    {...field}
+                    type={keyVisible ? "text" : "password"}
+                    placeholder={t.syncKeyPlaceholder}
+                    disabled={submitting}
+                    className="font-mono"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setKeyVisible((v) => !v)}
+                    disabled={submitting}
+                    className="shrink-0"
+                    aria-label={keyVisible ? t.keyHide : t.keyShow}
+                  >
+                    <EyeIcon size={14} className={keyVisible ? "" : "opacity-50"} />
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={generateKey}
+                    disabled={submitting}
+                    className="shrink-0"
+                  >
+                    {t.keyGenerate}
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={copyKey}
+                    disabled={submitting || !field.value}
+                    className="shrink-0"
+                    aria-label={t.keyCopy}
+                  >
+                    {copied ? <CheckIcon size={14} /> : <CopyIcon size={14} />}
+                  </Button>
+                </div>
+              </FormControl>
+              <p className="text-xs text-muted-foreground">{t.syncKeyHint}</p>
+              <FormMessage />
+            </FormItem>
+          )}
         />
         <FormField
           control={form.control}
@@ -322,6 +441,8 @@ export function ProjectsPanel() {
   function handleFormSubmit(form: FormData) {
     save.mutate({
       title: form.title.trim(),
+      slug: form.slug.trim(),
+      syncKey: form.syncKey.trim(),
       description: form.description.trim(),
       highlights: parseHighlights(form.highlights),
       live: form.live.trim() || null,
@@ -382,7 +503,7 @@ export function ProjectsPanel() {
                 className="size-3.5"
                 aria-hidden="true"
               />
-              Add Project
+              {t.add}
             </Button>
           </EmptyContent>
         </Empty>
@@ -453,7 +574,22 @@ export function ProjectsPanel() {
                               variant="outline"
                               className="text-3xs px-1.5 py-0 h-4"
                             >
-                              Hidden
+                              {t.hidden}
+                            </Badge>
+                          )}
+                          {project.syncKey ? (
+                            <Badge
+                              variant="secondary"
+                              className="text-3xs px-1.5 py-0 h-4"
+                            >
+                              {t.syncOn} · {project.activityCount}
+                            </Badge>
+                          ) : (
+                            <Badge
+                              variant="outline"
+                              className="text-3xs px-1.5 py-0 h-4"
+                            >
+                              {t.syncOff}
                             </Badge>
                           )}
                         </div>
@@ -549,7 +685,7 @@ export function ProjectsPanel() {
       )}
 
       <Dialog open={dialogOpen} onOpenChange={(open) => setDialog((prev) => ({ ...prev, open }))}>
-        <DialogContent className="sm:max-w-lg">
+        <DialogContent className="sm:max-w-lg max-h-[85vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>
               {editTarget ? t.dialogEdit : t.dialogAdd}
@@ -563,6 +699,8 @@ export function ProjectsPanel() {
               editTarget
                 ? {
                     title: editTarget.title,
+                    slug: editTarget.slug,
+                    syncKey: editTarget.syncKey ?? "",
                     description: editTarget.description,
                     highlights: editTarget.highlights.join(", "),
                     live: editTarget.live ?? "",
@@ -574,6 +712,14 @@ export function ProjectsPanel() {
             onCancel={() => setDialog((prev) => ({ ...prev, open: false }))}
             submitting={save.isPending}
           />
+          {editTarget?.syncKey && (
+            <div className="mt-4">
+              <ProjectActivities
+                key={editTarget.id}
+                syncKey={editTarget.syncKey}
+              />
+            </div>
+          )}
         </DialogContent>
       </Dialog>
     </div>

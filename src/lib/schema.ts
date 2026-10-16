@@ -201,6 +201,9 @@ export const projects = pgTable(
     {
         id: serial("id").primaryKey(),
         title: varchar("title", { length: 256 }).notNull(),
+        slug: varchar("slug", { length: 256 }).notNull().unique(),
+        /** Kunci X-project: aktivitas berkunci ini tampil di detail proyek. */
+        syncKey: varchar("sync_key", { length: 64 }),
         description: text("description").notNull(),
         highlights: text("highlights").array().notNull().default(sql`'{}'::text[]`),
         live: varchar("live", { length: 512 }),
