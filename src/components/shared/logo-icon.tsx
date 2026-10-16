@@ -22,7 +22,7 @@ export const LogoIcon = forwardRef<SVGSVGElement, LogoIconProps>(
       <svg
         ref={ref}
         role={onClick ? "button" : "img"}
-        aria-label="Anish Shobith P S logo"
+        aria-label="Roby Karti S. logo"
         tabIndex={onClick ? 0 : undefined}
         viewBox={`${CROP_LEFT} 0 ${VB_W} ${VB_HEIGHT}`}
         width={scaledWidth}
@@ -47,7 +47,7 @@ export const LogoIcon = forwardRef<SVGSVGElement, LogoIconProps>(
         )}
         {...props}
       >
-        <title>Anish Shobith P S</title>
+        <title>Roby Karti S.</title>
         <polygon points="32,4 48,60 40.5,60 32,14 23.5,60 16,60" fill={color} />
         <rect x="18" y="36" width="11" height="5" rx="2.5" fill={color} />
         <rect x="35" y="36" width="11" height="5" rx="2.5" fill={color} />

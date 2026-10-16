@@ -96,8 +96,8 @@ export const Logo = forwardRef<SVGSVGElement, LogoProps>(
     const [textRight, setTextRight] = useState<number | null>(null);
     const reduceMotion = usePrefersReducedMotion();
 
-    const wordmark = full ? "nish Shobith P S" : "nish";
-    const defaultLabel = "Anish Shobith P S";
+    const wordmark = full ? "Roby Karti S." : "Roby";
+    const defaultLabel = "Roby Karti S.";
     useEffect(() => {
       const el = textRef.current;
       if (!el) return;
@@ -172,7 +172,7 @@ export const Logo = forwardRef<SVGSVGElement, LogoProps>(
           aria-label={
             isHidden
               ? undefined
-              : ((ariaLabel as string) ?? "Anish Shobith P S")
+              : ((ariaLabel as string) ?? "Roby Karti S.")
           }
           aria-hidden={isHidden ? true : undefined}
         />
