@@ -49,12 +49,17 @@ const firaCode = Fira_Code({
 
 export async function generateMetadata(): Promise<Metadata> {
   const dict = await getDictionary();
+  const locale = await getLocale();
   return {
     title: {
       default: `${siteConfig.name} – ${siteConfig.role}`,
       template: `%s – ${siteConfig.name}`,
     },
     description: dict.footer.description,
+    openGraph: {
+      locale: locale === "id" ? "id_ID" : "en_US",
+      alternateLocale: locale === "id" ? ["en_US"] : ["id_ID"],
+    },
     metadataBase: new URL(siteConfig.baseUrl),
   icons: {
     icon: [

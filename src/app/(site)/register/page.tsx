@@ -3,13 +3,15 @@ import { JsonLd } from "@/components/shared/json-ld";
 import { TypographyH1, TypographyLead } from "@/components/ui/typography";
 import { siteConfig } from "@/lib/config";
 import { buildMeta } from "@/lib/metadata";
-import { getDictionary } from "@/lib/i18n/server";
+import { getDictionary, getLocale } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { RegisterForm } from "@/app/(site)/register/register-form";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = (await getDictionary()).auth;
+  const locale = await getLocale();
   return buildMeta({
+    locale,
     title: t.registerTitle,
     pageTitle: t.registerTitle,
     description: t.registerLead,

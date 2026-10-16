@@ -6,6 +6,7 @@ import type {
   WebPage,
   BlogPosting,
   BreadcrumbList,
+  ItemList,
   WithContext,
 } from "schema-dts";
 
@@ -27,11 +28,17 @@ type SchemaProps =
       updatedAt?: string;
       tags?: string[];
     }
-  | { type: "breadcrumb"; items: { name: string; url: string }[] };
+  | { type: "breadcrumb"; items: { name: string; url: string }[] }
+  | {
+      type: "itemList";
+      name: string;
+      description: string;
+      items: { name: string; url?: string; date?: string }[];
+    };
 
 type ArticleProps = Extract<SchemaProps, { type: "article" }>;
 type AnySchema = WithContext<
-  Person | WebSite | WebPage | BlogPosting | BreadcrumbList
+  Person | WebSite | WebPage | BlogPosting | BreadcrumbList | ItemList
 >;
 
 const SCHEMA_CONTEXT = "https://schema.org" as const;
@@ -139,6 +146,26 @@ function buildBreadcrumb(
   };
 }
 
+function buildItemList(
+  name: string,
+  description: string,
+  items: { name: string; url?: string; date?: string }[],
+): WithContext<ItemList> {
+  return {
+    "@context": SCHEMA_CONTEXT,
+    "@type": "ItemList",
+    name,
+    description,
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      ...(item.url && { url: item.url }),
+      ...(item.date && { datePublished: item.date }),
+    })),
+  };
+}
+
 function resolveSchema(props: SchemaProps): AnySchema {
   switch (props.type) {
     case "person":
@@ -151,6 +178,8 @@ function resolveSchema(props: SchemaProps): AnySchema {
       return buildBlogPosting(props);
     case "breadcrumb":
       return buildBreadcrumb(props.items);
+    case "itemList":
+      return buildItemList(props.name, props.description, props.items);
   }
 }
 

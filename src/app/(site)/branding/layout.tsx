@@ -1,11 +1,13 @@
 import { buildMeta } from "@/lib/metadata";
 import { siteConfig } from "@/lib/config";
-import { getDictionary } from "@/lib/i18n/server";
+import { getDictionary, getLocale } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
   const b = (await getDictionary()).branding;
+  const locale = await getLocale();
   return buildMeta({
+    locale,
     title: b.title,
     pageTitle: b.pageTitle,
     description: b.description,

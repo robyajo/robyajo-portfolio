@@ -30,6 +30,16 @@
             "type": "new",
             "id": "Masuk dengan akun Google kini tersedia, plus peran pengunjung dan admin agar pengelolaan situs lebih tertib dan aman.",
             "en": "Google account sign-in is now available, plus guest and admin roles for tidier, safer site management."
+        },
+        {
+            "type": "new",
+            "id": "Halaman utama kini menampilkan kabar terbaru dari proyek-proyek: setiap ada pembaruan penting, informasinya muncul otomatis di sini.",
+            "en": "The homepage now shows fresh news from ongoing projects: whenever an important update ships, it appears here automatically."
+        },
+        {
+            "type": "improvement",
+            "id": "Peningkatan teknis mesin pencari: bahasa halaman kini terbaca benar (Indonesia/Inggris), tautan lebih rapi, dan halaman login tak lagi muncul di hasil pencarian.",
+            "en": "Search engine improvements: page language is now detected correctly (Indonesian/English), links are tidier, and login pages no longer appear in search results."
         }
     ]
 }

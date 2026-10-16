@@ -4,13 +4,15 @@ import { TypographyH1, TypographyLead } from "@/components/ui/typography";
 import { siteConfig } from "@/lib/config";
 import { buildMeta } from "@/lib/metadata";
 import { getOAuthProviders } from "@/lib/auth";
-import { getDictionary } from "@/lib/i18n/server";
+import { getDictionary, getLocale } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { LoginForm } from "@/app/(site)/login/login-form";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = (await getDictionary()).auth;
+  const locale = await getLocale();
   return buildMeta({
+    locale,
     title: t.loginTitle,
     pageTitle: t.loginTitle,
     description: t.loginLead,

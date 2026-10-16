@@ -32,6 +32,27 @@ export const users = pgTable(
 
 export type UserRole = "guest" | "admin";
 
+export const activities = pgTable(
+    "activities",
+    {
+        id: serial("id").primaryKey(),
+        projectKey: varchar("project_key", { length: 64 }).notNull(),
+        projectName: varchar("project_name", { length: 256 }).notNull(),
+        kind: varchar("kind", { length: 32 }).default("update").notNull(),
+        titleId: text("title_id").notNull(),
+        titleEn: text("title_en").notNull(),
+        bodyId: text("body_id"),
+        bodyEn: text("body_en"),
+        url: varchar("url", { length: 2048 }),
+        occurredAt: timestamp("occurred_at", { withTimezone: true }).defaultNow().notNull(),
+        createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    },
+    (table) => [
+        index("activities_project_idx").on(table.projectKey),
+        index("activities_occurred_idx").on(table.occurredAt),
+    ],
+);
+
 export const blogPosts = pgTable(
     "blog_posts",
     {

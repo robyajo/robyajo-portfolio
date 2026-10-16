@@ -77,6 +77,19 @@ const id = {
   repo: {
     onGithub: "{name} di GitHub, {stars} bintang",
   },
+  activity: {
+    section: "Kegiatan Terbaru",
+    leadPrefix: "Kabar langsung dari proyek-proyek yang saya kerjakan —",
+    leadHighlight: "terkirim otomatis",
+    leadSuffix: "begitu ada pembaruan.",
+    empty: "// belum ada kegiatan tercatat.",
+    kinds: {
+      deploy: "Rilis",
+      feature: "Fitur",
+      fix: "Perbaikan",
+      update: "Kabar",
+    },
+  },
   admin: {
     title: "Admin",
     overview: "Ringkasan situs dan manajemen konten.",

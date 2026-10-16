@@ -13,12 +13,14 @@ import {
 } from "@/components/ui/typography";
 import { siteConfig } from "@/lib/config";
 import { buildMeta } from "@/lib/metadata";
-import { getDictionary } from "@/lib/i18n/server";
+import { getDictionary, getLocale } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
   const privacy = (await getDictionary()).privacy;
+  const locale = await getLocale();
   return buildMeta({
+    locale,
     title: privacy.title,
     pageTitle: privacy.title,
     description: privacy.description,

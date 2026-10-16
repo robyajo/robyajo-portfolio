@@ -24,13 +24,15 @@ import { LoaderCaption, LogoLoader } from "@/components/shared/loader";
 import { Reveal } from "@/components/shared/reveal";
 import { buildMeta } from "@/lib/metadata";
 import { siteConfig } from "@/lib/config";
-import { getDictionary } from "@/lib/i18n/server";
+import { getDictionary, getLocale } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { JsonLd } from "@/components/shared/json-ld";
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = (await getDictionary()).resumePage;
+  const locale = await getLocale();
   return buildMeta({
+    locale,
     title: page.title,
     pageTitle: page.pageTitle,
     description: page.description,

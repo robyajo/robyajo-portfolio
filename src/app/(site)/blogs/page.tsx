@@ -14,14 +14,16 @@ import {
 import { siteConfig } from "@/lib/config";
 import { buildMeta } from "@/lib/metadata";
 import { source } from "@/lib/source";
-import { getDictionary } from "@/lib/i18n/server";
+import { getDictionary, getLocale } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { toISOString, toTimestamp } from "@/lib/date";
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = (await getDictionary()).blog.page;
+  const locale = await getLocale();
   return buildMeta({
+    locale,
     title: page.title,
     pageTitle: page.pageTitle,
     description: page.description,

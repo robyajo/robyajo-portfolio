@@ -79,6 +79,19 @@ const en: Dictionary = {
   repo: {
     onGithub: "{name} on GitHub, {stars} stars",
   },
+  activity: {
+    section: "Latest Activity",
+    leadPrefix: "Fresh updates from the projects I work on —",
+    leadHighlight: "sent automatically",
+    leadSuffix: "as soon as something ships.",
+    empty: "// no activities recorded yet.",
+    kinds: {
+      deploy: "Release",
+      feature: "Feature",
+      fix: "Fix",
+      update: "Update",
+    },
+  },
   admin: {
     title: "Admin",
     overview: "Site overview and content management.",

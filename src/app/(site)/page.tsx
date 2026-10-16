@@ -4,11 +4,12 @@ import { BuiltThings } from "@/app/(site)/_components/projects";
 import { RulesIFollow } from "@/app/(site)/_components/rules";
 import { BlogTeaser } from "@/app/(site)/_components/blog-teaser";
 import { GuestbookTeaser } from "@/app/(site)/_components/guestbook-teaser";
+import { ActivityFeed } from "@/app/(site)/_components/activity-feed";
 import { JsonLd } from "@/components/shared/json-ld";
 import { Section } from "@/components/layouts/page";
 import { siteConfig } from "@/lib/config";
 import { buildMeta } from "@/lib/metadata";
-import { getDictionary } from "@/lib/i18n/server";
+import { getDictionary, getLocale } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
@@ -16,8 +17,10 @@ const homeTitle = `${siteConfig.name} – ${siteConfig.role}`;
 
 export async function generateMetadata(): Promise<Metadata> {
   const dict = await getDictionary();
+  const locale = await getLocale();
   return {
     ...buildMeta({
+    locale,
       title: siteConfig.name,
       pageTitle: homeTitle,
       description: dict.footer.description,
@@ -54,6 +57,7 @@ export default async function Page() {
       >
         <GuestbookTeaser />
       </Suspense>
+      <ActivityFeed />
       <Contact />
     </>
   );

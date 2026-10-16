@@ -15,13 +15,15 @@ import {
 import { siteConfig } from "@/lib/config";
 import { buildMeta } from "@/lib/metadata";
 import { getAuth as auth } from "@/lib/auth";
-import { getDictionary } from "@/lib/i18n/server";
+import { getDictionary, getLocale } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
 export async function generateMetadata(): Promise<Metadata> {
   const dict = await getDictionary();
+  const locale = await getLocale();
   return buildMeta({
+    locale,
     title: dict.guestbook.title,
     pageTitle: dict.guestbook.title,
     description: `${dict.guestbook.metaDescription}`,

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { siteConfig } from "@/lib/config";
+import type { Locale } from "@/lib/i18n/config";
 
 interface OGParams {
     title?: string;
@@ -59,6 +60,7 @@ export function buildMeta(
         publishedAt?: string;
         updatedAt?: string;
         type?: "website" | "article" | "profile";
+        locale?: Locale;
     },
 ): Metadata {
     const imageUrl = buildOGUrl(params);
@@ -111,7 +113,8 @@ export function buildMeta(
             description,
             url: canonical,
             siteName: siteConfig.name,
-            locale: "en_US",
+            locale: params.locale === "id" ? "id_ID" : "en_US",
+            alternateLocale: params.locale === "id" ? ["en_US"] : ["id_ID"],
             type,
             images: [
                 {
