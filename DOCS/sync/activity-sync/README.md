@@ -6,7 +6,9 @@ Salin **seluruh folder `DOCS/sync/`** atau ambil per berkas sesuai kebutuhan.
 | Berkas | Untuk | Dipakai di mana |
 |---|---|---|
 | `activity-sync/SKILL.md` | AI proyek lain | salin ke `<proyek>/.agents/skills/activity-sync/SKILL.md` |
-| `route.md` | Referensi kontrak API (POST/GET, kode status, batas) | dibaca AI/manusia saat integrasi |
+| `activity-sync/backfill.md` | Kirim ulang `releases/*.json` lama (sekali per proyek) | dijalankan sekali saat pasang |
+| `activity-sync/postman-collection.json` | Uji coba manual semua route | import ke Postman, isi variable `projectKey` |
+| `route.md` | Referensi kontrak API (POST/GET/PATCH/DELETE, kode status, batas) | dibaca AI/manusia saat integrasi |
 | `skill-activity-sync.md` | Panduan pemilik portfolio (kunci, registry, alur data) | arsip internal, jangan disebar ke proyek lain |
 | `README.md` (ini) | Peta paket + checklist pasang | dibaca pertama |
 
