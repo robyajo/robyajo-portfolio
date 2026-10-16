@@ -1,10 +1,36 @@
 
 import { siteConfig } from "@/lib/config";
 import { formatFileDate } from "@/lib/date";
+import { readFile, stat } from "node:fs/promises";
+import { join } from "node:path";
 
 export const RESUME_CACHE_TAG = "resume-pdf";
 
+/** PDF resume milik sendiri di repo — selalu diutamakan dari unduhan remote. */
+const LOCAL_RESUME_PATH = join(process.cwd(), "public", "assets", "resume-roby.pdf");
+
+async function fetchLocalResume(): Promise<Response | null> {
+    try {
+        const [buf, st] = await Promise.all([
+            readFile(LOCAL_RESUME_PATH),
+            stat(LOCAL_RESUME_PATH),
+        ]);
+        return new Response(new Uint8Array(buf), {
+            headers: {
+                "Content-Type": "application/pdf",
+                "Content-Length": String(st.size),
+                "Last-Modified": st.mtime.toUTCString(),
+            },
+        });
+    } catch {
+        return null;
+    }
+}
+
 export async function fetchResume() {
+    const local = await fetchLocalResume();
+    if (local) return local;
+
     const res = await fetch(siteConfig.resumeURL, {
         next: { revalidate: 3600, tags: [RESUME_CACHE_TAG] },
     });
