@@ -113,3 +113,16 @@ curl "https://ajoroby.is-a.dev/api/projects"
 Entri harus muncul di daftar dan di halaman detail proyeknya (dan daftar proyek
 TIDAK pernah memuat kunci API). Admin portfolio juga bisa mengubah/menghapus
 kegiatan manual dari dialog proyek.
+
+## Backfill rilis lama (sekali saja per proyek)
+
+Bila proyek sudah punya banyak berkas `releases/*.json`, kirim semuanya sekaligus
+dengan script `backfill-releases.ps1` (ada di paket `DOCS/sync/` portfolio):
+
+```powershell
+.\backfill-releases.ps1 -ProjectKey "<KUNCI_PROYEK_INI>" -DryRun   # cek dulu
+.\backfill-releases.ps1 -ProjectKey "<KUNCI_PROYEK_INI>"           # kirim
+```
+
+Tiap berkas menjadi satu kegiatan (`source` = nama berkas). Setelah itu cukup
+kirim per rilis baru seperti biasa.
