@@ -10,8 +10,8 @@ proyek-proyek lain dan menampilkannya otomatis di bagian Kegiatan Terbaru.
 2. Pastikan AI di proyek itu memuat skill saat ada perubahan yang dirasakan
    pengguna — sesuai bagian `description` (triggers) di `SKILL.md`.
 3. Beri AI di sana dua hal:
-   - **URL API**: `https://ajoroby.is-a.dev/api/activities`
-   - **Kunci `X-project`** proyek tersebut (lihat di bawah).
+    - **URL API**: `https://ajoroby.is-a.dev/api/activities`
+    - **Kunci `X-project`** proyek tersebut (lihat di bawah).
 
 ## Kunci proyek (`X-project`)
 
