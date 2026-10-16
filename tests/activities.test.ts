@@ -52,6 +52,19 @@ describe("activityIngestSchema", () => {
         if (parsed.success) expect(parsed.data.kind).toBe("update");
     });
 
+    it("accepts project meta and stable source id", () => {
+        const parsed = activityIngestSchema.safeParse({
+            title: { id: "J", en: "T" },
+            project: { name: "Kominfo Super Aman", url: "https://contoh.go.id" },
+            source: "releases/2026-10-16-rilis.json",
+        });
+        expect(parsed.success).toBe(true);
+        if (parsed.success) {
+            expect(parsed.data.source).toBe("releases/2026-10-16-rilis.json");
+            expect(parsed.data.project?.name).toBe("Kominfo Super Aman");
+        }
+    });
+
     it.each([
         [{ title: { id: "", en: "T" } }],
         [{ title: { id: "J" } }],

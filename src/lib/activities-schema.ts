@@ -15,6 +15,15 @@ export const ACTIVITY_LIMITS = {
 /** Payload yang dikirim proyek lain (nama proyek diambil dari registry kunci). */
 export const activityIngestSchema = z.object({
     kind: z.enum(ACTIVITY_KINDS).optional().default("update"),
+    project: z
+        .object({
+            name: z.string().trim().min(1).max(ACTIVITY_LIMITS.projectName).optional(),
+            url: z.string().trim().max(ACTIVITY_LIMITS.url).optional().or(z.literal("")),
+            description: z.string().trim().max(ACTIVITY_LIMITS.body).optional().or(z.literal("")),
+        })
+        .optional(),
+    /** Id stabil dari pengirim (mis. nama berkas rilis) — bila sama, baris DIUPDATE. */
+    source: z.string().trim().min(1).max(256).optional(),
     title: z.object({
         id: z.string().trim().min(1).max(ACTIVITY_LIMITS.title),
         en: z.string().trim().min(1).max(ACTIVITY_LIMITS.title),

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { activityIngestSchema, resolveProjectName } from "@/lib/activities-schema";
-import { getActivityCount, getRecentActivities, insertActivity } from "@/lib/activities";
+import { getActivityCount, getRecentActivities, ingestActivity } from "@/lib/activities";
 
 /**
  * GET /api/activities?limit=20&project=kunci — daftar kegiatan publik,
@@ -26,14 +26,16 @@ export async function GET(request: Request) {
  * POST /api/activities — terima kegiatan dari proyek lain.
  * Auth: header statis X-project berisi kunci yang terdaftar di
  * env ACTIVITY_PROJECT_KEYS ("kunci:Nama Proyek,...").
+ * Proyek yang belum tercatat otomatis didaftarkan; bila `source`
+ * sudah pernah dikirim, barisnya DIUPDATE (mis. revisi berkas rilis).
  */
 export async function POST(request: Request) {
     const key = request.headers.get("x-project")?.trim();
     if (!key) {
         return NextResponse.json({ error: "Missing X-project header." }, { status: 401 });
     }
-    const projectName = resolveProjectName(process.env.ACTIVITY_PROJECT_KEYS, key);
-    if (!projectName) {
+    const fallbackName = resolveProjectName(process.env.ACTIVITY_PROJECT_KEYS, key);
+    if (!fallbackName) {
         return NextResponse.json({ error: "Unknown project key." }, { status: 403 });
     }
 
@@ -52,8 +54,8 @@ export async function POST(request: Request) {
     }
 
     try {
-        const id = await insertActivity(key, projectName, parsed.data);
-        return NextResponse.json({ ok: true, id }, { status: 201 });
+        const result = await ingestActivity(key, fallbackName, parsed.data);
+        return NextResponse.json({ ok: true, ...result }, { status: result.updated ? 200 : 201 });
     } catch (error) {
         console.error("[POST /api/activities]", error);
         return NextResponse.json({ error: "Failed to store activity." }, { status: 500 });

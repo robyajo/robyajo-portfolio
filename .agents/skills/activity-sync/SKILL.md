@@ -27,6 +27,12 @@ curl -X POST "https://ajoroby.is-a.dev/api/activities" \
   -H "X-project: <KUNCI_PROYEK_INI>" \
   -d '{
     "kind": "feature",
+    "project": {
+      "name": "Nama Proyek Tampil (wajib saat pertama kali, opsional setelahnya)",
+      "url": "https://contoh.com (opsional)",
+      "description": "Deskripsi singkat proyek (opsional)"
+    },
+    "source": "releases/2026-10-16-nama-rilis.json",
     "title": {
       "id": "Judul singkat Bahasa Indonesia (maks 300 karakter)",
       "en": "Short title in English (max 300 characters)"
@@ -42,7 +48,17 @@ curl -X POST "https://ajoroby.is-a.dev/api/activities" \
 
 - `X-project` = kunci statis proyek ini (minta ke pemilik portfolio; tanpa kunci valid server menolak: 401 tanpa header, 403 kunci salah).
 - `kind`: `deploy` · `feature` · `fix` · `update`.
-- Respons sukses: `201 {"ok": true, "id": 123}`. Validasi gagal: `422` + daftar masalah.
+- Respons sukses: `201 {"ok": true, "id": 123, "project": "...", "createdProject": true|false, "updated": false}`. Validasi gagal: `422` + daftar masalah.
+
+## Aturan proyek & revisi rilis (penting)
+
+- **Proyek baru otomatis terdaftar** saat pertama mengirim (nama diambil dari `project.name`). Setelah itu nama boleh dikosongkan.
+- **`source` wajib diisi stabil** — idealnya **nama berkas rilis** (mis. `releases/2026-10-16-fitur-x.json`).
+  Kiriman berikutnya dengan `source` yang sama akan **MEMPERBARUI** baris yang
+  sama (judul/isi/kind ikut baru), bukan menambah duplikat.
+- Jadi alur yang benar setiap selesai rilis: kirim sekali dengan `source` = nama
+  berkas rilisnya. Kalau berkas rilis direvisi, kirim ulang dengan `source`
+  yang sama — konten di portfolio ikut terbarui otomatis.
 
 ## Aturan bahasa (wajib, security-safe & citizen-facing)
 
@@ -79,7 +95,8 @@ Contoh salah (jangan kirim seperti ini):
 
 ```bash
 curl "https://ajoroby.is-a.dev/api/activities?limit=3"
+curl "https://ajoroby.is-a.dev/api/projects"
 ```
 
 Entri harus muncul di daftar (dan di halaman utama portfolio dalam hitungan menit,
-mengikuti cache).
+mengikuti cache). Daftar proyek TIDAK pernah memuat kunci API.

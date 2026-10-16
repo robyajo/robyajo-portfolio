@@ -32,12 +32,31 @@ export const users = pgTable(
 
 export type UserRole = "guest" | "admin";
 
+export const syncProjects = pgTable(
+    "sync_projects",
+    {
+        id: serial("id").primaryKey(),
+        key: varchar("key", { length: 64 }).notNull().unique(),
+        name: varchar("name", { length: 256 }).notNull(),
+        url: varchar("url", { length: 2048 }),
+        description: text("description"),
+        lastActivityAt: timestamp("last_activity_at", { withTimezone: true }),
+        createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+        updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+    },
+    (table) => [
+        index("sync_projects_name_idx").on(table.name),
+    ],
+);
+
 export const activities = pgTable(
     "activities",
     {
         id: serial("id").primaryKey(),
         projectKey: varchar("project_key", { length: 64 }).notNull(),
         projectName: varchar("project_name", { length: 256 }).notNull(),
+        /** Kunci stabil dari pengirim (mis. nama berkas rilis) — untuk update, bukan duplikat. */
+        externalId: varchar("external_id", { length: 256 }),
         kind: varchar("kind", { length: 32 }).default("update").notNull(),
         titleId: text("title_id").notNull(),
         titleEn: text("title_en").notNull(),
@@ -50,6 +69,7 @@ export const activities = pgTable(
     (table) => [
         index("activities_project_idx").on(table.projectKey),
         index("activities_occurred_idx").on(table.occurredAt),
+        index("activities_project_external_idx").on(table.projectKey, table.externalId),
     ],
 );
 

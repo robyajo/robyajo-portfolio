@@ -120,6 +120,13 @@
       "when": 1792183514059,
       "tag": "0016_project-activities",
       "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1792186081732,
+      "tag": "0017_sync-projects-registry",
+      "breakpoints": true
     }
   ]
 }

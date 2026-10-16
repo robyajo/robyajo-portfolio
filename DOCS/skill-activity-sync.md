@@ -15,14 +15,25 @@ proyek-proyek lain dan menampilkannya otomatis di bagian Kegiatan Terbaru.
 
 ## Kunci proyek (`X-project`)
 
-- Daftar kunci живут di env portfolio: `ACTIVITY_PROJECT_KEYS` dengan format
+- Daftar kunci hidup di env portfolio: `ACTIVITY_PROJECT_KEYS` dengan format
   `kunci:Nama Tampil,kunci2:Nama Tampil 2` (lokal: `.env.local`, produksi: env Vercel).
-- **Satu kunci per proyek.** Nama tampil diambil dari registry ini (bukan dari
-  pengirim) agar tak bisa dipalsukan.
+- **Satu kunci per proyek.** Kunci hanya untuk auth; nama tampil boleh
+  diperbarui lewat payload `project`.
 - Membuat kunci baru: `openssl rand -hex 16`, beri awalan `pk_`, tambahkan ke
   kedua env, beri tahu AI proyek terkait.
 - Kunci yang bocor: hapus dari registry + redeploy — kiriman dengan kunci
   salah ditolak (`403`) tanpa menyentuh database.
+
+## Data proyek & revisi (disimpan di database)
+
+- Kiriman pertama dari suatu kunci **otomatis mendaftarkan proyek** (nama dari
+  `project.name`, fallback nama registry). Kiriman berikut memperbarui
+  progres: nama/url/deskripsi bila dikirim + `last_activity_at`.
+- Bila payload menyertakan `source` stabil (nama berkas rilis) dan `source`
+  itu sudah pernah dikirim, baris kegiatan **diperbarui** (judul/isi/kind/
+  waktu ikut baru) — tidak duplikat. Inilah jalur "AI merevisi rilis".
+- Daftar proyek publik: `GET /api/projects` (nama, url, deskripsi, jumlah
+  kegiatan, update terakhir — tanpa kunci).
 
 ## Alur data
 

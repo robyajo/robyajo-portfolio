@@ -42,6 +42,11 @@
             "en": "Search engine improvements: page language is now detected correctly (Indonesian/English), links are tidier, and login pages no longer appear in search results."
         },
         {
+            "type": "new",
+            "id": "Kabar proyek kini terkumpul otomatis: proyek lain dapat mengirim pembaruannya langsung, dan revisi berikutnya memperbarui kabar yang sama tanpa dobel.",
+            "en": "Project news now flows in automatically: other projects can send their updates straight here, and later revisions update the same item instead of duplicating it."
+        },
+        {
             "type": "fix",
             "id": "Halaman resume kini menampilkan berkas resume asli yang bisa dibaca langsung dan diunduh, sebelumnya gagal dimuat.",
             "en": "The resume page now shows the real resume file that can be read and downloaded directly; it previously failed to load."
