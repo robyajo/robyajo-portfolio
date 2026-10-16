@@ -1,6 +1,7 @@
 "use client";
 
-import { SessionProvider, signIn, signOut as nextSignOut, useSession } from "next-auth/react";
+import { SessionProvider, signOut as nextSignOut, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import type { ReactNode } from "react";
 
 /** Session provider — tidak butuh kunci apa pun untuk render. */
@@ -15,10 +16,11 @@ interface SignInProps {
     children: ReactNode;
 }
 
-/** Tombol masuk: tanpa provider terkonfigurasi, NextAuth menampilkan halaman bantuannya. */
+/** Tombol masuk: selalu ke halaman /login (kredensial + OAuth bila ada). */
 export function SafeSignInButton({ children }: SignInProps) {
+    const router = useRouter();
     return (
-        <span onClick={() => void signIn()} style={{ display: "contents" }}>
+        <span onClick={() => router.push("/login")} style={{ display: "contents" }}>
             {children}
         </span>
     );

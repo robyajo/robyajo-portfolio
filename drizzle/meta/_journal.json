@@ -99,6 +99,13 @@
       "when": 1792106483486,
       "tag": "0013_nextauth-drop-clerk-columns",
       "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1792179070999,
+      "tag": "0014_credentials-users-table",
+      "breakpoints": true
     }
   ]
 }

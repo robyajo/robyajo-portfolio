@@ -13,6 +13,22 @@ import {
 } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
 
+export const users = pgTable(
+    "users",
+    {
+        id: serial("id").primaryKey(),
+        email: varchar("email", { length: 320 }).notNull().unique(),
+        name: varchar("name", { length: 256 }),
+        image: varchar("image", { length: 2048 }),
+        passwordHash: varchar("password_hash", { length: 256 }).notNull(),
+        createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+        updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+    },
+    (table) => [
+        index("users_email_idx").on(table.email),
+    ],
+);
+
 export const blogPosts = pgTable(
     "blog_posts",
     {

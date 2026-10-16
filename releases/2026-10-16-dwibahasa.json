@@ -20,6 +20,11 @@
             "type": "improvement",
             "id": "Tanggal, waktu relatif, dan lokasi kini tampil sesuai bahasa dan zona waktu setempat.",
             "en": "Dates, relative times, and location now display in your language and local conventions."
+        },
+        {
+            "type": "new",
+            "id": "Daftar dan masuk dengan email kini bisa langsung di situs: buat akun dengan kata sandi, lalu berkomentar dan menandatangani buku tamu. Tetap tersedia pula pilihan masuk GitHub/Google bila diaktifkan.",
+            "en": "Email sign-up and sign-in now work right on the site: create a password account, then comment and sign the guestbook. GitHub/Google options remain available when enabled."
         }
     ]
 }
