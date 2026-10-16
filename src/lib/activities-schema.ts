@@ -40,6 +40,29 @@ export const activityIngestSchema = z.object({
 
 export type ActivityIngest = z.infer<typeof activityIngestSchema>;
 
+/** Patch parsial untuk PATCH /api/activities/[id] — semua opsional. */
+export const activityPatchSchema = z
+    .object({
+        kind: z.enum(ACTIVITY_KINDS).optional(),
+        title: z
+            .object({
+                id: z.string().trim().min(1).max(ACTIVITY_LIMITS.title).optional(),
+                en: z.string().trim().min(1).max(ACTIVITY_LIMITS.title).optional(),
+            })
+            .optional(),
+        body: z
+            .object({
+                id: z.string().trim().max(ACTIVITY_LIMITS.body).optional().or(z.literal("")),
+                en: z.string().trim().max(ACTIVITY_LIMITS.body).optional().or(z.literal("")),
+            })
+            .optional(),
+        url: z.string().trim().max(ACTIVITY_LIMITS.url).optional().or(z.literal("")),
+        occurred_at: z.string().datetime({ offset: true }).optional(),
+    })
+    .refine((v) => Object.keys(v).length > 0, { message: "Nothing to update." });
+
+export type ActivityPatch = z.infer<typeof activityPatchSchema>;
+
 export interface ProjectRegistryEntry {
     key: string;
     name: string;

@@ -45,9 +45,22 @@ env — jadi menambah proyek tidak butuh ubah env maupun rebuild portfolio.
 | `201` | tersimpan baru (+ `createdProject` bila proyek baru) | `{"ok": true, "id": 7, "project": "Nama", "createdProject": true, "updated": false}` |
 | `200` | revisi `source` yang sama | `{"ok": true, "id": 7, "project": "Nama", "createdProject": false, "updated": true}` |
 | `401` | tanpa header `X-project` | `{"error": "Missing X-project header."}` |
-| `403` | kunci tidak dikenal | `{"error": "Unknown project key."}` |
+| `403` | kunci salah | `{"error": "Unknown project key."}` |
 | `422` | payload salah | `{"error": "Invalid payload.", "issues": [...]}` |
 | `400` / `500` | JSON rusak / gagal simpan | `{"error": "..."}` |
+
+## PATCH /api/activities/[id] — ubah eksplisit
+
+- Header `X-project` wajib; id harus milik kunci itu (kalau tidak: `404` tak
+  ada / `403` milik kunci lain).
+- Body parsial: `kind`, `title.{id,en}`, `body.{id,en}`, `url`, `occurred_at`.
+  Minimal satu field, kalau tidak `400`.
+- Respons: `{ok: true, id}`.
+
+## DELETE /api/activities/[id] — hapus
+
+- Header `X-project` wajib; hanya milik kunci itu (`404`/`403` seperti di atas).
+- Respons: `{ok: true, id}`.
 
 ## GET /api/activities — daftar publik
 
@@ -57,6 +70,15 @@ env — jadi menambah proyek tidak butuh ubah env maupun rebuild portfolio.
 
 ## GET /api/projects — daftar proyek
 
-- Tanpa auth, tanpa query. Respons: `{"ok": true, "total": N, "projects": [...]}`.
+- Query opsional: `?key=<kunci>` (harus valid, kalau tidak `403`) — hanya
+  proyek berkunci itu, agar AI mempelajari proyek yang ada.
+- Tanpa query: seluruh proyek publik.
 - Tiap proyek: `name, url, description, activityCount, lastActivityAt`.
 - **Kunci API tidak pernah muncul** di respons mana pun.
+
+## GET /api/projects/[slug] — detail satu proyek
+
+- `slug` cocok dengan slug halaman showcase atau nama proyek sync yang
+  di-slugify. Untuk proyek sync, sertakan `?key=<kunci>` miliknya agar
+  kegiatan ikut tampil (tanpa kunci: meta + catatan saja).
+- Respons: `{ok, project, total, items}` atau `404`.

@@ -2,7 +2,7 @@ import { and, desc, eq, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { activities, projects, syncProjects } from "@/lib/schema";
 import { safeQuery } from "@/lib/safe-query";
-import type { ActivityIngest } from "@/lib/activities-schema";
+import type { ActivityIngest, ActivityPatch } from "@/lib/activities-schema";
 
 export interface Activity {
     id: number;
@@ -32,12 +32,20 @@ function toActivity(row: typeof activities.$inferSelect): Activity {
     };
 }
 
-export async function getRecentActivities(limit = 6, projectKey?: string): Promise<Activity[]> {
+export async function getRecentActivities(
+    limit = 6,
+    projectKey?: string,
+    projectName?: string,
+): Promise<Activity[]> {
     return safeQuery("getRecentActivities", async () => {
+        const conditions = [
+            ...(projectKey ? [eq(activities.projectKey, projectKey)] : []),
+            ...(projectName ? [eq(activities.projectName, projectName)] : []),
+        ];
         const rows = await db
             .select()
             .from(activities)
-            .where(projectKey ? eq(activities.projectKey, projectKey) : sql`TRUE`)
+            .where(conditions.length > 0 ? and(...conditions) : sql`TRUE`)
             .orderBy(desc(activities.occurredAt), desc(activities.id))
             .limit(Math.min(Math.max(limit, 1), 50));
         return rows.map(toActivity);
@@ -62,7 +70,7 @@ export interface SyncProject {
     lastActivityAt: string | null;
 }
 
-export async function getSyncProjects(): Promise<SyncProject[]> {
+export async function getSyncProjects(filterKey?: string): Promise<SyncProject[]> {
     return safeQuery("getSyncProjects", async () => {
         const rows = await db
             .select({
@@ -80,6 +88,7 @@ export async function getSyncProjects(): Promise<SyncProject[]> {
                     eq(activities.projectName, syncProjects.name),
                 ),
             )
+            .where(filterKey ? eq(syncProjects.key, filterKey) : sql`TRUE`)
             .groupBy(syncProjects.id)
             .orderBy(desc(syncProjects.lastActivityAt));
         return rows.map((r) => ({
@@ -222,4 +231,28 @@ export async function insertActivity(
 
 export async function deleteActivity(id: number): Promise<void> {
     await db.delete(activities).where(eq(activities.id, id));
+}
+
+/** Kunci pemilik satu baris kegiatan (untuk otorisasi PATCH/DELETE). */
+export async function getActivityOwnerKey(id: number): Promise<string | null> {
+    const [row] = await db
+        .select({ projectKey: activities.projectKey })
+        .from(activities)
+        .where(eq(activities.id, id))
+        .limit(1);
+    return row?.projectKey ?? null;
+}
+
+export async function patchActivity(id: number, patch: ActivityPatch): Promise<boolean> {
+    const set: Record<string, unknown> = {};
+    if (patch.kind) set.kind = patch.kind;
+    if (patch.title?.id) set.titleId = patch.title.id;
+    if (patch.title?.en) set.titleEn = patch.title.en;
+    if (patch.body?.id !== undefined) set.bodyId = patch.body.id || null;
+    if (patch.body?.en !== undefined) set.bodyEn = patch.body.en || null;
+    if (patch.url !== undefined) set.url = patch.url || null;
+    if (patch.occurred_at) set.occurredAt = new Date(patch.occurred_at);
+    if (Object.keys(set).length === 0) return false;
+    await db.update(activities).set(set).where(eq(activities.id, id));
+    return true;
 }

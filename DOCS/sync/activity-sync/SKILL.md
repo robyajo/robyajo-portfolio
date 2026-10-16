@@ -1,128 +1,110 @@
 ---
 name: activity-sync
-description: "ACTIVATE setiap kali selesai mengerjakan perubahan yang dilihat pengguna di proyek ini: tambah fitur, perbaikan bug, ubah perilaku, atau rilis. Kirim satu entri kegiatan dwibahasa (id + en) ke API portfolio agar otomatis tayang di halaman utama. Triggers on: selesai memperbaiki, tambah fitur, ubah perilaku, perbaikan bug, rilis, deploy."
+description: "ACTIVATE setiap kali selesai mengerjakan perubahan yang dilihat pengguna di proyek ini: tambah fitur, perbaikan bug, ubah perilaku, rilis, atau hapus fitur. Kelola kegiatan dwibahasa (id + en) di API portfolio lewat CRUD penuh: baca, kirim, ubah, hapus, verifikasi. Triggers on: selesai memperbaiki, tambah fitur, ubah perilaku, perbaikan bug, rilis, deploy, hapus fitur."
 ---
 
-# Activity Sync — kirim kegiatan ke portfolio
+# Activity Sync — CRUD kegiatan ke portfolio
 
-Setiap selesai mengerjakan perubahan yang **dirasakan pengguna** di proyek ini,
-kirim **satu** entri kegiatan ke API portfolio. Portfolio menampilkannya otomatis
-di **halaman detail proyek** (dwibahasa, sesuai bahasa pengunjung).
+Aturan dan alur route lengkap agar AI di proyek mana pun bisa mengelola kegiatan
+di portfolio (`https://ajoroby.is-a.dev`) secara sempurna: baca, kirim, ubah,
+hapus, verifikasi. Bahasa: selalu dwibahasa `id` + `en`.
 
-## Kunci: buat di admin portfolio, bukan di sini
+Konfigurasi proyek ini (wajib ada sebelum mulai):
 
-1. Pemilik membuka `/admin/projects` → tambah/ubah proyek → tekan **Buat** pada
-   kolom kunci sinkron → **salin** kuncinya.
-2. Tempel kunci itu ke konfigurasi AI proyek ini (jangan commit ke git publik).
-3. Satu kunci = satu proyek showcase. Kegiatan berkunci itu hanya tampil di
-   halaman detail proyek tersebut (`/projects/<slug>`), bukan di beranda.
+- `API = https://ajoroby.is-a.dev/api/activities`
+- `KEY` = kunci `X-project` proyek ini (minta ke pemilik portfolio, jangan commit)
 
-## Kapan WAJIB kirim
+## 1. Cek proyek yang ada (pelajari dulu)
 
-| Perubahan | Kirim? |
-|---|---|
-| Fitur baru / halaman baru | **Ya** (`kind: "feature"`) |
-| Bug diperbaiki / keluhan pengguna | **Ya** (`kind: "fix"`) |
-| Deploy / rilis ke produksi | **Ya** (`kind: "deploy"`) |
-| Peningkatan kecil / kabar lain | **Ya** (`kind: "update"`) |
-| Refactor internal, format, komentar, tes (tak terlihat pengguna) | Tidak |
+```bash
+curl -s "https://ajoroby.is-a.dev/api/projects?key=<KEY>"
+```
 
-## Cara kirim
+Respons: daftar proyek berkunci ini (`name, url, description, activityCount,
+lastActivityAt`). Kunci tidak pernah muncul di respons. Kunci salah → `403`.
+
+## 2. Lihat detail + kegiatan (tahu yang kurang / yang perlu diubah)
+
+```bash
+# lewat slug halaman showcase:
+curl -s "https://ajoroby.is-a.dev/api/activities?slug=<slug-proyek>&limit=20"
+# atau detail proyek sync:
+curl -s "https://ajoroby.is-a.dev/api/projects/<slug-nama-proyek>?key=<KEY>"
+```
+
+Bandingkan dengan kondisi proyek saat ini: yang belum tercatat = perlu dikirim,
+yang berubah = perlu diupdate, yang dihapus di proyek = perlu dihapus di sini.
+
+## 3. Kirim / revisi rilis (CREATE + UPDATE)
+
+Satu endpoint POST untuk keduanya. Wajib sertakan `source` stabil (nama berkas
+rilis, mis. `releases/2026-10-16-fitur-x.json`):
 
 ```bash
 curl -X POST "https://ajoroby.is-a.dev/api/activities" \
   -H "Content-Type: application/json" \
-  -H "X-project: <KUNCI_PROYEK_INI>" \
+  -H "X-project: <KEY>" \
   -d '{
     "kind": "feature",
-    "project": {
-      "name": "Nama Proyek Tampil (wajib saat pertama kali, opsional setelahnya)",
-      "url": "https://contoh.com (opsional)",
-      "description": "Deskripsi singkat proyek (opsional)"
-    },
-    "source": "releases/2026-10-16-nama-rilis.json",
-    "title": {
-      "id": "Judul singkat Bahasa Indonesia (maks 300 karakter)",
-      "en": "Short title in English (max 300 characters)"
-    },
-    "body": {
-      "id": "Satu-dua kalimat dampak bagi pengguna (maks 2000 karakter)",
-      "en": "One or two sentences of user impact (max 2000 characters)"
-    },
-    "url": "https://contoh.com/tautan-terkait (opsional, boleh kosong)",
-    "occurred_at": "2026-10-16T10:00:00+07:00 (opsional, default sekarang)"
+    "project": { "name": "Nama Proyek" },
+    "source": "releases/2026-10-16-fitur-x.json",
+    "title": { "id": "...", "en": "..." },
+    "body": { "id": "...", "en": "..." }
   }'
 ```
 
-- `X-project` = kunci statis proyek ini (minta ke pemilik portfolio; tanpa kunci valid server menolak: 401 tanpa header, 403 kunci salah).
-- **Satu kunci boleh dipakai banyak proyek**: yang membedakan adalah
-  `project.name`. Kirim nama yang sama setiap kali agar tercatat sebagai satu
-  proyek. Menambah proyek baru TIDAK butuh ubah env / rebuild portfolio —
-  cukup kirim dengan `project.name` berbeda.
 - `kind`: `deploy` · `feature` · `fix` · `update`.
-- Respons sukses: `201 {"ok": true, "id": 123, "project": "...", "createdProject": true|false, "updated": false}`. Validasi gagal: `422` + daftar masalah.
+- Proyek baru otomatis terdaftar saat pertama mengirim.
+- `source` yang sama = **UPDATE** (`200, "updated": true`), baru = **CREATE**
+  (`201, "updated": false`). Jadi setiap revisi berkas rilis → kirim ulang
+  dengan `source` sama, konten portfolio ikut mutakhir.
+- Tanpa header → `401`. Kunci salah → `403`. Payload salah → `422` + rincian.
 
-## Aturan proyek & revisi rilis (penting)
+## 4. Ubah eksplisit per id (UPDATE)
 
-- **Proyek baru otomatis terdaftar** saat pertama mengirim (nama diambil dari `project.name`, boleh beda-beda dalam satu kunci). Setelah itu nama boleh dikosongkan selama konsisten.
-- **`source` wajib diisi stabil** — idealnya **nama berkas rilis** (mis. `releases/2026-10-16-fitur-x.json`).
-  Kiriman berikutnya dengan `source` yang sama akan **MEMPERBARUI** baris yang
-  sama (judul/isi/kind ikut baru), bukan menambah duplikat.
-- Jadi alur yang benar setiap selesai rilis: kirim sekali dengan `source` = nama
-  berkas rilisnya. Kalau berkas rilis direvisi, kirim ulang dengan `source`
-  yang sama — konten di portfolio ikut terbarui otomatis.
+Bila perlu mengubah langsung tanpa lewat berkas rilis:
+
+```bash
+curl -X PATCH "https://ajoroby.is-a.dev/api/activities/<ID>" \
+  -H "Content-Type: application/json" \
+  -H "X-project: <KEY>" \
+  -d '{"title": {"id": "...", "en": "..."}, "kind": "fix"}'
+```
+
+Field parsial: `kind`, `title.{id,en}`, `body.{id,en}`, `url`, `occurred_at`.
+Hanya pemilik kunci itu yang bisa mengubah (milik kunci lain → `403`).
+
+## 5. Hapus kegiatan (DELETE)
+
+Setiap menghapus fitur/konten di proyek, hapus juga jejaknya di sini.
+Cari dulu id-nya lewat langkah 2, lalu:
+
+```bash
+curl -X DELETE "https://ajoroby.is-a.dev/api/activities/<ID>" \
+  -H "X-project: <KEY>"
+```
+
+Respons: `{"ok": true, "id": <ID>}`. Sama: hanya pemilik kunci.
+
+## 6. Verifikasi hasil (wajib tiap kirim/ubah/hapus)
+
+```bash
+curl -s "https://ajoroby.is-a.dev/api/activities?slug=<slug-proyek>&limit=3"
+```
+
+Pastikan: id benar, judul/isi sesuai revisi terakhir, jumlah baris tidak dobel
+(kirim ulang `source` sama harus tetap 1 baris). Cek juga halaman detail
+proyek di browser bila memungkinkan.
+
+## 7. Backfill rilis lama (sekali saja per proyek)
+
+Ikuti `backfill.md` dalam paket ini (OS-agnostik: Linux/Windows/Mac).
 
 ## Aturan bahasa (wajib, security-safe & citizen-facing)
 
-- Tulis `id` dan `en` — keduanya wajib, bukan terjemahan mesin mentah.
+- `id` dan `en` wajib, bukan terjemahan mesin mentah.
 - DILARANG menyebut nama library/package/framework/database/file kode/mekanisme internal.
 - Rumuskan sebagai kabar pelayanan yang ramah dan berfokus pada dampak pengguna.
 
-Contoh benar:
-
-```json
-{
-  "kind": "fix",
-  "title": {
-    "id": "Perbaikan formulir pendaftaran yang macet",
-    "en": "Fixed the stuck registration form"
-  },
-  "body": {
-    "id": "Formulir kini bisa dikirim sampai selesai tanpa mengulang dari awal.",
-    "en": "The form can now be submitted to completion without starting over."
-  }
-}
-```
-
-Contoh salah (jangan kirim seperti ini):
-
-```json
-{
-  "kind": "fix",
-  "title": { "id": "Perbaiki bug Zod rate limiter", "en": "Fix Zod rate limiter bug" }
-}
-```
-
-## Verifikasi
-
-```bash
-curl "https://ajoroby.is-a.dev/api/activities?limit=3"
-curl "https://ajoroby.is-a.dev/api/projects"
-```
-
-Entri harus muncul di daftar dan di halaman detail proyeknya (dan daftar proyek
-TIDAK pernah memuat kunci API). Admin portfolio juga bisa mengubah/menghapus
-kegiatan manual dari dialog proyek.
-
-## Backfill rilis lama (sekali saja per proyek)
-
-Bila proyek sudah punya banyak berkas `releases/*.json`, kirim semuanya sekaligus
-dengan script `backfill-releases.ps1` (ada di paket `DOCS/sync/` portfolio):
-
-```powershell
-.\backfill-releases.ps1 -ProjectKey "<KUNCI_PROYEK_INI>" -DryRun   # cek dulu
-.\backfill-releases.ps1 -ProjectKey "<KUNCI_PROYEK_INI>"           # kirim
-```
-
-Tiap berkas menjadi satu kegiatan (`source` = nama berkas). Setelah itu cukup
-kirim per rilis baru seperti biasa.
+Benar: "Perbaikan formulir pendaftaran yang macet / Fixed the stuck
+registration form". Salah: "Perbaiki bug Zod rate limiter".

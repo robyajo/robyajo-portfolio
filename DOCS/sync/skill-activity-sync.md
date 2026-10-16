@@ -38,14 +38,20 @@ proyek-proyek lain dan menampilkannya otomatis di **halaman detail tiap proyek**
 - Daftar proyek publik: `GET /api/projects` (nama, url, deskripsi, jumlah
   kegiatan, update terakhir — tanpa kunci).
 
-## Alur data
+## Alur data + CRUD penuh
 
 ```
-AI proyek lain --POST /api/activities--> portfolio --tayang--> beranda + JSON-LD
-   header X-project: <kunci>                validasi zod + registry
+AI proyek lain --POST/PATCH/DELETE--> portfolio --tayang--> detail proyek + JSON-LD
+   header X-project: <kunci>                validasi zod + registry/kepemilikan
 ```
 
-- Tanpa header: `401`. Kunci salah: `403`. Payload salah: `422` + rincian.
+- Cek proyek sendiri: `GET /api/projects?key=<kunci>` (butuh kunci valid).
+- Detail + kegiatan: `GET /api/projects/<slug>?key=<kunci>` atau
+  `GET /api/activities?slug=<slug-proyek>`.
+- Buat/revisi: `POST /api/activities` (`source` stabil = update).
+- Ubah eksplisit: `PATCH /api/activities/<id>` (parsial, milik sendiri).
+- Hapus: `DELETE /api/activities/<id>` (milik sendiri).
+- Tanpa header: `401`. Kunci salah / milik kunci lain: `403`. Payload salah: `422` + rincian.
 - Daftar publik: `GET /api/activities?limit=20&project=<kunci>` (tanpa auth).
 
 ## Batas

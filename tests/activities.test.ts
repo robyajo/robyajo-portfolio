@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
     activityIngestSchema,
+    activityPatchSchema,
     parseProjectRegistry,
     resolveProjectName,
 } from "@/lib/activities-schema";
@@ -72,5 +73,19 @@ describe("activityIngestSchema", () => {
         [{ title: { id: "J", en: "T" }, url: "not-a-url-that-is-way-too-long-" + "x".repeat(2100) }],
     ])("rejects %o", (input) => {
         expect(activityIngestSchema.safeParse(input).success).toBe(false);
+    });
+});
+
+describe("activityPatchSchema", () => {
+    it("accepts partial updates", () => {
+        expect(activityPatchSchema.safeParse({ kind: "fix" }).success).toBe(true);
+        expect(
+            activityPatchSchema.safeParse({ title: { id: "Baru" } }).success,
+        ).toBe(true);
+    });
+
+    it("rejects empty patch and bad kind", () => {
+        expect(activityPatchSchema.safeParse({}).success).toBe(false);
+        expect(activityPatchSchema.safeParse({ kind: "nope" }).success).toBe(false);
     });
 });
