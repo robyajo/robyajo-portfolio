@@ -37,6 +37,3 @@ scripts/.seed-guestbook-ids.json
 
 # Local env files (keeps secrets out; .env.example stays tracked)
 .env*.local
-
-# activity-sync packet lives in its own repo (github.com/robyajo/activity-sync)
-DOCS/sync/activity-sync/
