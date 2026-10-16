@@ -10,15 +10,10 @@ import { SignInIcon, SignOutIcon } from "@/components/shared/icons";
 import { Button } from "@/components/ui/button";
 import { TypographyMuted, TypographySmall } from "@/components/ui/typography";
 import { SafeSignInButton as SignInButton } from "@/components/shared/auth-session";
+import { useDictionary } from "@/lib/i18n/provider";
 import Link from "next/link";
 
 const COMMENT_MAX_LENGTH = 1000;
-
-function commentPlaceholder(userName: string | null): string {
-  return userName
-    ? `${userName}, say something. I dare you.`
-    : "Say something. I dare you.";
-}
 
 export interface CommentComposerAreaProps {
   isLoaded: boolean;
@@ -45,7 +40,13 @@ export function CommentComposerArea({
   onSubmit,
   onSignOut,
 }: CommentComposerAreaProps) {
+  const dict = useDictionary();
+  const t = dict.blog.comments;
   if (!isLoaded) return null;
+
+  const placeholder = userName
+    ? t.sayDareNamed.replace("{name}", userName)
+    : t.sayDare;
 
   if (isSignedIn && user) {
     return (
@@ -54,11 +55,11 @@ export function CommentComposerArea({
           <div className="flex items-center gap-2.5 min-w-0">
             <Avatar
               imageUrl={user.imageUrl}
-              name={user.fullName || user.username || "You"}
+              name={user.fullName || user.username || t.you}
               size="size-6"
             />
             <TypographyMuted className="text-xs truncate">
-              Commenting as{" "}
+              {t.commentingAs}{" "}
               <span className="text-foreground font-medium">
                 {user.fullName || user.username}
               </span>
@@ -75,15 +76,15 @@ export function CommentComposerArea({
               size={13}
               aria-hidden="true"
             />
-            Sign out
+            {t.signOut}
           </Button>
         </div>
         <Composer
           maxLength={COMMENT_MAX_LENGTH}
           onSubmit={onSubmit}
-          placeholder={commentPlaceholder(userName)}
-          submitLabel="Comment"
-          ariaLabel="Write a comment"
+          placeholder={placeholder}
+          submitLabel={t.comment}
+          ariaLabel={t.writeAria}
           maxHeight={240}
         />
       </div>
@@ -96,24 +97,24 @@ export function CommentComposerArea({
         <TypingBubble />
         <div className="space-y-0.5">
           <TypographySmall className="font-semibold">
-            Got something to say?
+            {t.gotSomething}
           </TypographySmall>
           <TypographyMuted className="text-xs">
-            Sign in to comment. Also consider{" "}
+            {t.signInBodyPrefix}{" "}
             <Link
               href="/guestbook"
               className="underline underline-offset-4 hover:text-foreground transition-colors"
             >
-              leaving a note in the guestbook
+              {t.signInGuestbook}
             </Link>
-            . It&apos;s like a comments section but less chaotic.
+            {t.signInBodySuffix}
           </TypographyMuted>
         </div>
       </div>
       <SignInButton mode="modal">
         <Button size="sm" className="shrink-0">
           <SignInIcon data-icon="inline-start" size={14} aria-hidden="true" />
-          Sign in to comment
+          {t.signInToComment}
         </Button>
       </SignInButton>
     </div>

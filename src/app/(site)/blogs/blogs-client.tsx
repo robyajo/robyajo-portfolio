@@ -50,6 +50,7 @@ import {
   useQueryStates,
 } from "nuqs";
 import { type ReactNode, useDeferredValue, useMemo } from "react";
+import { useDictionary } from "@/lib/i18n/provider";
 import { PostCard } from "./post-card";
 import { postGrid } from "./post-grid";
 
@@ -83,6 +84,7 @@ export function BlogsClient({
 }) {
   const [params, setParams] = useQueryStates(searchParsers);
   const { q, tags, page, per } = params;
+  const t = useDictionary().blog.listing;
 
   const deferredQuery = useDeferredValue(q);
   const isFiltering = q !== deferredQuery;
@@ -134,7 +136,7 @@ export function BlogsClient({
     <div className="flex flex-col -mt-6">
       <div
         role="search"
-        aria-label="Filter blog posts"
+        aria-label={t.filterAria}
         className="flex flex-wrap sm:flex-nowrap sm:justify-end gap-3 pb-6"
       >
         <div className="w-full sm:w-auto sm:flex-1 min-w-0">
@@ -144,9 +146,9 @@ export function BlogsClient({
             </InputGroupAddon>
             <InputGroupInput
               autoComplete="off"
-              placeholder="Search posts…"
+              placeholder={t.searchPlaceholder}
               value={q}
-              aria-label="Search blog posts"
+              aria-label={t.searchAria}
               onChange={(e) => setParams({ q: e.target.value, page: 1 })}
               className="w-full"
             />
@@ -154,7 +156,7 @@ export function BlogsClient({
               <InputGroupAddon align="inline-end">
                 <InputGroupButton
                   onClick={() => setParams({ q: "", page: 1 })}
-                  aria-label="Clear search"
+                  aria-label={t.clearSearch}
                 >
                   <XIcon className="size-4" aria-hidden="true" />
                 </InputGroupButton>
@@ -172,8 +174,8 @@ export function BlogsClient({
                     variant="outline"
                     aria-label={
                       tags.length > 0
-                        ? `Filter by tags, ${tags.length} selected`
-                        : "Filter by tags"
+                        ? t.tagsSelected.replace("{count}", String(tags.length))
+                        : t.tagsAria
                     }
                     className="cursor-pointer gap-1.5 shrink-0 justify-start font-semibold"
                   >
@@ -183,7 +185,7 @@ export function BlogsClient({
                   aria-hidden="true"
                 />
 
-                    <span className="text-left">Tags</span>
+                    <span className="text-left">{t.tagsLabel}</span>
                     {tags.length > 0 && (
                       <span
                         aria-hidden="true"
@@ -196,14 +198,14 @@ export function BlogsClient({
                 </PopoverTrigger>
                 <PopoverContent align="end" className="w-52 p-3">
                   <div className="flex items-center justify-between w-full mb-2">
-                    <TypographySmall>Filter by tag</TypographySmall>
+                    <TypographySmall>{t.filterByTag}</TypographySmall>
                     {tags.length > 0 && (
                       <Button
                         variant="secondary"
                         size="xs"
                         onClick={() => setParams({ tags: [], page: 1 })}
                         className="cursor-pointer h-auto px-1 py-0"
-                        aria-label="Clear all tag filters"
+                        aria-label={t.clearTagFilters}
                       >
                         <XIcon className="size-4" aria-hidden="true" />
                       </Button>
@@ -211,7 +213,7 @@ export function BlogsClient({
                   </div>
                   <ul
                     role="list"
-                    aria-label="Available tags"
+                    aria-label={t.availableTags}
                     className="flex flex-col gap-0.5 max-h-56 overflow-y-auto"
                   >
                     {allTags.map((tag) => (
@@ -219,7 +221,7 @@ export function BlogsClient({
                         <Label className="rounded-sm px-2 py-1.5 cursor-pointer hover:bg-accent transition-colors">
                           <Checkbox
                             checked={tags.includes(tag)}
-                            aria-label={`Filter by ${tag}`}
+                            aria-label={t.filterByTagName.replace("{tag}", tag)}
                             onCheckedChange={(checked) =>
                               setParams({
                                 tags:
@@ -251,7 +253,7 @@ export function BlogsClient({
           >
             <SelectTrigger
               className="cursor-pointer font-semibold w-full"
-              aria-label="Posts per page"
+              aria-label={t.postsPerPage}
             >
               <SelectValue />
             </SelectTrigger>
@@ -262,7 +264,7 @@ export function BlogsClient({
                   value={String(n)}
                   className="cursor-pointer font-semibold"
                 >
-                  {n} per page
+                  {t.perPage.replace("{n}", String(n))}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -272,14 +274,14 @@ export function BlogsClient({
 
       <TypographyMuted role="status" className="sr-only">
         {deferredQuery.trim() || tags.length > 0
-          ? `${filtered.length} ${filtered.length === 1 ? "post" : "posts"} found`
+          ? (filtered.length === 1 ? t.foundOne : t.foundMany).replace("{count}", String(filtered.length))
           : ""}
       </TypographyMuted>
 
       {tags.length > 0 && (
         <ul
           role="list"
-          aria-label="Active tag filters"
+          aria-label={t.activeTagFilters}
           className="flex flex-wrap gap-1.5 pb-3"
         >
           {tags.map((tag) => (
@@ -290,7 +292,7 @@ export function BlogsClient({
                 onClick={() =>
                   setParams({ tags: tags.filter((t) => t !== tag), page: 1 })
                 }
-                aria-label={`Remove ${tag} filter`}
+                aria-label={t.removeFilter.replace("{tag}", tag)}
                 className="flex items-center bg-primary/10 py-0.5 font-mono text-primary hover:bg-primary/20 cursor-pointer h-auto"
               >
                 {tag}
@@ -308,16 +310,16 @@ export function BlogsClient({
           <div className="py-12 text-center space-y-2">
             {posts.length === 0 ? (
               <>
-                <TypographyMuted>No posts published yet.</TypographyMuted>
+                <TypographyMuted>{t.nonePublished}</TypographyMuted>
                 <TypographyMuted className="font-mono text-xs">
-                  {"// check back soon."}
+                  {t.checkBack}
                 </TypographyMuted>
               </>
             ) : (
               <>
-                <TypographyMuted>Nothing matched that search.</TypographyMuted>
+                <TypographyMuted>{t.noMatch}</TypographyMuted>
                 <TypographyMuted className="font-mono text-xs">
-                  {"// try different terms or clear the filters."}
+                  {t.tryDifferent}
                 </TypographyMuted>
               </>
             )}
@@ -325,7 +327,7 @@ export function BlogsClient({
         ) : (
           <ul
             role="list"
-            aria-label="Blog posts"
+            aria-label={t.postsAria}
             className="-mx-gutter grid grid-cols-1 gap-px bg-line md:grid-cols-2"
           >
             {grid.cells.map((cell, index) => {
@@ -366,9 +368,10 @@ export function BlogsClient({
           <Divider />
           <div className="flex flex-col items-center gap-3 pt-6">
             <TypographyMuted className="text-xs tabular-nums">
-              Showing {(currentPage - 1) * per + 1}–
-              {Math.min(currentPage * per, filtered.length)} of{" "}
-              {filtered.length} post{filtered.length !== 1 ? "s" : ""}
+              {t.showing
+                .replace("{from}", String((currentPage - 1) * per + 1))
+                .replace("{to}", String(Math.min(currentPage * per, filtered.length)))
+                .replace("{total}", String(filtered.length))}
             </TypographyMuted>
             {totalPages > 1 && (
               <Pagination>
@@ -381,7 +384,7 @@ export function BlogsClient({
                         if (currentPage > 1)
                           setParams({ page: currentPage - 1 });
                       }}
-                      aria-label="Go to previous page"
+                      aria-label={t.prevPage}
                       aria-disabled={currentPage <= 1}
                       className={cn(
                         "cursor-pointer",
@@ -401,7 +404,7 @@ export function BlogsClient({
                         <PaginationLink
                           href="#"
                           isActive={p === currentPage}
-                          aria-label={`Go to page ${p}`}
+                          aria-label={t.goToPage.replace("{p}", String(p))}
                           aria-current={p === currentPage ? "page" : undefined}
                           onClick={(e) => {
                             e.preventDefault();
@@ -422,7 +425,7 @@ export function BlogsClient({
                         if (currentPage < totalPages)
                           setParams({ page: currentPage + 1 });
                       }}
-                      aria-label="Go to next page"
+                      aria-label={t.nextPage}
                       aria-disabled={currentPage >= totalPages}
                       className={cn(
                         "cursor-pointer",

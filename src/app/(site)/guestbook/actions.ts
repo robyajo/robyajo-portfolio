@@ -7,6 +7,7 @@ import { resolvePagination } from "@/lib/pagination";
 import { safeQuery } from "@/lib/safe-query";
 import { sanitizeText, ValidationError, validateLength } from "@/lib/text";
 import { getAuth as auth } from "@/lib/auth";
+import { getDictionary } from "@/lib/i18n/server";
 import { and, count, desc, eq, inArray, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
@@ -161,7 +162,8 @@ export async function submitGuestbookEntry(
 ): Promise<{ success: true; id: number } | { success: false; error: string }> {
     try {
         const { userId, name, image } = await auth();
-        if (!userId) return { success: false, error: "You must be signed in to leave a message." };
+        const err = (await getDictionary()).guestbook.errors;
+        if (!userId) return { success: false, error: err.signInMessage };
 
         const message = sanitizeText(rawMessage);
         validateLength(message, { min: MIN_MESSAGE_LENGTH, max: MAX_MESSAGE_LENGTH, label: "Message" });
@@ -176,7 +178,7 @@ export async function submitGuestbookEntry(
     } catch (err) {
         if (err instanceof ValidationError) return { success: false, error: err.message };
         console.error("[submitGuestbookEntry]", err);
-        return { success: false, error: "Something went wrong. Please try again." };
+        return { success: false, error: (await getDictionary()).guestbook.errors.tryAgain };
     }
 }
 
@@ -185,7 +187,8 @@ export async function deleteGuestbookEntry(
 ): Promise<{ success: true } | { success: false; error: string }> {
     try {
         const { userId } = await auth();
-        if (!userId) return { success: false, error: "Not authenticated." };
+        const err = (await getDictionary()).guestbook.errors;
+        if (!userId) return { success: false, error: err.notAuthenticated };
 
         const [entry] = await db
             .select({ userId: guestbookEntries.userId })
@@ -193,13 +196,13 @@ export async function deleteGuestbookEntry(
             .where(and(eq(guestbookEntries.id, entryId), eq(guestbookEntries.isDeleted, false)))
             .limit(1);
 
-        if (!entry) return { success: false, error: "Entry not found." };
+        if (!entry) return { success: false, error: err.entryNotFound };
 
         const isOwner = entry.userId === userId;
         const isSiteOwner = userId === process.env.OWNER_USER_ID;
 
         if (!isOwner && !isSiteOwner) {
-            return { success: false, error: "You don't have permission to delete this entry." };
+            return { success: false, error: err.noPermission };
         }
 
         await db
@@ -210,7 +213,7 @@ export async function deleteGuestbookEntry(
         revalidatePath("/guestbook");
         return { success: true };
     } catch {
-        return { success: false, error: "Something went wrong." };
+        return { success: false, error: (await getDictionary()).guestbook.errors.generic };
     }
 }
 
@@ -219,8 +222,9 @@ export async function togglePinEntry(
 ): Promise<{ success: true } | { success: false; error: string }> {
     try {
         const { userId } = await auth();
+        const err = (await getDictionary()).guestbook.errors;
         if (!userId || userId !== process.env.OWNER_USER_ID) {
-            return { success: false, error: "Not authorized." };
+            return { success: false, error: err.notAuthorized };
         }
 
         const [entry] = await db
@@ -229,7 +233,7 @@ export async function togglePinEntry(
             .where(eq(guestbookEntries.id, entryId))
             .limit(1);
 
-        if (!entry) return { success: false, error: "Entry not found." };
+        if (!entry) return { success: false, error: err.entryNotFound };
 
         await db
             .update(guestbookEntries)
@@ -239,7 +243,7 @@ export async function togglePinEntry(
         revalidatePath("/guestbook");
         return { success: true };
     } catch {
-        return { success: false, error: "Something went wrong." };
+        return { success: false, error: (await getDictionary()).guestbook.errors.generic };
     }
 }
 
@@ -248,7 +252,8 @@ export async function toggleLike(
 ): Promise<{ success: true; liked: boolean } | { success: false; error: string }> {
     try {
         const { userId } = await auth();
-        if (!userId) return { success: false, error: "You must be signed in to like entries." };
+        const err = (await getDictionary()).guestbook.errors;
+        if (!userId) return { success: false, error: err.signInLike };
 
         const [existing] = await db
             .select()
@@ -268,6 +273,6 @@ export async function toggleLike(
         revalidatePath("/guestbook");
         return { success: true, liked: true };
     } catch {
-        return { success: false, error: "Something went wrong." };
+        return { success: false, error: (await getDictionary()).guestbook.errors.generic };
     }
 }

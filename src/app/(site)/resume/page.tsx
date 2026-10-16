@@ -24,83 +24,83 @@ import { LoaderCaption, LogoLoader } from "@/components/shared/loader";
 import { Reveal } from "@/components/shared/reveal";
 import { buildMeta } from "@/lib/metadata";
 import { siteConfig } from "@/lib/config";
+import { getDictionary } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { JsonLd } from "@/components/shared/json-ld";
 
-export const metadata: Metadata = buildMeta({
-  title: "Resume",
-  pageTitle: "Professional Resume",
-  description: `${siteConfig.name}'s resume: experience, projects, and what I actually know. One page, everything that matters.`,
-  path: "home / resume",
-  canonicalPath: "/resume",
-  type: "profile",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const page = (await getDictionary()).resumePage;
+  return buildMeta({
+    title: page.title,
+    pageTitle: page.pageTitle,
+    description: page.description,
+    path: "home / resume",
+    canonicalPath: "/resume",
+    type: "profile",
+  });
+}
 
-const RESUME_QUIPS = [
-  "fetching the pdf",
-  "dusting off the resume",
-  "double checking for typos",
-];
-
-export default function ResumePage() {
+export default async function ResumePage() {
   const filename = getResumeFilename();
+  const page = (await getDictionary()).resumePage;
 
   return (
     <>
       <JsonLd
         type="webpage"
-        title="Resume"
-        description={`${siteConfig.name}'s resume: professional experience, projects, and technical expertise.`}
+        title={page.title}
+        description={page.shortDescription}
         canonicalUrl={`${siteConfig.baseUrl}/resume`}
       />
 
-      <Section variant="hero" aria-label="Resume">
+      <Section variant="hero" aria-label={page.headerAria}>
         <HeroWithArt art={<PageArt name="resume" />}>
-          <TypographyH1>Resume</TypographyH1>
+          <TypographyH1>{page.title}</TypographyH1>
           <TypographyLead>
-            Where I&apos;ve been, what I built, and{" "}
-            <TypographyMark>what I actually know</TypographyMark>, on one page.
+            {page.leadPrefix}{" "}
+            <TypographyMark>{page.leadHighlight}</TypographyMark>
+            {page.leadSuffix}
           </TypographyLead>
         </HeroWithArt>
       </Section>
 
-      <Section variant="article" aria-label="Resume document">
+      <Section variant="article" aria-label={page.docAria}>
         <Reveal>
         <PdfViewer
           file="/api/resume"
           downloadHref="/api/resume/download"
-          aria-label={`Resume PDF: ${filename}`}
+          aria-label={`${page.pdfAria}: ${filename}`}
           loader={
             <div
               className="flex h-full flex-col items-center justify-center gap-4"
               role="status"
-              aria-label="Loading resume"
+              aria-label={page.loadingAria}
             >
               <LogoLoader aria-hidden="true" />
-              <LoaderCaption phrases={RESUME_QUIPS} />
+              <LoaderCaption phrases={page.quips} />
             </div>
           }
         >
-          <PdfViewerToolbar aria-label="PDF viewer controls">
+          <PdfViewerToolbar aria-label={page.toolbarAria}>
             <PdfViewerFilename
               name={filename}
-              aria-label={`File: ${filename}`}
+              aria-label={`${page.fileAria}: ${filename}`}
             />
             <PdfViewerControls>
-              <PdfViewerPagination aria-label="Page navigation" />
-              <PdfViewerZoom aria-label="Zoom controls" />
-              <PdfViewerReload aria-label="Reload PDF" />
-              <PdfViewerOpen aria-label="Open PDF in new tab" />
+              <PdfViewerPagination aria-label={page.paginationAria} />
+              <PdfViewerZoom aria-label={page.zoomAria} />
+              <PdfViewerReload aria-label={page.reloadAria} />
+              <PdfViewerOpen aria-label={page.openAria} />
               <PdfViewerDownload
-                label="Download"
-                aria-label="Download resume as PDF"
+                label={page.download}
+                aria-label={page.downloadAria}
               />
             </PdfViewerControls>
           </PdfViewerToolbar>
 
           <PdfViewerFooter>
             <TypographyMuted className="font-mono text-2xs tracking-wide">
-              Served with ETag, Last-Modified and Content-Length
+              {page.footerNote}
             </TypographyMuted>
           </PdfViewerFooter>
         </PdfViewer>

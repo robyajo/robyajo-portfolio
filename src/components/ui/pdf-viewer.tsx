@@ -22,6 +22,7 @@ import {
   ButtonGroupText,
 } from "@/components/ui/button-group";
 import { cn } from "@/lib/cn";
+import { useDictionary } from "@/lib/i18n/provider";
 import {
   CaretLeftIcon,
   CaretRightIcon,
@@ -175,7 +176,7 @@ export const PdfViewer = forwardRef<HTMLDivElement, PdfViewerProps>(
             ref={setContainerRef}
             tabIndex={0}
             role="region"
-            aria-label="Document pages"
+            aria-label={useDictionary().viewer.documentPages}
             className="relative flex-1 overflow-auto bg-muted/10 outline-none focus-visible:ring-[3px] focus-visible:ring-inset focus-visible:ring-ring/50"
           >
             {workerReady && pageWidth && (
@@ -290,11 +291,11 @@ export const PdfViewerPagination = () => {
   if (!numPages || numPages <= 1) return null;
 
   return (
-    <ButtonGroup aria-label="Page navigation">
+    <ButtonGroup aria-label={useDictionary().viewer.pageNav}>
       <Button
         variant="outline"
         size="icon"
-        aria-label="Previous page"
+        aria-label={useDictionary().viewer.previousPage}
         onClick={() => goToPage(currentPage - 1)}
       >
         <CaretLeftIcon className="size-4" aria-hidden="true" />
@@ -303,7 +304,7 @@ export const PdfViewerPagination = () => {
       <ButtonGroupText
         className="px-2.5 font-mono text-xs"
         aria-live="polite"
-        aria-label={`Page ${currentPage} of ${numPages}`}
+        aria-label={useDictionary().viewer.pageOf.replace("{current}", String(currentPage)).replace("{total}", String(numPages))}
       >
         {currentPage}/{numPages}
       </ButtonGroupText>
@@ -311,7 +312,7 @@ export const PdfViewerPagination = () => {
       <Button
         variant="outline"
         size="icon"
-        aria-label="Next page"
+        aria-label={useDictionary().viewer.nextPage}
         onClick={() => goToPage(currentPage + 1)}
       >
         <CaretRightIcon className="size-4" aria-hidden="true" />
@@ -324,11 +325,11 @@ export const PdfViewerZoom = () => {
   const { zoom, setZoom } = usePdf();
 
   return (
-    <ButtonGroup aria-label="Zoom controls">
+    <ButtonGroup aria-label={useDictionary().viewer.zoomControls}>
       <Button
         variant="outline"
         size="icon"
-        aria-label="Zoom out"
+        aria-label={useDictionary().viewer.zoomOut}
         onClick={() => setZoom((z) => Math.max(+(z - 0.1).toFixed(1), 0.5))}
       >
         <MagnifyingGlassMinusIcon className="size-4" aria-hidden="true" />
@@ -337,7 +338,7 @@ export const PdfViewerZoom = () => {
       <ButtonGroupText
         className="justify-center px-2.5 font-mono text-xs tabular-nums"
         aria-live="polite"
-        aria-label={`Zoom: ${Math.round(zoom * 100)}%`}
+        aria-label={useDictionary().viewer.zoomLevel.replace("{pct}", String(Math.round(zoom * 100)))}
       >
         {Math.round(zoom * 100)}%
       </ButtonGroupText>
@@ -345,7 +346,7 @@ export const PdfViewerZoom = () => {
       <Button
         variant="outline"
         size="icon"
-        aria-label="Zoom in"
+        aria-label={useDictionary().viewer.zoomIn}
         onClick={() => setZoom((z) => Math.min(+(z + 0.1).toFixed(1), 3))}
       >
         <MagnifyingGlassPlusIcon className="size-4" aria-hidden="true" />
@@ -361,7 +362,7 @@ export const PdfViewerReload = () => {
       variant="outline"
       size="icon"
       onClick={reload}
-      aria-label="Reload PDF"
+      aria-label={useDictionary().viewer.reloadPdf}
     >
       <ArrowClockwiseIcon className="size-4" />
     </Button>
@@ -376,7 +377,7 @@ export const PdfViewerOpen = () => {
         href={file}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Open PDF in new tab"
+        aria-label={useDictionary().viewer.openNewTab}
       >
         <ArrowSquareOutIcon className="size-4" aria-hidden="true" />
       </a>
@@ -390,7 +391,7 @@ export const PdfViewerDownload = ({ label }: { label?: string }) => {
     <Button size="sm" asChild className="sm:px-3 px-2">
       <a
         href={downloadHref}
-        aria-label={label ? `${label}, download as PDF` : "Download as PDF"}
+        aria-label={label ? useDictionary().viewer.downloadLabeled.replace("{label}", label) : useDictionary().viewer.downloadPdf}
       >
         <DownloadIcon className="size-4" aria-hidden="true" />
         <span className="hidden sm:inline" aria-hidden="true">

@@ -3,16 +3,11 @@
 import { ArrowRightIcon } from "@/components/shared/icons";
 import { cn } from "@/lib/cn";
 import { isoType } from "@/components/diagrams/classes";
+import { useDictionary } from "@/lib/i18n/provider";
 import { useEffect, useState } from "react";
 
-const PHRASES = [
-  "Available for hire",
-  "Open to full-time roles",
-  "Accepting side quests",
-  "Will ship for ice cream",
-];
-
 function NeonSign() {
+  const open = useDictionary().hire.open;
   return (
     <svg
       viewBox="0 0 44 30"
@@ -46,7 +41,7 @@ function NeonSign() {
             dominantBaseline="central"
             className={`${isoType} fill-(--color-available)`}
           >
-            Open
+            {open}
           </text>
         </g>
       </g>
@@ -55,6 +50,8 @@ function NeonSign() {
 }
 
 export function HireSign() {
+  const dict = useDictionary();
+  const PHRASES = dict.hire.phrases;
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
@@ -69,7 +66,7 @@ export function HireSign() {
   return (
     <a
       href="#contact"
-      aria-label="Available for hire, jump to contact"
+      aria-label={dict.hire.aria}
       className="group inline-flex items-center gap-2.5 rounded-full border border-(--brand)/30 bg-(--brand)/8 py-1 pr-3 pl-1.5 text-xs font-medium text-(--brand-text) transition-colors hover:bg-(--brand)/15"
     >
       <NeonSign />

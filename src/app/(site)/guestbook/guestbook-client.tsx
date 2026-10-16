@@ -23,6 +23,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { TypographyMuted, TypographySmall } from "@/components/ui/typography";
 import { nowISO } from "@/lib/date";
 import { toastError } from "@/lib/toast";
+import { useDictionary } from "@/lib/i18n/provider";
 import { SafeSignInButton as SignInButton, useSafeSignOut as useSignOut, useSafeUser as useUser } from "@/components/shared/auth-session";
 import {
   useInfiniteQuery,
@@ -55,6 +56,8 @@ interface GuestbookClientProps {
 export function GuestbookClient({ currentUserId }: GuestbookClientProps) {
   const { user, isSignedIn, isLoaded } = useUser();
   const { signOut } = useSignOut();
+  const dict = useDictionary();
+  const content = dict.guestbook;
 
   const queryClient = useQueryClient();
 
@@ -264,15 +267,15 @@ export function GuestbookClient({ currentUserId }: GuestbookClientProps) {
   });
 
   const handleDelete = useCallback((id: number) => {
-    toast("Delete this message?", {
+    toast(content.deleteTitle, {
       action: {
-        label: "Delete",
+        label: content.delete,
         onClick: () => removeEntry.mutate(id),
       },
-      cancel: { label: "Keep", onClick: () => {} },
+      cancel: { label: content.keep, onClick: () => {} },
       duration: Infinity,
     });
-  }, [removeEntry]);
+  }, [removeEntry, content]);
 
   const entryVirtualizer = useVirtualizer({
     count: entries.length,
@@ -293,7 +296,7 @@ export function GuestbookClient({ currentUserId }: GuestbookClientProps) {
             role="status"
             className="h-12 animate-pulse bg-muted rounded"
           >
-            <span className="sr-only">Loading…</span>
+            <span className="sr-only">{content.loading}</span>
           </div>
         ) : isSignedIn ? (
           <div className="space-y-4">
@@ -301,7 +304,7 @@ export function GuestbookClient({ currentUserId }: GuestbookClientProps) {
               <div className="flex items-center gap-2.5 min-w-0">
                 <Avatar
                   imageUrl={user?.imageUrl}
-                  name={user?.fullName || user?.username || "You"}
+                  name={user?.fullName || user?.username || content.you}
                   size="size-7"
                 />
                 <TypographySmall className="font-semibold truncate">
@@ -314,10 +317,10 @@ export function GuestbookClient({ currentUserId }: GuestbookClientProps) {
                   variant="outline"
                   size="sm"
                   onClick={() => signOut({ redirectUrl: "/guestbook" })}
-                  aria-label="Sign out"
+                  aria-label={content.signOut}
                 >
                   <SignOutIcon data-icon="inline-start" size={14} aria-hidden="true" />
-                  <span className="hidden sm:inline">Sign out</span>
+                  <span className="hidden sm:inline">{content.signOut}</span>
                 </Button>
               </ButtonGroup>
             </div>
@@ -325,9 +328,9 @@ export function GuestbookClient({ currentUserId }: GuestbookClientProps) {
             <Composer
               maxLength={MAX_MESSAGE_LENGTH}
               onSubmit={handleSubmit}
-              placeholder="Say hi, share a thought, or just let me know you were here…"
-              submitLabel="Send"
-              ariaLabel="Your message"
+              placeholder={content.placeholder}
+              submitLabel={content.send}
+              ariaLabel={content.yourMessage}
               counterId="guestbook-counter"
               warnThreshold={40}
               dangerThreshold={10}
@@ -338,11 +341,10 @@ export function GuestbookClient({ currentUserId }: GuestbookClientProps) {
             <div className="flex flex-col gap-4 @sm:flex-row @sm:items-center @sm:justify-between min-w-0">
               <div className="space-y-1 min-w-0 flex-1">
                 <TypographySmall className="font-semibold">
-                  You stopped by. Leave a mark.
+                  {content.signedOutTitle}
                 </TypographySmall>
                 <TypographyMuted className="text-sm text-pretty wrap-break-word">
-                  Say hi, share a thought, or just let me know you were here.
-                  Sign in, it only takes a second.
+                  {content.signedOutBody}
                 </TypographyMuted>
               </div>
               <SignInButton
@@ -353,7 +355,7 @@ export function GuestbookClient({ currentUserId }: GuestbookClientProps) {
                 <ButtonGroup>
                   <Button size="sm" className="font-semibold shrink-0">
                     <BookOpenIcon data-icon="inline-start" size={14} aria-hidden="true" />
-                    Sign in
+                    {content.signIn}
                   </Button>
                 </ButtonGroup>
               </SignInButton>
@@ -363,13 +365,13 @@ export function GuestbookClient({ currentUserId }: GuestbookClientProps) {
         )}
       </PanelRow>
 
-      <PanelHeader label="Messages" count={count} />
+      <PanelHeader label={content.messages} count={count} />
 
       {entries.length === 0 ? (
         <PanelRow>
           <EngagementEmptyState
-            title="Nobody here yet."
-            description="Be the first to leave a mark. It takes 10 seconds."
+            title={content.emptyTitle}
+            description={content.emptyBody}
           >
             <EngagementNudge type="guestbook" />
           </EngagementEmptyState>
@@ -379,7 +381,7 @@ export function GuestbookClient({ currentUserId }: GuestbookClientProps) {
           <div className="max-h-[60vh]">
             <ul
               role="list"
-              aria-label="Guestbook messages"
+              aria-label={content.messagesAria}
               className="relative"
               style={{ height: entryVirtualizer.getTotalSize() }}
             >
@@ -420,8 +422,8 @@ export function GuestbookClient({ currentUserId }: GuestbookClientProps) {
                     <Spinner data-icon="inline-start" aria-hidden="true" />
                   )}
                   {loadMoreFailed && !isFetchingNextPage
-                    ? "Couldn't load, retry"
-                    : "Load more"}
+                    ? content.retry
+                    : content.loadMore}
                 </Button>
               </div>
             )}

@@ -2,6 +2,9 @@
 
 import { Logo } from "@/components/shared/logo";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
+import { LanguageToggle } from "@/components/shared/language-toggle";
+import { useDictionary } from "@/lib/i18n/provider";
+import { navLabel } from "@/lib/i18n/nav";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { Kbd } from "@/components/ui/kbd";
@@ -59,13 +62,13 @@ function NavPin({ className }: { className?: string }) {
   );
 }
 
-function CommandMenuButton({ isMac }: { isMac: boolean }) {
+function CommandMenuButton({ isMac, dictLabel }: { isMac: boolean; dictLabel?: string }) {
   return (
     <Button
       type="button"
       variant="outline"
       onClick={() => setCommandMenuOpen(true)}
-      aria-label="Search and commands"
+      aria-label={dictLabel ?? "Search and commands"}
       aria-keyshortcuts={isMac ? "Meta+K" : "Control+K"}
       className="h-8.5 gap-1.5 rounded-l-full px-2.5 text-muted-foreground hover:text-foreground pointer-coarse:h-11"
     >
@@ -83,6 +86,7 @@ function CommandMenuButton({ isMac }: { isMac: boolean }) {
 
 export function Header() {
   const pathname = usePathname();
+  const dict = useDictionary();
   const [openPath, setOpenPath] = useState<string | null>(null);
   const open = openPath === pathname;
   const setOpen = useCallback(
@@ -131,9 +135,9 @@ export function Header() {
     <header className="fixed inset-x-0 top-0 z-50 border-b border-line bg-background/80 backdrop-blur [view-transition-name:site-header]">
       <div className="relative mx-auto max-w-5xl border-x border-line bg-background">
         <div className="flex h-14 items-center justify-between px-gutter">
-          <Link
-            href="/"
-            aria-label={`${siteConfig.name}, home`}
+            <Link
+              href="/"
+              aria-label={`${siteConfig.name}, ${dict.header.homeLabel}`}
             className="group/logo cursor-pointer rounded-md transition-[scale] duration-150 ease-out active:scale-96"
           >
             <Logo size={32} showWordmark alive aria-hidden="true" />
@@ -142,7 +146,7 @@ export function Header() {
           <div className="flex items-center gap-1">
             <NavigationMenu
               className="max-md:hidden"
-              aria-label="Main navigation"
+              aria-label={dict.header.mainNav}
             >
               <NavigationMenuList className="gap-0.5">
                 {siteConfig.nav.map((link) => {
@@ -164,7 +168,7 @@ export function Header() {
                                 : undefined
                           }
                         >
-                          <TypographySmall>{link.label}</TypographySmall>
+                          <TypographySmall>{navLabel(link.href, dict)}</TypographySmall>
                           {active && (
                             <NavPin
                               key={pathname}
@@ -180,18 +184,19 @@ export function Header() {
             </NavigationMenu>
 
             <ButtonGroup className="max-md:hidden">
-              <CommandMenuButton isMac={isMac} />
+              <CommandMenuButton isMac={isMac} dictLabel={dict.header.searchCommands} />
               <ThemeToggle className="h-8.5 rounded-r-full py-0 pr-0.75 pl-1 pointer-coarse:h-11" />
+              <LanguageToggle className="ml-1" />
             </ButtonGroup>
 
             <ButtonGroup className="md:hidden">
-              <CommandMenuButton isMac={isMac} />
+              <CommandMenuButton isMac={isMac} dictLabel={dict.header.searchCommands} />
               <Button
                 ref={triggerRef}
                 className="size-8.5 rounded-r-full pointer-coarse:size-11"
                 variant="outline"
                 size="icon"
-                aria-label={open ? "Close menu" : "Open menu"}
+                aria-label={open ? dict.header.closeMenu : dict.header.openMenu}
                 aria-expanded={open}
                 aria-controls="mobile-nav"
                 onClick={() => setOpen(!open)}
@@ -218,7 +223,7 @@ export function Header() {
         >
           <nav
             className="flex flex-col divide-y"
-            aria-label="Mobile navigation"
+            aria-label={dict.header.mobileNav}
           >
             {siteConfig.nav.map((link) => {
               const active = isActive(pathname, link.href);
@@ -237,17 +242,20 @@ export function Header() {
                   }
                 >
                   <span className="flex items-center gap-2">
-                    <TypographySmall>{link.label}</TypographySmall>
+                    <TypographySmall>{navLabel(link.href, dict)}</TypographySmall>
                     {active && <NavPin key={pathname} />}
                   </span>
                 </Link>
               );
             })}
-            <div className="flex items-center justify-between px-6 py-3.5">
+            <div className="flex items-center justify-between gap-2 px-6 py-3.5">
               <TypographySmall className="text-foreground" id="theme-label">
-                Theme
+                {dict.header.theme}
               </TypographySmall>
-              <ThemeToggle aria-labelledby="theme-label" />
+              <div className="flex items-center gap-2">
+                <LanguageToggle />
+                <ThemeToggle aria-labelledby="theme-label" />
+              </div>
             </div>
           </nav>
         </div>

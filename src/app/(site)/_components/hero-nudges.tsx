@@ -1,6 +1,7 @@
 import { IsoStage } from "@/components/diagrams/iso-stage";
 import { isoCanvas, nudgeDraw } from "@/components/diagrams/classes";
 import { cn } from "@/lib/cn";
+import { getDictionary } from "@/lib/i18n/server";
 import { ArrowRightIcon } from "@/components/shared/icons";
 import { SectionLabel, TypographySmall } from "@/components/ui/typography";
 import type { Route } from "next";
@@ -158,15 +159,16 @@ interface HeroNudgesProps {
   latest?: { url: string; title: string };
 }
 
-export function HeroNudges({ latest }: HeroNudgesProps) {
+export async function HeroNudges({ latest }: HeroNudgesProps) {
+  const hero = (await getDictionary()).home.hero;
   return (
     <nav
-      aria-label="Places to go next"
+      aria-label={hero.nudgesAria}
       className="flex flex-col gap-3 animate-in fade-in-0 slide-in-from-bottom-4 duration-700 fill-mode-backwards [animation-delay:450ms]"
     >
       <div aria-hidden="true" className="hidden items-end gap-2 pl-2 lg:flex">
         <SectionLabel pixel className="text-(--brand-text)">
-          psst, start here
+          {hero.startHere}
         </SectionLabel>
         <svg viewBox="0 0 60 36" className="h-9 w-15 overflow-visible">
           <path
@@ -182,11 +184,11 @@ export function HeroNudges({ latest }: HeroNudgesProps) {
         </svg>
       </div>
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
-        <Nudge href="/guestbook" label="Guestbook" art={<GuestbookArt />}>
-          Leave a mark before you go
+        <Nudge href="/guestbook" label={hero.guestbookLabel} art={<GuestbookArt />}>
+          {hero.guestbookHint}
         </Nudge>
         {latest && (
-          <Nudge href={latest.url} label="Latest post" art={<BlogArt />}>
+          <Nudge href={latest.url} label={hero.latestLabel} art={<BlogArt />}>
             {latest.title}
           </Nudge>
         )}

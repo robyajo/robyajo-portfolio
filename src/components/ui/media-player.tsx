@@ -38,6 +38,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { useComposedRefs } from "@/lib/compose-refs";
 import { cn } from "@/lib/cn";
+import { useDictionary } from "@/lib/i18n/provider";
 import { useLazyRef } from "@/hooks/use-lazy-ref";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -1122,6 +1123,7 @@ function MediaPlayerError(props: MediaPlayerErrorProps) {
 }
 
 function MediaPlayerVolumeIndicator(props: DivProps) {
+  const v = useDictionary().viewer;
   const { asChild, className, ...indicatorProps } = props;
 
   const mediaVolume = useMediaSelector((state) => state.mediaVolume ?? 1);
@@ -1146,7 +1148,7 @@ function MediaPlayerVolumeIndicator(props: DivProps) {
     <VolumeIndicatorPrimitive
       role="status"
       aria-live="polite"
-      aria-label={`Volume ${mediaMuted ? "muted" : `${volumePercentage}%`}`}
+      aria-label={mediaMuted ? v.volumeMuted : v.volumeLevel.replace("{n}", String(volumePercentage))}
       data-slot="media-player-volume-indicator"
       {...indicatorProps}
       className={cn(
@@ -1164,7 +1166,7 @@ function MediaPlayerVolumeIndicator(props: DivProps) {
             <SpeakerLowIcon className="size-6" />
           )}
           <span className="font-medium text-sm tabular-nums">
-            {mediaMuted ? "Muted" : `${volumePercentage}%`}
+            {mediaMuted ? useDictionary().viewer.mute : `${volumePercentage}%`}
           </span>
         </div>
         <div className="flex items-center gap-1">
@@ -1214,6 +1216,7 @@ function MediaPlayerControlsOverlay(props: DivProps) {
 }
 
 function MediaPlayerPlay(props: React.ComponentProps<typeof Button>) {
+  const v = useDictionary().viewer;
   const { children, className, disabled, ...playButtonProps } = props;
 
   const context = useMediaPlayerContext("MediaPlayerPlay");
@@ -1239,13 +1242,13 @@ function MediaPlayerPlay(props: React.ComponentProps<typeof Button>) {
 
   return (
     <MediaPlayerTooltip
-      tooltip={mediaPaused ? "Play" : "Pause"}
+      tooltip={mediaPaused ? useDictionary().viewer.play : useDictionary().viewer.pause}
       shortcut="Space"
     >
       <Button
         type="button"
         aria-controls={context.mediaId}
-        aria-label={mediaPaused ? "Play" : "Pause"}
+        aria-label={mediaPaused ? v.play : v.pause}
         aria-pressed={!mediaPaused}
         data-disabled={isDisabled ? "" : undefined}
         data-slot="media-player-play-button"
@@ -1273,6 +1276,7 @@ interface MediaPlayerSeekBackwardProps extends React.ComponentProps<
 }
 
 function MediaPlayerSeekBackward(props: MediaPlayerSeekBackwardProps) {
+  const v = useDictionary().viewer;
   const {
     seconds = SEEK_STEP_SHORT,
     children,
@@ -1311,7 +1315,7 @@ function MediaPlayerSeekBackward(props: MediaPlayerSeekBackwardProps) {
       <Button
         type="button"
         aria-controls={context.mediaId}
-        aria-label={`Back ${seconds} seconds`}
+        aria-label={v.backSeconds.replace("{n}", String(seconds))}
         data-disabled={isDisabled ? "" : undefined}
         data-slot="media-player-seek-backward"
         disabled={isDisabled}
@@ -1334,6 +1338,7 @@ interface MediaPlayerSeekForwardProps extends React.ComponentProps<
 }
 
 function MediaPlayerSeekForward(props: MediaPlayerSeekForwardProps) {
+  const v = useDictionary().viewer;
   const {
     seconds = SEEK_STEP_LONG,
     children,
@@ -1377,7 +1382,7 @@ function MediaPlayerSeekForward(props: MediaPlayerSeekForwardProps) {
       <Button
         type="button"
         aria-controls={context.mediaId}
-        aria-label={`Forward ${seconds} seconds`}
+        aria-label={v.forwardSeconds.replace("{n}", String(seconds))}
         data-disabled={isDisabled ? "" : undefined}
         data-slot="media-player-seek-forward"
         disabled={isDisabled}
@@ -2176,6 +2181,7 @@ interface MediaPlayerVolumeProps extends React.ComponentProps<
 }
 
 function MediaPlayerVolume(props: MediaPlayerVolumeProps) {
+  const v = useDictionary().viewer;
   const { expandable = false, className, disabled, ...volumeProps } = props;
 
   const context = useMediaPlayerContext(VOLUME_NAME);
@@ -2251,7 +2257,7 @@ function MediaPlayerVolume(props: MediaPlayerVolumeProps) {
           id={volumeTriggerId}
           type="button"
           aria-controls={`${context.mediaId} ${sliderId}`}
-          aria-label={mediaMuted ? "Unmute" : "Mute"}
+          aria-label={mediaMuted ? v.unmute : v.mute}
           aria-pressed={mediaMuted}
           data-slot="media-player-volume-trigger"
           data-state={mediaMuted ? "on" : "off"}
@@ -2469,6 +2475,7 @@ function MediaPlayerPlaybackSpeed(props: MediaPlayerPlaybackSpeedProps) {
 interface MediaPlayerLoopProps extends React.ComponentProps<typeof Button> {}
 
 function MediaPlayerLoop(props: MediaPlayerLoopProps) {
+  const v = useDictionary().viewer;
   const { children, className, disabled, ...loopProps } = props;
 
   const context = useMediaPlayerContext("MediaPlayerLoop");
@@ -2518,7 +2525,7 @@ function MediaPlayerLoop(props: MediaPlayerLoopProps) {
       <Button
         type="button"
         aria-controls={context.mediaId}
-        aria-label={isLooping ? "Disable loop" : "Enable loop"}
+        aria-label={isLooping ? v.disableLoop : v.enableLoop}
         aria-pressed={isLooping}
         data-disabled={isDisabled ? "" : undefined}
         data-slot="media-player-loop"
@@ -2748,11 +2755,11 @@ function MediaPlayerDownload(props: React.ComponentProps<typeof Button>) {
   );
 
   return (
-    <MediaPlayerTooltip tooltip="Download" shortcut="D">
+    <MediaPlayerTooltip tooltip={useDictionary().viewer.download} shortcut="D">
       <Button
         type="button"
         aria-controls={context.mediaId}
-        aria-label="Download"
+        aria-label={useDictionary().viewer.download}
         data-disabled={isDisabled ? "" : undefined}
         data-slot="media-player-download"
         disabled={isDisabled}
@@ -2883,12 +2890,12 @@ function MediaPlayerSettings(props: MediaPlayerSettingsProps) {
       defaultOpen={defaultOpen}
       onOpenChange={onOpenChange}
     >
-      <MediaPlayerTooltip tooltip="Settings">
+      <MediaPlayerTooltip tooltip={useDictionary().viewer.settings}>
         <DropdownMenuTrigger asChild>
           <Button
             type="button"
             aria-controls={context.mediaId}
-            aria-label="Settings"
+            aria-label={useDictionary().viewer.settings}
             data-disabled={isDisabled ? "" : undefined}
             data-slot="media-player-settings"
             disabled={isDisabled}

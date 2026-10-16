@@ -1,3 +1,5 @@
+"use client";
+
 import { IsoStage } from "@/components/diagrams/iso-stage";
 import { isoCanvas } from "@/components/diagrams/classes";
 import { ArrowRightIcon } from "@/components/shared/icons";
@@ -6,6 +8,7 @@ import {
   SectionLabel,
   TypographyMuted,
 } from "@/components/ui/typography";
+import { useDictionary, useLocale } from "@/lib/i18n/provider";
 import { cn } from "@/lib/cn";
 import { formatShortDate } from "@/lib/date";
 import { padIndex } from "@/lib/text";
@@ -52,10 +55,10 @@ function CoverMeta({
   );
 }
 
-function Tags({ tags, max }: { tags?: string[]; max: number }) {
+function Tags({ tags, max, label }: { tags?: string[]; max: number; label: string }) {
   if (!tags || tags.length === 0) return null;
   return (
-    <ul role="list" aria-label="Tags" className="flex flex-wrap gap-1.5">
+    <ul role="list" aria-label={label} className="flex flex-wrap gap-1.5">
       {tags.slice(0, max).map((tag) => (
         <li key={tag}>
           <TypographyMuted className="rounded-md bg-muted px-2 py-0.5 font-mono text-xs">
@@ -68,7 +71,10 @@ function Tags({ tags, max }: { tags?: string[]; max: number }) {
 }
 
 export function PostCard({ post, featured = false }: PostCardProps) {
-  const date = post.date ? formatShortDate(post.date) : undefined;
+  const dict = useDictionary();
+  const locale = useLocale();
+  const tagsLabel = dict.common.tags;
+  const date = post.date ? formatShortDate(post.date, locale === "id" ? "id-ID" : "en-US") : undefined;
 
   return (
     <Link
@@ -87,7 +93,7 @@ export function PostCard({ post, featured = false }: PostCardProps) {
       >
         {post.cover}
         <CoverMeta
-          label={featured ? "Latest" : post.tags?.[0]}
+          label={featured ? dict.blog.latest : post.tags?.[0]}
           number={post.number}
           accent={featured}
         />
@@ -125,7 +131,7 @@ export function PostCard({ post, featured = false }: PostCardProps) {
           </TypographyMuted>
         )}
         <div className="mt-auto flex items-end justify-between gap-4 pt-2">
-          <Tags tags={post.tags} max={featured ? 5 : 3} />
+          <Tags tags={post.tags} max={featured ? 5 : 3} label={tagsLabel} />
           <ArrowRightIcon
             aria-hidden="true"
             className="size-4 shrink-0 text-muted-foreground transition-[translate,color] duration-300 group-hover/post:translate-x-1 group-hover/post:text-foreground"

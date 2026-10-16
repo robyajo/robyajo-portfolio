@@ -14,21 +14,24 @@ import {
 import { siteConfig } from "@/lib/config";
 import { buildMeta } from "@/lib/metadata";
 import { source } from "@/lib/source";
+import { getDictionary } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { toISOString, toTimestamp } from "@/lib/date";
 
-export const metadata: Metadata = buildMeta({
-  title: "Blogs",
-  pageTitle: "Blog Posts & Writing",
-  description:
-    "Structured thoughts, semi-structured experiments, and occasional overengineering. Deep dives into engineering, design, and the things I build at 2am.",
-  path: "home / blogs",
-  canonicalPath: "/blogs",
-  type: "website",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const page = (await getDictionary()).blog.page;
+  return buildMeta({
+    title: page.title,
+    pageTitle: page.pageTitle,
+    description: page.description,
+    path: "home / blogs",
+    canonicalPath: "/blogs",
+    type: "website",
+  });
+}
 
-export default function BlogPage() {
+export default async function BlogPage() {
   const pages = source.getPages().sort((a, b) => {
     return toTimestamp(b.data.date) - toTimestamp(a.data.date);
   });
@@ -47,26 +50,28 @@ export default function BlogPage() {
     new Set(pages.flatMap((p) => p.data.tags ?? [])),
   ).sort();
 
+  const page = (await getDictionary()).blog.page;
+
   return (
     <>
       <JsonLd
         type="webpage"
-        title="Blogs"
-        description="Structured thoughts, semi-structured experiments, and occasional overengineering."
+        title={page.title}
+        description={page.shortDescription}
         canonicalUrl={`${siteConfig.baseUrl}/blogs`}
       />
-      <Section variant="hero" aria-label="Blog header">
+      <Section variant="hero" aria-label={page.heroAria}>
         <HeroWithArt art={<PageArt name="blogs" />}>
-          <TypographyH1>Blogs</TypographyH1>
+          <TypographyH1>{page.title}</TypographyH1>
           <TypographyLead>
-            Writing about what I built,{" "}
-            <TypographyMark>what broke</TypographyMark>, and occasionally both at
-            once.
+            {page.leadPrefix}{" "}
+            <TypographyMark>{page.leadHighlight}</TypographyMark>
+            {page.leadSuffix}
           </TypographyLead>
         </HeroWithArt>
       </Section>
 
-      <Section className="pb-6" aria-label="Blog posts">
+      <Section className="pb-6" aria-label={page.postsAria}>
         <Suspense fallback={<BlogsSkeleton count={Math.min(posts.length, 10)} />}>
           <BlogsClient posts={posts} allTags={allTags} filler={<PostGridFiller />} />
         </Suspense>

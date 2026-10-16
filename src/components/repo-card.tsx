@@ -7,6 +7,7 @@ import {
   type GitHubRepoData,
 } from "@/lib/github"
 import { formatRelativeDate } from "@/lib/date"
+import { getDictionary } from "@/lib/i18n/server"
 import {
   ArchiveIcon,
   ClockIcon,
@@ -73,6 +74,8 @@ async function RepoCard({
   const repoData = dataProp ?? (await fetchGitHubRepoData(owner, repo))
   if (!repoData) return null
 
+  const dict = await getDictionary();
+
   const topics = repoData.topics.slice(0, maxTopics)
   const hasMoreTopics = repoData.topics.length > maxTopics
 
@@ -84,7 +87,7 @@ async function RepoCard({
       data-slot="repo-card"
       data-archived={repoData.isArchived || undefined}
       data-fork={repoData.isFork || undefined}
-      aria-label={`${repoData.fullName} on GitHub, ${repoData.stars.toLocaleString("en-US")} stars`}
+      aria-label={dict.repo.onGithub.replace("{name}", repoData.fullName).replace("{stars}", repoData.stars.toLocaleString("en-US"))}
       className={cn(repoCardVariants({ variant, size, className }))}
       {...props}
     >

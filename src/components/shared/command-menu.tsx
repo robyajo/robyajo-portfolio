@@ -36,6 +36,8 @@ import {
 } from "@/lib/command-menu-store";
 import { siteConfig } from "@/lib/config";
 import { useIsMac } from "@/hooks/use-is-mac";
+import { useDictionary } from "@/lib/i18n/provider";
+import { navLabel } from "@/lib/i18n/nav";
 
 const NAV_ICONS = {
   "/projects": BriefcaseIcon,
@@ -59,6 +61,8 @@ function isEditableTarget(target: EventTarget | null): boolean {
 }
 
 export function CommandMenu() {
+  const dict = useDictionary();
+  const palette = dict.palette;
   const open = useSyncExternalStore(
     subscribeCommandMenu,
     getCommandMenuOpen,
@@ -92,17 +96,17 @@ export function CommandMenu() {
     <CommandDialog
       open={open}
       onOpenChange={setCommandMenuOpen}
-      title="Command menu"
-      description="Jump to a page or run a quick action."
+      title={palette.title}
+      description={palette.description}
     >
-      <CommandInput placeholder="Type a command or search…" />
+      <CommandInput placeholder={palette.placeholder} />
       <CommandList>
-        <CommandEmpty>No results found.</CommandEmpty>
+        <CommandEmpty>{palette.empty}</CommandEmpty>
 
-        <CommandGroup heading="Navigation">
+        <CommandGroup heading={palette.navigation}>
           <CommandItem onSelect={() => runCommand(() => router.push("/"))}>
             <HouseIcon aria-hidden="true" />
-            Home
+            {palette.home}
           </CommandItem>
           {siteConfig.nav.map((item) => {
             const Icon = NAV_ICONS[item.href];
@@ -112,7 +116,7 @@ export function CommandMenu() {
                 onSelect={() => runCommand(() => router.push(item.href))}
               >
                 <Icon aria-hidden="true" />
-                {item.label}
+                {navLabel(item.href, dict)}
               </CommandItem>
             );
           })}
@@ -120,17 +124,17 @@ export function CommandMenu() {
 
         <CommandSeparator />
 
-        <CommandGroup heading="Actions">
+        <CommandGroup heading={palette.actions}>
           <CommandItem
             onSelect={() => runCommand(() => setTheme("light"))}
           >
             <SunIcon aria-hidden="true" />
-            Switch to light theme
+            {palette.lightTheme}
             <CommandShortcut translate="no">{themeShortcut}</CommandShortcut>
           </CommandItem>
           <CommandItem onSelect={() => runCommand(() => setTheme("dark"))}>
             <MoonIcon aria-hidden="true" />
-            Switch to dark theme
+            {palette.darkTheme}
             <CommandShortcut translate="no">{themeShortcut}</CommandShortcut>
           </CommandItem>
           <CommandItem
@@ -141,14 +145,14 @@ export function CommandMenu() {
             }
           >
             <DownloadIcon aria-hidden="true" />
-            Download resume
+            {palette.downloadResume}
             <CommandShortcut>PDF</CommandShortcut>
           </CommandItem>
         </CommandGroup>
 
         <CommandSeparator />
 
-        <CommandGroup heading="Elsewhere">
+        <CommandGroup heading={palette.elsewhere}>
           {siteConfig.social.map((item) => {
             const Icon = SOCIAL_ICONS[item.platform];
             return (

@@ -23,6 +23,7 @@ import { useSafeSignOut as useSignOut, useSafeUser as useUser } from "@/componen
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "@/lib/query-keys";
 import { useCallback, useMemo, useRef, useState } from "react";
+import { useDictionary } from "@/lib/i18n/provider";
 import { toast } from "sonner";
 
 function patchLike(
@@ -150,6 +151,8 @@ export function PostEngagement({
   );
 
   const comments = baseComments;
+  const dict = useDictionary();
+  const t = dict.blog.comments;
 
   const handleMoodSelect = (id: MoodId) => {
     selectMood(moodState.value === id ? "" : id);
@@ -220,7 +223,7 @@ export function PostEngagement({
         likedByMe: false,
         user: {
           id: user.id,
-          name: user.fullName || user.username || "You",
+          name: user.fullName || user.username || t.you,
           username: user.username,
           imageUrl: user.imageUrl,
         },
@@ -239,22 +242,22 @@ export function PostEngagement({
 
   const handleCommentDelete = useCallback(
     (id: number) => {
-      toast("Delete this comment?", {
+      toast(t.deleteCommentTitle, {
         action: {
-          label: "Delete",
+          label: t.delete,
           onClick: () => removeComment.mutate(id),
         },
-        cancel: { label: "Keep", onClick: () => {} },
+        cancel: { label: t.keep, onClick: () => {} },
         duration: Infinity,
       });
     },
-    [removeComment],
+    [removeComment, t],
   );
 
   const handleCommentLike = useCallback(
     (id: number) => {
       if (!currentUserId) {
-        typedToast("info", "Sign in to like comments.");
+        typedToast("info", t.signInToLike);
         return;
       }
       if (id < 0 || likeGuard.current.has(id)) return;
@@ -283,8 +286,8 @@ export function PostEngagement({
       <PanelRow className="py-3" aria-hidden="true">
         <SectionLabel>
           {totalComments > 0
-            ? `${totalComments} thought${totalComments === 1 ? "" : "s"} (and a vibe check)`
-            : "Vibe check + thoughts"}
+            ? (totalComments === 1 ? t.thought : t.thoughts).replace("{count}", String(totalComments))
+            : t.heading}
         </SectionLabel>
       </PanelRow>
 

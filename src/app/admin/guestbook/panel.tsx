@@ -45,7 +45,9 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 import { TypographySmall, TypographyMuted } from "@/components/ui/typography";
+import { useDictionary } from "@/lib/i18n/provider";
 import { formatShortDate } from "@/lib/date";
+import { useLocale } from "@/lib/i18n/provider";
 import { cn } from "@/lib/cn";
 
 const searchParsers = {
@@ -54,6 +56,8 @@ const searchParsers = {
 };
 
 export function GuestbookPanel() {
+  const t = useDictionary().admin;
+  const dateLocale = useLocale() === "id" ? "id-ID" : "en-US";
   const { data: entries = [] } = useQuery({
     queryKey: queryKeys.admin.guestbook,
     queryFn: getAllAdminGuestbookEntries,
@@ -64,7 +68,7 @@ export function GuestbookPanel() {
 
   const remove = useActionMutation({
     action: (id: number) => deleteGuestbookEntry(id),
-    successMessage: "Entry deleted.",
+    successMessage: () => t.entryDeleted,
     invalidate: [queryKeys.admin.guestbook],
   });
 
@@ -72,7 +76,7 @@ export function GuestbookPanel() {
     action: ({ id }: { id: number; currentlyPinned: boolean }) =>
       togglePinEntry(id),
     successMessage: ({ currentlyPinned }) =>
-      currentlyPinned ? "Entry unpinned." : "Entry pinned.",
+      currentlyPinned ? t.entryUnpinned : t.entryPinned,
     invalidate: [queryKeys.admin.guestbook],
   });
 
@@ -97,9 +101,9 @@ export function GuestbookPanel() {
           <EmptyMedia variant="icon">
             <ChatCircleIcon aria-hidden="true" />
           </EmptyMedia>
-          <EmptyTitle>Nothing here yet</EmptyTitle>
+          <EmptyTitle>{t.empty}</EmptyTitle>
           <EmptyDescription>
-            Guestbook entries show up here once visitors start signing it.
+            {t.entriesEmptyBody}
           </EmptyDescription>
         </EmptyHeader>
       </Empty>
@@ -126,8 +130,8 @@ export function GuestbookPanel() {
           <MagnifyingGlassIcon className="absolute left-2.5 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground pointer-events-none" />
           <Input
             autoComplete="off"
-            aria-label="Search entries, names…"
-            placeholder="Search entries, names…"
+            aria-label={t.searchNames}
+            placeholder={t.searchNames}
             value={q}
             onChange={(e) => setParams({ q: e.target.value })}
             className="pl-8 h-8 text-sm"
@@ -144,14 +148,14 @@ export function GuestbookPanel() {
             className="size-3"
             weight={pinned ? "fill" : "regular"}
           />
-          Pinned only
+          {t.pinnedOnly}
         </Button>
       </div>
 
       <TypographyMuted role="status" aria-live="polite" className="sr-only">
         {pendingId !== null
-          ? "Updating entry…"
-          : `${filtered.length} entr${filtered.length === 1 ? "y" : "ies"} shown.`}
+          ? t.updating
+          : (filtered.length === 1 ? t.shownOne : t.shownMany).replace("{count}", String(filtered.length))}
       </TypographyMuted>
 
       {filtered.length === 0 ? (
@@ -160,9 +164,9 @@ export function GuestbookPanel() {
             <EmptyMedia variant="icon">
               <MagnifyingGlassIcon aria-hidden="true" />
             </EmptyMedia>
-            <EmptyTitle>No entries match your filters</EmptyTitle>
+            <EmptyTitle>{t.noMatchTitle}</EmptyTitle>
             <EmptyDescription>
-              Try a different search term, or drop the pinned-only filter.
+              {t.noMatchBody}
             </EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
@@ -171,7 +175,7 @@ export function GuestbookPanel() {
               size="sm"
               onClick={() => setParams({ q: "", pinned: false })}
             >
-              Clear filters
+              {t.clearFilters}
             </Button>
           </EmptyContent>
         </Empty>
@@ -211,11 +215,11 @@ export function GuestbookPanel() {
                   {entry.isPinned && (
                     <Badge variant="secondary">
                       <PushPinSimpleIcon className="size-3" weight="fill" />
-                      Pinned
+                      {t.pinnedBadge}
                     </Badge>
                   )}
                   <TypographyMuted className="text-xs ml-auto">
-                    {formatShortDate(entry.createdAt)}
+                    {formatShortDate(entry.createdAt, dateLocale)}
                   </TypographyMuted>
                 </div>
                 <TypographySmall
@@ -226,7 +230,7 @@ export function GuestbookPanel() {
                 </TypographySmall>
                 <TypographyMuted
                   as="span"
-                  aria-label={`${entry.likeCount} like${entry.likeCount !== 1 ? "s" : ""}`}
+                  aria-label={(entry.likeCount === 1 ? t.likesOne : t.likesMany).replace("{count}", String(entry.likeCount))}
                   className="flex items-center gap-1 text-xs mt-2"
                 >
                   <HeartIcon
@@ -244,7 +248,7 @@ export function GuestbookPanel() {
                   size="icon-sm"
                   disabled={pendingId === entry.id}
                   onClick={() => handlePin(entry.id, entry.isPinned)}
-                  aria-label={entry.isPinned ? "Unpin entry" : "Pin entry"}
+                  aria-label={entry.isPinned ? t.unpin : t.pin}
                 >
                   {entry.isPinned ? (
                     <PushPinSimpleSlashIcon className="size-4" />
@@ -259,7 +263,7 @@ export function GuestbookPanel() {
                       variant="secondary"
                       size="icon-sm"
                       disabled={pendingId !== null}
-                      aria-label={`Delete entry by ${entry.user.name}`}
+                      aria-label={t.deleteBy.replace("{name}", entry.user.name)}
                       className="text-destructive hover:text-destructive hover:bg-destructive/10"
                     >
                       <TrashIcon className="size-4" />
@@ -267,22 +271,22 @@ export function GuestbookPanel() {
                   </AlertDialogTrigger>
                   <AlertDialogContent size="sm">
                     <AlertDialogHeader>
-                      <AlertDialogTitle>Delete entry?</AlertDialogTitle>
+                      <AlertDialogTitle>{t.deleteTitle}</AlertDialogTitle>
                       <AlertDialogDescription>
-                        This entry by{" "}
+                        {t.deleteBodyPrefix}{" "}
                         <span className="font-medium text-foreground">
                           {entry.user.name}
                         </span>{" "}
-                        will be permanently removed and cannot be recovered.
+                        {t.deleteBodySuffix}
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogCancel>{t.cancel}</AlertDialogCancel>
                       <AlertDialogAction
                         variant="destructive"
                         onClick={() => handleDelete(entry.id)}
                       >
-                        {pendingId === entry.id ? "Deleting…" : "Delete"}
+                        {pendingId === entry.id ? t.deleting : t.delete}
                       </AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>

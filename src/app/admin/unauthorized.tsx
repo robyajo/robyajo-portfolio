@@ -13,18 +13,20 @@ import {
   TypographyMuted,
 } from "@/components/ui/typography";
 import { useSafeSignOut as useSignOut } from "@/components/shared/auth-session";
+import { useDictionary } from "@/lib/i18n/provider";
 import Link from "next/link";
 import { useRef } from "react";
 
 export function AdminUnauthorized() {
   const { signOut } = useSignOut();
+  const t = useDictionary().admin;
   const containerRef = useRef<HTMLDivElement>(null);
 
   return (
     <div
       ref={containerRef}
       role="main"
-      aria-label="Unauthorized"
+      aria-label={t.unauthorized}
       className="relative flex min-h-svh flex-col items-center justify-center overflow-hidden px-6"
     >
       <div aria-hidden="true">
@@ -39,14 +41,12 @@ export function AdminUnauthorized() {
         />
 
         <div className="space-y-3">
-          <TypographyH1 className="text-3xl">Access Denied</TypographyH1>
+          <TypographyH1 className="text-3xl">{t.accessDenied}</TypographyH1>
           <TypographyMuted className="text-base leading-relaxed">
-            This admin belongs to{" "}
-            <TypographyMark>one specific account</TypographyMark>, and it is
-            not yours.
+            {t.accessDeniedBody}
           </TypographyMuted>
           <TypographyMuted className="font-mono text-xs">
-            {"// try being the owner next time."}
+            {t.accessDeniedHint}
           </TypographyMuted>
         </div>
 
@@ -54,7 +54,7 @@ export function AdminUnauthorized() {
           <Button asChild size="lg" variant="outline" className="font-semibold">
             <Link href="/">
               <HouseIcon data-icon="inline-start" weight="bold" aria-hidden="true" />
-              Back to site
+              {t.backToSite}
             </Link>
           </Button>
           <ButtonGroupSeparator />
@@ -65,7 +65,7 @@ export function AdminUnauthorized() {
             onClick={() => signOut({ redirectUrl: "/" })}
           >
             <SignOutIcon data-icon="inline-start" weight="bold" aria-hidden="true" />
-            Sign out
+            {t.signOut}
           </Button>
         </ButtonGroup>
       </div>

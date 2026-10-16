@@ -19,42 +19,43 @@ import { siteConfig } from "@/lib/config";
 import { getPlatformIcon } from "@/components/shared/platform-icons";
 import { Fragment } from "react";
 import { SocialsNudge } from "@/components/shared/doodles";
+import { getDictionary } from "@/lib/i18n/server";
 
-export function Contact() {
+export async function Contact() {
+  const dict = await getDictionary();
+  const content = dict.home.contact;
   return (
-    <Section aria-label="Contact" id="contact">
+    <Section aria-label={content.section} id="contact">
       <Reveal className="w-full max-w-5xl">
         <div className="group/iso @container grid items-center gap-8 md:grid-cols-[minmax(0,1fr)_18rem] lg:grid-cols-[minmax(0,1fr)_22rem]">
           <div className="min-w-0 space-y-8">
             <div className="space-y-4 max-w-2xl">
-              <TypographyH2>Got something worth building?</TypographyH2>
+              <TypographyH2>{content.title}</TypographyH2>
 
               <TypographyLead>
-                If you’re working on something ambitious and need a frontend
-                engineer who prefers{" "}
-                <TypographyMark>clarity over chaos</TypographyMark>, we’ll
-                probably get along.
+                {content.leadPrefix}{" "}
+                <TypographyMark>{content.leadHighlight}</TypographyMark>
+                {content.leadSuffix}
               </TypographyLead>
 
               <TypographyMuted>
-                Open to full-time roles, collaborations, and projects that make
-                sense (or at least teach me something).
+                {content.availability}
               </TypographyMuted>
             </div>
 
-            <nav aria-label="Contact links" className="pt-4 pb-10">
+            <nav aria-label={content.linksLabel} className="pt-4 pb-10">
               <div className="flex flex-wrap items-center gap-3">
                 <Button asChild size="lg" className="font-semibold">
                   <Link
                     href={`mailto:${siteConfig.email}`}
-                    aria-label="Say hello, send an email"
+                    aria-label={content.sayHelloAria}
                   >
                     <EnvelopeIcon
                       data-icon="inline-start"
                       className="size-4 shrink-0"
                       aria-hidden="true"
                     />
-                    Say Hello
+                    {content.sayHello}
                   </Link>
                 </Button>
 
@@ -73,7 +74,7 @@ export function Contact() {
                             href={item.href}
                             target="_blank"
                             rel="noopener noreferrer"
-                            aria-label={`${item.label} profile (opens in new tab)`}
+                            aria-label={`${item.label} ${content.profileAria}`}
                           >
                             {getPlatformIcon(item.platform, "size-4")}
                             <span className="hidden sm:inline">

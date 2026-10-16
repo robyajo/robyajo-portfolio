@@ -41,6 +41,7 @@ import {
   EyeIcon,
 } from "@/components/shared/icons";
 import { createRelativeLink } from "fumadocs-ui/mdx";
+import { getDictionary, getLocale } from "@/lib/i18n/server";
 import type { Metadata, Route } from "next";
 import Link from "next/link";
 
@@ -63,6 +64,9 @@ export default async function Page(props: {
   ]);
   const MDX = page.data.body;
   const readingTime = (page.data as any)._exports?.readingTime;
+  const dict = await getDictionary();
+  const post = dict.blog.post;
+  const dateLocale = (await getLocale()) === "id" ? "id-ID" : "en-US";
 
   const allPages = source.getPages().sort((a, b) => {
     return toTimestamp(b.data.date) - toTimestamp(a.data.date);
@@ -103,8 +107,8 @@ export default async function Page(props: {
       <JsonLd
         type="breadcrumb"
         items={[
-          { name: "Home", url: siteConfig.baseUrl },
-          { name: "Blogs", url: `${siteConfig.baseUrl}/blogs` },
+          { name: post.home, url: siteConfig.baseUrl },
+          { name: dict.blog.page.title, url: `${siteConfig.baseUrl}/blogs` },
           { name: page.data.title, url: postUrl },
         ]}
       />
@@ -117,7 +121,7 @@ export default async function Page(props: {
         />
       </Section>
 
-      <Section variant="hero" aria-label="Post header">
+      <Section variant="hero" aria-label={post.headerAria}>
         <HeroWithArt art={<BlogCover slug={page.slugs.at(-1) ?? ""} zoom />}>
           <ViewTransition
             name={postTransitionName(page.url)}
@@ -142,31 +146,31 @@ export default async function Page(props: {
             {page.data.date && (
               <TypographyMuted className="font-mono text-xs flex items-center gap-1.5">
                 <CalendarIcon className="size-3.5 shrink-0" aria-hidden="true" />
-                <span className="sr-only">Published </span>
+                <span className="sr-only">{post.published} </span>
 
                 <time dateTime={toISOString(page.data.date)}>
-                  {formatLongDate(page.data.date)}
+                  {formatLongDate(page.data.date, dateLocale)}
                 </time>
               </TypographyMuted>
             )}
             {page.data.lastModified && (
               <TypographyMuted className="font-mono text-xs flex items-center gap-1.5">
                 <GitCommitIcon className="size-3.5 shrink-0" aria-hidden="true" />
-                Updated{" "}
+                {post.updated}{" "}
                 <time dateTime={toISOString(page.data.lastModified)}>
-                  {formatShortDate(page.data.lastModified)}
+                  {formatShortDate(page.data.lastModified, dateLocale)}
                 </time>
               </TypographyMuted>
             )}
             {readingTime && (
               <TypographyMuted className="font-mono text-xs flex items-center gap-1.5">
                 <ClockIcon className="size-3.5 shrink-0" aria-hidden="true" />
-                {readingTime.text}
+                {post.minRead.replace("{n}", String(Math.max(1, Math.ceil(readingTime.minutes ?? 1))))}
               </TypographyMuted>
             )}
             <TypographyMuted className="font-mono tabular-nums text-xs flex items-center gap-1.5">
               <EyeIcon className="size-3.5 shrink-0" aria-hidden="true" />
-              {reads} {reads === 1 ? "read" : "reads"}
+              {reads} {reads === 1 ? post.readOne : post.readMany}
             </TypographyMuted>
             {commentCount > 0 && <ScrollToEngagement count={commentCount} />}
           </div>
@@ -178,7 +182,7 @@ export default async function Page(props: {
           {page.data.tags && page.data.tags.length > 0 && (
             <ul
               role="list"
-              aria-label="Post tags"
+              aria-label={post.tagsAria}
               className="flex flex-wrap gap-1.5"
             >
               {page.data.tags.map((tag) => (
@@ -209,7 +213,7 @@ export default async function Page(props: {
       <Section
         id="engagement"
         variant="flush"
-        aria-label="Post engagement"
+        aria-label={post.engagementAria}
         data-comment-count={commentCount}
       >
         <Suspense fallback={<CommentsFallback />}>
@@ -219,7 +223,7 @@ export default async function Page(props: {
 
       <Section variant="nav">
         <BlogPostNav
-          label="More posts"
+          label={post.morePosts}
           pageUrl={postUrl}
           title={page.data.title}
           prevPost={prevPost}

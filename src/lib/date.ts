@@ -1,5 +1,5 @@
-export function formatLongDate(date: Date | string): string {
-    return new Date(date).toLocaleDateString("en-US", {
+export function formatLongDate(date: Date | string, locale: string = "en-US"): string {
+    return new Date(date).toLocaleDateString(locale, {
         month: "long",
         day: "numeric",
         year: "numeric",
@@ -7,8 +7,8 @@ export function formatLongDate(date: Date | string): string {
     });
 };
 
-export function formatShortDate(date: Date | string): string {
-    return new Date(date).toLocaleDateString("en-US", {
+export function formatShortDate(date: Date | string, locale: string = "en-US"): string {
+    return new Date(date).toLocaleDateString(locale, {
         month: "short",
         day: "numeric",
         year: "numeric",
@@ -77,15 +77,30 @@ export function getHourInZone(timezone: string, date: Date = new Date()): number
     );
 }
 
-export function statusForHour(hour: number): string {
-    if (hour < 2) return "one more commit";
-    if (hour < 6) return "probably asleep";
-    if (hour < 9) return "brewing coffee";
-    if (hour < 13) return "deep in the code";
-    if (hour < 14) return "lunch break";
-    if (hour < 18) return "shipping things";
-    if (hour < 21) return "side-quest hours";
-    return "one more commit";
+export function statusForHourIndex(hour: number): number {
+    if (hour < 2) return 0;
+    if (hour < 6) return 1;
+    if (hour < 9) return 2;
+    if (hour < 13) return 3;
+    if (hour < 14) return 4;
+    if (hour < 18) return 5;
+    if (hour < 21) return 6;
+    return 7;
+}
+
+const EN_STATUSES = [
+    "one more commit",
+    "probably asleep",
+    "brewing coffee",
+    "deep in the code",
+    "lunch break",
+    "shipping things",
+    "side-quest hours",
+    "one more commit",
+];
+
+export function statusForHour(hour: number, statuses: readonly string[] = EN_STATUSES): string {
+    return statuses[statusForHourIndex(hour)] ?? statuses[0] ?? "";
 }
 
 export function getZoneOffsetHours(timezone: string, from: Date = new Date()): number {
@@ -115,7 +130,7 @@ export function getZoneOffsetHours(timezone: string, from: Date = new Date()): n
     return Math.round((zoneOffsetMins - localOffsetMins) / 60);
 }
 
-export function timeAgo(date: string): string {
+export function timeAgo(date: string, locale: string = "en"): string {
     const seconds = Math.floor((Date.now() - new Date(date).getTime()) / 1000);
     const units: [Intl.RelativeTimeFormatUnit, number][] = [
         ["year", 31536000],
@@ -126,11 +141,11 @@ export function timeAgo(date: string): string {
         ["minute", 60],
         ["second", 1],
     ];
-    const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+    const rtf = new Intl.RelativeTimeFormat(locale, { numeric: "auto" });
     for (const [unit, secs] of units) {
         if (seconds >= secs) return rtf.format(-Math.floor(seconds / secs), unit);
     }
-    return "just now";
+    return locale === "id" ? "baru saja" : "just now";
 }
 
 export function formatRelativeDate(iso: string): string {

@@ -9,6 +9,7 @@ import { PanelHeader } from "@/components/engagement/panel";
 import { PanelRow, panelListItem } from "@/components/layouts/page";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useVirtualizer } from "@tanstack/react-virtual";
+import { useDictionary } from "@/lib/i18n/provider";
 import { useRef } from "react";
 
 export interface CommentListProps {
@@ -33,6 +34,7 @@ export function CommentList({
   pendingLikes,
 }: CommentListProps) {
   const viewportRef = useRef<HTMLDivElement>(null);
+  const list = useDictionary().blog.list;
   const commentVirtualizer = useVirtualizer({
     count: comments.length,
     getScrollElement: () => viewportRef.current,
@@ -42,14 +44,14 @@ export function CommentList({
 
   return (
     <>
-      <PanelHeader label="Comments" count={totalComments} />
+      <PanelHeader label={list.comments} count={totalComments} />
 
       {comments.length === 0 ? (
         <PanelRow>
           <EngagementEmptyState
             art={<CricketDoodle />}
-            title="Crickets. Loud ones."
-            description="Be the first to say something, good or bad or completely off the wall."
+            title={list.emptyTitle}
+            description={list.emptyBody}
           >
             <EngagementNudge type="comment" />
           </EngagementEmptyState>
@@ -59,7 +61,7 @@ export function CommentList({
           <div className="max-h-[60vh]">
             <ul
               role="list"
-              aria-label="Comments"
+              aria-label={list.comments}
               className="relative"
               style={{ height: commentVirtualizer.getTotalSize() }}
             >

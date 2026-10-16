@@ -20,6 +20,7 @@ import {
 import { cn } from "@/lib/cn";
 import { timeAgo } from "@/lib/date";
 import { memo, useEffect, useRef, useState } from "react";
+import { useDictionary, useLocale } from "@/lib/i18n/provider";
 
 export const GuestbookEntry = memo(function GuestbookEntry({
   entry,
@@ -42,6 +43,9 @@ export const GuestbookEntry = memo(function GuestbookEntry({
   const [expanded, setExpanded] = useState(false);
   const [isClamped, setIsClamped] = useState(false);
   const msgRef = useRef<HTMLElement>(null);
+  const dict = useDictionary();
+  const locale = useLocale();
+  const entry_ = dict.guestbook.entry;
 
   useEffect(() => {
     const el = msgRef.current;
@@ -83,11 +87,11 @@ export const GuestbookEntry = memo(function GuestbookEntry({
             <TypographyMuted className="text-xs tabular-nums">
               {entry.number !== undefined && <>#{entry.number} · </>}
               <time dateTime={entry.createdAt} suppressHydrationWarning>
-                {timeAgo(entry.createdAt)}
+                {timeAgo(entry.createdAt, locale)}
               </time>
             </TypographyMuted>
             {entry.isPinned && (
-              <PushPinSimpleIcon size={14} weight="fill" aria-label="Pinned" />
+              <PushPinSimpleIcon size={14} weight="fill" aria-label={entry_.pinned} />
             )}
           </div>
 
@@ -112,7 +116,7 @@ export const GuestbookEntry = memo(function GuestbookEntry({
               aria-expanded={expanded}
               className="h-auto px-0 py-0 text-xs font-medium text-muted-foreground hover:bg-transparent hover:text-foreground"
             >
-              {expanded ? "Show less" : "Read more"}
+              {expanded ? entry_.showLess : entry_.readMore}
             </Button>
           )}
 
@@ -126,8 +130,8 @@ export const GuestbookEntry = memo(function GuestbookEntry({
                 aria-pressed={entry.likedByMe}
                 aria-label={
                   entry.likedByMe
-                    ? `Unlike (${entry.likeCount})`
-                    : `Like (${entry.likeCount})`
+                    ? `${entry_.unlike} (${entry.likeCount})`
+                    : `${entry_.like} (${entry.likeCount})`
                 }
               >
                 <HeartIcon
@@ -139,7 +143,7 @@ export const GuestbookEntry = memo(function GuestbookEntry({
                 {entry.likeCount > 0 ? (
                   <span className="tabular-nums">{entry.likeCount}</span>
                 ) : (
-                  <span className="hidden sm:inline">Like</span>
+                  <span className="hidden sm:inline">{entry_.like}</span>
                 )}
               </Button>
 
@@ -150,7 +154,7 @@ export const GuestbookEntry = memo(function GuestbookEntry({
                     variant="outline"
                     size="sm"
                     onClick={() => onDelete(entry.id)}
-                    aria-label="Delete message"
+                    aria-label={entry_.deleteMessage}
                     className="text-destructive border-destructive/20 hover:text-destructive hover:bg-destructive/10 hover:border-destructive/40"
                   >
                     <TrashIcon
@@ -159,7 +163,7 @@ export const GuestbookEntry = memo(function GuestbookEntry({
                       className="text-destructive"
                       aria-hidden="true"
                     />
-                    <span className="hidden sm:inline">Delete</span>
+                    <span className="hidden sm:inline">{entry_.delete}</span>
                   </Button>
                 </>
               )}

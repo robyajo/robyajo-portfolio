@@ -12,11 +12,13 @@ import {
   TypographySmall,
   TypographyMuted,
 } from "@/components/ui/typography";
+import { useDictionary } from "@/lib/i18n/provider";
 
 export function ResumeRefresh() {
+  const t = useDictionary().admin;
   const { mutate: refresh, isPending: pending } = useActionMutation({
     action: refreshResume,
-    successMessage: "Resume cache cleared. Latest PDF will load on /resume.",
+    successMessage: () => t.resumeRefreshed,
   });
 
   function handleRefresh() {
@@ -30,15 +32,14 @@ export function ResumeRefresh() {
           <FileTextIcon className="size-5" weight="duotone" />
         </span>
         <div className="flex flex-col gap-1">
-          <TypographySmall className="font-medium">Resume</TypographySmall>
+          <TypographySmall className="font-medium">{t.resumeTitle}</TypographySmall>
           <TypographyMuted className="text-xs">
-            The resume PDF is cached for up to an hour. Force a refresh to pull
-            the latest release from GitHub on the next visit to /resume.
+            {t.resumeBody}
           </TypographyMuted>
         </div>
       </div>
       <TypographyMuted role="status" aria-live="polite" className="sr-only">
-        {pending ? "Refreshing the resume cache…" : ""}
+        {pending ? t.resumeRefreshing : ""}
       </TypographyMuted>
       <Button
         variant="outline"
@@ -52,7 +53,7 @@ export function ResumeRefresh() {
         ) : (
           <ArrowClockwiseIcon data-icon="inline-start" className="size-4" />
         )}
-        {pending ? "Refreshing…" : "Force refresh"}
+        {pending ? t.refreshing : t.resumeRefresh}
       </Button>
     </div>
   );

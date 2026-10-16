@@ -6,6 +6,7 @@ import { PauseIcon, PlayIcon } from "@/components/shared/icons";
 import { Button } from "@/components/ui/button";
 import { TypographyMuted } from "@/components/ui/typography";
 import { formatShortDate } from "@/lib/date";
+import { useDictionary } from "@/lib/i18n/provider";
 
 const AVATAR_HOSTS = new Set(["avatars.githubusercontent.com", "lh3.googleusercontent.com"]);
 
@@ -74,13 +75,14 @@ export function GuestbookRotator({
 }) {
   const [hovered, setHovered] = useState(false);
   const [stopped, setStopped] = useState(false);
+  const t = useDictionary().guestbook.rotator;
 
   if (entries.length === 0) {
     return (
       <div className="py-8 space-y-1">
-        <TypographyMuted>Nobody here yet.</TypographyMuted>
+        <TypographyMuted>{t.emptyTitle}</TypographyMuted>
         <TypographyMuted className="font-mono text-xs">
-          {"// be the first."}
+          {t.emptyBody}
         </TypographyMuted>
       </div>
     );
@@ -118,11 +120,7 @@ export function GuestbookRotator({
             variant="outline"
             size="sm"
             onClick={() => setStopped((prev) => !prev)}
-            aria-label={
-              stopped
-                ? "Resume scrolling guestbook entries"
-                : "Pause scrolling guestbook entries"
-            }
+            aria-label={stopped ? t.resumeAria : t.pauseAria}
             className="h-7 px-2 text-muted-foreground hover:text-foreground"
           >
             {stopped ? (
@@ -130,14 +128,14 @@ export function GuestbookRotator({
             ) : (
               <PauseIcon data-icon="inline-start" size={12} aria-hidden="true" />
             )}
-            <span className="text-xs">{stopped ? "Resume" : "Pause"}</span>
+            <span className="text-xs">{stopped ? t.resume : t.pause}</span>
           </Button>
         </div>
       </div>
 
       <ul
         className="hidden motion-reduce:flex flex-col gap-4 px-gutter mb-2"
-        aria-label="Guestbook entries"
+        aria-label={t.listAria}
       >
         {entries.slice(0, 4).map((entry) => (
           <li key={entry.id} className="flex gap-3">

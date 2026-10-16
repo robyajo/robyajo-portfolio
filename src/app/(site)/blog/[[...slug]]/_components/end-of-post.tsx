@@ -6,6 +6,7 @@ import { Reveal } from "@/components/shared/reveal";
 import { Button } from "@/components/ui/button";
 import { TypographyMuted, TypographySmall } from "@/components/ui/typography";
 import { gitDraw, gitPop } from "@/components/diagrams/classes";
+import { useDictionary } from "@/lib/i18n/provider";
 import { cn } from "@/lib/cn";
 import type { CSSProperties } from "react";
 
@@ -57,6 +58,7 @@ interface EndOfPostProps {
 }
 
 export function EndOfPost({ commentCount, className }: EndOfPostProps) {
+  const post = useDictionary().blog.post;
   const scrollToEngagement = () => {
     document
       .getElementById("engagement")
@@ -69,12 +71,12 @@ export function EndOfPost({ commentCount, className }: EndOfPostProps) {
       <div className="pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="space-y-1">
           <TypographySmall className="text-foreground">
-            That&apos;s the end. What did you think?
+            {post.endTitle}
           </TypographySmall>
           <TypographyMuted className="text-xs font-mono">
             {commentCount > 0
-              ? `// ${commentCount} ${commentCount === 1 ? "person has" : "people have"} already said something.`
-              : "// no reactions yet. you could be the first."}
+              ? (commentCount === 1 ? post.endSomeOne : post.endSome).replace("{count}", String(commentCount))
+              : post.endNone}
           </TypographyMuted>
         </div>
         <Button
@@ -82,14 +84,14 @@ export function EndOfPost({ commentCount, className }: EndOfPostProps) {
           size="sm"
           onClick={scrollToEngagement}
           className="text-xs text-muted-foreground hover:text-foreground rounded-sm shrink-0"
-          aria-label="Scroll to reactions and comments"
+          aria-label={post.scrollTo}
         >
           <ChatCircleIcon
             data-icon="inline-start"
             size={13}
             aria-hidden="true"
           />
-          Leave a comment
+          {post.leaveComment}
           <CaretDownIcon data-icon="inline-end" size={12} aria-hidden="true" />
         </Button>
       </div>
@@ -98,6 +100,7 @@ export function EndOfPost({ commentCount, className }: EndOfPostProps) {
 }
 
 export function ScrollToEngagement({ count }: { count: number }) {
+  const post = useDictionary().blog.post;
   return (
     <Button
       variant="link"
@@ -108,7 +111,7 @@ export function ScrollToEngagement({ count }: { count: number }) {
           ?.scrollIntoView({ behavior: "smooth", block: "start" })
       }
       className="h-auto px-0 py-0 font-mono text-xs text-muted-foreground hover:bg-transparent hover:text-foreground"
-      aria-label={`${count} comment${count !== 1 ? "s" : ""}, scroll to discussion`}
+      aria-label={`${count} ${count !== 1 ? post.commentMany : post.commentOne}, ${post.scrollTo}`}
     >
       <ChatCircleIcon
         data-icon="inline-start"
@@ -116,7 +119,7 @@ export function ScrollToEngagement({ count }: { count: number }) {
         className="shrink-0"
         aria-hidden="true"
       />
-      {count} comment{count !== 1 ? "s" : ""}
+      {count} {count !== 1 ? post.commentMany : post.commentOne}
     </Button>
   );
 }

@@ -12,6 +12,7 @@ import {
 import { TypographyMuted, TypographySmall } from "@/components/ui/typography";
 import { siteConfig } from "@/lib/config";
 import { CodeIcon, ImageIcon } from "@/components/shared/icons";
+import { useDictionary } from "@/lib/i18n/provider";
 import { useRef, useState } from "react";
 
 const DOWNLOAD_SIZES = [16, 32, 64, 128, 256, 512] as const;
@@ -102,6 +103,7 @@ export function LogoDownloadCard({
 }: LogoDownloadCardProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const [size, setSize] = useState<DownloadSize>(64);
+  const t = useDictionary().branding.downloadCard;
 
   const nameSlug = siteConfig.name.toLowerCase().replace(/\s+/g, "-");
   const variantSlug = label.toLowerCase().replace(/\s+/g, "-");
@@ -111,7 +113,7 @@ export function LogoDownloadCard({
     <div
       role="group"
       className="flex flex-col gap-3 w-full"
-      aria-label={`${label} logo variant`}
+      aria-label={t.variant.replace("{label}", label)}
     >
       <div>
         <TypographyMuted
@@ -128,7 +130,7 @@ export function LogoDownloadCard({
       <div
         className="flex items-center justify-center w-full min-h-28 rounded-sm border border-border/60 bg-muted/20 px-6 py-8"
         role="img"
-        aria-label={`${label} logo preview`}
+        aria-label={t.preview.replace("{label}", label)}
       >
         <Logo ref={svgRef} size={48} aria-hidden="true" {...logoProps} />
       </div>
@@ -140,7 +142,7 @@ export function LogoDownloadCard({
         >
           <SelectTrigger
             className="h-8 w-24 shrink-0 text-xs"
-            aria-label="Download size"
+            aria-label={t.sizeAria}
           >
             <SelectValue />
           </SelectTrigger>
@@ -157,7 +159,7 @@ export function LogoDownloadCard({
           variant="outline"
           size="sm"
           className="flex-1 h-8 text-xs"
-          aria-label={`Download ${label} logo as SVG at ${size}px`}
+          aria-label={t.downloadSvg.replace("{label}", label).replace("{size}", String(size))}
           onClick={() =>
             svgRef.current && downloadSVG(svgRef.current, filename, size)
           }
@@ -169,7 +171,7 @@ export function LogoDownloadCard({
           variant="outline"
           size="sm"
           className="flex-1 h-8 text-xs"
-          aria-label={`Download ${label} logo as PNG at ${size}px`}
+          aria-label={t.downloadPng.replace("{label}", label).replace("{size}", String(size))}
           onClick={() =>
             svgRef.current && downloadPNG(svgRef.current, filename, size)
           }

@@ -42,6 +42,8 @@ import {
   SectionHeader,
 } from "@/components/ui/typography";
 import { cn } from "@/lib/cn";
+import { getDictionary } from "@/lib/i18n/server";
+import type { Dictionary } from "@/lib/i18n/id";
 import { siteConfig } from "@/lib/config";
 import type { ReactNode } from "react";
 
@@ -97,11 +99,11 @@ function ShowcaseCard({
 
 const moods = ["", "terrible", "bad", "good", "amazing"] as const;
 
-const motion: ShowcaseItem[] = [
+function motionItems(b: Dictionary["branding"]): ShowcaseItem[] {
+  return [
   {
-    title: "Sketch Loader",
-    description:
-      "Pencil draws the mark, colors it in, then it wakes up. Plays while pages load.",
+    title: b.motionItems.sketch[0],
+    description: b.motionItems.sketch[1],
     component: (
       <DoodleStage className="h-44">
         <div className="flex flex-col items-center gap-3">
@@ -112,9 +114,8 @@ const motion: ShowcaseItem[] = [
     ),
   },
   {
-    title: "Live Mark",
-    description:
-      "The header logo. Its eyes follow your cursor, and it cheers up when you hover.",
+    title: b.motionItems.live[0],
+    description: b.motionItems.live[1],
     component: (
       <DoodleStage className="h-44">
         <div className="flex flex-col items-center gap-1">
@@ -129,104 +130,101 @@ const motion: ShowcaseItem[] = [
     ),
   },
   {
-    title: "Margin Notes",
-    description:
-      "Every section is measured like a drawing sheet. The ruler reads your scroll, and the section you're in gets its dimension line inked in green.",
+    title: b.motionItems.margin[0],
+    description: b.motionItems.margin[1],
     className: "md:col-span-2",
     component: (
       <div className="flex h-72 flex-col overflow-hidden rounded-lg border border-line">
         <div className="hatch h-6 shrink-0 border-b border-line" />
         <div className="relative mx-24 flex-1 border-x border-line bg-background">
-          <SectionMargins label="Motion" index="07" demo />
+          <SectionMargins label={b.motion} index="07" demo />
         </div>
         <div className="hatch h-6 shrink-0 border-t border-line" />
       </div>
     ),
   },
-];
+  ];
+}
 
-export default function BrandingPage() {
+export default async function BrandingPage() {
+  const b = (await getDictionary()).branding;
   return (
     <>
-      <Section aria-label="Brand System">
-        <SectionHeader as="p">Brand System</SectionHeader>
+      <Section aria-label={b.heroAria}>
+        <SectionHeader as="p">{b.heroAria}</SectionHeader>
         <HeroWithArt art={<PageArt name="branding" />}>
-          <TypographyH1>Brand Infrastructure</TypographyH1>
+          <TypographyH1>{b.heroTitle}</TypographyH1>
           <TypographyLead>
-            A unified system of identity components built so I never have to
-            explain{" "}
+            {b.leadPrefix}{" "}
             <TypographyMark>
-              &ldquo;just use the same font&rdquo;
+              {b.leadHighlight}
             </TypographyMark>{" "}
-            again.
+            {b.leadSuffix}
           </TypographyLead>
         </HeroWithArt>
       </Section>
 
-      <Section aria-label="Typography">
-        <SectionHeader>Typography</SectionHeader>
+      <Section aria-label={b.typography}>
+        <SectionHeader>{b.typography}</SectionHeader>
         <CardGrid>
           {[
             {
-              title: "Heading One",
-              component: <TypographyH1 as="p">I Shipped It</TypographyH1>,
+              title: b.typeNames.h1,
+              component: <TypographyH1 as="p">{b.specimens.h1}</TypographyH1>,
             },
             {
-              title: "Heading Two",
-              component: <TypographyH2 as="p">It Worked Locally</TypographyH2>,
+              title: b.typeNames.h2,
+              component: <TypographyH2 as="p">{b.specimens.h2}</TypographyH2>,
             },
             {
-              title: "Heading Three",
+              title: b.typeNames.h3,
               component: (
-                <TypographyH3 as="p">Something&apos;s On Fire</TypographyH3>
+                <TypographyH3 as="p">{b.specimens.h3}</TypographyH3>
               ),
             },
             {
-              title: "Heading Four",
-              component: <TypographyH4 as="p">Blame The Cache</TypographyH4>,
+              title: b.typeNames.h4,
+              component: <TypographyH4 as="p">{b.specimens.h4}</TypographyH4>,
             },
             {
-              title: "Paragraph",
+              title: b.typeNames.paragraph,
               component: (
                 <TypographyP>
-                  Body text. The part your eyes drift past while hunting for the
-                  button. If you&apos;re reading this sentence, you&apos;re in
-                  the top 1%, or you just have too much free time.
+                  {b.specimens.paragraph}
                 </TypographyP>
               ),
             },
             {
-              title: "Lead",
+              title: b.typeNames.lead,
               component: (
                 <TypographyLead>
-                  The paragraph that sets the tone before the actual content.
-                  Usually written last. Definitely written last.
+                  {b.specimens.lead}
                 </TypographyLead>
               ),
             },
             {
-              title: "Blockquote",
+              title: b.typeNames.blockquote,
               component: (
                 <TypographyBlockquote>
-                  It works on my machine.
+                  {b.specimens.blockquote}
                 </TypographyBlockquote>
               ),
             },
             {
-              title: "List",
+              title: b.typeNames.list,
               component: (
                 <TypographyList>
-                  <li>Works on my machine</li>
-                  <li>TODO: document this</li>
-                  <li>Close enough to done</li>
+                  {b.specimens.list.map((li) => (
+                    <li key={li}>{li}</li>
+                  ))}
                 </TypographyList>
               ),
             },
             {
-              title: "Inline Code",
+              title: b.typeNames.inlineCode,
               component: (
                 <TypographyP>
-                  Commit message:{" "}
+                  {b.specimens.inlinePrefix}{" "}
                   <TypographyInlineCode>
                     git commit -m &quot;fix&quot;
                   </TypographyInlineCode>
@@ -234,37 +232,37 @@ export default function BrandingPage() {
               ),
             },
             {
-              title: "Large",
+              title: b.typeNames.large,
               component: (
-                <TypographyLarge>Deploy. Regret. Revert.</TypographyLarge>
+                <TypographyLarge>{b.specimens.large}</TypographyLarge>
               ),
             },
             {
-              title: "Small",
+              title: b.typeNames.small,
               component: (
-                <TypographySmall>the text nobody asked for</TypographySmall>
+                <TypographySmall>{b.specimens.small}</TypographySmall>
               ),
             },
             {
-              title: "Muted",
+              title: b.typeNames.muted,
               component: (
                 <TypographyMuted>
-                  the disclaimer. also nobody reads this.
+                  {b.specimens.muted}
                 </TypographyMuted>
               ),
             },
             {
-              title: "Mark",
+              title: b.typeNames.mark,
               component: (
                 <TypographyP>
-                  The word you <TypographyMark>highlight</TypographyMark> when
-                  you want to look like you read the whole thing.
+                  {b.specimens.markPrefix} <TypographyMark>{b.specimens.markWord}</TypographyMark>{" "}
+                  {b.specimens.markSuffix}
                 </TypographyP>
               ),
             },
             {
-              title: "Section Label",
-              component: <SectionLabel>Section Label</SectionLabel>,
+              title: b.typeNames.sectionLabel,
+              component: <SectionLabel>{b.specimens.sectionLabel}</SectionLabel>,
             },
           ].map((item) => (
             <CardGridItem key={item.title} aria-label={`${item.title} example`}>
@@ -283,27 +281,27 @@ export default function BrandingPage() {
 
         <div className="mt-14 max-w-3xl">
           <TypographyLead>
-            Typography is the reason your UI doesn&apos;t look like a ransom
-            note. <TypographyMark>Hierarchy matters</TypographyMark>, and so
-            does not picking a random Google Font at 2am.
+            {b.typoOutroPrefix}{" "}
+            <TypographyMark>{b.typoOutroMark}</TypographyMark>
+            {b.typoOutroSuffix}
           </TypographyLead>
         </div>
       </Section>
 
-      <Section aria-label="Logo Variants">
-        <SectionHeader>Logo Variants</SectionHeader>
+      <Section aria-label={b.logoVariants}>
+        <SectionHeader>{b.logoVariants}</SectionHeader>
         <CardGrid columns={3}>
           {[
-            { label: "Icon", props: {}, description: "Pocket-sized identity" },
+            { label: b.icon, props: {}, description: b.iconDesc },
             {
-              label: "Wordmark",
+              label: b.wordmark,
               props: { showWordmark: true },
-              description: "For when people forget how to read",
+              description: b.wordmarkDesc,
             },
             {
-              label: "Full Name",
+              label: b.fullName,
               props: { showWordmark: true, full: true },
-              description: "The full send",
+              description: b.fullNameDesc,
             },
           ].map((variant) => (
             <CardGridItem key={variant.label}>
@@ -318,14 +316,12 @@ export default function BrandingPage() {
 
         <div
           role="note"
-          aria-label="Logo usage"
+          aria-label={b.beforeDownload}
           className="mt-6 max-w-3xl space-y-1.5 rounded-lg border border-border bg-muted/30 p-4"
         >
-          <SectionLabel>Before you download</SectionLabel>
+          <SectionLabel>{b.beforeDownload}</SectionLabel>
           <TypographySmall className="block font-normal leading-relaxed text-muted-foreground">
-            Everything on this page is here for reference. The artwork may be
-            shared unmodified, for non-commercial use and with attribution,
-            under{" "}
+            {b.licenseNotePrefix}{" "}
             <a
               href="https://creativecommons.org/licenses/by-nc-nd/4.0/"
               target="_blank"
@@ -334,7 +330,7 @@ export default function BrandingPage() {
             >
               CC BY-NC-ND 4.0
             </a>
-            . It does not give permission to use {siteConfig.name},{" "}
+            {b.licenseNoteMid} {siteConfig.name},{" "}
             {siteConfig.domain}, the logo, wordmark, or mascot as your own
             brand, or to imply endorsement. The{" "}
             <a
@@ -343,29 +339,28 @@ export default function BrandingPage() {
               rel="noopener noreferrer"
               className="link-external"
             >
-              license
+              {b.license}
             </a>{" "}
-            has the details.
+            {b.licenseNoteSuffix}
           </TypographySmall>
         </div>
 
         <div className="mt-14 max-w-3xl">
           <TypographyLead>
-            From 16&times;16 favicon to full-bleed billboard, the logo survives
-            it all. <TypographyMark>Unlike my confidence</TypographyMark> before
-            a code review.
+            {b.logoOutroPrefix}{" "}
+            <TypographyMark>{b.logoOutroMark}</TypographyMark>
+            {b.logoOutroSuffix}
           </TypographyLead>
         </div>
       </Section>
 
-      <Section aria-label="Doodles">
-        <SectionHeader>Doodles</SectionHeader>
+      <Section aria-label={b.doodles}>
+        <SectionHeader>{b.doodles}</SectionHeader>
         <CardGrid>
           {[
             {
-              title: "Photo Callout",
-              description:
-                "Points out the profile photo, flips text when it's too dark to see.",
+              title: b.doodleItems.photo[0],
+              description: b.doodleItems.photo[1],
               component: (
                 <div className="pt-12">
                   <DoodleStage className="h-12">
@@ -375,9 +370,8 @@ export default function BrandingPage() {
               ),
             },
             {
-              title: "Socials Nudge",
-              description:
-                "Tells you DMs are open before you scroll past the proof.",
+              title: b.doodleItems.socials[0],
+              description: b.doodleItems.socials[1],
               component: (
                 <div className="pb-10">
                   <DoodleStage className="h-12">
@@ -387,8 +381,8 @@ export default function BrandingPage() {
               ),
             },
             {
-              title: "Ice Cream Note",
-              description: "Unverified nutritional claim, fully verified vibe.",
+              title: b.doodleItems.iceCream[0],
+              description: b.doodleItems.iceCream[1],
               component: (
                 <DoodleStage>
                   <IceCreamNote />
@@ -396,9 +390,8 @@ export default function BrandingPage() {
               ),
             },
             {
-              title: "Theme Nudge",
-              description:
-                "Lights on, lights off, still shipping the same bugs.",
+              title: b.doodleItems.theme[0],
+              description: b.doodleItems.theme[1],
               component: (
                 <DoodleStage>
                   <ThemeNudge />
@@ -406,8 +399,8 @@ export default function BrandingPage() {
               ),
             },
             {
-              title: "Online Ping",
-              description: "Radar for “technically reachable.”",
+              title: b.doodleItems.online[0],
+              description: b.doodleItems.online[1],
               component: (
                 <DoodleStage>
                   <OnlinePing />
@@ -415,22 +408,21 @@ export default function BrandingPage() {
               ),
             },
             {
-              title: "Nav Glyphs",
-              description:
-                "So the footer's link groups don't read like a sitemap dump.",
+              title: b.doodleItems.nav[0],
+              description: b.doodleItems.nav[1],
               component: (
                 <DoodleStage>
                   <div className="flex items-center gap-8">
                     <div className="flex flex-col items-center gap-2">
                       <GroupGlyph variant="pages" />
                       <TypographyMuted className="text-3xs uppercase tracking-wider">
-                        Pages
+                        {b.pages}
                       </TypographyMuted>
                     </div>
                     <div className="flex flex-col items-center gap-2">
                       <GroupGlyph variant="site" />
                       <TypographyMuted className="text-3xs uppercase tracking-wider">
-                        Site
+                        {b.site}
                       </TypographyMuted>
                     </div>
                   </div>
@@ -438,8 +430,8 @@ export default function BrandingPage() {
               ),
             },
             {
-              title: "Cricket Doodle",
-              description: "What an empty comment section sounds like.",
+              title: b.doodleItems.cricket[0],
+              description: b.doodleItems.cricket[1],
               component: (
                 <DoodleStage>
                   <CricketDoodle />
@@ -447,9 +439,8 @@ export default function BrandingPage() {
               ),
             },
             {
-              title: "Typing Bubble",
-              description:
-                "Someone's composing a reply. Probably regretting it already.",
+              title: b.doodleItems.typing[0],
+              description: b.doodleItems.typing[1],
               component: (
                 <DoodleStage>
                   <TypingBubble />
@@ -457,9 +448,8 @@ export default function BrandingPage() {
               ),
             },
             {
-              title: "Signpost",
-              description:
-                "Four directions out of a page. All of them more scrolling.",
+              title: b.doodleItems.signpost[0],
+              description: b.doodleItems.signpost[1],
               component: (
                 <DoodleStage className="h-40">
                   <div className="relative h-36 w-28">
@@ -469,8 +459,8 @@ export default function BrandingPage() {
               ),
             },
             {
-              title: "Reaction Mascot",
-              description: "Same face, five moods, zero self-control.",
+              title: b.doodleItems.reaction[0],
+              description: b.doodleItems.reaction[1],
               component: (
                 <DoodleStage className="h-auto py-4">
                   <div className="flex flex-wrap items-end justify-center gap-x-3 gap-y-4">
@@ -481,7 +471,7 @@ export default function BrandingPage() {
                       >
                         <ReactionMascot mood={mood} />
                         <TypographyMuted className="text-3xs uppercase tracking-wider">
-                          {mood || "neutral"}
+                          {mood || b.neutral}
                         </TypographyMuted>
                       </div>
                     ))}
@@ -496,40 +486,40 @@ export default function BrandingPage() {
 
         <div className="mt-14 max-w-3xl">
           <TypographyLead>
-            The small hand-drawn stuff.{" "}
-            <TypographyMark>Not load-bearing</TypographyMark>, but the site
-            feels off without it.
+            {b.doodleOutroPrefix}{" "}
+            <TypographyMark>{b.doodleOutroMark}</TypographyMark>
+            {b.doodleOutroSuffix}
           </TypographyLead>
         </div>
       </Section>
 
-      <Section aria-label="Motion">
-        <SectionHeader>Motion</SectionHeader>
+      <Section aria-label={b.motion}>
+        <SectionHeader>{b.motion}</SectionHeader>
         <CardGrid>
-          {motion.map((item) => (
+          {motionItems(b).map((item) => (
             <ShowcaseCard key={item.title} {...item} />
           ))}
         </CardGrid>
 
         <div className="mt-14 max-w-3xl">
           <TypographyLead>
-            The bits that move.{" "}
-            <TypographyMark>Every one of them sits still</TypographyMark> when
-            your system asks for reduced motion.
+            {b.motionOutroPrefix}{" "}
+            <TypographyMark>{b.motionOutroMark}</TypographyMark>
+            {b.motionOutroSuffix}
           </TypographyLead>
         </div>
       </Section>
 
-      <Section aria-label="Open Graph">
-        <SectionHeader>Open Graph</SectionHeader>
+      <Section aria-label={b.og}>
+        <SectionHeader>{b.og}</SectionHeader>
         <Card className="max-w-5xl p-0 @lg:p-0 overflow-hidden">
           <BrandingOGPreview />
         </Card>
         <div className="mt-14 max-w-3xl">
           <TypographyLead>
-            The thumbnail that decides whether someone clicks or keeps
-            scrolling. <TypographyMark>No pressure</TypographyMark>, just your
-            entire first impression on the internet.
+            {b.ogOutroPrefix}{" "}
+            <TypographyMark>{b.ogOutroMark}</TypographyMark>
+            {b.ogOutroSuffix}
           </TypographyLead>
         </div>
       </Section>

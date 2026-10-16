@@ -17,6 +17,7 @@ import {
 import { Spinner } from "@/components/ui/spinner";
 import { useQuery } from "@tanstack/react-query";
 import { useActionMutation } from "@/hooks/use-action-mutation";
+import { useDictionary } from "@/lib/i18n/provider";
 import { queryKeys } from "@/lib/query-keys";
 import {
   createProject,
@@ -115,33 +116,36 @@ function parseHighlights(raw: string): string[] {
     .filter(Boolean);
 }
 
-const textFields = [
-  {
-    name: "title",
-    label: "Title",
-    placeholder: "Project name",
-  },
-  {
-    name: "highlights",
-    label: "Tech highlights",
-    hint: "(comma-separated)",
-    placeholder: "TypeScript, React, Bun",
-  },
-  {
-    name: "github",
-    label: "GitHub URL",
-    hint: "(optional)",
-    placeholder: "https://github.com/…",
-    type: "url",
-  },
-  {
-    name: "live",
-    label: "Live URL",
-    hint: "(optional)",
-    placeholder: "https://…",
-    type: "url",
-  },
-] as const;
+function useTextFields() {
+  const t = useDictionary().admin.projects;
+  return [
+    {
+      name: "title",
+      label: t.titleLabel,
+      placeholder: t.titlePlaceholder,
+    },
+    {
+      name: "highlights",
+      label: t.highlightsLabel,
+      hint: t.highlightsHint,
+      placeholder: t.highlightsPlaceholder,
+    },
+    {
+      name: "github",
+      label: t.githubLabel,
+      hint: t.optionalHint,
+      placeholder: t.githubPlaceholder,
+      type: "url",
+    },
+    {
+      name: "live",
+      label: t.liveLabel,
+      hint: t.optionalHint,
+      placeholder: t.livePlaceholder,
+      type: "url",
+    },
+  ] as const;
+}
 
 function ProjectTextField({
   control,
@@ -149,7 +153,7 @@ function ProjectTextField({
   disabled,
 }: {
   control: Control<FormData>;
-  field: (typeof textFields)[number];
+  field: ReturnType<typeof useTextFields>[number];
   disabled: boolean;
 }) {
   return (
@@ -198,6 +202,8 @@ function ProjectForm({
     defaultValues: initial,
     mode: "onSubmit",
   });
+  const t = useDictionary().admin.projects;
+  const textFields = useTextFields();
   const [titleField, ...restFields] = textFields;
 
   return (
@@ -217,11 +223,11 @@ function ProjectForm({
           name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Description</FormLabel>
+              <FormLabel>{t.descriptionLabel}</FormLabel>
               <FormControl>
                 <Textarea
                   {...field}
-                  placeholder="What does it do?"
+                  placeholder={t.descriptionPlaceholder}
                   rows={3}
                   className="resize-none"
                   disabled={submitting}
@@ -246,11 +252,11 @@ function ProjectForm({
             onClick={onCancel}
             disabled={submitting}
           >
-            Cancel
+            {t.cancel}
           </Button>
           <Button type="submit" disabled={submitting} aria-busy={submitting}>
             {submitting && <Spinner data-icon="inline-start" aria-hidden="true" />}
-            Save
+            {t.save}
           </Button>
         </DialogFooter>
       </form>
@@ -270,10 +276,12 @@ export function ProjectsPanel() {
   const dialogOpen = dialog.open;
   const editTarget = dialog.target;
 
+  const dict = useDictionary();
+  const t = dict.admin.projects;
   const save = useActionMutation({
     action: (data: ProjectInput) =>
       editTarget ? updateProject(editTarget.id, data) : createProject(data),
-    successMessage: () => (editTarget ? "Project updated." : "Project created."),
+    successMessage: () => (editTarget ? t.updated : t.created),
     invalidate: [queryKeys.admin.projects],
     onDone: () => setDialog((prev) => ({ ...prev, open: false })),
   });
@@ -285,7 +293,7 @@ export function ProjectsPanel() {
 
   const remove = useActionMutation({
     action: (id: number) => deleteProject(id),
-    successMessage: "Project deleted.",
+    successMessage: () => t.deleted,
     invalidate: [queryKeys.admin.projects],
   });
 
@@ -341,19 +349,18 @@ export function ProjectsPanel() {
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
         <div>
-          <TypographySmall className="font-semibold">Projects</TypographySmall>
+          <TypographySmall className="font-semibold">{t.heading}</TypographySmall>
           <TypographyMuted
             role="status"
             aria-live="polite"
             className="text-xs"
           >
-            {projects.filter((p) => p.enabled).length} of {projects.length}{" "}
-            visible, in the order they appear on the site
+            {t.visibleStatus.replace("{visible}", String(projects.filter((p) => p.enabled).length)).replace("{total}", String(projects.length))}
           </TypographyMuted>
         </div>
         <Button size="sm" onClick={openAdd}>
           <PlusIcon data-icon="inline-start" className="size-3.5" aria-hidden="true" />
-          Add Project
+          {t.add}
         </Button>
       </div>
 
@@ -363,9 +370,9 @@ export function ProjectsPanel() {
             <EmptyMedia variant="icon">
               <FolderOpenIcon aria-hidden="true" />
             </EmptyMedia>
-            <EmptyTitle>No projects yet</EmptyTitle>
+            <EmptyTitle>{t.emptyTitle}</EmptyTitle>
             <EmptyDescription>
-              Add your first one. Whatever sits at the top of the list shows first on the site.
+              {t.emptyBody}
             </EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
@@ -384,11 +391,11 @@ export function ProjectsPanel() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="w-16">Order</TableHead>
-                <TableHead>Project</TableHead>
-                <TableHead className="hidden md:table-cell">Stack</TableHead>
-                <TableHead className="w-20 text-center">Visible</TableHead>
-                <TableHead className="w-20 text-right">Actions</TableHead>
+                <TableHead className="w-16">{t.order}</TableHead>
+                <TableHead>{t.project}</TableHead>
+                <TableHead className="hidden md:table-cell">{t.stack}</TableHead>
+                <TableHead className="w-20 text-center">{t.visible}</TableHead>
+                <TableHead className="w-20 text-right">{t.actions}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -409,7 +416,7 @@ export function ProjectsPanel() {
                     <TableCell className="py-2 align-middle">
                       <ButtonGroup
                         orientation="vertical"
-                        aria-label="Reorder project"
+                        aria-label={t.reorder}
                       >
                         <Button
                           variant="secondary"
@@ -417,7 +424,7 @@ export function ProjectsPanel() {
                           className="size-6"
                           onClick={() => handleMove(project.id, "up")}
                           disabled={isFirst || isRowPending}
-                          aria-label="Move up"
+                          aria-label={t.moveUp}
                         >
                           <ArrowUpIcon className="size-3" />
                         </Button>
@@ -428,7 +435,7 @@ export function ProjectsPanel() {
                           className="size-6"
                           onClick={() => handleMove(project.id, "down")}
                           disabled={isLast || isRowPending}
-                          aria-label="Move down"
+                          aria-label={t.moveDown}
                         >
                           <ArrowDownIcon className="size-3" />
                         </Button>
@@ -482,7 +489,7 @@ export function ProjectsPanel() {
                         }
                         disabled={isRowPending}
                         aria-label={
-                          project.enabled ? "Hide project" : "Show project"
+                          project.enabled ? t.hide : t.show
                         }
                       />
                     </TableCell>
@@ -494,7 +501,7 @@ export function ProjectsPanel() {
                           size="icon"
                           className="size-7"
                           onClick={() => openEdit(project)}
-                          aria-label="Edit project"
+                          aria-label={t.edit}
                         >
                           <PencilIcon className="size-3.5" />
                         </Button>
@@ -506,7 +513,7 @@ export function ProjectsPanel() {
                               size="icon"
                               className="size-7 text-destructive hover:text-destructive hover:bg-destructive/10"
                               disabled={isRowPending}
-                              aria-label="Delete project"
+                              aria-label={t.delete}
                             >
                               <TrashIcon className="size-3.5" />
                             </Button>
@@ -514,20 +521,19 @@ export function ProjectsPanel() {
                           <AlertDialogContent>
                             <AlertDialogHeader>
                               <AlertDialogTitle>
-                                Delete &quot;{project.title}&quot;?
+                                {t.deleteTitleName.replace("{title}", project.title)}
                               </AlertDialogTitle>
                               <AlertDialogDescription>
-                                This permanently removes the project from the
-                                database. This cannot be undone.
+                                {t.deleteBody}
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
-                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogCancel>{t.cancel}</AlertDialogCancel>
                               <AlertDialogAction
                                 variant="destructive"
                                 onClick={() => handleDelete(project.id)}
                               >
-                                Delete
+                                {t.delete}
                               </AlertDialogAction>
                             </AlertDialogFooter>
                           </AlertDialogContent>
@@ -546,12 +552,10 @@ export function ProjectsPanel() {
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
             <DialogTitle>
-              {editTarget ? "Edit Project" : "Add Project"}
+              {editTarget ? t.dialogEdit : t.dialogAdd}
             </DialogTitle>
             <DialogDescription>
-              {editTarget
-                ? "Update the project details below."
-                : "Fill in the details to add a new project."}
+              {editTarget ? t.dialogEditBody : t.dialogAddBody}
             </DialogDescription>
           </DialogHeader>
           <ProjectForm

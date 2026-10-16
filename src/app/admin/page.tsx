@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/typography";
 import { getAdminStats } from "@/app/admin/actions";
 import { ResumeRefresh } from "@/app/admin/resume-refresh";
+import { getDictionary } from "@/lib/i18n/server";
 
 function StatCard({
   label,
@@ -43,38 +44,39 @@ function StatCard({
 
 export default async function AdminPage() {
   const stats = await getAdminStats();
+  const t = (await getDictionary()).admin;
 
   return (
     <div className="flex flex-1 flex-col">
       <div className="flex flex-1 flex-col gap-8 p-6">
         <div>
-          <TypographyH1>Admin</TypographyH1>
-          <TypographyLead>Site overview and content management.</TypographyLead>
+          <TypographyH1>{t.title}</TypographyH1>
+          <TypographyLead>{t.overview}</TypographyLead>
         </div>
 
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
           <StatCard
-            label="Guestbook entries"
+            label={t.overviewStats.guestbook}
             value={stats.guestbook.active}
-            sub={`${stats.guestbook.total} total (incl. deleted)`}
+            sub={t.overviewStats.totalPair.replace("{total}", String(stats.guestbook.total))}
             icon={<ChatCircleIcon className="size-4" weight="duotone" />}
           />
           <StatCard
-            label="Blog comments"
+            label={t.overviewStats.comments}
             value={stats.comments.active}
-            sub={`${stats.comments.total} total (incl. deleted)`}
+            sub={t.overviewStats.totalPair.replace("{total}", String(stats.comments.total))}
             icon={<BookOpenIcon className="size-4" weight="duotone" />}
           />
           <StatCard
-            label="Blog reads"
+            label={t.overviewStats.reads}
             value={stats.reads}
-            sub="unique IP × post pairs"
+            sub={t.overviewStats.uniquePair}
             icon={<EyeIcon className="size-4" weight="duotone" />}
           />
           <StatCard
-            label="Blog reactions"
+            label={t.overviewStats.reactions}
             value={stats.reactions}
-            sub="unique IP × post pairs"
+            sub={t.overviewStats.uniquePair}
             icon={<HeartIcon className="size-4" weight="duotone" />}
           />
         </div>

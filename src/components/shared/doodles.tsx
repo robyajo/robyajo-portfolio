@@ -1,7 +1,10 @@
+"use client";
+
 import { SectionLabel } from "@/components/ui/typography";
 import { gitDraw, isoType, nudgeDraw } from "@/components/diagrams/classes";
 import { MascotFigure, type MascotEyes } from "@/components/shared/logo-mascot";
 import { cn } from "@/lib/cn";
+import { useDictionary } from "@/lib/i18n/provider";
 import type { CSSProperties } from "react";
 
 function delay(ms: number) {
@@ -16,6 +19,7 @@ const stroke = {
 } as const;
 
 export function PhotoCallout() {
+  const t = useDictionary().doodles;
   return (
     <div
       aria-hidden="true"
@@ -35,9 +39,9 @@ export function PhotoCallout() {
         pixel
         className="-mt-0.5 max-w-64 text-balance text-(--brand-text) animate-in fade-in-0 duration-500 fill-mode-backwards [animation-delay:700ms]"
       >
-        <span className="dark:hidden">that&apos;s me. face still loading…</span>
+        <span className="dark:hidden">{t.photoLight}</span>
         <span className="hidden dark:inline">
-          dark mode on. now I&apos;m fully invisible
+          {t.photoDark}
         </span>
       </SectionLabel>
     </div>
@@ -86,7 +90,7 @@ export function IceCreamNote() {
         />
       </svg>
       <SectionLabel pixel asChild aria-hidden={undefined}>
-        <span>runs on ice cream</span>
+        <span>{useDictionary().doodles.iceCream}</span>
       </SectionLabel>
     </span>
   );
@@ -108,18 +112,19 @@ export function SocialsNudge() {
         />
       </svg>
       <SectionLabel pixel className="mt-4 text-(--brand-text)">
-        DMs are open, I reply
+        {useDictionary().doodles.socials}
       </SectionLabel>
     </div>
   );
 }
 
 export function ThemeNudge() {
+  const t = useDictionary().doodles;
   return (
     <div aria-hidden="true" className="flex items-center gap-1.5">
       <SectionLabel pixel className="text-(--brand-text)">
-        <span className="dark:hidden">lights off?</span>
-        <span className="hidden dark:inline">lights on?</span>
+        <span className="dark:hidden">{t.lightsOff}</span>
+        <span className="hidden dark:inline">{t.lightsOn}</span>
       </SectionLabel>
       <svg viewBox="0 0 34 22" className="h-5.5 w-8.5 overflow-visible">
         <path

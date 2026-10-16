@@ -26,18 +26,24 @@ import { useSafeSignOut as useSignOut } from "@/components/shared/auth-session";
 import Link from "next/link";
 import type { Route } from "next";
 import { usePathname } from "next/navigation";
+import { useDictionary } from "@/lib/i18n/provider";
 
-const navItems = [
-  { title: "Overview", href: "/admin", icon: ListIcon },
-  { title: "Guestbook", href: "/admin/guestbook", icon: ChatCircleIcon },
-  { title: "Comments", href: "/admin/comments", icon: BookOpenIcon },
-  { title: "Projects", href: "/admin/projects", icon: FolderOpenIcon },
-  { title: "Links", href: "/admin/links", icon: LinkIcon },
-];
+function useNavItems() {
+  const t = useDictionary().admin.sidebar;
+  return [
+    { title: t.overview, href: "/admin", icon: ListIcon },
+    { title: t.guestbook, href: "/admin/guestbook", icon: ChatCircleIcon },
+    { title: t.comments, href: "/admin/comments", icon: BookOpenIcon },
+    { title: t.projects, href: "/admin/projects", icon: FolderOpenIcon },
+    { title: t.links, href: "/admin/links", icon: LinkIcon },
+  ];
+}
 
 export function AdminSidebar() {
   const pathname = usePathname();
   const { signOut } = useSignOut();
+  const t = useDictionary().admin;
+  const navItems = useNavItems();
 
   return (
     <Sidebar collapsible="icon">
@@ -50,7 +56,7 @@ export function AdminSidebar() {
                   <LogoIcon size={16} />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">Admin</span>
+                  <span className="truncate font-semibold">{t.title}</span>
                 </div>
               </Link>
             </SidebarMenuButton>
@@ -61,7 +67,7 @@ export function AdminSidebar() {
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel className="group-data-[collapsible=icon]:hidden">
-            Management
+            {t.sidebar.management}
           </SidebarGroupLabel>
           <SidebarMenu>
             {navItems.map(({ title, href, icon: Icon }) => (
@@ -88,7 +94,7 @@ export function AdminSidebar() {
             <SidebarMenuButton asChild>
               <Link href="/">
                 <HouseIcon className="size-4" />
-                <span>Back to site</span>
+                <span>{t.backToSite}</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -98,7 +104,7 @@ export function AdminSidebar() {
               className="text-destructive hover:text-destructive"
             >
               <SignOutIcon className="size-4" />
-              <span>Sign out</span>
+              <span>{t.signOut}</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

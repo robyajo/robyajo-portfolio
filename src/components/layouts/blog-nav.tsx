@@ -15,6 +15,7 @@ import {
   LinkedinLogoIcon,
 } from "@/components/shared/icons";
 import { toast } from "sonner";
+import { useDictionary } from "@/lib/i18n/provider";
 import type { Route } from "next";
 
 function preventNavigation(event: React.MouseEvent) {
@@ -30,15 +31,18 @@ interface BlogPostNavProps {
 }
 
 export function BlogPostNav({
-  label = "Post navigation",
+  label,
   pageUrl,
   title,
   prevPost,
   nextPost,
 }: BlogPostNavProps) {
+  const fallback = useDictionary().blog.post;
+  const nav = fallback.nav;
+  const navLabel = label ?? nav.label;
   const handleCopy = async () => {
     await navigator.clipboard.writeText(pageUrl);
-    toast.success("Link copied to clipboard");
+    toast.success(nav.copied);
   };
 
   const utmPageUrl = `${pageUrl}?utm_source=x&utm_medium=social&utm_campaign=blog`;
@@ -50,13 +54,13 @@ export function BlogPostNav({
   return (
     <>
       <Button variant="outline" size="sm" asChild>
-        <Link href="/blogs" aria-label="Back to all blog posts">
+        <Link href="/blogs" aria-label={fallback.backToBlogs}>
           <ArrowLeftIcon
             data-icon="inline-start"
             className="size-3.5 shrink-0"
             aria-hidden="true"
           />
-          <TypographySmall>Blog</TypographySmall>
+          <TypographySmall>{fallback.blogShort}</TypographySmall>
         </Link>
       </Button>
 
@@ -66,7 +70,7 @@ export function BlogPostNav({
             variant="outline"
             size="icon-sm"
             onClick={handleCopy}
-            aria-label="Copy link to this post"
+            aria-label={fallback.copyLink}
             className="text-muted-foreground hover:text-foreground"
           >
             <LinkIcon className="size-4" aria-hidden="true" />
@@ -82,7 +86,7 @@ export function BlogPostNav({
               href={xUrl}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`Share "${title}" on X (opens in new tab)`}
+              aria-label={`${fallback.shareX} "${title}" on X (${fallback.opensInNewTab})`}
             >
               <XLogoIcon className="size-4" aria-hidden="true" />
             </a>
@@ -98,21 +102,21 @@ export function BlogPostNav({
               href={linkedinUrl}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`Share "${title}" on LinkedIn (opens in new tab)`}
+              aria-label={`${fallback.shareLinkedIn} "${title}" on LinkedIn (${fallback.opensInNewTab})`}
             >
               <LinkedinLogoIcon className="size-4" aria-hidden="true" />
             </a>
           </Button>
         </div>
 
-        <nav aria-label={label}>
+        <nav aria-label={navLabel}>
           <ButtonGroup>
             <PaginationPrevious
               href={(prevPost?.url ?? "#") as Route}
               aria-label={
                 prevPost
-                  ? `Previous post: ${prevPost.title}`
-                  : "No previous post"
+                  ? nav.previousTitle.replace("{title}", prevPost.title)
+                  : nav.previous
               }
               aria-disabled={!prevPost}
               onClick={prevPost ? undefined : preventNavigation}
@@ -123,7 +127,7 @@ export function BlogPostNav({
             <PaginationNext
               href={(nextPost?.url ?? "#") as Route}
               aria-label={
-                nextPost ? `Next post: ${nextPost.title}` : "No next post"
+                nextPost ? nav.nextTitle.replace("{title}", nextPost.title) : nav.next
               }
               aria-disabled={!nextPost}
               onClick={nextPost ? undefined : preventNavigation}

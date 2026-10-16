@@ -12,10 +12,14 @@ import { PageArt } from "@/components/diagrams/page-art";
 import { Button } from "@/components/ui/button";
 import { CaretRightIcon } from "@/components/shared/icons";
 import { formatShortDate, toISOString } from "@/lib/date";
+import { getDictionary, getLocale } from "@/lib/i18n/server";
 import Link from "next/link";
 import type { Route } from "next";
 
-export function BlogTeaser() {
+export async function BlogTeaser() {
+  const dict = await getDictionary();
+  const content = dict.home.blogTeaser;
+  const dateLocale = (await getLocale()) === "id" ? "id-ID" : "en-US";
   const posts = source
     .getPages()
     .filter((p) => p.data.date)
@@ -28,18 +32,19 @@ export function BlogTeaser() {
   if (posts.length === 0) return null;
 
   return (
-    <Section aria-label="Recent writing">
-      <TypographyH2 className="sr-only">Recent writing</TypographyH2>
+    <Section aria-label={content.section}>
+      <TypographyH2 className="sr-only">{content.section}</TypographyH2>
       <Reveal className="group/iso">
         <div className="mb-8 grid items-center gap-8 md:grid-cols-[minmax(0,1fr)_20rem] lg:grid-cols-[minmax(0,1fr)_24rem]">
           <div className="flex min-w-0 flex-col items-start gap-6">
             <TypographyLead className="max-w-2xl">
-              <TypographyMark>Code, breakdowns</TypographyMark>, and the
-              occasional 3am adventure.
+              {content.leadPrefix}
+              <TypographyMark>{content.leadHighlight}</TypographyMark>
+              {content.leadSuffix}
             </TypographyLead>
             <Button asChild variant="outline">
               <Link href="/blogs">
-                See all posts
+                {content.seeAll}
                 <CaretRightIcon
                   data-icon="inline-end"
                   className="size-3.5"
@@ -69,7 +74,7 @@ export function BlogTeaser() {
               </span>
               <TypographyMuted asChild className="shrink-0 font-mono text-xs">
                 <time dateTime={toISOString(post.data.date!)}>
-                  {formatShortDate(post.data.date!)}
+                  {formatShortDate(post.data.date!, dateLocale)}
                 </time>
               </TypographyMuted>
             </Link>

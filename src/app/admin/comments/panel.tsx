@@ -52,7 +52,9 @@ import {
   TypographyMuted,
   SectionHeader,
 } from "@/components/ui/typography";
+import { useDictionary } from "@/lib/i18n/provider";
 import { formatShortDate } from "@/lib/date";
+import { useLocale } from "@/lib/i18n/provider";
 import { cn } from "@/lib/cn";
 import type { Route } from "next";
 
@@ -70,6 +72,8 @@ function slugToTitle(slug: string): string {
 }
 
 export function CommentsPanel() {
+  const t = useDictionary().admin;
+  const dateLocale = useLocale() === "id" ? "id-ID" : "en-US";
   const { data: comments = [] } = useQuery({
     queryKey: queryKeys.admin.comments,
     queryFn: getAllAdminComments,
@@ -80,7 +84,7 @@ export function CommentsPanel() {
 
   const remove = useActionMutation({
     action: (id: number) => deleteComment(id),
-    successMessage: "Comment deleted.",
+    successMessage: () => t.commentDeleted,
     invalidate: [queryKeys.admin.comments],
   });
 
@@ -88,7 +92,7 @@ export function CommentsPanel() {
     action: ({ id }: { id: number; currentlyPinned: boolean }) =>
       togglePinComment(id),
     successMessage: ({ currentlyPinned }) =>
-      currentlyPinned ? "Comment unpinned." : "Comment pinned.",
+      currentlyPinned ? t.commentUnpinned : t.commentPinned,
     invalidate: [queryKeys.admin.comments],
   });
 
@@ -113,7 +117,7 @@ export function CommentsPanel() {
           <EmptyMedia variant="icon">
             <ChatCircleIcon aria-hidden="true" />
           </EmptyMedia>
-          <EmptyTitle>Nothing here yet</EmptyTitle>
+          <EmptyTitle>{t.empty}</EmptyTitle>
           <EmptyDescription>
             Comments left on blog posts show up here once readers start
             writing.
@@ -152,8 +156,8 @@ export function CommentsPanel() {
           <MagnifyingGlassIcon className="absolute left-2.5 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground pointer-events-none" />
           <Input
             autoComplete="off"
-            aria-label="Search comments, names…"
-            placeholder="Search comments, names…"
+            aria-label={t.searchComments}
+            placeholder={t.searchComments}
             value={q}
             onChange={(e) => setParams({ q: e.target.value })}
             className="pl-8 h-8 text-sm"
@@ -186,9 +190,9 @@ export function CommentsPanel() {
             <EmptyMedia variant="icon">
               <MagnifyingGlassIcon aria-hidden="true" />
             </EmptyMedia>
-            <EmptyTitle>No comments match your filters</EmptyTitle>
+            <EmptyTitle>{t.commentsNoMatch}</EmptyTitle>
             <EmptyDescription>
-              Try a different search term, or drop the pinned-only filter.
+              {t.noMatchCommentsBody}
             </EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
@@ -197,7 +201,7 @@ export function CommentsPanel() {
               size="sm"
               onClick={() => setParams({ q: "", pinned: false })}
             >
-              Clear filters
+              {t.clearFilters}
             </Button>
           </EmptyContent>
         </Empty>
@@ -265,14 +269,14 @@ export function CommentsPanel() {
                       {comment.isPinned && (
                         <Badge variant="secondary">
                           <PushPinSimpleIcon className="size-3" weight="fill" />
-                          Pinned
+                          {t.pinnedBadge}
                         </Badge>
                       )}
                       {comment.parentId !== null && (
-                        <Badge variant="outline">Reply</Badge>
+                        <Badge variant="outline">{t.replyBadge}</Badge>
                       )}
                       <TypographyMuted className="text-xs ml-auto">
-                        {formatShortDate(comment.createdAt)}
+                        {formatShortDate(comment.createdAt, dateLocale)}
                       </TypographyMuted>
                     </div>
                     <TypographySmall
@@ -283,7 +287,7 @@ export function CommentsPanel() {
                     </TypographySmall>
                     <TypographyMuted
                       as="span"
-                      aria-label={`${comment.likeCount} like${comment.likeCount !== 1 ? "s" : ""}`}
+                      aria-label={(comment.likeCount === 1 ? t.likesOne : t.likesMany).replace("{count}", String(comment.likeCount))}
                       className="flex items-center gap-1 text-xs mt-1.5"
                     >
                       <HeartIcon
@@ -303,7 +307,7 @@ export function CommentsPanel() {
                         disabled={pendingId === comment.id}
                         onClick={() => handlePin(comment.id, comment.isPinned)}
                         aria-label={
-                          comment.isPinned ? "Unpin comment" : "Pin comment"
+                          comment.isPinned ? t.unpinComment : t.pinComment
                         }
                       >
                         {comment.isPinned ? (
@@ -319,7 +323,7 @@ export function CommentsPanel() {
                             variant="secondary"
                             size="icon-sm"
                             disabled={pendingId !== null}
-                            aria-label={`Delete comment by ${comment.user.name}`}
+                            aria-label={t.deleteCommentBy.replace("{name}", comment.user.name)}
                             className="text-destructive hover:text-destructive hover:bg-destructive/10"
                           >
                             <TrashIcon className="size-4" />
@@ -327,25 +331,24 @@ export function CommentsPanel() {
                         </AlertDialogTrigger>
                         <AlertDialogContent size="sm">
                           <AlertDialogHeader>
-                            <AlertDialogTitle>Delete comment?</AlertDialogTitle>
+                            <AlertDialogTitle>{t.deleteCommentTitle}</AlertDialogTitle>
                             <AlertDialogDescription>
-                              This comment by{" "}
+                              {t.deleteCommentBodyPrefix}{" "}
                               <span className="font-medium text-foreground">
                                 {comment.user.name}
                               </span>{" "}
-                              will be permanently removed and cannot be
-                              recovered.
+                              {t.deleteCommentBodySuffix}
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogCancel>{t.cancel}</AlertDialogCancel>
                             <AlertDialogAction
                               variant="destructive"
                               onClick={() => handleDelete(comment.id)}
                             >
                               {pendingId === comment.id
-                                ? "Deleting…"
-                                : "Delete"}
+                                ? t.deleting
+                                : t.delete}
                             </AlertDialogAction>
                           </AlertDialogFooter>
                         </AlertDialogContent>

@@ -11,6 +11,7 @@ import {
   InputGroupInput,
 } from "@/components/ui/input-group";
 import { cn } from "@/lib/cn";
+import { useDictionary } from "@/lib/i18n/provider";
 import { siteConfig } from "@/lib/config";
 import { buildOGPath } from "@/lib/metadata";
 import {
@@ -23,6 +24,7 @@ import {
 } from "@/components/shared/icons";
 
 export function BrandingOGPreview() {
+  const t = useDictionary().branding.ogPreview;
   const defaultTitle = siteConfig.name;
   const defaultDescription = siteConfig.description;
   const defaultName = siteConfig.name;
@@ -101,7 +103,7 @@ export function BrandingOGPreview() {
       <div
         className="flex flex-col gap-4 px-4 py-3 border-b bg-muted/20"
         role="group"
-        aria-label="OG image preview controls"
+        aria-label={t.controls}
       >
         <div className="flex items-center gap-2">
           <div aria-hidden="true" className="flex items-center gap-2">
@@ -116,7 +118,7 @@ export function BrandingOGPreview() {
           </div>
           <div className="flex items-center gap-2">
             <TypographyMuted className="text-xs" id="hire-label">
-              Available for hire
+              {t.hire}
             </TypographyMuted>
             <Switch
               checked={availableForHire}
@@ -130,15 +132,15 @@ export function BrandingOGPreview() {
           </div>
         </div>
 
-        <fieldset className="border-0 p-0 m-0" aria-label="OG image fields">
+        <fieldset className="border-0 p-0 m-0" aria-label={t.fields}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <InputGroup>
               <InputGroupInput
                 autoComplete="off"
                 value={titleInput}
                 onChange={(e) => dispatch({ titleInput: e.target.value })}
-                placeholder="Title"
-                aria-label={`Title (default: ${defaultTitle})`}
+                placeholder={t.title}
+                aria-label={t.titleAria.replace("{d}", defaultTitle)}
               />
               <InputGroupAddon aria-hidden="true">
                 <TextTIcon size={16} />
@@ -149,8 +151,8 @@ export function BrandingOGPreview() {
                 autoComplete="off"
                 value={descriptionInput}
                 onChange={(e) => dispatch({ descriptionInput: e.target.value })}
-                placeholder="Description"
-                aria-label={`Description (default: ${defaultDescription})`}
+                placeholder={t.description}
+                aria-label={t.descriptionAria.replace("{d}", defaultDescription)}
               />
               <InputGroupAddon aria-hidden="true">
                 <AlignLeftIcon size={16} />
@@ -161,8 +163,8 @@ export function BrandingOGPreview() {
                 autoComplete="off"
                 value={nameInput}
                 onChange={(e) => dispatch({ nameInput: e.target.value })}
-                placeholder="Name"
-                aria-label={`Name (default: ${defaultName})`}
+                placeholder={t.name}
+                aria-label={t.nameAria.replace("{d}", defaultName)}
               />
               <InputGroupAddon aria-hidden="true">
                 <UserIcon size={16} />
@@ -173,8 +175,8 @@ export function BrandingOGPreview() {
                 autoComplete="off"
                 value={roleInput}
                 onChange={(e) => dispatch({ roleInput: e.target.value })}
-                placeholder="Role"
-                aria-label={`Role (default: ${defaultRole})`}
+                placeholder={t.role}
+                aria-label={t.roleAria.replace("{d}", defaultRole)}
               />
               <InputGroupAddon aria-hidden="true">
                 <BriefcaseIcon size={16} />
@@ -185,8 +187,8 @@ export function BrandingOGPreview() {
                 autoComplete="off"
                 value={domainInput}
                 onChange={(e) => dispatch({ domainInput: e.target.value })}
-                placeholder="Domain"
-                aria-label={`Domain (default: ${defaultDomain})`}
+                placeholder={t.domain}
+                aria-label={t.domainAria.replace("{d}", defaultDomain)}
               />
               <InputGroupAddon aria-hidden="true">
                 <GlobeIcon size={16} />
@@ -197,8 +199,8 @@ export function BrandingOGPreview() {
                 autoComplete="off"
                 value={tagsInput}
                 onChange={(e) => dispatch({ tagsInput: e.target.value })}
-                placeholder="tag1, tag2, ..."
-                aria-label="Tags, comma separated"
+                placeholder={t.tagsPlaceholder}
+                aria-label={t.tagsAria}
               />
               <InputGroupAddon aria-hidden="true">
                 <TagIcon size={16} />
@@ -214,7 +216,7 @@ export function BrandingOGPreview() {
       >
         <NextImage
           src={ogPath}
-          alt={`Open Graph image preview for “${title}”`}
+          alt={t.previewAlt.replace("{title}", title)}
           width={1200}
           height={630}
           unoptimized

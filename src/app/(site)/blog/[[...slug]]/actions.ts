@@ -8,6 +8,7 @@ import { blogCommentLikes, blogComments, blogPosts, blogReactions, blogReads } f
 import { source } from "@/lib/source";
 import { sanitizeText, ValidationError, validateLength } from "@/lib/text";
 import { getAuth as auth } from "@/lib/auth";
+import { getDictionary } from "@/lib/i18n/server";
 import { and, count, desc, eq, inArray, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
@@ -296,18 +297,18 @@ export async function submitComment(
 ): Promise<{ success: true; id: number } | { success: false; error: string }> {
     try {
         const { userId, name, image } = await auth();
-        if (!userId) return { success: false, error: "You must be signed in to leave a comment." };
+        if (!userId) return { success: false, error: (await getDictionary()).guestbook.errors.signInComment };
 
         const trimmed = sanitizeText(body);
         validateLength(trimmed, { min: MIN_BODY_LENGTH, max: MAX_BODY_LENGTH, label: "Comment" });
 
         const postId = await getOrCreatePost(slug);
-        if (postId === null) return { success: false, error: "Post not found." };
+        if (postId === null) return { success: false, error: (await getDictionary()).guestbook.errors.postNotFound };
 
         let resolvedParentId: number | null = null;
         if (parentId !== undefined && parentId !== null) {
             if (!Number.isInteger(parentId)) {
-                return { success: false, error: "Invalid parent comment." };
+                return { success: false, error: (await getDictionary()).guestbook.errors.parentInvalid };
             }
 
             const [parent] = await db
@@ -322,7 +323,7 @@ export async function submitComment(
                 )
                 .limit(1);
 
-            if (!parent) return { success: false, error: "Parent comment not found." };
+            if (!parent) return { success: false, error: (await getDictionary()).guestbook.errors.parentNotFound };
             resolvedParentId = parent.id;
         }
 
@@ -336,7 +337,7 @@ export async function submitComment(
     } catch (err) {
         if (err instanceof ValidationError) return { success: false, error: err.message };
         console.error("[submitComment]", err);
-        return { success: false, error: "Something went wrong. Please try again." };
+        return { success: false, error: (await getDictionary()).guestbook.errors.tryAgain };
     }
 }
 
@@ -345,7 +346,7 @@ export async function deleteComment(
 ): Promise<{ success: true } | { success: false; error: string }> {
     try {
         const { userId } = await auth();
-        if (!userId) return { success: false, error: "Not authenticated." };
+        if (!userId) return { success: false, error: (await getDictionary()).guestbook.errors.notAuthenticated };
 
         const [comment] = await db
             .select({ userId: blogComments.userId, postId: blogComments.postId })
@@ -353,13 +354,13 @@ export async function deleteComment(
             .where(and(eq(blogComments.id, commentId), eq(blogComments.isDeleted, false)))
             .limit(1);
 
-        if (!comment) return { success: false, error: "Comment not found." };
+        if (!comment) return { success: false, error: (await getDictionary()).guestbook.errors.commentNotFound };
 
         const isOwner = comment.userId === userId;
         const isSiteOwner = userId === process.env.OWNER_USER_ID;
 
         if (!isOwner && !isSiteOwner)
-            return { success: false, error: "You don't have permission to delete this comment." };
+            return { success: false, error: (await getDictionary()).guestbook.errors.noPermission };
 
         await db
             .update(blogComments)
@@ -375,7 +376,7 @@ export async function deleteComment(
         if (post) revalidatePath(`/blog/${post.slug}`);
         return { success: true };
     } catch {
-        return { success: false, error: "Something went wrong." };
+        return { success: false, error: (await getDictionary()).guestbook.errors.generic };
     }
 }
 
@@ -385,7 +386,7 @@ export async function togglePinComment(
     try {
         const { userId } = await auth();
         if (!userId || userId !== process.env.OWNER_USER_ID)
-            return { success: false, error: "Not authorized." };
+            return { success: false, error: (await getDictionary()).guestbook.errors.notAuthorized };
 
         const [comment] = await db
             .select({ isPinned: blogComments.isPinned, postId: blogComments.postId })
@@ -393,7 +394,7 @@ export async function togglePinComment(
             .where(eq(blogComments.id, commentId))
             .limit(1);
 
-        if (!comment) return { success: false, error: "Comment not found." };
+        if (!comment) return { success: false, error: (await getDictionary()).guestbook.errors.commentNotFound };
 
         await db
             .update(blogComments)
@@ -409,7 +410,7 @@ export async function togglePinComment(
         if (post) revalidatePath(`/blog/${post.slug}`);
         return { success: true };
     } catch {
-        return { success: false, error: "Something went wrong." };
+        return { success: false, error: (await getDictionary()).guestbook.errors.generic };
     }
 }
 
@@ -418,7 +419,7 @@ export async function toggleCommentLike(
 ): Promise<{ success: true; liked: boolean } | { success: false; error: string }> {
     try {
         const { userId } = await auth();
-        if (!userId) return { success: false, error: "You must be signed in to like comments." };
+        if (!userId) return { success: false, error: (await getDictionary()).guestbook.errors.signInLike };
 
         const [existing] = await db
             .select()
@@ -436,6 +437,6 @@ export async function toggleCommentLike(
         await db.insert(blogCommentLikes).values({ commentId, userId });
         return { success: true, liked: true };
     } catch {
-        return { success: false, error: "Something went wrong." };
+        return { success: false, error: (await getDictionary()).guestbook.errors.generic };
     }
 }

@@ -14,9 +14,12 @@ import { CaretRightIcon } from "@/components/shared/icons";
 import Link from "next/link";
 import { unstable_rethrow } from "next/navigation";
 import { connection } from "next/server";
+import { getDictionary } from "@/lib/i18n/server";
 
 export async function GuestbookTeaser() {
   await connection();
+  const dict = await getDictionary();
+  const content = dict.home.guestbookTeaser;
 
   let entries: Awaited<ReturnType<typeof getGuestbookPreview>>;
   try {
@@ -28,18 +31,19 @@ export async function GuestbookTeaser() {
   }
 
   return (
-    <Section aria-label="Guestbook preview">
-      <TypographyH2 className="sr-only">From the guestbook</TypographyH2>
+    <Section aria-label={content.section}>
+      <TypographyH2 className="sr-only">{content.section}</TypographyH2>
       <Reveal className="group/iso">
         <div className="mb-8 grid items-center gap-8 md:grid-cols-[minmax(0,1fr)_20rem] lg:grid-cols-[minmax(0,1fr)_24rem]">
           <div className="flex min-w-0 flex-col items-start gap-6">
             <TypographyLead className="max-w-2xl">
-              People who stopped by and{" "}
-              <TypographyMark>left a trace</TypographyMark>. Add yours.
+              {content.leadPrefix}{" "}
+              <TypographyMark>{content.leadHighlight}</TypographyMark>
+              {content.leadSuffix}
             </TypographyLead>
             <Button asChild variant="outline">
               <Link href="/guestbook">
-                Sign the guestbook
+                {content.signButton}
                 <CaretRightIcon
                   data-icon="inline-end"
                   className="size-3.5"

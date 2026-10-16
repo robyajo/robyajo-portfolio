@@ -10,11 +10,12 @@ import {
   type MouseEvent as ReactMouseEvent,
 } from "react";
 import { flushSync } from "react-dom";
+import { useDictionary } from "@/lib/i18n/provider";
 
 const themes = [
-  ["light", SunIcon, "Switch to light theme"],
-  ["dark", MoonIcon, "Switch to dark theme"],
-  ["system", MonitorIcon, "Use system theme"],
+  ["light", SunIcon, "light"],
+  ["dark", MoonIcon, "dark"],
+  ["system", MonitorIcon, "system"],
 ] as const;
 
 function applyTheme(
@@ -83,6 +84,7 @@ type ThemeToggleProps = Omit<
 
 export function ThemeToggle({ className, ...props }: ThemeToggleProps) {
   const { setTheme, theme } = useTheme();
+  const dict = useDictionary();
   const mounted = useSyncExternalStore(
     () => () => {},
     () => true,
@@ -94,16 +96,16 @@ export function ThemeToggle({ className, ...props }: ThemeToggleProps) {
       type="single"
       value={mounted ? (theme ?? "") : ""}
       spacing={0.5}
-      aria-label="Theme selection"
+      aria-label={dict.common.themeSelection}
       data-theme-toggle=""
       className={cn("rounded-full border p-1", className)}
       {...props}
     >
-      {themes.map(([key, Icon, label]) => (
+      {themes.map(([key, Icon]) => (
         <ToggleGroupItem
           key={key}
           value={key}
-          aria-label={label}
+          aria-label={dict.common.themeNames[key]}
           onClick={(event) => applyTheme(setTheme, key, event)}
           className="size-6.5 min-w-0 cursor-pointer rounded-full p-0 text-muted-foreground hover:bg-transparent hover:text-foreground data-[state=on]:bg-foreground/10 data-[state=on]:text-foreground"
         >

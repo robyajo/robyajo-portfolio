@@ -8,30 +8,35 @@ import { JsonLd } from "@/components/shared/json-ld";
 import { Section } from "@/components/layouts/page";
 import { siteConfig } from "@/lib/config";
 import { buildMeta } from "@/lib/metadata";
+import { getDictionary } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
 const homeTitle = `${siteConfig.name} – ${siteConfig.role}`;
 
-export const metadata: Metadata = {
-  ...buildMeta({
-    title: siteConfig.name,
-    pageTitle: homeTitle,
-    description: siteConfig.description,
-    path: "home",
-    canonicalPath: "/",
-    type: "profile",
-  }),
-  title: { absolute: homeTitle },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const dict = await getDictionary();
+  return {
+    ...buildMeta({
+      title: siteConfig.name,
+      pageTitle: homeTitle,
+      description: dict.footer.description,
+      path: "home",
+      canonicalPath: "/",
+      type: "profile",
+    }),
+    title: { absolute: homeTitle },
+  };
+}
 
-export default function Page() {
+export default async function Page() {
+  const dict = await getDictionary();
   return (
     <>
       <JsonLd
         type="webpage"
         title={siteConfig.name}
-        description={siteConfig.description}
+        description={dict.footer.description}
         canonicalUrl={`${siteConfig.baseUrl}`}
       />
       <Hero />

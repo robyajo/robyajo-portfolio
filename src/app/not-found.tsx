@@ -9,8 +9,10 @@ import {
   TypographyMark,
 } from "@/components/ui/typography";
 import Link from "next/link";
+import { getDictionary } from "@/lib/i18n/server";
 
-export default function NotFound() {
+export default async function NotFound() {
+  const content = (await getDictionary()).notFound;
   return (
     <main className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden">
       <Empty className="relative z-10 flex-none gap-4">
@@ -25,12 +27,12 @@ export default function NotFound() {
               variant="none"
               className="text-lg font-semibold tracking-tight"
             >
-              Even my 404 has motion
+              {content.title}
             </Text>
             <TypographyMuted>
-              I spent weeks on this site and you landed on the{" "}
-              <TypographyMark>one page that doesn’t exist</TypographyMark>.
-              Respect the effort.
+              {content.bodyPrefix}{" "}
+              <TypographyMark>{content.bodyHighlight}</TypographyMark>
+              {content.bodySuffix}
             </TypographyMuted>
           </div>
         </EmptyHeader>
@@ -39,7 +41,7 @@ export default function NotFound() {
           <Button asChild size="lg">
             <Link href="/" className="flex items-center gap-2">
               <HouseIcon aria-hidden="true" data-icon="inline-start" />
-              Go Home
+              {content.goHome}
             </Link>
           </Button>
         </EmptyContent>

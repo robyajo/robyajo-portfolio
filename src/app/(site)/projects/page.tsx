@@ -11,39 +11,43 @@ import {
 } from "@/components/ui/typography";
 import { siteConfig } from "@/lib/config";
 import { buildMeta } from "@/lib/metadata";
+import { getDictionary } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
-export const metadata: Metadata = buildMeta({
-  title: "Projects",
-  pageTitle: "Projects",
-  description:
-    "A mix of real systems, useful tools, and controlled chaos. From event websites to Discord bots to the experiments living on my GitHub.",
-  path: "home / projects",
-  canonicalPath: "/projects",
-  type: "website",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const page = (await getDictionary()).projectsPage;
+  return buildMeta({
+    title: page.title,
+    pageTitle: page.title,
+    description: page.description,
+    path: "home / projects",
+    canonicalPath: "/projects",
+    type: "website",
+  });
+}
 
-export default function ProjectsPage() {
+export default async function ProjectsPage() {
+  const page = (await getDictionary()).projectsPage;
   return (
     <>
       <JsonLd
         type="webpage"
-        title="Projects"
-        description="A mix of real systems, useful tools, and controlled chaos. From event websites to Discord bots to the experiments living on my GitHub."
+        title={page.title}
+        description={page.shortDescription}
         canonicalUrl={`${siteConfig.baseUrl}/projects`}
       />
-      <Section variant="hero" aria-label="Projects header">
+      <Section variant="hero" aria-label={page.headerAria}>
         <HeroWithArt art={<PageArt name="projects" />}>
-          <TypographyH1>Projects</TypographyH1>
+          <TypographyH1>{page.title}</TypographyH1>
           <TypographyLead>
-            Everything I actually shipped, plus{" "}
-            <TypographyMark>a few things I started at midnight</TypographyMark>{" "}
-            and never quite finished.
+            {page.leadPrefix}{" "}
+            <TypographyMark>{page.leadHighlight}</TypographyMark>{" "}
+            {page.leadSuffix}
           </TypographyLead>
         </HeroWithArt>
       </Section>
-      <Section variant="flush" aria-label="Projects list">
+      <Section variant="flush" aria-label={page.listAria}>
         <Suspense fallback={<ProjectsSkeleton count={6} />}>
           <ProjectGrid />
         </Suspense>

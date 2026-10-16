@@ -23,6 +23,7 @@ import { padIndex } from "@/lib/text";
 import type { Route } from "next";
 import { Suspense } from "react";
 import { getPublicProjects } from "@/lib/projects";
+import { getDictionary } from "@/lib/i18n/server";
 import { unstable_rethrow } from "next/navigation";
 
 export async function ProjectGrid({
@@ -30,6 +31,8 @@ export async function ProjectGrid({
 }: {
   headingLevel?: "h2" | "h3";
 }) {
+  const dict = await getDictionary();
+  const content = dict.home.projects;
   let projects: Awaited<ReturnType<typeof getPublicProjects>>;
   try {
     projects = await getPublicProjects();
@@ -42,7 +45,7 @@ export async function ProjectGrid({
   if (projects.length === 0) {
     return (
       <TypographyMuted className="py-12 text-center font-mono text-sm">
-        {"// nothing shipped yet. check back soon."}
+        {content.empty}
       </TypographyMuted>
     );
   }
@@ -64,7 +67,7 @@ export async function ProjectGrid({
               </TypographyMuted>
               <ul
                 role="list"
-                aria-label="Technologies used"
+                aria-label={content.techAria}
                 className="flex flex-wrap gap-2 pt-2"
               >
                 {project.highlights.map((tag) => (
@@ -75,7 +78,7 @@ export async function ProjectGrid({
                   </li>
                 ))}
               </ul>
-              <nav aria-label={`Links for ${project.title}`} className="pt-4">
+              <nav aria-label={`${content.linksFor} ${project.title}`} className="pt-4">
                 <ButtonGroup>
                   {project.live && (
                     <>
@@ -84,7 +87,7 @@ export async function ProjectGrid({
                           href={project.live as Route}
                           target="_blank"
                           rel="noopener noreferrer"
-                          aria-label={`View ${project.title} live site`}
+                          aria-label={`${content.liveAria} ${project.title}`}
                         >
                           <ArrowUpRightIcon
                             data-icon="inline-start"
@@ -92,7 +95,7 @@ export async function ProjectGrid({
                             aria-hidden="true"
                           />
 
-                          <span>Live</span>
+                          <span>{content.live}</span>
                         </Link>
                       </Button>
                       <ButtonGroupSeparator />
@@ -104,7 +107,7 @@ export async function ProjectGrid({
                         href={project.github as Route}
                         target="_blank"
                         rel="noopener noreferrer"
-                        aria-label={`View ${project.title} on GitHub`}
+                        aria-label={`${content.githubAria} ${project.title}`}
                       >
                         <GithubLogoIcon
                           data-icon="inline-start"
@@ -127,18 +130,20 @@ export async function ProjectGrid({
   );
 }
 
-export function BuiltThings() {
+export async function BuiltThings() {
+  const dict = await getDictionary();
+  const content = dict.home.projects;
   return (
-    <Section aria-label="Things I've Built">
-      <TypographyH2 className="sr-only">Things I&apos;ve built</TypographyH2>
+    <Section aria-label={content.heading}>
+      <TypographyH2 className="sr-only">{content.heading}</TypographyH2>
       <Reveal>
         <div className="mb-12 max-w-3xl">
           <TypographyLead>
-            A mix of{" "}
+            {content.leadPrefix}{" "}
             <TypographyMark>
-              real systems, useful tools, and controlled chaos
+              {content.leadHighlight}
             </TypographyMark>
-            .
+            {content.leadSuffix}
           </TypographyLead>
         </div>
       </Reveal>
@@ -150,18 +155,18 @@ export function BuiltThings() {
           <GitChaos />
         </IsoStage>
         <TypographyLead className="max-w-2xl">
-          There’s more{" "}
+          {content.morePrefix}{" "}
           <TypographyMark>
-            experiments, half-built tools, and questionable decisions
+            {content.moreHighlight}
           </TypographyMark>{" "}
-          living on my GitHub.
+          {content.moreSuffix}
         </TypographyLead>
         <Button asChild size="lg" className="rounded-lg font-semibold">
           <Link
             href="https://github.com/robyajo"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Explore the chaos, view all projects on GitHub"
+            aria-label={content.exploreAria}
           >
             <GithubLogoIcon
               data-icon="inline-start"
@@ -169,7 +174,7 @@ export function BuiltThings() {
               aria-hidden="true"
             />
 
-            <span>Explore the Chaos</span>
+            <span>{content.explore}</span>
             <ArrowUpRightIcon
               data-icon="inline-end"
               className="size-4 opacity-70"

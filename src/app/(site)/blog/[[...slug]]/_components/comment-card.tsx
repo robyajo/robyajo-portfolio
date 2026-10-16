@@ -24,6 +24,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { cn } from "@/lib/cn";
 import { timeAgo } from "@/lib/date";
 import { SafeSignInButton as SignInButton } from "@/components/shared/auth-session";
+import { useDictionary, useLocale } from "@/lib/i18n/provider";
 import { useEffect, useRef, useState, useTransition } from "react";
 
 const COMMENT_MAX_LENGTH = 1000;
@@ -40,6 +41,7 @@ function LikeButton({
   pending: boolean;
   onToggle: () => void;
 }) {
+  const t = useDictionary().blog.comments;
   return (
     <Button
       variant={liked ? "default" : "outline"}
@@ -48,7 +50,7 @@ function LikeButton({
       disabled={pending}
       aria-pressed={liked}
       aria-busy={pending}
-      aria-label={liked ? `Unlike (${count})` : `Like (${count})`}
+      aria-label={liked ? `${t.unlike} (${count})` : `${t.like} (${count})`}
     >
       {pending ? (
         <Spinner
@@ -67,7 +69,7 @@ function LikeButton({
       {count > 0 ? (
         <span className="tabular-nums">{count}</span>
       ) : (
-        <span className="hidden sm:inline">Like</span>
+        <span className="hidden sm:inline">{t.like}</span>
       )}
     </Button>
   );
@@ -96,6 +98,8 @@ export function CommentCard({
   const [replying, setReplying] = useState(false);
   const [isPending, startTransition] = useTransition();
   const replyRef = useRef<HTMLDivElement>(null);
+  const t = useDictionary().blog.comments;
+  const locale = useLocale();
 
   const isOptimistic = comment.id < 0;
   const isLikePending = pendingLikes.has(comment.id);
@@ -152,12 +156,12 @@ export function CommentCard({
                   aria-live="polite"
                 >
                   <Spinner className="size-2.5" aria-hidden="true" />
-                  Sending…
+                  {t.sending}
                 </TypographyMuted>
               ) : (
                 <TypographyMuted className="text-xs tabular-nums">
                   <time dateTime={comment.createdAt} suppressHydrationWarning>
-                    {timeAgo(comment.createdAt)}
+                    {timeAgo(comment.createdAt, locale)}
                   </time>
                 </TypographyMuted>
               )}
@@ -167,7 +171,7 @@ export function CommentCard({
                   className="h-auto px-1.5 text-2xs"
                 >
                   <PushPinSimpleIcon size={9} aria-hidden="true" />
-                  Pinned
+                  {t.pinned}
                 </Badge>
               )}
             </div>
@@ -201,14 +205,14 @@ export function CommentCard({
                         disabled={isPending}
                         aria-expanded={replying}
                         aria-busy={isPending}
-                        aria-label="Reply to comment"
+                        aria-label={t.replyAria}
                       >
                         <ArrowBendDownRightIcon
                           data-icon="inline-start"
                           size={14}
                           aria-hidden="true"
                         />
-                        Reply
+                        {t.reply}
                         {comment.replies.length > 0 && !replying && (
                           <span className="tabular-nums opacity-60">
                             {comment.replies.length}
@@ -223,9 +227,9 @@ export function CommentCard({
                             size={14}
                             aria-hidden="true"
                           />
-                          Reply
+                          {t.reply}
                           <span className="text-xs text-muted-foreground">
-                            (sign in)
+                            {t.signInSuffix}
                           </span>
                         </Button>
                       </SignInButton>
@@ -240,7 +244,7 @@ export function CommentCard({
                       variant="outline"
                       size="sm"
                       onClick={() => onDelete(comment.id)}
-                      aria-label="Delete comment"
+                      aria-label={t.deleteComment}
                       className="text-destructive border-destructive/20 hover:text-destructive hover:bg-destructive/10 hover:border-destructive/40"
                     >
                       <TrashIcon
@@ -249,7 +253,7 @@ export function CommentCard({
                         className="text-destructive"
                         aria-hidden="true"
                       />
-                      <span className="hidden sm:inline">Delete</span>
+                      <span className="hidden sm:inline">{t.delete}</span>
                     </Button>
                   </>
                 )}
@@ -267,9 +271,9 @@ export function CommentCard({
               >
                 <Composer
                   maxLength={COMMENT_MAX_LENGTH}
-                  placeholder={`Reply to ${comment.user.name}…`}
-                  submitLabel="Reply"
-                  ariaLabel="Write a reply"
+                  placeholder={t.replyTo.replace("{name}", comment.user.name)}
+                  submitLabel={t.reply}
+                  ariaLabel={t.writeReply}
                   rows={2}
                   autoFocus
                   maxHeight={240}
@@ -294,7 +298,7 @@ export function CommentCard({
       {comment.replies.length > 0 && (
         <ul
           role="list"
-          aria-label="Replies"
+          aria-label={t.replies}
           className="ml-8 sm:ml-14 border-l border-border/60 divide-y divide-border/40"
         >
           {comment.replies.map((reply) => (

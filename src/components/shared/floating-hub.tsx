@@ -33,6 +33,8 @@ import {
 } from "@/components/shared/hub-widgets";
 import { Avatar } from "@/components/engagement/avatar";
 import { SafeSignInButton as SignInButton, useSafeSignOut as useSignOut, useSafeUser as useUser } from "@/components/shared/auth-session";
+import { useDictionary } from "@/lib/i18n/provider";
+import type { Dictionary } from "@/lib/i18n/id";
 import { useDraggable } from "@/hooks/use-draggable";
 import { useEngagementAnchor } from "@/hooks/use-engagement-anchor";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -51,22 +53,19 @@ function HubLabel({ children }: { children: React.ReactNode }) {
   );
 }
 
-function greetingFor(pathname: string) {
+function greetingFor(pathname: string, hub: Dictionary["hub"]): [string, string] {
   if (pathname.startsWith("/blog/"))
-    return [
-      "enjoying the read?",
-      "Reactions, comments and the repo live here.",
-    ];
-  if (pathname === "/resume")
-    return ["hiring? nice.", "The PDF is one tap away."];
+    return [hub.greetBlog, hub.greetBlogSub];
+  if (pathname === "/resume") return [hub.greetResume, hub.greetResumeSub];
   if (pathname.startsWith("/guestbook"))
-    return ["leaving a mark?", "Sign in below, then say hi."];
-  return ["psst, shortcuts", "The stuff that didn't fit in the header."];
+    return [hub.greetGuestbook, hub.greetGuestbookSub];
+  return [hub.greetDefault, hub.greetDefaultSub];
 }
 
 function HubHeader() {
   const pathname = usePathname();
-  const [title, subtitle] = greetingFor(pathname);
+  const dict = useDictionary();
+  const [title, subtitle] = greetingFor(pathname, dict.hub);
   return (
     <div className="flex items-center gap-3">
       <span className="flex size-12 shrink-0 items-center justify-center rounded-xl border border-border bg-muted/30 text-foreground">
@@ -89,6 +88,7 @@ function HubHeader() {
 }
 
 function DragTip() {
+  const dict = useDictionary();
   return (
     <div className="flex items-center gap-2 text-muted-foreground">
       <svg
@@ -107,7 +107,7 @@ function DragTip() {
         />
       </svg>
       <Text as="p" variant="muted" className="text-xs">
-        Tip: drag this button anywhere. It remembers the spot.
+        {dict.hub.dragTip}
       </Text>
     </div>
   );
@@ -115,12 +115,14 @@ function DragTip() {
 
 function AuthSection({ onClose }: { onClose: () => void }) {
   const pathname = usePathname();
+  const dict = useDictionary();
+  const hub = dict.hub;
   const { user, isSignedIn, isLoaded } = useUser();
   const { signOut } = useSignOut();
 
   return (
     <section className="flex flex-col gap-2">
-      <HubLabel>Account</HubLabel>
+      <HubLabel>{hub.account}</HubLabel>
       {!isLoaded ? (
         <div
           aria-hidden="true"
@@ -132,7 +134,7 @@ function AuthSection({ onClose }: { onClose: () => void }) {
             <span className="relative">
               <Avatar
                 imageUrl={user.imageUrl}
-                name={user.fullName || user.username || "You"}
+                name={user.fullName || user.username || hub.you}
                 size="size-8"
               />
               <span
@@ -144,7 +146,7 @@ function AuthSection({ onClose }: { onClose: () => void }) {
         >
           <div className="min-w-0 flex-1">
             <Text as="p" variant="small" className="truncate text-foreground">
-              {user.fullName || user.username || "You"}
+              {user.fullName || user.username || hub.you}
             </Text>
             {user.primaryEmailAddress?.emailAddress && (
               <Text as="p" variant="muted" className="truncate text-xs">
@@ -167,17 +169,17 @@ function AuthSection({ onClose }: { onClose: () => void }) {
               aria-hidden="true"
               className="size-3.5"
             />
-            Sign out
+            {hub.signOut}
           </Button>
         </Pass>
       ) : (
         <Pass stub={<EmptyAvatar />}>
           <div className="min-w-0 flex-1">
             <Text as="p" variant="small" className="text-foreground">
-              No pass yet
+              {hub.noPass}
             </Text>
             <Text as="p" variant="muted" className="text-xs">
-              Sign in to comment, react and sign.
+              {hub.signInHint}
             </Text>
           </div>
           <SignInButton
@@ -195,7 +197,7 @@ function AuthSection({ onClose }: { onClose: () => void }) {
                 aria-hidden="true"
                 className="size-3.5"
               />
-              Sign in
+              {hub.signIn}
             </Button>
           </SignInButton>
         </Pass>
@@ -212,6 +214,8 @@ function HubBody({
   onClose: () => void;
 }) {
   const pathname = usePathname();
+  const dict = useDictionary();
+  const hub = dict.hub;
   const engagement = useEngagementAnchor();
   const showAuth =
     pathname.startsWith("/guestbook") || pathname.startsWith("/blog");
@@ -224,7 +228,7 @@ function HubBody({
 
       {engagement.present && (
         <section className="flex flex-col gap-2">
-          <HubLabel>This post</HubLabel>
+          <HubLabel>{hub.thisPost}</HubLabel>
           <ReadingProgress />
           <Button
             type="button"
@@ -238,14 +242,16 @@ function HubBody({
             <CommentBubble count={engagement.commentCount} />
             <span className="flex min-w-0 flex-1 flex-col">
               <Text as="span" variant="small" className="text-foreground">
-                Reactions &amp; comments
+                {hub.reactionsComments}
               </Text>
               <Text as="span" variant="muted" className="text-xs">
                 {engagement.commentCount === 0
-                  ? "Quiet in here. Be the first to say something"
+                  ? hub.quietHere
                   : engagement.commentCount != null
-                    ? `Jump to the ${engagement.commentCount} ${engagement.commentCount === 1 ? "comment" : "comments"}`
-                    : "Jump to the discussion"}
+                    ? engagement.commentCount === 1
+                      ? hub.jumpToComment
+                      : hub.jumpToComments.replace("{count}", String(engagement.commentCount))
+                    : hub.jumpToDiscussion}
               </Text>
             </span>
             <ArrowDownIcon
@@ -259,7 +265,7 @@ function HubBody({
 
       {isResume && (
         <section className="flex flex-col gap-2">
-          <HubLabel>Resume</HubLabel>
+          <HubLabel>{hub.resume}</HubLabel>
           <Button asChild variant="secondary" className={CARD_CLASS}>
             <a href="/api/resume/download" download onClick={onClose}>
               <DownloadIcon
@@ -269,10 +275,10 @@ function HubBody({
               />
               <span className="flex min-w-0 flex-1 flex-col">
                 <Text as="span" variant="small" className="text-foreground">
-                  Download resume
+                  {hub.downloadResume}
                 </Text>
                 <Text as="span" variant="muted" className="truncate text-xs">
-                  Grab the latest PDF
+                  {hub.grabPdf}
                 </Text>
               </span>
             </a>
@@ -283,7 +289,7 @@ function HubBody({
       {showAuth && <AuthSection onClose={onClose} />}
 
       <section className="flex flex-col gap-2">
-        <HubLabel>Repository</HubLabel>
+        <HubLabel>{hub.repository}</HubLabel>
         {repoCard}
       </section>
 
@@ -293,6 +299,8 @@ function HubBody({
 }
 
 export function FloatingHub({ repoCard }: { repoCard: React.ReactNode }) {
+  const dict = useDictionary();
+  const hub = dict.hub;
   const isMobile = useIsMobile();
   const [open, setOpen] = useState(false);
   const [boundary, setBoundary] = useState<Element | null>(null);
@@ -316,7 +324,7 @@ export function FloatingHub({ repoCard }: { repoCard: React.ReactNode }) {
       type="button"
       variant="secondary"
       size="icon"
-      aria-label={open ? "Close quick menu" : "Open quick menu"}
+      aria-label={open ? hub.closeMenu : hub.openMenu}
       aria-haspopup="dialog"
       aria-expanded={open}
       {...handlers}
@@ -354,9 +362,9 @@ export function FloatingHub({ repoCard }: { repoCard: React.ReactNode }) {
           {fab}
           <Drawer open={open} onOpenChange={setOpen}>
             <DrawerContent>
-              <DrawerTitle className="sr-only">Quick menu</DrawerTitle>
+              <DrawerTitle className="sr-only">{hub.quickMenu}</DrawerTitle>
               <DrawerDescription className="sr-only">
-                Quick actions for this page and the source repository.
+                {hub.quickActions}
               </DrawerDescription>
               <ScrollArea className="w-full [&>[data-slot=scroll-area-viewport]]:max-h-[70dvh]">
                 <div className="mx-auto w-full max-w-md">
@@ -381,7 +389,7 @@ export function FloatingHub({ repoCard }: { repoCard: React.ReactNode }) {
               }
             }}
             className="max-h-[80vh] w-96 overflow-y-auto p-0"
-            aria-label="Quick menu"
+            aria-label={hub.quickMenu}
           >
             <HubBody repoCard={repoCard} onClose={() => setOpen(false)} />
           </PopoverContent>

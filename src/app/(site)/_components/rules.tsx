@@ -11,26 +11,28 @@ import {
   SectionLabel,
 } from "@/components/ui/typography";
 import { padIndex } from "@/lib/text";
+import { getDictionary } from "@/lib/i18n/server";
 
-export function RulesIFollow() {
+export async function RulesIFollow() {
+  const dict = await getDictionary();
+  const content = dict.home.rules;
   return (
-    <Section aria-label="Rules I Follow">
-      <TypographyH2 className="sr-only">Rules I follow</TypographyH2>
+    <Section aria-label={content.section}>
+      <TypographyH2 className="sr-only">{content.section}</TypographyH2>
       <div className="group/iso grid items-center gap-8 md:grid-cols-[minmax(0,1fr)_20rem] lg:grid-cols-[minmax(0,1fr)_24rem]">
         <TypographyLead className="max-w-3xl">
-          I build with{" "}
+          {content.leadPrefix}{" "}
           <TypographyMark>
-            clarity, structure, and a bias toward automation
+            {content.leadHighlight}
           </TypographyMark>
-          , because software should feel simple even when the logic behind it
-          isn&apos;t.
+          {content.leadSuffix}
         </TypographyLead>
         <ArtStage className="order-first -mx-gutter h-44 md:order-none md:mx-0 md:h-auto md:aspect-video">
           <PageArt name="principles" />
         </ArtStage>
       </div>
       <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-10">
-        {rules.map((item, index) => (
+        {content.items.map((item, index) => (
           <Reveal key={item.title} delay={index * 90}>
             <div className="space-y-2">
               <SectionLabel pixel className="text-base text-(--brand-text)">
@@ -47,26 +49,3 @@ export function RulesIFollow() {
     </Section>
   );
 }
-
-const rules = [
-  {
-    title: "If It's Repetitive, Automate It",
-    description:
-      "Manual repetition is usually a signal. Whether it's a CLI tool, a script, or a small utility, I'd rather build it once than repeat it twice.",
-  },
-  {
-    title: "Clarity Beats Cleverness",
-    description:
-      "Readable code and predictable behavior matter more than impressive abstractions. Future-me should understand it without a debugging session.",
-  },
-  {
-    title: "Think in Systems, Not Screens",
-    description:
-      "Components should work together as a structured whole. State, data flow, and UI patterns should scale without becoming fragile.",
-  },
-  {
-    title: "Simple on the Surface",
-    description:
-      "Good software feels effortless to use. The complexity can exist. It just shouldn't leak into the interface.",
-  },
-];

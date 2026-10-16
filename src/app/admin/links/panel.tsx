@@ -100,6 +100,7 @@ import {
 } from "@/components/ui/empty";
 import { cn } from "@/lib/cn";
 import { TypographyMuted, TypographySmall } from "@/components/ui/typography";
+import { useDictionary } from "@/lib/i18n/provider";
 
 const linkTableFeatures = tableFeatures({
   rowSortingFeature,
@@ -107,27 +108,30 @@ const linkTableFeatures = tableFeatures({
   sortFns,
 });
 
-const linkColumns: ColumnDef<typeof linkTableFeatures, AdminLink>[] = [
-  {
-    id: "path",
-    header: "Path",
-    accessorFn: (link) => formatPath(link.primary),
-  },
-  {
-    id: "target",
-    header: "Target",
-    accessorKey: "target",
-    enableSorting: false,
-  },
-  { id: "clicks", header: "Clicks", accessorKey: "clicks" },
-  {
-    id: "enabled",
-    header: "Enabled",
-    accessorKey: "enabled",
-    enableSorting: false,
-  },
-  { id: "actions", header: "Actions", enableSorting: false },
-];
+function useLinkColumns(): ColumnDef<typeof linkTableFeatures, AdminLink>[] {
+  const t = useDictionary().admin.links;
+  return [
+    {
+      id: "path",
+      header: t.colPath,
+      accessorFn: (link) => formatPath(link.primary),
+    },
+    {
+      id: "target",
+      header: t.colTarget,
+      accessorKey: "target",
+      enableSorting: false,
+    },
+    { id: "clicks", header: t.colClicks, accessorKey: "clicks" },
+    {
+      id: "enabled",
+      header: t.colEnabled,
+      accessorKey: "enabled",
+      enableSorting: false,
+    },
+    { id: "actions", header: t.colActions, enableSorting: false },
+  ];
+}
 
 const HEAD_CLASS: Record<string, string> = {
   target: "hidden md:table-cell",
@@ -189,6 +193,7 @@ function SlugPairFields({
   showSlugMessage?: boolean;
   onRemove?: () => void;
 }) {
+  const t = useDictionary().admin.links;
   return (
     <div className="space-y-1.5">
       <div className="flex items-start gap-2">
@@ -242,7 +247,7 @@ function SlugPairFields({
             className="size-9 shrink-0 text-destructive hover:text-destructive hover:bg-destructive/10"
             onClick={onRemove}
             disabled={disabled}
-            aria-label="Remove alias"
+            aria-label={t.removeAlias}
           >
             <TrashIcon className="size-4" />
           </Button>
@@ -308,6 +313,7 @@ function LinkForm({
     defaultValues,
     mode: "onSubmit",
   });
+  const t = useDictionary().admin.links;
   const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: "aliases",
@@ -327,12 +333,12 @@ function LinkForm({
           name="target"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Target URL</FormLabel>
+              <FormLabel>{t.targetLabel}</FormLabel>
               <FormControl>
                 <Input
                   autoComplete="off"
                   {...field}
-                  placeholder="https://… or mailto:you@example.com"
+                  placeholder={t.targetPlaceholder}
                   disabled={submitting}
                 />
               </FormControl>
@@ -345,12 +351,12 @@ function LinkForm({
         />
 
         <div className="space-y-1.5">
-          <Label>Primary path</Label>
+          <Label>{t.primaryPath}</Label>
           <SlugPairFields
             control={form.control}
             name="primary"
-            tagLabel="Tag (optional)"
-            slugLabel="Slug (required)"
+            tagLabel={t.tagAria}
+            slugLabel={t.slugAria}
             preview={primary}
             disabled={submitting}
             showSlugMessage
@@ -359,7 +365,7 @@ function LinkForm({
 
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <Label>Aliases</Label>
+            <Label>{t.aliases}</Label>
             <Button
               type="button"
               variant="outline"
@@ -382,8 +388,8 @@ function LinkForm({
                   key={row.id}
                   control={form.control}
                   name={`aliases.${i}`}
-                  tagLabel="Alias tag"
-                  slugLabel="Alias slug"
+                  tagLabel={t.aliasTagAria}
+                  slugLabel={t.aliasSlugAria}
                   preview={aliases[i] ?? { tag: "", slug: "" }}
                   disabled={submitting}
                   onRemove={() => remove(i)}
@@ -400,12 +406,12 @@ function LinkForm({
           name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Preview title</FormLabel>
+              <FormLabel>{t.previewTitle}</FormLabel>
               <FormControl>
                 <Input
                   autoComplete="off"
                   {...field}
-                  placeholder="Shown when the link is shared"
+                  placeholder={t.previewTitlePlaceholder}
                   disabled={submitting}
                 />
               </FormControl>
@@ -419,11 +425,11 @@ function LinkForm({
           name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Preview description</FormLabel>
+              <FormLabel>{t.previewDesc}</FormLabel>
               <FormControl>
                 <Textarea
                   {...field}
-                  placeholder="A sentence for the social card"
+                  placeholder={t.previewDescPlaceholder}
                   rows={2}
                   className="resize-none"
                   disabled={submitting}
@@ -437,8 +443,8 @@ function LinkForm({
         <SwitchField
           control={form.control}
           name="ogEnabled"
-          label="OpenGraph image"
-          description="Attach a social preview image (auto-generated if no URL below)."
+          label={t.ogLabel}
+          description={t.ogDescription}
           disabled={submitting}
         />
 
@@ -448,12 +454,12 @@ function LinkForm({
             name="ogImage"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Custom OG image URL</FormLabel>
+                <FormLabel>{t.ogImage}</FormLabel>
                 <FormControl>
                   <Input
                     autoComplete="off"
                     {...field}
-                    placeholder="https://… (blank = auto-generate)"
+                    placeholder={t.ogImagePlaceholder}
                     disabled={submitting}
                   />
                 </FormControl>
@@ -466,16 +472,16 @@ function LinkForm({
         <SwitchField
           control={form.control}
           name="permanent"
-          label="Permanent redirect"
-          description="308 instead of 307. Only applies to links without a preview."
+          label={t.permanent}
+          description={t.permanentDescription}
           disabled={submitting}
         />
 
         <SwitchField
           control={form.control}
           name="enabled"
-          label="Enabled"
-          description="Disabled links resolve to a 404."
+          label={t.enabled}
+          description={t.enabledDescription}
           disabled={submitting}
         />
 
@@ -486,10 +492,10 @@ function LinkForm({
             onClick={onCancel}
             disabled={submitting}
           >
-            Cancel
+            {t.cancel}
           </Button>
           <Button type="submit" disabled={submitting} aria-busy={submitting}>
-            {submitting ? "Saving…" : "Save"}
+            {submitting ? t.saving : t.save}
           </Button>
         </DialogFooter>
       </form>
@@ -498,6 +504,8 @@ function LinkForm({
 }
 
 export function LinksPanel() {
+  const t = useDictionary().admin.links;
+  const linkColumns = useLinkColumns();
   const { data: links = [] } = useQuery({
     queryKey: queryKeys.admin.links,
     queryFn: getAdminLinks,
@@ -532,7 +540,7 @@ export function LinksPanel() {
       };
       return editTarget ? updateLink(editTarget.id, raw) : createLink(raw);
     },
-    successMessage: () => (editTarget ? "Link updated." : "Link created."),
+    successMessage: () => (editTarget ? t.updated : t.created),
     invalidate: [queryKeys.admin.links],
     onDone: () => setDialog((prev) => ({ ...prev, open: false })),
   });
@@ -544,7 +552,7 @@ export function LinksPanel() {
 
   const remove = useActionMutation({
     action: (id: number) => deleteLink(id),
-    successMessage: "Link deleted.",
+    successMessage: () => t.deleted,
     invalidate: [queryKeys.admin.links],
   });
 
@@ -569,20 +577,19 @@ export function LinksPanel() {
       <div className="flex items-center justify-between">
         <div>
           <TypographySmall className="font-semibold">
-            Links
+            {t.heading}
           </TypographySmall>
           <TypographyMuted
             role="status"
             aria-live="polite"
             className="text-xs"
           >
-            {links.filter((l) => l.enabled).length} of {links.length} enabled,
-            each redirecting {siteConfig.domain}/path to a target
+            {t.statusEnabled.replace("{enabled}", String(links.filter((l) => l.enabled).length)).replace("{total}", String(links.length)).replace("{domain}", siteConfig.domain)}
           </TypographyMuted>
         </div>
         <Button size="sm" onClick={openAdd}>
           <PlusIcon data-icon="inline-start" className="size-3.5" aria-hidden="true" />
-          Add Link
+          {t.add}
         </Button>
       </div>
 
@@ -592,9 +599,9 @@ export function LinksPanel() {
             <EmptyMedia variant="icon">
               <LinkIcon aria-hidden="true" />
             </EmptyMedia>
-            <EmptyTitle>No short links yet</EmptyTitle>
+            <EmptyTitle>{t.emptyTitle}</EmptyTitle>
             <EmptyDescription>
-              Add one to redirect any {siteConfig.domain}/path to a target URL.
+              {t.emptyBody.replace("{domain}", siteConfig.domain)}
             </EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
@@ -745,7 +752,7 @@ export function LinksPanel() {
                         onCheckedChange={() => handleToggle(link.id)}
                         disabled={isRowPending}
                         aria-label={
-                          link.enabled ? "Disable link" : "Enable link"
+                          link.enabled ? t.disable : t.enable
                         }
                       />
                     </TableCell>
@@ -757,7 +764,7 @@ export function LinksPanel() {
                           size="icon"
                           className="size-7"
                           onClick={() => openEdit(link)}
-                          aria-label="Edit link"
+                          aria-label={t.edit}
                         >
                           <PencilIcon className="size-3.5" />
                         </Button>
@@ -769,7 +776,7 @@ export function LinksPanel() {
                               size="icon"
                               className="size-7 text-destructive hover:text-destructive hover:bg-destructive/10"
                               disabled={isRowPending}
-                              aria-label="Delete link"
+                              aria-label={t.delete}
                             >
                               <TrashIcon className="size-3.5" />
                             </Button>
@@ -777,20 +784,19 @@ export function LinksPanel() {
                           <AlertDialogContent>
                             <AlertDialogHeader>
                               <AlertDialogTitle>
-                                Delete /{primaryPath}?
+                                {t.deleteTitle.replace("{path}", primaryPath)}
                               </AlertDialogTitle>
                               <AlertDialogDescription>
-                                This permanently removes the link and all its
-                                aliases. This cannot be undone.
+                                {t.deleteBody}
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
-                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogCancel>{t.cancel}</AlertDialogCancel>
                               <AlertDialogAction
                                 variant="destructive"
                                 onClick={() => handleDelete(link.id)}
                               >
-                                Delete
+                                {t.deleteAction}
                               </AlertDialogAction>
                             </AlertDialogFooter>
                           </AlertDialogContent>
@@ -808,11 +814,11 @@ export function LinksPanel() {
       <Dialog open={dialogOpen} onOpenChange={(open) => setDialog((prev) => ({ ...prev, open }))}>
         <DialogContent className="sm:max-w-lg max-h-[85vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>{editTarget ? "Edit Link" : "Add Link"}</DialogTitle>
+            <DialogTitle>{editTarget ? t.dialogEdit : t.dialogAdd}</DialogTitle>
             <DialogDescription>
               {editTarget
-                ? "Update the short link below."
-                : "Create a short link that redirects to any target."}
+                ? t.dialogEditBody
+                : t.dialogAddBody}
             </DialogDescription>
           </DialogHeader>
           <LinkForm

@@ -1,0 +1,25 @@
+{
+    "date": "2026-10-16",
+    "type": "feature",
+    "status": "published",
+    "title": {
+        "id": "Situs kini dwibahasa Indonesia–Inggris",
+        "en": "The site is now bilingual Indonesian–English"
+    },
+    "body": {
+        "id": "Seluruh tampilan situs kini tersedia dalam Bahasa Indonesia dan English. Ganti bahasa kapan saja lewat tombol ID/EN di bagian atas, pilihan Anda tersimpan otomatis.",
+        "en": "The entire site is now available in Bahasa Indonesia and English. Switch anytime with the ID/EN button at the top — your choice is saved automatically."
+    },
+    "items": [
+        {
+            "type": "new",
+            "id": "Tombol bahasa ID/EN di header: seluruh menu, halaman, formulir, dan notifikasi kini mengikuti bahasa pilihan Anda.",
+            "en": "ID/EN language button in the header: all menus, pages, forms, and notifications now follow your chosen language."
+        },
+        {
+            "type": "improvement",
+            "id": "Tanggal, waktu relatif, dan lokasi kini tampil sesuai bahasa dan zona waktu setempat.",
+            "en": "Dates, relative times, and location now display in your language and local conventions."
+        }
+    ]
+}

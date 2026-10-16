@@ -1,9 +1,10 @@
 import { CommandMenu } from "@/components/shared/command-menu";
 import { PhosphorProvider } from "@/components/shared/phosphor-provider";
-import { QueryProvider } from "@/components/shared/query-provider";
-import { ThemeHotkey } from "@/components/shared/theme-hotkey";
+import { QueryProvider } from "@/components/shared/query-provider";import { ThemeHotkey } from "@/components/shared/theme-hotkey";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { LanguageProvider } from "@/lib/i18n/provider";
+import { getDictionary, getLocale } from "@/lib/i18n/server";
 import { siteConfig } from "@/lib/config";
 import { ThemeProvider } from "next-themes";
 import type { Metadata, Viewport } from "next";
@@ -46,13 +47,15 @@ const firaCode = Fira_Code({
   variable: "--font-geist-mono",
 });
 
-export const metadata: Metadata = {
-  title: {
-    default: `${siteConfig.name} – ${siteConfig.role}`,
-    template: `%s – ${siteConfig.name}`,
-  },
-  description: siteConfig.description,
-  metadataBase: new URL(siteConfig.baseUrl),
+export async function generateMetadata(): Promise<Metadata> {
+  const dict = await getDictionary();
+  return {
+    title: {
+      default: `${siteConfig.name} – ${siteConfig.role}`,
+      template: `%s – ${siteConfig.name}`,
+    },
+    description: dict.footer.description,
+    metadataBase: new URL(siteConfig.baseUrl),
   icons: {
     icon: [
       {
@@ -69,7 +72,8 @@ export const metadata: Metadata = {
     ],
     apple: "/apple-icon",
   },
-};
+  };
+}
 
 export const viewport: Viewport = {
   themeColor: [
@@ -78,10 +82,16 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default async function Layout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const locale = await getLocale();
+  const dict = await getDictionary(locale);
   return (
     <html
-      lang="en"
+      lang={locale}
       data-scroll-behavior="smooth"
       className={`${bricolage.variable} ${manrope.variable} ${firaCode.variable} ${geistPixel.variable} antialiased`}
       suppressHydrationWarning
@@ -107,10 +117,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <QueryProvider>
             <TooltipProvider>
               <PhosphorProvider>
-                <ThemeHotkey />
-                <CommandMenu />
-                {children}
-                <Toaster />
+                <LanguageProvider locale={locale} dict={dict}>
+                  <ThemeHotkey />
+                  <CommandMenu />
+                  {children}
+                  <Toaster />
+                </LanguageProvider>
               </PhosphorProvider>
             </TooltipProvider>
             </QueryProvider>

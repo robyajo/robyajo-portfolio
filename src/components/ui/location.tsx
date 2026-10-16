@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
 import { formatTimeInZone, getHourInZone, getZoneOffsetHours, statusForHour } from "@/lib/date";
+import { useDictionary } from "@/lib/i18n/provider";
 
 function SkyIcon({ hour }: { hour: number | null }) {
   if (hour === null) {
@@ -52,10 +53,12 @@ interface LocationTagProps {
 }
 
 export function LocationTag({
-  city = "Mangalore",
-  country = "India",
-  timezone = "Asia/Kolkata",
+  city = "Pekanbaru",
+  country = "Indonesia",
+  timezone = "Asia/Jakarta",
 }: LocationTagProps) {
+  const dict = useDictionary();
+  const loc = dict.location;
   const [isActive, setIsActive] = useState(false);
   const [time, setTime] = useState({
     current: "",
@@ -72,7 +75,7 @@ export function LocationTag({
 
       const offset =
         diffHrs === 0
-          ? "same time"
+          ? loc.sameTime
           : diffHrs > 0
             ? `+${diffHrs}h`
             : `-${Math.abs(diffHrs)}h`;
@@ -86,12 +89,12 @@ export function LocationTag({
   }, [timezone]);
 
   const offsetLabel =
-    time.offset === "same time"
-      ? "same time as you"
+    time.offset === loc.sameTime
+      ? loc.sameTimeAsYou
       : time.offset.startsWith("+")
-        ? `${time.offset.slice(1)} ahead of you`
-        : `${time.offset.slice(1)} behind you`;
-  const status = time.hour === null ? "" : statusForHour(time.hour);
+        ? `${time.offset.slice(1)} ${loc.aheadOfYou}`
+        : `${time.offset.slice(1)} ${loc.behindYou}`;
+  const status = time.hour === null ? "" : statusForHour(time.hour, loc.statuses);
 
   return (
     <Button
@@ -104,8 +107,8 @@ export function LocationTag({
       onBlur={() => setIsActive(false)}
       aria-label={
         time.current
-          ? `${city}, ${country}. Local time ${time.current}, ${offsetLabel}, ${status}.`
-          : `Location: ${city}, ${country}`
+          ? `${city}, ${country}. ${loc.localTime} ${time.current}, ${offsetLabel}, ${status}.`
+          : `${loc.location}: ${city}, ${country}`
       }
       className={cn(
         "group relative h-auto gap-2.5 rounded-full py-2 pl-4 pr-3.5 transition-colors duration-500",
