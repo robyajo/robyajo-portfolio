@@ -21,6 +21,7 @@ export const users = pgTable(
         name: varchar("name", { length: 256 }),
         image: varchar("image", { length: 2048 }),
         passwordHash: varchar("password_hash", { length: 256 }).notNull(),
+        role: varchar("role", { length: 16 }).default("guest").notNull(),
         createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
         updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
     },
@@ -28,6 +29,8 @@ export const users = pgTable(
         index("users_email_idx").on(table.email),
     ],
 );
+
+export type UserRole = "guest" | "admin";
 
 export const blogPosts = pgTable(
     "blog_posts",

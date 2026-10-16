@@ -25,6 +25,11 @@
             "type": "new",
             "id": "Daftar dan masuk dengan email kini bisa langsung di situs: buat akun dengan kata sandi, lalu berkomentar dan menandatangani buku tamu. Tetap tersedia pula pilihan masuk GitHub/Google bila diaktifkan.",
             "en": "Email sign-up and sign-in now work right on the site: create a password account, then comment and sign the guestbook. GitHub/Google options remain available when enabled."
+        },
+        {
+            "type": "new",
+            "id": "Masuk dengan akun Google kini tersedia, plus peran pengunjung dan admin agar pengelolaan situs lebih tertib dan aman.",
+            "en": "Google account sign-in is now available, plus guest and admin roles for tidier, safer site management."
         }
     ]
 }

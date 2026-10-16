@@ -19,10 +19,11 @@ export default async function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { userId } = await getAuth();
+  const { userId, role } = await getAuth();
 
   if (!userId) return redirect("/");
-  if (userId !== process.env.OWNER_USER_ID) return <AdminUnauthorized />;
+  const isOwner = userId === process.env.OWNER_USER_ID;
+  if (role !== "admin" && !isOwner) return <AdminUnauthorized />;
 
   return (
     <AuthProvider>
