@@ -212,18 +212,24 @@ export const Logo = forwardRef<SVGSVGElement, LogoProps>(
         {!isHidden && <title>{ariaLabel ?? defaultLabel}</title>}
         {alive ? (
           <g className="transition-[translate] duration-200 ease-[cubic-bezier(0.2,0,0,1)] group-hover/logo:-translate-y-[3px] group-focus-visible/logo:-translate-y-[3px]">
-            <polygon
-              points="32,4 48,60 40.5,60 32,14 23.5,60 16,60"
-              className="fill-current"
-            />
+            <g className="fill-current">
+              <rect x="17" y="4" width="8" height="56" />
+              <rect x="17" y="4" width="29" height="9" />
+              <rect x="37" y="4" width="9" height="27" />
+              <rect x="17" y="22" width="29" height="9" />
+              <polygon points="30,31 38,31 49,60 41,60" />
+            </g>
             <LiveEyes eyesRef={eyesRef} />
           </g>
         ) : (
           <>
-            <polygon
-              points="32,4 48,60 40.5,60 32,14 23.5,60 16,60"
-              className="fill-current"
-            />
+            <g className="fill-current">
+              <rect x="17" y="4" width="8" height="56" />
+              <rect x="17" y="4" width="29" height="9" />
+              <rect x="37" y="4" width="9" height="27" />
+              <rect x="17" y="22" width="29" height="9" />
+              <polygon points="30,31 38,31 49,60 41,60" />
+            </g>
             <rect
               x="18"
               y="36"

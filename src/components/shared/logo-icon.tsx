@@ -48,7 +48,13 @@ export const LogoIcon = forwardRef<SVGSVGElement, LogoIconProps>(
         {...props}
       >
         <title>Roby Karti S.</title>
-        <polygon points="32,4 48,60 40.5,60 32,14 23.5,60 16,60" fill={color} />
+        <g fill={color}>
+          <rect x="17" y="4" width="8" height="56" />
+          <rect x="17" y="4" width="29" height="9" />
+          <rect x="37" y="4" width="9" height="27" />
+          <rect x="17" y="22" width="29" height="9" />
+          <polygon points="30,31 38,31 49,60 41,60" />
+        </g>
         <rect x="18" y="36" width="11" height="5" rx="2.5" fill={color} />
         <rect x="35" y="36" width="11" height="5" rx="2.5" fill={color} />
       </svg>
