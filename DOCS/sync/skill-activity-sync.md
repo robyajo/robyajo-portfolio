@@ -13,22 +13,25 @@ proyek-proyek lain dan menampilkannya otomatis di bagian Kegiatan Terbaru.
     - **URL API**: `https://ajoroby.is-a.dev/api/activities`
     - **Kunci `X-project`** proyek tersebut (lihat di bawah).
 
-## Kunci proyek (`X-project`)
+## Kunci proyek (`X-project`) — mode kunci bersama
 
+- **Satu kunci untuk semua proyek Anda.** Kunci yang sama boleh dipakai dari
+  banyak proyek; yang membedakan adalah `project.name` di payload. Menambah
+  proyek baru = cukup kirim dengan nama berbeda — **tanpa ubah env, tanpa
+  rebuild/redeploy portfolio**.
 - Daftar kunci hidup di env portfolio: `ACTIVITY_PROJECT_KEYS` dengan format
-  `kunci:Nama Tampil,kunci2:Nama Tampil 2` (lokal: `.env.local`, produksi: env Vercel).
-- **Satu kunci per proyek.** Kunci hanya untuk auth; nama tampil boleh
-  diperbarui lewat payload `project`.
-- Membuat kunci baru: `openssl rand -hex 16`, beri awalan `pk_`, tambahkan ke
-  kedua env, beri tahu AI proyek terkait.
+  `kunci:Nama Bawaan,kunci2:Nama Bawaan 2` (lokal: `.env.local`, produksi: env Vercel).
+  Nama bawaan dipakai bila kiriman pertama tak menyertakan `project.name`.
+- Membuat kunci baru (bila butuh): `openssl rand -hex 16`, beri awalan `pk_`,
+  tambahkan ke kedua env, beri tahu AI proyek terkait.
 - Kunci yang bocor: hapus dari registry + redeploy — kiriman dengan kunci
   salah ditolak (`403`) tanpa menyentuh database.
 
 ## Data proyek & revisi (disimpan di database)
 
-- Kiriman pertama dari suatu kunci **otomatis mendaftarkan proyek** (nama dari
-  `project.name`, fallback nama registry). Kiriman berikut memperbarui
-  progres: nama/url/deskripsi bila dikirim + `last_activity_at`.
+- Kiriman pertama dari suatu (kunci, nama) **otomatis mendaftarkan proyek**
+  (nama dari `project.name`, fallback nama registry). Kiriman berikut dengan
+  nama sama memperbarui progres: url/deskripsi bila dikirim + `last_activity_at`.
 - Bila payload menyertakan `source` stabil (nama berkas rilis) dan `source`
   itu sudah pernah dikirim, baris kegiatan **diperbarui** (judul/isi/kind/
   waktu ikut baru) — tidak duplikat. Inilah jalur "AI merevisi rilis".

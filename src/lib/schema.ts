@@ -36,7 +36,8 @@ export const syncProjects = pgTable(
     "sync_projects",
     {
         id: serial("id").primaryKey(),
-        key: varchar("key", { length: 64 }).notNull().unique(),
+        /** Kunci auth bersama — satu kunci boleh menaungi banyak proyek (beda nama). */
+        key: varchar("key", { length: 64 }).notNull(),
         name: varchar("name", { length: 256 }).notNull(),
         url: varchar("url", { length: 2048 }),
         description: text("description"),
@@ -46,6 +47,7 @@ export const syncProjects = pgTable(
     },
     (table) => [
         index("sync_projects_name_idx").on(table.name),
+        index("sync_projects_key_name_idx").on(table.key, table.name),
     ],
 );
 

@@ -47,12 +47,16 @@ curl -X POST "https://ajoroby.is-a.dev/api/activities" \
 ```
 
 - `X-project` = kunci statis proyek ini (minta ke pemilik portfolio; tanpa kunci valid server menolak: 401 tanpa header, 403 kunci salah).
+- **Satu kunci boleh dipakai banyak proyek**: yang membedakan adalah
+  `project.name`. Kirim nama yang sama setiap kali agar tercatat sebagai satu
+  proyek. Menambah proyek baru TIDAK butuh ubah env / rebuild portfolio —
+  cukup kirim dengan `project.name` berbeda.
 - `kind`: `deploy` · `feature` · `fix` · `update`.
 - Respons sukses: `201 {"ok": true, "id": 123, "project": "...", "createdProject": true|false, "updated": false}`. Validasi gagal: `422` + daftar masalah.
 
 ## Aturan proyek & revisi rilis (penting)
 
-- **Proyek baru otomatis terdaftar** saat pertama mengirim (nama diambil dari `project.name`). Setelah itu nama boleh dikosongkan.
+- **Proyek baru otomatis terdaftar** saat pertama mengirim (nama diambil dari `project.name`, boleh beda-beda dalam satu kunci). Setelah itu nama boleh dikosongkan selama konsisten.
 - **`source` wajib diisi stabil** — idealnya **nama berkas rilis** (mis. `releases/2026-10-16-fitur-x.json`).
   Kiriman berikutnya dengan `source` yang sama akan **MEMPERBARUI** baris yang
   sama (judul/isi/kind ikut baru), bukan menambah duplikat.

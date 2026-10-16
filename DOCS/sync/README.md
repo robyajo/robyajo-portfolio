@@ -18,8 +18,8 @@ harus kosong.
 ## Checklist pasang di proyek lain (untuk AI/owner)
 
 1. Salin `activity-sync/` ke `.agents/skills/` proyek tersebut.
-2. Minta kunci `X-project` ke pemilik portfolio (satu kunci per proyek).
+2. Pakai **kunci bersama** yang sudah ada (tidak perlu kunci baru per proyek).
 3. Tempel kunci ke konfigurasi AI proyek itu (jangan commit ke git publik).
-4. Uji sekali: kirim contoh dari `SKILL.md`, lalu cek `GET /api/activities?limit=3`.
+4. Uji sekali: kirim contoh dari `SKILL.md` dengan `project.name` proyek itu, lalu cek `GET /api/activities?limit=3`.
 5. Setelah itu AI wajib mengirim setiap ada perubahan yang dirasakan pengguna,
    dengan `source` = nama berkas rilis agar revisi menimpa, bukan mendobel.

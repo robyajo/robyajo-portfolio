@@ -1,4 +1,4 @@
-import { desc, eq, sql } from "drizzle-orm";
+import { and, desc, eq, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { activities, syncProjects } from "@/lib/schema";
 import { safeQuery } from "@/lib/safe-query";
@@ -73,7 +73,13 @@ export async function getSyncProjects(): Promise<SyncProject[]> {
                 activityCount: sql<number>`count(${activities.id})::int`,
             })
             .from(syncProjects)
-            .leftJoin(activities, eq(activities.projectKey, syncProjects.key))
+            .leftJoin(
+                activities,
+                and(
+                    eq(activities.projectKey, syncProjects.key),
+                    eq(activities.projectName, syncProjects.name),
+                ),
+            )
             .groupBy(syncProjects.id)
             .orderBy(desc(syncProjects.lastActivityAt));
         return rows.map((r) => ({
@@ -94,21 +100,24 @@ export interface IngestResult {
 }
 
 /**
- * Terima kegiatan: daftarkan proyek bila belum ada (cek by key, nama dari
- * payload/registry), update progres + konten bila source sudah pernah dikirim.
+ * Terima kegiatan: daftarkan proyek bila belum ada (cek by kunci + nama,
+ * sehingga SATU kunci bisa menaungi banyak proyek tanpa ubah env/rebuild),
+ * update progres + konten bila source sudah pernah dikirim.
  */
 export async function ingestActivity(
     projectKey: string,
     fallbackName: string | null,
     input: ActivityIngest,
 ): Promise<IngestResult> {
+    const payloadName = input.project?.name?.trim() || null;
+    const conditions = payloadName
+        ? sql`${syncProjects.key} = ${projectKey} AND ${syncProjects.name} = ${payloadName}`
+        : eq(syncProjects.key, projectKey);
     const [existing] = await db
         .select({ id: syncProjects.id, name: syncProjects.name })
         .from(syncProjects)
-        .where(eq(syncProjects.key, projectKey))
+        .where(conditions)
         .limit(1);
-
-    const payloadName = input.project?.name?.trim() || null;
     let projectName: string;
     let createdProject = false;
     if (!existing) {
@@ -122,11 +131,10 @@ export async function ingestActivity(
         });
         createdProject = true;
     } else {
-        projectName = payloadName && payloadName !== existing.name ? payloadName : existing.name;
+        projectName = existing.name;
         await db
             .update(syncProjects)
             .set({
-                ...(payloadName && payloadName !== existing.name ? { name: payloadName } : {}),
                 ...(input.project?.url !== undefined
                     ? { url: input.project.url || null }
                     : {}),

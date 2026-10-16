@@ -127,6 +127,13 @@
       "when": 1792186081732,
       "tag": "0017_sync-projects-registry",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1792186993714,
+      "tag": "0018_shared-project-key",
+      "breakpoints": true
     }
   ]
 }
