@@ -8,7 +8,24 @@ interface MascotFigureProps {
   mouthFilled?: boolean;
 }
 
-export const MASCOT_POINTS = "32,4 48,60 40.5,60 32,14 23.5,60 16,60";
+/** Huruf "R" geometris sebagai rangkaian poligon (kaki, mangkuk, kaki diagonal). */
+export const MASCOT_SHAPES = [
+  "17,4 25,4 25,60 17,60",
+  "17,4 46,4 46,13 17,13",
+  "37,4 46,4 46,31 37,31",
+  "17,22 46,22 46,31 17,31",
+  "30,31 38,31 49,60 41,60",
+];
+
+export function MascotMark({ fill = "currentColor" }: { fill?: string }) {
+  return (
+    <g fill={fill}>
+      {MASCOT_SHAPES.map((points) => (
+        <polygon key={points} points={points} />
+      ))}
+    </g>
+  );
+}
 
 function MascotEyeShapes({ eyes }: { eyes: MascotEyes }) {
   if (eyes === "happy") {
@@ -57,7 +74,7 @@ export function MascotFigure({
 }: MascotFigureProps) {
   return (
     <g>
-      <polygon points={MASCOT_POINTS} fill="currentColor" />
+      <MascotMark />
       <g className="transition-[translate] duration-200 ease-out group-hover/fab:-translate-y-[3px]">
         <MascotEyeShapes eyes={eyes} />
       </g>

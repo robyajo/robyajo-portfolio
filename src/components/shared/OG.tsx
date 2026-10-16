@@ -8,7 +8,7 @@ import {
   type Vec3,
 } from "@/components/diagrams/iso";
 import { LogoIcon } from "@/components/shared/logo-icon";
-import { MASCOT_POINTS, MascotFigure } from "@/components/shared/logo-mascot";
+import { MASCOT_SHAPES, MascotFigure } from "@/components/shared/logo-mascot";
 import { FONT_STACK, FONTS, PIXEL_SHAPE } from "@/lib/svg/fonts";
 import { themeColor } from "@/lib/theme-tokens";
 import type { CSSProperties, ReactNode } from "react";
@@ -517,14 +517,14 @@ function Mascot() {
     <g>
       {MASCOT_LAYERS.map((depth) => {
         const [dx, dy] = screenDelta([0, -depth, 0]);
-        return (
+        return MASCOT_SHAPES.map((points) => (
           <polygon
-            key={depth}
-            points={MASCOT_POINTS}
+            key={`${depth}-${points}`}
+            points={points}
             fill={color.extrusion}
             transform={`translate(${dx} ${dy}) ${matrix}`}
           />
-        );
+        ));
       })}
       <g color={color.foreground} transform={matrix}>
         <MascotFigure />
