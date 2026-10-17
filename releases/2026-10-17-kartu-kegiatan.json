@@ -45,6 +45,11 @@
             "type": "new",
             "id": "Pengunjung kini dihitung berdasarkan perangkat dan ditampilkan di bagian bawah setiap halaman: berapa total pengunjung yang datang dan berapa yang berkunjung hari ini.",
             "en": "Visitors are now counted by device and shown at the bottom of every page: how many visitors have arrived in total and how many visited today."
+        },
+        {
+            "type": "improvement",
+            "id": "Saat membuka halaman rincian proyek atau buku tamu, menu terkait di bagian atas kini tetap ditandai aktif, jadi Anda selalu tahu di bagian mana Anda berada.",
+            "en": "When opening a project or guestbook detail page, the related top menu now stays marked active, so you always know which section you are in."
         }
     ]
 }
