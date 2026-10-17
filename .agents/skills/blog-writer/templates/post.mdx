@@ -1,0 +1,72 @@
+---
+title: Judul Spesifik yang Menarik, Tanpa Clickbait
+description: Satu kalimat hook yang memuat satu detail konkret — cukup menggoda untuk diklik, jujur isinya.
+date: 2026-10-17
+tags:
+    - TypeScript
+    - Personal
+# lastModified: 2026-10-20 # hanya bila artikel LAMA disunting secara berarti
+---
+
+{/* Komponen opsional. Hapus impor ini bila tidak memakai media milik sendiri. */}
+{/* import { MediaPlayer, MediaPlayerControls, MediaPlayerPlay, MediaPlayerVideo } from "@/components/ui/media-player"; */}
+
+Pembuka: 2–4 paragraf. Mulai dari satu kejadian nyata, angka, atau keputusan yang
+spesifik. Kalau topiknya sensitif, buka dengan blockquote jujur soal batasan dan
+tujuan tulisan ini.
+
+> Opsional: blockquote pembuka untuk konteks/disclaimer. Bukan pembelaan diri,
+> hanya penjelasan posisi penulis.
+
+## Bagian pertama: langsung ke inti
+
+Sebut detail konkret — <TypographyMark>waktu, angka, atau langkah kunci</TypographyMark> —
+lalu jelaskan kenapa itu penting. Setiap klaim eksternal diberi tautan sumber,
+misalnya [dokumentasi resmi](https://example.com/docs).
+
+<TypographyMuted as="span">
+Catatan samping: konteks yang berguna tapi tidak masuk alur utama. Boleh dihapus
+bila tidak diperlukan.
+</TypographyMuted>
+
+### Subbagian bila perlu
+
+Satu ide per subbagian. Tabel hanya bila memang membandingkan banyak hal:
+
+| Pendekatan | Hasil |
+| --- | --- |
+| Cara pertama | Apa yang terjadi |
+| Cara kedua | Apa yang berubah |
+
+## Bagian kedua
+
+Ayat untuk blok kode:
+
+```ts
+export function contoh(input: string): string {
+    return input.trim();
+}
+```
+
+Bila perintahnya beda per sistem, pakai tab:
+
+<Tabs groupId="os" items={['macOS', 'Linux']}>
+  <Tab value="macOS">
+    ```bash
+    brew install contoh
+    ```
+  </Tab>
+  <Tab value="Linux">
+    ```bash
+    sudo apt install contoh
+    ```
+  </Tab>
+</Tabs>
+
+## Apa yang saya pelajari
+
+Bagian personal: apa yang berubah pada cara berpikir penulis, kesalahan yang
+disadari, keputusan berikutnya.
+
+Satu kalimat penutup yang menonjol dan jujur — <TypographyMark>bukan motivasi
+kosong</TypographyMark>.

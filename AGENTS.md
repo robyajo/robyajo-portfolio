@@ -42,3 +42,19 @@ Setiap penambahan fitur atau perbaikan bug yang **dirasakan pengguna** harus dic
     - **Orientasi Pelayanan Warga**: Seluruh `title`, `body`, dan butir `items` wajib dirumuskan sebagai **pemberitahuan pelayanan publik** yang ramah, sopan, dan berfokus pada dampak langsung bagi masyarakat (misalnya: kemudahan pengurusan berkas, kecepatan buka halaman, penghematan kuota ponsel, dan perlindungan kerahasiaan data warga).
 
 ---
+
+## Blog (content/blog)
+
+Setiap permintaan menulis, mengedit, atau menghapus artikel blog wajib memakai skill
+`.agents/skills/blog-writer/SKILL.md` (gaya & suara di
+`.agents/skills/blog-writer/reference/voice-and-style.md`, kerangka di
+`templates/post.mdx`). Ringkas: berkas MDX baru di `content/blog/<slug>.mdx`
+(slug kebab-case tanpa tanggal), frontmatter wajib `title`/`description`/`date`
+(+`tags`, `lastModified` bila menyunting artikel lama), komponen MDX terbatas pada
+`src/mdx-components.tsx` (`TypographyMark`, `TypographyMuted`, `Tabs`/`Tab`,
+`MediaPlayer` via impor), validasi `pnpm types:check` + `pnpm build`, lalu verifikasi
+`/blog/<slug>`, `/blogs`, `sitemap.xml`, dan `feed.xml`. Artikel yang ada saat ini
+berasal dari pemilik template lama — jangan meniru identitasnya.
+
+Artikel blog baru adalah halaman yang dilihat pengguna, jadi tetap wajib dicatat
+di `releases/` sesuai protokol di atas dan disinkronkan lewat skill `activity-sync`.
