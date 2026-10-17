@@ -204,6 +204,8 @@ const id = {
         month: "30 hari",
         year: "12 bulan",
         empty: "Belum ada kunjungan terekam",
+        total: "Total {count} kunjungan",
+        peak: "Tersibuk {label} · {count}",
       },
       rankings: {
         title: "Peringkat terbanyak",

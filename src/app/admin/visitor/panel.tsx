@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { getVisitorMonitor } from "@/app/admin/actions";
+import { getVisitorMonitor, getVisitorOverview } from "@/app/admin/actions";
 import type { VisitorMonitor } from "@/app/admin/actions";
 import type { VisitorOverview } from "@/lib/visitors";
 import { VisitorCharts } from "./charts";
@@ -66,6 +66,7 @@ export function VisitorPanel({
   const locale = useLocale();
   const dateLocale = locale === "id" ? "id-ID" : "en-US";
   const [monitor, setMonitor] = useState(initial);
+  const [overviewData, setOverviewData] = useState(overview);
   const [loading, setLoading] = useState(false);
   const [now, setNow] = useState(0);
 
@@ -82,7 +83,12 @@ export function VisitorPanel({
   async function refresh() {
     setLoading(true);
     try {
-      setMonitor(await getVisitorMonitor());
+      const [nextMonitor, nextOverview] = await Promise.all([
+        getVisitorMonitor(),
+        getVisitorOverview(),
+      ]);
+      setMonitor(nextMonitor);
+      setOverviewData(nextOverview);
       setNow(Date.now());
     } finally {
       setLoading(false);
@@ -102,15 +108,6 @@ export function VisitorPanel({
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex items-center justify-between gap-4">
-        <span className="text-sm text-muted-foreground">
-          {dict.tableTitle}
-        </span>
-        <Button size="sm" variant="outline" onClick={refresh} disabled={loading}>
-          {dict.refresh}
-        </Button>
-      </div>
-
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-5">
         <Stat label={dict.cards.devices} value={monitor.stats.total} />
         <Stat label={dict.cards.today} value={monitor.stats.today} />
@@ -119,7 +116,16 @@ export function VisitorPanel({
         <Stat label={dict.cards.countries} value={monitor.stats.countries} />
       </div>
 
-      <VisitorCharts overview={overview} />
+      <VisitorCharts overview={overviewData} />
+
+      <div className="flex items-center justify-between gap-4">
+        <span className="text-sm text-muted-foreground">
+          {dict.tableTitle}
+        </span>
+        <Button size="sm" variant="outline" onClick={refresh} disabled={loading}>
+          {dict.refresh}
+        </Button>
+      </div>
 
       {monitor.rows.length === 0 ? (
         <Empty>

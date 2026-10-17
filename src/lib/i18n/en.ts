@@ -205,6 +205,8 @@ const en: Dictionary = {
         month: "30 days",
         year: "12 months",
         empty: "No visits recorded yet",
+        total: "{count} visits total",
+        peak: "Busiest {label} · {count}",
       },
       rankings: {
         title: "Top rankings",
