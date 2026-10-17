@@ -22,6 +22,12 @@ import { PROJECTS_CACHE_TAG } from "@/lib/projects";
 import { safeQuery } from "@/lib/safe-query";
 import { projectInputSchema, type ProjectInput } from "@/lib/projects-schema";
 import { RESUME_CACHE_TAG } from "@/lib/resume";
+import {
+  getVisitorRows as getVisitorRowsValue,
+  getVisitorStats as getVisitorStatsValue,
+  type VisitorRow,
+  type VisitorStats,
+} from "@/lib/visitors";
 import { asc, count, desc, eq, sql } from "drizzle-orm";
 import { revalidatePath, updateTag } from "next/cache";
 import { z } from "zod";
@@ -234,6 +240,28 @@ async function loadAdminProjects(): Promise<ProjectRow[]> {
         .groupBy(projects.id)
         .orderBy(asc(projects.sortOrder), asc(projects.id));
     return rows;
+}
+
+export interface VisitorMonitor {
+    stats: VisitorStats;
+    rows: VisitorRow[];
+}
+
+async function loadVisitorMonitor(): Promise<VisitorMonitor> {
+    const [stats, rows] = await Promise.all([
+        getVisitorStatsValue(),
+        getVisitorRowsValue(200),
+    ]);
+    return { stats, rows };
+}
+
+export async function getVisitorMonitor(): Promise<VisitorMonitor> {
+    await assertAdmin();
+    return safeQuery(
+        "getVisitorMonitor",
+        loadVisitorMonitor,
+        { stats: { total: 0, today: 0, online: 0, views: 0, countries: 0 }, rows: [] },
+    );
 }
 
 export async function createProject(raw: unknown): Promise<ActionResult> {

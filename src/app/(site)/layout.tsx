@@ -8,6 +8,7 @@ import {
   FloatingHubFallback,
 } from "@/components/shared/floating-hub-server";
 import { AuthProvider } from "@/components/shared/auth-session";
+import { CookieConsent } from "@/components/shared/cookie-consent";
 import { Suspense } from "react";
 
 export default function SiteLayout({
@@ -38,6 +39,7 @@ export default function SiteLayout({
         <Footer />
       </PageLayout>
       <MouseGlow />
+      <CookieConsent />
       <Suspense fallback={<FloatingHubFallback />}>
         <FloatingHubServer />
       </Suspense>

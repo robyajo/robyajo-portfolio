@@ -148,6 +148,13 @@
       "when": 1792200621747,
       "tag": "0020_amusing_paladin",
       "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1792201385112,
+      "tag": "0021_rare_nova",
+      "breakpoints": true
     }
   ]
 }

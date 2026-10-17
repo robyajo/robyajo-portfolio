@@ -57,6 +57,7 @@ export {
   PaperPlaneTiltIcon,
   PauseIcon,
   PencilIcon,
+  UsersIcon,
   PictureInPictureIcon,
   PlayIcon,
   PlusIcon,

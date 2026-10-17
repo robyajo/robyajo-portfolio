@@ -20,6 +20,7 @@ import {
   ListIcon,
   SignOutIcon,
   FolderOpenIcon,
+  UsersIcon,
 } from "@/components/shared/icons";
 import { LogoIcon } from "@/components/shared/logo-icon";
 import { useSafeSignOut as useSignOut } from "@/components/shared/auth-session";
@@ -35,6 +36,7 @@ function useNavItems() {
     { title: t.guestbook, href: "/admin/guestbook", icon: ChatCircleIcon },
     { title: t.comments, href: "/admin/comments", icon: BookOpenIcon },
     { title: t.projects, href: "/admin/projects", icon: FolderOpenIcon },
+    { title: t.visitors, href: "/admin/visitor", icon: UsersIcon },
     { title: t.links, href: "/admin/links", icon: LinkIcon },
   ];
 }

@@ -26,7 +26,7 @@ export async function GET() {
 export async function POST(request: Request) {
     try {
         const hash = await deviceHash(request.headers);
-        await trackVisit(hash);
+        await trackVisit(hash, request.headers);
         return new NextResponse(null, { status: 204 });
     } catch (error) {
         console.error("Visitor tracking failed:", error);

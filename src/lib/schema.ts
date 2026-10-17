@@ -265,6 +265,10 @@ export const visitors = pgTable(
         views: integer("views").default(1).notNull(),
         firstSeenAt: timestamp("first_seen_at", { withTimezone: true }).defaultNow().notNull(),
         lastSeenAt: timestamp("last_seen_at", { withTimezone: true }).defaultNow().notNull(),
+        country: varchar("country", { length: 64 }),
+        region: varchar("region", { length: 128 }),
+        city: varchar("city", { length: 128 }),
+        device: varchar("device", { length: 128 }),
     },
     (table) => [
         index("visitors_last_seen_idx").on(table.lastSeenAt),
