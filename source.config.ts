@@ -9,6 +9,11 @@ export const docs = defineDocs({
         schema: pageSchema.extend({
             tags: z.array(z.string()).optional(),
             date: z.coerce.date().optional(),
+            // Bahasa artikel. Artikel lama dibiarkan kosong (dianggap Inggris).
+            // Versi terjemahan memakai `lang: "en"` dan disembunyikan dari daftar.
+            lang: z.enum(["id", "en"]).optional(),
+            // Slug artikel pasangan dalam bahasa lain (tanpa awalan /blog/).
+            translation: z.string().optional(),
             // Set explicitly in frontmatter when a post is meaningfully edited.
             // Previously derived from git history, but shallow clones on the
             // deploy host made every push re-date every post. Frontmatter is

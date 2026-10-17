@@ -22,7 +22,7 @@ export async function BlogTeaser() {
   const dateLocale = (await getLocale()) === "id" ? "id-ID" : "en-US";
   const posts = source
     .getPages()
-    .filter((p) => p.data.date)
+    .filter((p) => p.data.date && p.data.lang !== "en")
     .sort(
       (a, b) =>
         new Date(b.data.date!).getTime() - new Date(a.data.date!).getTime(),

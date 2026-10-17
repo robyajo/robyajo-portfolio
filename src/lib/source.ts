@@ -25,6 +25,7 @@ export function getPageImage(page: InferPageType<typeof source>) {
 export function getLatestPost() {
     return source
         .getPages()
+        .filter((page) => page.data.lang !== "en")
         .reduce<InferPageType<typeof source> | undefined>(
             (latest, page) =>
                 !latest || toTimestamp(page.data.date) > toTimestamp(latest.data.date)

@@ -1,0 +1,94 @@
+{
+  "trending": {
+    "geo": "ID",
+    "endpoint": "https://trends.google.com/trending/rss?geo=ID",
+    "lexicon": [
+      "fesyen",
+      "fashion",
+      "busana",
+      "gaya",
+      "outfit",
+      "ootd",
+      "pakaian",
+      "baju",
+      "kemeja",
+      "kaos",
+      "celana",
+      "denim",
+      "jaket",
+      "sepatu",
+      "sneakers",
+      "sandal",
+      "tas",
+      "dompet",
+      "hijab",
+      "modest",
+      "kain",
+      "batik",
+      "tenun",
+      "tekstil",
+      "thrift",
+      "preloved",
+      "baju bekas",
+      "brand lokal",
+      "local brand",
+      "perhiasan",
+      "jam tangan",
+      "kacamata",
+      "aksesoris",
+      "makeup",
+      "perawatan kulit",
+      "skincare",
+      "rambut",
+      "tren",
+      "trend",
+      "runway",
+      "koleksi",
+      "kolaborasi",
+      "viral",
+      "jastip",
+      "diskon",
+      "promo",
+      "belanja online",
+      "ecommerce",
+      "marketplace"
+    ]
+  },
+  "pillars": [
+    {
+      "id": "tren-viral",
+      "label": "Tren fesyen yang sedang viral di Indonesia",
+      "angle": "Ambil satu tren yang benar-benar sedang naik di Indonesia, jelaskan kenapa tren itu menyebar (biasanya karena algoritma media sosial atau harga), lalu beri sudut pandang pribadi sebagai orang yang mengamati kebiasaan berpakaian orang sekitar."
+    },
+    {
+      "id": "teknologi-bahan",
+      "label": "Teknologi di balik bahan dan pakaian",
+      "angle": "Bahas bahan, produksi, atau fitur pakaian yang berubah karena teknologi (kain fungsional, pencucian, pewarna, produk sirkular), lalu hubungkan dengan pilihan sehari-hari pembaca."
+    },
+    {
+      "id": "belanja-digital",
+      "label": "Cara orang Indonesia belanja pakaian secara digital",
+      "angle": "Ulas perilaku belanja pakaian lewat aplikasi: diskon, siaran langsung, ulasan pembeli, pengembalian barang, dan cara menghindari pembelian impulsif. Sertakan tips praktis yang bisa dipakai pembaca hari itu juga."
+    },
+    {
+      "id": "gaya-kerja",
+      "label": "Gaya berpakaian untuk kerja digital",
+      "angle": "Bahas pakaian untuk pekerjaan jarak jauh, kantor hibrida, atau bertemu klien, dari sisi kenyamanan, kesan profesional, dan biaya. Cocok untuk pembaca yang kerja di bidang teknologi atau kreatif."
+    },
+    {
+      "id": "fesyen-berkelanjutan",
+      "label": "Fesyen berkelanjutan dan barang bekas",
+      "angle": "Bahas thrift, preloved, tukar pakaian, atau perbaikan pakaian dari sudut pandang praktis: mana yang benar-benar menghemat uang dan mana yang cuma terlihat ramah lingkungan."
+    },
+    {
+      "id": "budaya-visual",
+      "label": "Fesyen, kamera, dan budaya visual",
+      "angle": "Bahas bagaimana kamera ponsel, filter, dan media sosial mengubah cara orang berpakaian serta memilih warna dan potongan."
+    },
+    {
+      "id": "peluang-kreatif",
+      "label": "Peluang usaha di persinggungan fesyen dan teknologi",
+      "angle": "Bahas peluang kecil yang nyata (merek lokal kecil, jasa jahit, konten, penjualan barang bekas) dan apa yang membuat sebagian berhasil sedangkan sebagian tidak."
+    }
+  ]
+}

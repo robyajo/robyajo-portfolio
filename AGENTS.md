@@ -58,3 +58,13 @@ berasal dari pemilik template lama — jangan meniru identitasnya.
 
 Artikel blog baru adalah halaman yang dilihat pengguna, jadi tetap wajib dicatat
 di `releases/` sesuai protokol di atas dan disinkronkan lewat skill `activity-sync`.
+
+## Blog otomatis (harian, dwibahasa)
+
+Satu artikel/hari ditulis otomatis oleh `.github/workflows/blog-autopilot.yml`
+(cron 02:00 UTC / 09:00 WIB, plus tombol manual). Skripnya
+`scripts/blog-autopilot.ts`, data topik di `scripts/blog-pipeline/`, rahasia
+`GEMINI_API_KEY` (+ `ACTIVITY_PROJECT_KEYS` bila ingin sinkron otomatis).
+Aturan lengkap, perintah uji, dan cara menambah pilar ada di skill
+`.agents/skills/blog-autopilot/SKILL.md`. Versi Inggris (`<slug>-en.mdx`)
+disembunyikan dari daftar/RSS tetapi tetap ada di sitemap dengan `hreflang`.

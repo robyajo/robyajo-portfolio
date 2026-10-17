@@ -27,6 +27,7 @@ type SchemaProps =
       publishedAt?: string;
       updatedAt?: string;
       tags?: string[];
+      inLanguage?: string;
     }
   | { type: "breadcrumb"; items: { name: string; url: string }[] }
   | {
@@ -114,6 +115,7 @@ function buildBlogPosting({
   publishedAt,
   updatedAt,
   tags,
+  inLanguage,
 }: ArticleProps): WithContext<BlogPosting> {
   return {
     "@context": SCHEMA_CONTEXT,
@@ -122,6 +124,7 @@ function buildBlogPosting({
     description,
     url: canonicalUrl,
     image: profileImageUrl,
+    ...(inLanguage && { inLanguage }),
     ...(publishedAt && { datePublished: publishedAt }),
     ...(updatedAt && { dateModified: updatedAt }),
     ...(tags && { keywords: tags.join(", ") }),

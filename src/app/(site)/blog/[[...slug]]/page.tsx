@@ -39,6 +39,7 @@ import {
   GitCommitIcon,
   ClockIcon,
   EyeIcon,
+  GlobeIcon,
 } from "@/components/shared/icons";
 import { createRelativeLink } from "fumadocs-ui/mdx";
 import { getDictionary, getLocale } from "@/lib/i18n/server";
@@ -68,9 +69,17 @@ export default async function Page(props: {
   const post = dict.blog.post;
   const dateLocale = (await getLocale()) === "id" ? "id-ID" : "en-US";
 
-  const allPages = source.getPages().sort((a, b) => {
-    return toTimestamp(b.data.date) - toTimestamp(a.data.date);
-  });
+  const lang = page.data.lang ?? "en";
+  const sibling = page.data.translation
+    ? source.getPage([page.data.translation])
+    : undefined;
+
+  const allPages = source
+    .getPages()
+    .filter((p) => (p.data.lang ?? "en") === lang)
+    .sort((a, b) => {
+      return toTimestamp(b.data.date) - toTimestamp(a.data.date);
+    });
 
   const currentIndex = allPages.findIndex((p) => p.url === page.url);
   const prevPost =
@@ -103,6 +112,7 @@ export default async function Page(props: {
             : undefined
         }
         tags={page.data.tags}
+        inLanguage={lang}
       />
       <JsonLd
         type="breadcrumb"
@@ -173,6 +183,21 @@ export default async function Page(props: {
               {reads} {reads === 1 ? post.readOne : post.readMany}
             </TypographyMuted>
             {commentCount > 0 && <ScrollToEngagement count={commentCount} />}
+            {sibling && (
+              <span className="inline-flex items-center gap-1.5 font-mono text-xs text-muted-foreground">
+                <GlobeIcon className="size-3.5 shrink-0" aria-hidden="true" />
+                <Link
+                  href={sibling.url as Route}
+                  hrefLang={sibling.data.lang === "id" ? "id" : "en"}
+                  aria-label={post.translationAria}
+                  className="hover:text-foreground transition-colors"
+                >
+                  {sibling.data.lang === "id"
+                    ? post.translationId
+                    : post.translationEn}
+                </Link>
+              </span>
+            )}
           </div>
 
           {page.data.description && (
@@ -253,6 +278,23 @@ export async function generateMetadata(props: {
   const metaDesc =
     rawDesc.length > 155 ? rawDesc.slice(0, 152).trimEnd() + "…" : rawDesc;
 
+  const selfUrl = `${siteConfig.baseUrl}${page.url}`;
+  const selfLang = page.data.lang ?? "en";
+  const sibling = page.data.translation
+    ? source.getPage([page.data.translation])
+    : undefined;
+  const siblingLang = sibling?.data.lang ?? "en";
+  const siblingUrl = sibling
+    ? `${siteConfig.baseUrl}${sibling.url}`
+    : undefined;
+  const alternateLanguages: Record<string, string> = {
+    [selfLang === "id" ? "id-ID" : "en-US"]: selfUrl,
+    ...(siblingUrl && {
+      [siblingLang === "id" ? "id-ID" : "en-US"]: siblingUrl,
+    }),
+    "x-default": selfLang === "id" ? selfUrl : (siblingUrl ?? selfUrl),
+  };
+
   return buildMeta({
     title: rawTitle,
     pageTitle: metaTitle,
@@ -265,5 +307,6 @@ export async function generateMetadata(props: {
     updatedAt: page.data.lastModified
       ? toISOString(page.data.lastModified)
       : undefined,
+    alternateLanguages,
   });
 }

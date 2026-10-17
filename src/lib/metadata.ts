@@ -61,6 +61,7 @@ export function buildMeta(
         updatedAt?: string;
         type?: "website" | "article" | "profile";
         locale?: Locale;
+        alternateLanguages?: Record<string, string>;
     },
 ): Metadata {
     const imageUrl = buildOGUrl(params);
@@ -88,6 +89,9 @@ export function buildMeta(
         metadataBase: new URL(siteConfig.baseUrl),
         alternates: {
             canonical,
+            ...(params.alternateLanguages && {
+                languages: params.alternateLanguages,
+            }),
             types: {
                 "application/rss+xml": [
                     {

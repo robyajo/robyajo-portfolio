@@ -5,10 +5,16 @@ import { escapeXml } from "@/lib/xml";
 
 export const revalidate = false;
 
+const FEED_LIMIT = 30;
+
 export function GET() {
-    const pages = source.getPages().sort((a, b) => {
-        return toTimestamp(b.data.date) - toTimestamp(a.data.date);
-    });
+    const pages = source
+        .getPages()
+        .filter((page) => page.data.lang !== "en")
+        .sort((a, b) => {
+            return toTimestamp(b.data.date) - toTimestamp(a.data.date);
+        })
+        .slice(0, FEED_LIMIT);
 
     const items = pages
         .map((page) => {

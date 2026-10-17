@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-18",
+  "type": "feature",
+  "status": "published",
+  "title": {
+    "id": "Blog kini dwibahasa dan terbit setiap hari",
+    "en": "The blog is now bilingual and publishes daily"
+  },
+  "body": {
+    "id": "Blog situs ini kini menyajikan setiap tulisan dalam dua bahasa dan menambah satu tulisan fesyen baru setiap hari, sehingga pembaca selalu punya bacaan segar.",
+    "en": "The site blog now presents every article in two languages and adds a new fashion article every day, so readers always have something fresh to read."
+  },
+  "items": [
+    {
+      "type": "new",
+      "id": "Setiap tulisan blog kini tersedia dalam dua bahasa: versi Bahasa Indonesia dan versi Bahasa Inggris. Tautan berpindah bahasa ada di bagian atas tulisan, tepat di bawah judul.",
+      "en": "Every blog article is now available in two languages: an Indonesian version and an English version. The language switch link sits at the top of the article, right below the title."
+    },
+    {
+      "type": "new",
+      "id": "Tulisan bertema fesyen dan teknologi terbit setiap hari. Hari ini: \"Gorpcore di Cuaca 34 Derajat: Mengapa Jaket Gunung Masuk Kafe Kota\" — bisa dibaca di https://ajoroby.is-a.dev/blog/gorpcore-di-cuaca-tropis-dan-algoritma-belanja",
+      "en": "Fashion and technology articles now appear every day. Today: \"Gorpcore in 34-Degree Heat: Why Alpine Jackets Invaded Tropical Cafes\" — read it at https://ajoroby.is-a.dev/blog/gorpcore-di-cuaca-tropis-dan-algoritma-belanja"
+    }
+  ]
+}

@@ -34,9 +34,12 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function BlogPage() {
-  const pages = source.getPages().sort((a, b) => {
-    return toTimestamp(b.data.date) - toTimestamp(a.data.date);
-  });
+  const pages = source
+    .getPages()
+    .filter((page) => page.data.lang !== "en")
+    .sort((a, b) => {
+      return toTimestamp(b.data.date) - toTimestamp(a.data.date);
+    });
 
   const posts: BlogPost[] = pages.map((page, i) => ({
     url: page.url,

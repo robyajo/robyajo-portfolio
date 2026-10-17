@@ -1,0 +1,116 @@
+name: Blog Autopilot
+
+# Menulis satu artikel fesyen & teknologi per hari, dwibahasa (Indonesia utama
+# + Inggris), lalu commit ke `master` supaya terbit lewat Vercel.
+#
+# Rahasia yang dibutuhkan (Settings -> Secrets and variables -> Actions):
+#   GEMINI_API_KEY          (wajib)  kunci Google AI Studio
+#   ACTIVITY_PROJECT_KEYS   (opsional) untuk sinkronisasi ke API kegiatan
+#   DATABASE_URL            (opsional) bila ingin verifikasi `next build` penuh
+#
+# Tanpa DATABASE_URL, verifikasi tetap berjalan (tipe + kompilasi MDX) dan
+# build penuh diserahkan ke Vercel.
+
+on:
+  schedule:
+    # 02:00 UTC = 09:00 WIB
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+    inputs:
+      topic:
+        description: "Paksa topik (biarkan kosong untuk memilih otomatis)"
+        required: false
+        default: ""
+      dry_run:
+        description: "Uji coba saja (tidak menulis berkas)"
+        type: boolean
+        required: false
+        default: false
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: blog-autopilot
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Tulis artikel
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          NEXT_PUBLIC_BASE_URL: https://ajoroby.is-a.dev
+          INPUT_TOPIC: ${{ inputs.topic }}
+          INPUT_DRY: ${{ inputs.dry_run }}
+        run: |
+          ARGS=()
+          if [ -n "$INPUT_TOPIC" ]; then ARGS+=(--topic "$INPUT_TOPIC"); fi
+          if [ "$INPUT_DRY" = "true" ]; then ARGS+=(--dry-run); fi
+          pnpm tsx scripts/blog-autopilot.ts "${ARGS[@]}"
+
+      - name: Verifikasi
+        if: inputs.dry_run != 'true'
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          pnpm types:check
+          if [ -n "$DATABASE_URL" ]; then
+            pnpm build
+          else
+            echo "DATABASE_URL tidak diisi: lewati build penuh (Vercel tetap membangun saat deploy)."
+          fi
+
+      - name: Commit & push
+        id: commit
+        if: inputs.dry_run != 'true'
+        run: |
+          git config user.name "robyajo-blog-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add content/blog releases scripts/blog-pipeline/published.json
+          if git diff --cached --quiet; then
+            echo "Tidak ada perubahan (mungkin sudah tayang hari ini)."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          SUMMARY=$(git diff --cached --name-only | tr '\n' ' ')
+          git commit -m "Blog: artikel fesyen harian" -m "$SUMMARY"
+          git pull --rebase origin master
+          git push origin master
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Sinkronkan ke API kegiatan
+        if: inputs.dry_run != 'true' && steps.commit.outputs.changed == 'true'
+        env:
+          ACTIVITY_PROJECT_KEYS: ${{ secrets.ACTIVITY_PROJECT_KEYS }}
+        run: pnpm tsx scripts/blog-autopilot.ts --sync
+
+      - name: Laporkan kegagalan sebagai issue
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          DATE=$(date -u +%Y-%m-%d)
+          TITLE="Blog Autopilot gagal ${DATE}"
+          BODY="Penulisan artikel otomatis untuk ${DATE} gagal. Lihat log: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          NUMBER=$(gh issue list --state open --search "in:title \"${TITLE}\"" --json number --jq '.[0].number // empty')
+          if [ -n "$NUMBER" ]; then
+            gh issue comment "$NUMBER" --body "$BODY"
+          else
+            gh issue create --title "$TITLE" --body "$BODY"
+          fi
