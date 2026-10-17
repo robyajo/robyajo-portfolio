@@ -89,6 +89,47 @@ export const blogPosts = pgTable(
     ],
 );
 
+export const blogCategories = pgTable(
+    "blog_categories",
+    {
+        id: serial("id").primaryKey(),
+        /** Nilai yang dipakai frontmatter artikel: `category: <slug>`. */
+        slug: varchar("slug", { length: 64 }).notNull(),
+        nameId: varchar("name_id", { length: 120 }).notNull(),
+        nameEn: varchar("name_en", { length: 120 }).notNull(),
+        descriptionId: text("description_id"),
+        descriptionEn: text("description_en"),
+        sortOrder: integer("sort_order").default(0).notNull(),
+        visible: boolean("visible").default(true).notNull(),
+        createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+        updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+    },
+    (table) => [
+        unique("blog_categories_slug_unique").on(table.slug),
+        index("blog_categories_sort_idx").on(table.sortOrder),
+    ],
+);
+
+export const blogTags = pgTable(
+    "blog_tags",
+    {
+        id: serial("id").primaryKey(),
+        /** Nama tampil — inilah yang ditulis di frontmatter `tags: [...]`. */
+        name: varchar("name", { length: 64 }).notNull(),
+        slug: varchar("slug", { length: 64 }).notNull(),
+        description: text("description"),
+        sortOrder: integer("sort_order").default(0).notNull(),
+        visible: boolean("visible").default(true).notNull(),
+        createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+        updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+    },
+    (table) => [
+        unique("blog_tags_name_unique").on(table.name),
+        unique("blog_tags_slug_unique").on(table.slug),
+        index("blog_tags_sort_idx").on(table.sortOrder),
+    ],
+);
+
 export const blogReactions = pgTable(
     "blog_reactions",
     {

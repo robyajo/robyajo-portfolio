@@ -32,10 +32,15 @@ import {
 } from "@/lib/date";
 import { buildMeta } from "@/lib/metadata";
 import { source } from "@/lib/source";
+import {
+  getVisibleCategories,
+  localizedCategoryName,
+} from "@/lib/blog-taxonomy";
 import { getMDXComponents } from "@/mdx-components";
 import { getAuth as auth } from "@/lib/auth";
 import {
   CalendarIcon,
+  FolderOpenIcon,
   GitCommitIcon,
   ClockIcon,
   EyeIcon,
@@ -67,7 +72,16 @@ export default async function Page(props: {
   const readingTime = (page.data as any)._exports?.readingTime;
   const dict = await getDictionary();
   const post = dict.blog.post;
-  const dateLocale = (await getLocale()) === "id" ? "id-ID" : "en-US";
+  const locale = await getLocale();
+  const dateLocale = locale === "id" ? "id-ID" : "en-US";
+
+  const categorySlug = (page.data as { category?: string }).category;
+  const category = categorySlug
+    ? (await getVisibleCategories()).find((c) => c.slug === categorySlug)
+    : undefined;
+  const categoryLabel = category
+    ? localizedCategoryName(category, locale)
+    : null;
 
   const lang = page.data.lang ?? "en";
   const sibling = page.data.translation
@@ -199,6 +213,18 @@ export default async function Page(props: {
               </span>
             )}
           </div>
+
+          {categoryLabel && categorySlug && (
+            <div>
+              <Link
+                href={`/blogs?category=${encodeURIComponent(categorySlug)}`}
+                className="inline-flex items-center gap-1.5 rounded-md bg-muted px-2 py-1 font-mono text-xs uppercase tracking-wide text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-colors"
+              >
+                <FolderOpenIcon className="size-3.5 shrink-0" aria-hidden="true" />
+                {categoryLabel}
+              </Link>
+            </div>
+          )}
 
           {page.data.description && (
             <TypographyLead>{page.data.description}</TypographyLead>

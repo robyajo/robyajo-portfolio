@@ -18,6 +18,7 @@ import {
   HouseIcon,
   LinkIcon,
   ListIcon,
+  PencilIcon,
   SignOutIcon,
   FolderOpenIcon,
   UsersIcon,
@@ -38,6 +39,7 @@ function useNavItems() {
     { title: t.projects, href: "/admin/projects", icon: FolderOpenIcon },
     { title: t.visitors, href: "/admin/visitor", icon: UsersIcon },
     { title: t.links, href: "/admin/links", icon: LinkIcon },
+    { title: t.blog, href: "/admin/blog", icon: PencilIcon },
   ];
 }
 
@@ -76,7 +78,11 @@ export function AdminSidebar() {
               <SidebarMenuItem key={href}>
                 <SidebarMenuButton
                   asChild
-                  isActive={pathname === href}
+                  isActive={
+                    href === "/admin"
+                      ? pathname === "/admin"
+                      : pathname === href || pathname.startsWith(`${href}/`)
+                  }
                   tooltip={title}
                 >
                   <Link href={href as Route}>

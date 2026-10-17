@@ -12,6 +12,8 @@ export const docs = defineDocs({
             // Bahasa artikel. Artikel lama dibiarkan kosong (dianggap Inggris).
             // Versi terjemahan memakai `lang: "en"` dan disembunyikan dari daftar.
             lang: z.enum(["id", "en"]).optional(),
+            // Slug kategori (lihat tabel blog_categories). Boleh kosong.
+            category: z.string().optional(),
             // Slug artikel pasangan dalam bahasa lain (tanpa awalan /blog/).
             translation: z.string().optional(),
             // Set explicitly in frontmatter when a post is meaningfully edited.

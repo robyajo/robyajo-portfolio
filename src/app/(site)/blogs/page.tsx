@@ -1,7 +1,11 @@
 import { BlogCover } from "@/components/diagrams/blog-covers";
 import { PageArt } from "@/components/diagrams/page-art";
 import { HeroWithArt } from "@/components/layouts/hero-art";
-import { BlogsClient, type BlogPost } from "@/app/(site)/blogs/blogs-client";
+import {
+  BlogsClient,
+  type BlogCategoryOption,
+  type BlogPost,
+} from "@/app/(site)/blogs/blogs-client";
 import { BlogsSkeleton } from "@/app/(site)/blogs/blogs-skeleton";
 import { PostGridFiller } from "@/app/(site)/blogs/post-grid-filler";
 import { Section } from "@/components/layouts/page";
@@ -15,6 +19,11 @@ import { siteConfig } from "@/lib/config";
 import { buildMeta } from "@/lib/metadata";
 import { source } from "@/lib/source";
 import { getDictionary, getLocale } from "@/lib/i18n/server";
+import {
+  getTagRegistry,
+  getVisibleCategories,
+  localizedCategoryName,
+} from "@/lib/blog-taxonomy";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { toISOString, toTimestamp } from "@/lib/date";
@@ -47,13 +56,27 @@ export default async function BlogPage() {
     description: page.data.description,
     date: page.data.date ? toISOString(page.data.date) : undefined,
     tags: page.data.tags,
+    category: (page.data as { category?: string }).category,
     number: pages.length - i,
     cover: <BlogCover slug={page.slugs.at(-1) ?? ""} />,
   }));
 
+  const [locale, tagRegistry, categoryRows] = await Promise.all([
+    getLocale(),
+    getTagRegistry(),
+    getVisibleCategories(),
+  ]);
+
   const allTags = Array.from(
     new Set(pages.flatMap((p) => p.data.tags ?? [])),
-  ).sort();
+  )
+    .filter((tag) => tagRegistry.get(tag) ?? true)
+    .sort();
+
+  const categories: BlogCategoryOption[] = categoryRows.map((category) => ({
+    slug: category.slug,
+    name: localizedCategoryName(category, locale),
+  }));
 
   const page = (await getDictionary()).blog.page;
 
@@ -78,7 +101,12 @@ export default async function BlogPage() {
 
       <Section className="pb-6" aria-label={page.postsAria}>
         <Suspense fallback={<BlogsSkeleton count={Math.min(posts.length, 10)} />}>
-          <BlogsClient posts={posts} allTags={allTags} filler={<PostGridFiller />} />
+          <BlogsClient
+            posts={posts}
+            allTags={allTags}
+            categories={categories}
+            filler={<PostGridFiller />}
+          />
         </Suspense>
       </Section>
     </>

@@ -60,30 +60,48 @@ export type BlogPost = {
   description?: string;
   date?: string;
   tags?: string[];
+  category?: string;
   number: number;
   cover: ReactNode;
 };
 
+export type BlogCategoryOption = {
+  slug: string;
+  name: string;
+};
+
 const PER_PAGE_OPTIONS = [5, 10, 15, 20];
+
+const ALL_CATEGORIES = "__all__";
 
 const searchParsers = {
   q: parseAsString.withDefault(""),
   tags: parseAsArrayOf(parseAsString).withDefault([]),
+  category: parseAsString.withDefault(""),
   page: parseAsInteger.withDefault(1),
   per: parseAsInteger.withDefault(10),
 };
 
+function categoryName(
+  categories: BlogCategoryOption[],
+  slug: string,
+): string | undefined {
+  return categories.find((option) => option.slug === slug)?.name;
+}
+
 export function BlogsClient({
   posts,
   allTags,
+  categories,
   filler,
 }: {
   posts: BlogPost[];
   allTags: string[];
+  categories: BlogCategoryOption[];
   filler: ReactNode;
 }) {
   const [params, setParams] = useQueryStates(searchParsers);
-  const { q, tags, page, per } = params;
+  const { q, tags, category, page, per } = params;
   const t = useDictionary().blog.listing;
 
   const deferredQuery = useDeferredValue(q);
@@ -103,8 +121,11 @@ export function BlogsClient({
     if (tags.length > 0) {
       result = result.filter((p) => tags.every((t) => p.tags?.includes(t)));
     }
+    if (category) {
+      result = result.filter((p) => p.category === category);
+    }
     return result;
-  }, [posts, deferredQuery, tags]);
+  }, [posts, deferredQuery, tags, category]);
 
   const totalPages = useMemo(
     () => Math.max(1, Math.ceil(filtered.length / per)),
@@ -122,7 +143,7 @@ export function BlogsClient({
   );
 
   const featured =
-    currentPage === 1 && !deferredQuery.trim() && tags.length === 0
+    currentPage === 1 && !deferredQuery.trim() && tags.length === 0 && !category
       ? paginated[0]
       : undefined;
   const grid = postGrid(paginated, Boolean(featured));
@@ -166,6 +187,41 @@ export function BlogsClient({
         </div>
 
         <ButtonGroup className="w-full sm:w-auto [&>button]:flex-1 *:data-[slot=select-trigger]:flex-1">
+          {categories.length > 0 && (
+            <>
+              <Select
+                value={category || ALL_CATEGORIES}
+                onValueChange={(val) =>
+                  setParams({
+                    category: val === ALL_CATEGORIES ? "" : val,
+                    page: 1,
+                  })
+                }
+              >
+                <SelectTrigger
+                  className="cursor-pointer font-semibold w-full"
+                  aria-label={t.categoryAria}
+                >
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value={ALL_CATEGORIES} className="cursor-pointer">
+                    {t.allCategories}
+                  </SelectItem>
+                  {categories.map((option) => (
+                    <SelectItem
+                      key={option.slug}
+                      value={option.slug}
+                      className="cursor-pointer"
+                    >
+                      {option.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <ButtonGroupSeparator />
+            </>
+          )}
           {allTags.length > 0 && (
             <>
               <Popover>
@@ -273,10 +329,31 @@ export function BlogsClient({
       </div>
 
       <TypographyMuted role="status" className="sr-only">
-        {deferredQuery.trim() || tags.length > 0
+        {deferredQuery.trim() || tags.length > 0 || category !== ""
           ? (filtered.length === 1 ? t.foundOne : t.foundMany).replace("{count}", String(filtered.length))
           : ""}
       </TypographyMuted>
+
+      {category !== "" && (
+        <ul
+          role="list"
+          aria-label={t.categoryAria}
+          className="flex flex-wrap gap-1.5 pb-3"
+        >
+          <li>
+            <Button
+              variant="secondary"
+              size="xs"
+              onClick={() => setParams({ category: "", page: 1 })}
+              aria-label={t.removeCategoryFilter}
+              className="flex items-center bg-primary/10 py-0.5 font-mono text-primary hover:bg-primary/20 cursor-pointer h-auto"
+            >
+              {categoryName(categories, category) ?? category}
+              <XIcon className="size-3" aria-hidden="true" />
+            </Button>
+          </li>
+        </ul>
+      )}
 
       {tags.length > 0 && (
         <ul

@@ -162,6 +162,13 @@
       "when": 1792203942273,
       "tag": "0022_minor_queen_noir",
       "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1792260292823,
+      "tag": "0023_gray_red_ghost",
+      "breakpoints": true
     }
   ]
 }
