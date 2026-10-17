@@ -15,11 +15,13 @@ const id = {
     homeLabel: "beranda",
     language: "Bahasa",
     switchTo: "Ganti ke {lang}",
+    dashboard: "Dasbor",
   },
   footer: {
     pages: "Halaman",
     site: "Situs",
     rightsReserved: "Hak cipta dilindungi.",
+    lastUpdate: "Terakhir diperbarui:",
     toggleTheme: "Ganti tema",
     socialAria: "tautan sosial",
     tagline: "Membangun antarmuka web yang berpendirian.",

@@ -17,11 +17,13 @@ const en: Dictionary = {
     homeLabel: "home",
     language: "Language",
     switchTo: "Switch to {lang}",
+    dashboard: "Dashboard",
   },
   footer: {
     pages: "Pages",
     site: "Site",
     rightsReserved: "All rights reserved.",
+    lastUpdate: "Last updated:",
     toggleTheme: "Toggle theme",
     socialAria: "social links",
     tagline: "Building opinionated interfaces for the web.",

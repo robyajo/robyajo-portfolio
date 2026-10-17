@@ -26,5 +26,15 @@
             "id": "Halaman proyek dan ujung pengelolaan kini memakai tampilan label warna yang sama, agar pengalaman membaca kabar konsisten.",
             "en": "The project pages and the management side now share the same colored-label look, so reading news feels consistent."
         }
+        {
+            "type": "improvement",
+            "id": "Bagian bawah halaman kini menampilkan tanggal pembaruan terakhir, sehingga Anda dapat langsung mengetahui seberapa segar informasi di situs ini.",
+            "en": "The bottom of each page now shows the last-update date, so you always know how fresh the information on this site is."
+        },
+        {
+            "type": "improvement",
+            "id": "Bagi pengelola situs, tautan dasbor kini otomatis muncul di menu navigasi setelah masuk, membuat akses pengelolaan lebih cepat.",
+            "en": "For site administrators, a dashboard link now appears automatically in the navigation menu once signed in, making management access faster."
+        }
     ]
 }

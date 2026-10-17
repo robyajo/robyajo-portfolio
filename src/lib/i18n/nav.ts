@@ -13,6 +13,8 @@ export function navLabel(href: string, dict: Dictionary): string {
       return dict.nav.resume;
     case "/guestbook":
       return dict.nav.guestbook;
+    case "/admin":
+      return dict.header.dashboard;
     default:
       return href;
   }

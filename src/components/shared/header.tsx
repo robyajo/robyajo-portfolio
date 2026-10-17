@@ -19,6 +19,7 @@ import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/cn";
 import { setCommandMenuOpen } from "@/lib/command-menu-store";
 import { useIsMac } from "@/hooks/use-is-mac";
+import { useSession } from "next-auth/react";
 import {
   ListIcon,
   MagnifyingGlassIcon,
@@ -30,7 +31,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 function isActive(pathname: string, href: string) {
   if (pathname === href) return true;
-  return href === "/blogs" && pathname.startsWith("/blog/");
+  if (href === "/blogs") return pathname.startsWith("/blog/");
+  if (href === "/admin") return pathname.startsWith("/admin");
+  return false;
 }
 
 function NavPin({ className }: { className?: string }) {
@@ -87,6 +90,11 @@ function CommandMenuButton({ isMac, dictLabel }: { isMac: boolean; dictLabel?: s
 export function Header() {
   const pathname = usePathname();
   const dict = useDictionary();
+  const { data: session } = useSession();
+  const isAdmin = session?.user?.role === "admin";
+  const navLinks = isAdmin
+    ? [...siteConfig.nav, { href: "/admin", label: dict.header.dashboard } as const]
+    : siteConfig.nav;
   const [openPath, setOpenPath] = useState<string | null>(null);
   const open = openPath === pathname;
   const setOpen = useCallback(
@@ -149,7 +157,7 @@ export function Header() {
               aria-label={dict.header.mainNav}
             >
               <NavigationMenuList className="gap-0.5">
-                {siteConfig.nav.map((link) => {
+                {navLinks.map((link) => {
                   const active = isActive(pathname, link.href);
                   return (
                     <NavigationMenuItem key={link.href}>
@@ -225,7 +233,7 @@ export function Header() {
             className="flex flex-col divide-y"
             aria-label={dict.header.mobileNav}
           >
-            {siteConfig.nav.map((link) => {
+            {navLinks.map((link) => {
               const active = isActive(pathname, link.href);
               return (
                 <Link
