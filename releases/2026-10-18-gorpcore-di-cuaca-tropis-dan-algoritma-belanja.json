@@ -7,10 +7,15 @@
     "en": "The blog is now bilingual and publishes daily"
   },
   "body": {
-    "id": "Blog situs ini kini menyajikan setiap tulisan dalam dua bahasa dan menambah satu tulisan fesyen baru setiap hari, sehingga pembaca selalu punya bacaan segar.",
-    "en": "The site blog now presents every article in two languages and adds a new fashion article every day, so readers always have something fresh to read."
+    "id": "Blog situs ini kini menyajikan setiap tulisan dalam dua bahasa, menambah satu tulisan fesyen baru setiap hari, serta dilengkapi pengelompokan tulisan lewat kategori dan tag agar pembaca lebih cepat menemukan bacaan yang sesuai.",
+    "en": "The site blog now presents every article in two languages, adds a new fashion article every day, and groups articles by category and tag so readers find what suits them faster."
   },
   "items": [
+    {
+      "type": "new",
+      "id": "Pengelolaan tulisan blog kini jauh lebih mudah: menulis, menyunting, dan menghapus tulisan beserta pengelompokan kategori serta tagnya dari satu halaman pengelolaan, termasuk menyiapkan versi Bahasa Inggrisnya sekaligus.",
+      "en": "Managing blog articles is now much easier: write, edit, and remove articles together with their category and tag groupings from a single management page, including preparing the English version in the same step."
+    },
     {
       "type": "new",
       "id": "Setiap tulisan blog kini tersedia dalam dua bahasa: versi Bahasa Indonesia dan versi Bahasa Inggris. Tautan berpindah bahasa ada di bagian atas tulisan, tepat di bawah judul.",
@@ -20,6 +25,26 @@
       "type": "new",
       "id": "Tulisan bertema fesyen dan teknologi terbit setiap hari. Hari ini: \"Gorpcore di Cuaca 34 Derajat: Mengapa Jaket Gunung Masuk Kafe Kota\" — bisa dibaca di https://ajoroby.is-a.dev/blog/gorpcore-di-cuaca-tropis-dan-algoritma-belanja",
       "en": "Fashion and technology articles now appear every day. Today: \"Gorpcore in 34-Degree Heat: Why Alpine Jackets Invaded Tropical Cafes\" — read it at https://ajoroby.is-a.dev/blog/gorpcore-di-cuaca-tropis-dan-algoritma-belanja"
+    },
+    {
+      "type": "new",
+      "id": "Daftar tulisan blog kini bisa disaring per kategori, dan setiap tulisan menampilkan kategorinya. Cara ini memudahkan pembaca menyusuri tulisan sejenis tanpa harus membaca seluruh daftar.",
+      "en": "The blog list can now be filtered by category, and each article shows its own category. This helps readers browse similar articles without scrolling through the whole list."
+    },
+    {
+      "type": "new",
+      "id": "Saran penyaring tag kini tertata: hanya tag yang memang dikurasi yang muncul sebagai pilihan, sehingga daftar saran tetap rapi dan relevan saat pembaca menyaring tulisan.",
+      "en": "Tag filter suggestions are now curated: only approved tags appear as options, keeping the suggestion list tidy and relevant while readers filter articles."
+    },
+    {
+      "type": "new",
+      "id": "Tautan ke akun X (https://x.com/roby_karti) kini tersedia di bagian sosial situs, menu cepat, dan profil publik situs.",
+      "en": "A link to the X account (https://x.com/roby_karti) is now available in the site social area, the quick menu, and the site's public profile."
+    },
+    {
+      "type": "fix",
+      "id": "Ikon Instagram yang sebelumnya tidak muncul di bagian sosial kaki halaman kini kembali tampil, sehingga seluruh tautan sosial terlihat lengkap.",
+      "en": "The Instagram icon that previously failed to appear in the footer social area now shows again, so every social link displays completely."
     }
   ]
 }
