@@ -201,6 +201,16 @@ export async function getAdminProjects(): Promise<ProjectRow[]> {
     return safeQuery("getAdminProjects", loadAdminProjects, []);
 }
 
+export async function getAdminProject(id: number): Promise<ProjectRow | null> {
+    await assertAdmin();
+    const adminProjects = await safeQuery(
+        "getAdminProject",
+        loadAdminProjects,
+        [],
+    );
+    return adminProjects.find((p) => p.id === id) ?? null;
+}
+
 async function loadAdminProjects(): Promise<ProjectRow[]> {
     const rows = await db
         .select({

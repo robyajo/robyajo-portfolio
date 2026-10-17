@@ -12,6 +12,7 @@ import {
     updateActivity,
 } from "@/app/admin/actions";
 import type { Activity } from "@/lib/activities";
+import { splitActivityBody } from "@/lib/activities-schema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -25,6 +26,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { TypographyMuted, TypographySmall } from "@/components/ui/typography";
 import { formatShortDate } from "@/lib/date";
+import { useLocale } from "@/lib/i18n/provider";
 import { PencilIcon, PlusIcon, TrashIcon } from "@/components/shared/icons";
 
 const KINDS = ["deploy", "feature", "fix", "update"] as const;
@@ -133,6 +135,7 @@ function ActivityEditor({
 
 export function ProjectActivities({ syncKey }: { syncKey: string }) {
     const t = useDictionary().admin.activities;
+    const locale = useLocale();
     const queryClient = useQueryClient();
     const { data: items = [] } = useQuery({
         queryKey: [...queryKeys.admin.projects, "activities", syncKey],
@@ -229,13 +232,38 @@ export function ProjectActivities({ syncKey }: { syncKey: string }) {
                                             <span className="text-sm font-semibold">
                                                 {a.titleId}
                                             </span>
-                                            <Badge variant="secondary" className="text-3xs">
+                                            <Badge variant="secondary" size="tiny">
                                                 {a.kind}
                                             </Badge>
                                         </div>
                                         <TypographyMuted className="text-xs">
                                             {a.titleEn} · {formatShortDate(a.occurredAt)}
                                         </TypographyMuted>
+                                        {(() => {
+                                            const pickBody = () =>
+                                                locale === "id"
+                                                    ? splitActivityBody(a.bodyId)
+                                                    : splitActivityBody(a.bodyEn);
+                                            const { lead, bullets } = pickBody();
+                                            if (!lead && bullets.length === 0) return null;
+                                            return (
+                                                <div className="mt-2 flex flex-col gap-1.5">
+                                                    {lead && (
+                                                        <TypographyMuted>{lead}</TypographyMuted>
+                                                    )}
+                                                    {bullets.length > 0 && (
+                                                        <ul className="flex flex-col gap-1">
+                                                            {bullets.map((b) => (
+                                                                <li key={b} className="flex gap-1.5 text-xs text-muted-foreground">
+                                                                    <span aria-hidden="true">–</span>
+                                                                    <span className="min-w-0">{b}</span>
+                                                                </li>
+                                                            ))}
+                                                        </ul>
+                                                    )}
+                                                </div>
+                                            );
+                                        })()}
                                     </div>
                                     <Button
                                         size="icon-sm"

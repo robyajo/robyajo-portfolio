@@ -246,6 +246,12 @@ const en: Dictionary = {
       dialogAdd: "Add Project",
       dialogEditBody: "Update the project details below.",
       dialogAddBody: "Fill in the details to add a new project.",
+      detailHeading: "Project details",
+      openDetail: "Open project details",
+      backToProjects: "Back to projects",
+      noSyncKey: "// this project has no sync key linked yet.",
+      activityLabel: "Activities",
+      keyPlaceholderEmpty: "empty = no sync",
     },
     links: {
       tagAria: "Tag (optional)",

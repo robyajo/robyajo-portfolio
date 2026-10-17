@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useForm, type Control } from "react-hook-form";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { z } from "zod";
@@ -566,9 +567,13 @@ export function ProjectsPanel() {
                     <TableCell className="py-3">
                       <div className="space-y-0.5">
                         <div className="flex items-center gap-2">
-                          <span className="text-sm font-semibold leading-tight">
+                          <Link
+                            href={`/admin/projects/${project.id}`}
+                            aria-label={t.openDetail}
+                            className="text-sm font-semibold leading-tight hover:underline underline-offset-4"
+                          >
                             {project.title}
-                          </span>
+                          </Link>
                           {!project.enabled && (
                             <Badge
                               variant="outline"

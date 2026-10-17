@@ -244,6 +244,12 @@ const id = {
       dialogAdd: "Tambah Proyek",
       dialogEditBody: "Perbarui detail proyek di bawah.",
       dialogAddBody: "Isi detail untuk menambah proyek baru.",
+      detailHeading: "Detail proyek",
+      openDetail: "Buka detail proyek",
+      backToProjects: "Kembali ke proyek",
+      noSyncKey: "// proyek ini belum memiliki kunci sinkron.",
+      activityLabel: "Kegiatan",
+      keyPlaceholderEmpty: "kosong = tanpa sinkron",
     },
     links: {
       tagAria: "Tag (opsional)",

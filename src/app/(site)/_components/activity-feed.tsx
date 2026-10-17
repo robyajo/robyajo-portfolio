@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/typography";
 import { Reveal } from "@/components/shared/reveal";
 import { getRecentActivities } from "@/lib/activities";
+import { splitActivityBody } from "@/lib/activities-schema";
 import { formatShortDate } from "@/lib/date";
 import { getDictionary, getLocale } from "@/lib/i18n/server";
 import type { Locale } from "@/lib/i18n/config";
@@ -61,7 +62,9 @@ export async function ActivityFeed({
                     <ul role="list" className="flex flex-col divide-y divide-border border-y border-line">
                         {items.map((a) => {
                             const title = pick(locale, a.titleId, a.titleEn);
-                            const body = pick(locale, a.bodyId ?? "", a.bodyEn ?? "");
+                            const { lead, bullets } = splitActivityBody(
+                                pick(locale, a.bodyId ?? "", a.bodyEn ?? ""),
+                            );
                             const kind = content.kinds[a.kind as keyof typeof content.kinds] ?? a.kind;
                             const inner = (
                                 <>
@@ -80,9 +83,19 @@ export async function ActivityFeed({
                                         </time>
                                     </span>
                                     <span className="block font-medium text-foreground">{title}</span>
-                                    {body && (
+                                    {(lead || bullets.length > 0) && (
                                         <span className="block text-sm text-muted-foreground leading-relaxed">
-                                            {body}
+                                            {lead && <span className="block">{lead}</span>}
+                                            {bullets.length > 0 && (
+                                                <span className="mt-1.5 flex flex-col gap-1">
+                                                    {bullets.map((b) => (
+                                                        <span key={b} className="flex gap-1.5">
+                                                            <span aria-hidden="true">–</span>
+                                                            <span className="min-w-0">{b}</span>
+                                                        </span>
+                                                    ))}
+                                                </span>
+                                            )}
                                         </span>
                                     )}
                                 </>
