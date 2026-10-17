@@ -56,6 +56,7 @@ export async function generateMetadata(): Promise<Metadata> {
       template: `%s – ${siteConfig.name}`,
     },
     description: siteConfig.description,
+    manifest: "/assets/apps/manifest.json",
     openGraph: {
       locale: locale === "id" ? "id_ID" : "en_US",
       alternateLocale: locale === "id" ? ["en_US"] : ["id_ID"],

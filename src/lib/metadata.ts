@@ -79,6 +79,7 @@ export function buildMeta(
     return {
         title,
         description,
+        manifest: "/assets/apps/manifest.json",
         keywords,
         authors: [{ name: siteConfig.name, url: siteConfig.baseUrl }],
         creator: siteConfig.name,
