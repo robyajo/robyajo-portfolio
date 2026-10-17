@@ -36,6 +36,7 @@ export async function Footer() {
             variant: "site",
             links: [
                 { href: "/branding", label: dict.footer.branding },
+                { href: "/changelog", label: dict.footer.changelog },
                 { href: "/privacy-policy", label: dict.footer.privacy },
             ],
         },
