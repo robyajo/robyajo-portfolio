@@ -25,7 +25,7 @@
             "type": "improvement",
             "id": "Halaman proyek dan ujung pengelolaan kini memakai tampilan label warna yang sama, agar pengalaman membaca kabar konsisten.",
             "en": "The project pages and the management side now share the same colored-label look, so reading news feels consistent."
-        }
+        },
         {
             "type": "improvement",
             "id": "Bagian bawah halaman kini menampilkan tanggal pembaruan terakhir, sehingga Anda dapat langsung mengetahui seberapa segar informasi di situs ini.",
