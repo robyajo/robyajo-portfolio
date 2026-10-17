@@ -1,0 +1,30 @@
+{
+    "date": "2026-10-17",
+    "type": "feature",
+    "status": "published",
+    "title": {
+        "id": "Kabar terbaru kini tampil sebagai kartu dengan label warna",
+        "en": "Latest news now appears as cards with color-coded labels"
+    },
+    "body": {
+        "id": "Daftar kabar terbaru di situs dirapikan menjadi kartu per kegiatan: setiap kegiatan kini lebih mudah dibedakan berkat label warna di sudut kanannya, dan rincian setiap kegiatan tampil lebih teratur.",
+        "en": "The latest-news list on the website has been tidied into one card per activity: each item is now easier to tell apart thanks to a colored label in its corner, and details are shown more neatly."
+    },
+    "items": [
+        {
+            "type": "new",
+            "id": "Kabar kegiatan kini tampil sebagai kartu: tanggal dengan ikon kalender, judul tebal, dan label warna yang menandai jenis kabarnya.",
+            "en": "Activity news now appears as cards: date with a calendar icon, bold title, and a colored label marking its type."
+        },
+        {
+            "type": "improvement",
+            "id": "Rincian dalam setiap kabar kini tampil rapi sebagai daftar kecil dengan label warna per jenis, sehingga mudah dipindai mata.",
+            "en": "Details inside each item are now neatly listed in small rows with a colored label per type, so they are easy to scan."
+        },
+        {
+            "type": "improvement",
+            "id": "Halaman proyek dan ujung pengelolaan kini memakai tampilan label warna yang sama, agar pengalaman membaca kabar konsisten.",
+            "en": "The project pages and the management side now share the same colored-label look, so reading news feels consistent."
+        }
+    ]
+}
