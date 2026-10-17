@@ -95,6 +95,11 @@
             "type": "improvement",
             "id": "Detail setiap perangkat kini jauh lebih lengkap: peramban beserta versinya, sistem operasi beserta versinya (misalnya Android 14 atau iOS 18), jenis layar, dan tanda perangkat penuh — semuanya tampil di halaman rincian perangkat.",
             "en": "Each device's detail is now far more complete: browser with its version, operating system with its version (such as Android 14 or iOS 18), screen type, and the full device string — all shown on the device detail page."
+        },
+        {
+            "type": "improvement",
+            "id": "Tampilan grafik tren kunjungan di dasbor kini lebih mudah dibaca: ada garis bantu dan angka skala di sisi kiri, label tanggal di bawah batang, ringkasan total serta hari tersibuk, dan sorotan warna pada batang hari ini. Tombol muat ulang juga kini menyegarkan grafik sekaligus tabel.",
+            "en": "The visit-trend chart on the dashboard is now easier to read: it has guide lines and a scale on the left, date labels under the bars, a summary of the total and the busiest day, and a color highlight on today's bar. The refresh button now reloads the chart and the table together."
         }
     ]
 }
