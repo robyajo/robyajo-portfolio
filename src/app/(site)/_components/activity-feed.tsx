@@ -8,14 +8,28 @@ import {
   TypographyMuted,
 } from "@/components/ui/typography";
 import { Reveal } from "@/components/shared/reveal";
+import { Badge } from "@/components/ui/badge";
+import { CalendarIcon } from "@/components/shared/icons";
 import { getRecentActivities } from "@/lib/activities";
-import { splitActivityBody } from "@/lib/activities-schema";
+import {
+  activityBadgeVariant,
+  splitActivityBody,
+  type ActivityBullet,
+} from "@/lib/activities-schema";
 import { formatShortDate } from "@/lib/date";
 import { getDictionary, getLocale } from "@/lib/i18n/server";
 import type { Locale } from "@/lib/i18n/config";
 
 function pick(locale: Locale, id: string, en: string): string {
     return locale === "id" ? id : en;
+}
+
+function bulletLabel(
+    bullet: ActivityBullet,
+    itemKinds: Record<string, string>,
+): string {
+    if (!bullet.kind) return "";
+    return itemKinds[bullet.kind] ?? bullet.kind;
 }
 
 export async function ActivityFeed({
@@ -57,62 +71,93 @@ export async function ActivityFeed({
                     </div>
                 )}
                 {items.length === 0 ? (
-                    <TypographyMuted className="font-mono text-sm">{content.empty}</TypographyMuted>
+                    <span className="font-mono text-sm text-muted-foreground">{content.empty}</span>
                 ) : (
-                    <ul role="list" className="flex flex-col divide-y divide-border border-y border-line">
+                    <ul role="list" className="flex flex-col gap-6">
                         {items.map((a) => {
                             const title = pick(locale, a.titleId, a.titleEn);
                             const { lead, bullets } = splitActivityBody(
                                 pick(locale, a.bodyId ?? "", a.bodyEn ?? ""),
                             );
-                            const kind = content.kinds[a.kind as keyof typeof content.kinds] ?? a.kind;
-                            const inner = (
-                                <>
-                                    <span className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                                        <span className="rounded-md bg-(--brand)/10 px-2 py-0.5 font-mono text-xs text-(--brand-text)">
-                                            {a.projectName}
-                                        </span>
-                                        <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
-                                            {kind}
-                                        </span>
-                                        <time
-                                            dateTime={a.occurredAt}
-                                            className="ml-auto font-mono text-xs text-muted-foreground tabular-nums"
-                                        >
-                                            {formatShortDate(a.occurredAt, dateLocale)}
-                                        </time>
-                                    </span>
-                                    <span className="block font-medium text-foreground">{title}</span>
-                                    {(lead || bullets.length > 0) && (
-                                        <span className="block text-sm text-muted-foreground leading-relaxed">
-                                            {lead && <span className="block">{lead}</span>}
-                                            {bullets.length > 0 && (
-                                                <span className="mt-1.5 flex flex-col gap-1">
-                                                    {bullets.map((b) => (
-                                                        <span key={b} className="flex gap-1.5">
-                                                            <span aria-hidden="true">–</span>
-                                                            <span className="min-w-0">{b}</span>
-                                                        </span>
-                                                    ))}
-                                                </span>
-                                            )}
-                                        </span>
-                                    )}
-                                </>
+                            const kindLabel =
+                                content.kinds[a.kind as keyof typeof content.kinds] ?? a.kind;
+                            const titleNode = (
+                                <span className="block text-lg font-bold leading-snug text-foreground">
+                                    {title}
+                                </span>
                             );
                             return (
-                                <li key={a.id} className="py-4">
-                                    {a.url ? (
-                                        <Link
-                                            href={a.url as never}
-                                            target={a.url.startsWith("http") ? "_blank" : undefined}
-                                            rel={a.url.startsWith("http") ? "noopener noreferrer" : undefined}
-                                            className="block space-y-1.5 hover:opacity-90"
-                                        >
-                                            {inner}
-                                        </Link>
-                                    ) : (
-                                        <div className="space-y-1.5">{inner}</div>
+                                <li
+                                    key={a.id}
+                                    id={`kegiatan-${a.id}`}
+                                    className="flex flex-col gap-2.5 border-b border-line pb-6 last:border-none last:pb-0"
+                                >
+                                    <div className="flex items-center justify-between gap-3">
+                                        <span className="flex items-center gap-2 text-sm font-medium text-foreground">
+                                            <CalendarIcon
+                                                className="size-4 text-muted-foreground"
+                                                aria-hidden="true"
+                                            />
+                                            <time
+                                                dateTime={a.occurredAt}
+                                                className="tabular-nums"
+                                            >
+                                                {formatShortDate(a.occurredAt, dateLocale)}
+                                            </time>
+                                        </span>
+                                        <Badge variant={activityBadgeVariant(a.kind)}>
+                                            {kindLabel}
+                                        </Badge>
+                                    </div>
+                                    <div className="flex items-start justify-between gap-3">
+                                        {a.url ? (
+                                            <Link
+                                                href={a.url as never}
+                                                target={a.url.startsWith("http") ? "_blank" : undefined}
+                                                rel={a.url.startsWith("http") ? "noopener noreferrer" : undefined}
+                                                className="hover:underline underline-offset-4"
+                                            >
+                                                {titleNode}
+                                            </Link>
+                                        ) : (
+                                            titleNode
+                                        )}
+                                    </div>
+                                    {lead && (
+                                        <p className="text-sm text-muted-foreground leading-relaxed">
+                                            {lead}
+                                        </p>
+                                    )}
+                                    {bullets.length > 0 && (
+                                        <div className="mt-1 flex flex-col gap-2 rounded-xl border border-line p-3">
+                                            <span className="text-3xs font-medium uppercase tracking-widest text-muted-foreground">
+                                                {content.detailsLabel} ({bullets.length})
+                                            </span>
+                                            <ul role="list" className="flex flex-col gap-2">
+                                                {bullets.map((b) => {
+                                                    const label = bulletLabel(b, content.itemKinds);
+                                                    return (
+                                                        <li
+                                                            key={b.text}
+                                                            className="flex items-start gap-2.5 rounded-lg bg-muted/50 p-3 max-md:flex-col max-md:gap-1.5"
+                                                        >
+                                                            {label && (
+                                                                <Badge
+                                                                    variant={activityBadgeVariant(b.kind)}
+                                                                    size="tiny"
+                                                                    className="mt-0.5 shrink-0"
+                                                                >
+                                                                    {label}
+                                                                </Badge>
+                                                            )}
+                                                            <span className="text-sm leading-relaxed text-foreground">
+                                                                {b.text}
+                                                            </span>
+                                                        </li>
+                                                    );
+                                                })}
+                                            </ul>
+                                        </div>
                                     )}
                                 </li>
                             );

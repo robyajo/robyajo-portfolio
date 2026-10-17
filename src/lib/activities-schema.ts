@@ -3,7 +3,7 @@ import { slugifyTitle } from "./sync-keys";
 
 export const ACTIVITY_KINDS = ["deploy", "feature", "fix", "update"] as const;
 export type ActivityKind = (typeof ACTIVITY_KINDS)[number];
-
+/** Jenis butir yang dikenali (masing-masing punya warna lencana). */
 export const ACTIVITY_ITEM_KINDS = [
     "new",
     "feature",
@@ -11,6 +11,8 @@ export const ACTIVITY_ITEM_KINDS = [
     "deploy",
     "update",
     "improvement",
+    "security",
+    "removed",
     "important",
 ] as const;
 
@@ -76,25 +78,47 @@ function toDateISO(value: unknown): string | undefined {
     return undefined;
 }
 
-function collectItems(value: unknown): { id: string[]; en: string[] } {
-    const result = { id: [] as string[], en: [] as string[] };
+interface ReleaseItem {
+    kind?: string;
+    text: string;
+}
+
+/** Gabungkan isi dasar + butir (lencana jenis terekam sebagai tag [jenis]). */
+function composeBody(base: unknown, items: ReleaseItem[]): string {
+    const parts: string[] = [];
+    if (typeof base === "string" && base.trim()) parts.push(base.trim());
+    for (const item of items) {
+        parts.push(item.kind ? `- [${item.kind}] ${item.text}` : `- ${item.text}`);
+    }
+    return parts.join("\n");
+}
+
+function collectItemKind(value: unknown): string | undefined {
+    if (typeof value !== "string") return undefined;
+    const kind = value.trim().toLowerCase();
+    return /^[a-z]{2,24}$/.test(kind) ? kind : undefined;
+}
+
+function collectItems(value: unknown): { id: ReleaseItem[]; en: ReleaseItem[] } {
+    const result = { id: [] as ReleaseItem[], en: [] as ReleaseItem[] };
     if (!Array.isArray(value)) return result;
     for (const entry of value) {
         if (typeof entry === "string") {
             const text = entry.trim();
             if (text) {
-                result.id.push(text);
-                result.en.push(text);
+                result.id.push({ text });
+                result.en.push({ text });
             }
             continue;
         }
         if (typeof entry !== "object" || entry === null) continue;
         const item = entry as Record<string, unknown>;
+        const kind = collectItemKind(item.type) ?? collectItemKind(item.kind);
         if (typeof item.id === "string" && item.id.trim()) {
-            result.id.push(item.id.trim());
+            result.id.push({ kind, text: item.id.trim() });
         }
         if (typeof item.en === "string" && item.en.trim()) {
-            result.en.push(item.en.trim());
+            result.en.push({ kind, text: item.en.trim() });
         }
     }
     return result;
@@ -155,15 +179,6 @@ export function normalizeActivityPayload(raw: unknown): unknown {
             : undefined;
     const items = collectItems(input.items);
 
-    function composeBody(base: unknown, lines: string[]): string {
-        const parts: string[] = [];
-        if (typeof base === "string" && base.trim()) parts.push(base.trim());
-        for (const line of lines) {
-            parts.push(`- ${line}`);
-        }
-        return parts.join("\n");
-    }
-
     const bodyId = composeBody(bodyRaw?.id, items.id);
     const bodyEn = composeBody(bodyRaw?.en, items.en);
 
@@ -192,24 +207,73 @@ export const activityIngestSchema = z.preprocess(
 
 export type ActivityIngest = z.output<typeof activityCanonicalSchema>;
 
-/** Untai isi → lead + butir berstrip (baris mulai "- " disusun jadi daftar). */
+/** Satu butir isi kegiatan (bisa membawa jenis untuk lencana warna). */
+export interface ActivityBullet {
+    kind: string | null;
+    text: string;
+}
+
+/** Untai isi → lead + butir. Butir berformat "- [jenis] teks" membawa jenis. */
 export function splitActivityBody(body: string | null | undefined): {
     lead: string;
-    bullets: string[];
+    bullets: ActivityBullet[];
 } {
     if (!body) return { lead: "", bullets: [] };
-    const lead: string[] = [];
-    const bullets: string[] = [];
+    const leads: string[] = [];
+    const bullets: ActivityBullet[] = [];
     for (const line of body.split("\n")) {
         const text = line.trim();
-        if (!text) continue;
-        if (text.startsWith("- ") && text.length > 2) {
-            bullets.push(text.slice(2));
-        } else {
-            lead.push(text);
+        if (!text || text === "-") continue;
+        const tagged = /^- \[([a-z]{2,24})\]\s*(.+)$/.exec(text);
+        if (tagged) {
+            bullets.push({ kind: tagged[1], text: tagged[2].trim() });
+            continue;
         }
+        if (text.startsWith("- ") && text.length > 2) {
+            bullets.push({ kind: null, text: text.slice(2) });
+            continue;
+        }
+        leads.push(text);
     }
-    return { lead: lead.join(" "), bullets };
+    return { lead: leads.join(" "), bullets };
+}
+
+export type ActivityBadgeVariant =
+    | "default"
+    | "secondary"
+    | "destructive"
+    | "outline"
+    | "ghost"
+    | "link"
+    | "positive"
+    | "notice"
+    | "warning"
+    | "danger"
+    | "neutral";
+
+/** Warna lencana per jenis (butir maupun kunci). */
+export function activityBadgeVariant(kind: string | null | undefined): ActivityBadgeVariant {
+    switch (kind) {
+        case "new":
+        case "feature":
+        case "deploy":
+            return "positive";
+        case "improvement":
+        case "update":
+        case "release":
+            return "notice";
+        case "fix":
+        case "hotfix":
+        case "bug":
+            return "warning";
+        case "security":
+        case "important":
+            return "danger";
+        case "removed":
+            return "destructive";
+        default:
+            return "neutral";
+    }
 }
 
 /** Patch parsial untuk PATCH /api/activities/[id] — semua opsional. */

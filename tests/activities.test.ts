@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+    activityBadgeVariant,
     activityIngestSchema,
     activityPatchSchema,
     parseProjectRegistry,
@@ -111,8 +112,11 @@ describe("activityIngestSchema — bentuk berkas rilis", () => {
         expect(parsed.data.occurred_at?.startsWith("2026-05-13")).toBe(true);
         expect(parsed.data.source).toBe("2026-05-13-verifikasi-keabsahan-dokumen-surat-resmi-kelurahan");
         expect(parsed.data.body?.id).toContain("Fitur pengecekan");
-        expect(parsed.data.body?.id).toContain("- Pindai Kode Keabsahan");
-        expect(parsed.data.body?.en).toContain("- Transparent Validation Details");
+        expect(parsed.data.body?.id).toContain("- [new] Pindai Kode Keabsahan");
+        expect(parsed.data.body?.id).toContain(
+            "- [improvement] Informasi Pengesahan Terbuka",
+        );
+        expect(parsed.data.body?.en).toContain("- [improvement] Transparent Validation Details");
     });
 
     it.each([
@@ -187,7 +191,22 @@ describe("splitActivityBody", () => {
             splitActivityBody("Ringkasan.\n- Butir satu\n- Butir dua\n"),
         ).toEqual({
             lead: "Ringkasan.",
-            bullets: ["Butir satu", "Butir dua"],
+            bullets: [
+                { kind: null, text: "Butir satu" },
+                { kind: null, text: "Butir dua" },
+            ],
+        });
+    });
+
+    it("parses [jenis] tags into bullet kinds", () => {
+        expect(
+            splitActivityBody("Lead.\n- [new] Fitur baru\n- [security] Perbaikan\n"),
+        ).toEqual({
+            lead: "Lead.",
+            bullets: [
+                { kind: "new", text: "Fitur baru" },
+                { kind: "security", text: "Perbaikan" },
+            ],
         });
     });
 
@@ -197,6 +216,25 @@ describe("splitActivityBody", () => {
             lead: "hanya lead",
             bullets: [],
         });
+    });
+});
+
+describe("activityBadgeVariant", () => {
+    it.each([
+        ["new", "positive"],
+        ["feature", "positive"],
+        ["deploy", "positive"],
+        ["improvement", "notice"],
+        ["update", "notice"],
+        ["fix", "warning"],
+        ["bug", "warning"],
+        ["security", "danger"],
+        ["important", "danger"],
+        ["removed", "destructive"],
+        [null, "neutral"],
+        ["weird-kind", "neutral"],
+    ] as const)("maps %s → %s", (input, expected) => {
+        expect(activityBadgeVariant(input)).toBe(expected);
     });
 });
 

@@ -12,7 +12,10 @@ import {
     updateActivity,
 } from "@/app/admin/actions";
 import type { Activity } from "@/lib/activities";
-import { splitActivityBody } from "@/lib/activities-schema";
+import {
+    activityBadgeVariant,
+    splitActivityBody,
+} from "@/lib/activities-schema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -134,7 +137,9 @@ function ActivityEditor({
 }
 
 export function ProjectActivities({ syncKey }: { syncKey: string }) {
-    const t = useDictionary().admin.activities;
+    const dict = useDictionary();
+    const t = dict.admin.activities;
+    const itemKinds = dict.activity.itemKinds;
     const locale = useLocale();
     const queryClient = useQueryClient();
     const { data: items = [] } = useQuery({
@@ -240,11 +245,10 @@ export function ProjectActivities({ syncKey }: { syncKey: string }) {
                                             {a.titleEn} · {formatShortDate(a.occurredAt)}
                                         </TypographyMuted>
                                         {(() => {
-                                            const pickBody = () =>
+                                            const { lead, bullets } =
                                                 locale === "id"
                                                     ? splitActivityBody(a.bodyId)
                                                     : splitActivityBody(a.bodyEn);
-                                            const { lead, bullets } = pickBody();
                                             if (!lead && bullets.length === 0) return null;
                                             return (
                                                 <div className="mt-2 flex flex-col gap-1.5">
@@ -254,9 +258,20 @@ export function ProjectActivities({ syncKey }: { syncKey: string }) {
                                                     {bullets.length > 0 && (
                                                         <ul className="flex flex-col gap-1">
                                                             {bullets.map((b) => (
-                                                                <li key={b} className="flex gap-1.5 text-xs text-muted-foreground">
-                                                                    <span aria-hidden="true">–</span>
-                                                                    <span className="min-w-0">{b}</span>
+                                                                <li
+                                                                    key={b.text}
+                                                                    className="flex items-start gap-1.5 text-xs text-muted-foreground"
+                                                                >
+                                                                    {b.kind && (
+                                                                        <Badge
+                                                                            variant={activityBadgeVariant(b.kind)}
+                                                                            size="tiny"
+                                                                            className="mt-0.5 shrink-0"
+                                                                        >
+                                                                            {itemKinds[b.kind as keyof typeof itemKinds] ?? b.kind}
+                                                                        </Badge>
+                                                                    )}
+                                                                    <span className="min-w-0">{b.text}</span>
                                                                 </li>
                                                             ))}
                                                         </ul>

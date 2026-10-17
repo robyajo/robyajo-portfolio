@@ -94,6 +94,7 @@
   --warning: oklch(0.769 0.188 70.08);
   --warning-foreground: oklch(0.555 0.163 48.998);
   --color-available: oklch(0.72 0.19 142);
+  --color-notice: oklch(0.62 0.19 296);
   --color-traffic-red: oklch(0.704 0.191 22.216);
   --color-traffic-yellow: oklch(0.852 0.199 91.936);
   --color-traffic-green: oklch(0.792 0.209 151.711);
@@ -166,6 +167,7 @@
   --glow: oklch(0.8 0.03 40 / 0.08);
   --tap-highlight: oklch(0.72 0.15 155 / 0.2);
   --color-available: oklch(0.78 0.19 142);
+  --color-notice: oklch(0.75 0.17 296);
   --brand-text: oklch(0.72 0.15 155);
   --warning-foreground: oklch(0.828 0.189 84.429);
 }

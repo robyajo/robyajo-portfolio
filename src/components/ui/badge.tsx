@@ -18,6 +18,12 @@ const badgeVariants = cva(
           "border-border text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
         ghost: "[a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
         link: "text-primary underline-offset-4 [a&]:hover:underline",
+        positive:
+          "bg-(--color-available)/15 text-(--color-available)",
+        notice: "bg-(--color-notice)/15 text-(--color-notice)",
+        warning: "bg-warning/15 text-warning-foreground",
+        danger: "bg-destructive/15 text-destructive",
+        neutral: "bg-muted text-muted-foreground",
       },
       size: {
         default: "text-xs px-2 py-0.5",
