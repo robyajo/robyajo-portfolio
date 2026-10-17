@@ -60,6 +60,11 @@
             "type": "new",
             "id": "Bagi pengelola situs, tersedia dasor pengawas kunjungan baru yang menampilkan gambaran pengunjung: status sedang daring, jenis perangkat, asal wilayah hingga kota, jumlah kunjungan, serta waktu kunjungan pertama dan terakhir.",
             "en": "For site administrators, a new visitor monitor dashboard is available giving a picture of each visitor: online status, device type, origin down to the city, visit count, and first and last visit times."
+        },
+        {
+            "type": "improvement",
+            "id": "Saat situs ini dicari di mesin pencari seperti Google, ringkasan yang tampil kini jelas dan profesional: langsung memperkenalkan siapa saya dan layanan pengembangan apa yang saya kerjakan, sehingga lebih mudah dikenali dan menarik untuk diklik.",
+            "en": "When this site shows up in search engines like Google, the summary displayed is now clear and professional: it immediately introduces who I am and what development services I do, making the site easier to recognize and click."
         }
     ]
 }
