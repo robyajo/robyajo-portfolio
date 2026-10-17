@@ -80,6 +80,21 @@
             "type": "improvement",
             "id": "Tampilan situs saat dipasang atau disematkan di layar beranda perangkat kini lebih rapi: nama situs tampil benar, ikon pas dengan ukuran yang tepat untuk setiap layar, dan warna latar mengikuti tema situs. Data ikon yang tidak terpakai juga dibersihkan agar situs tetap ringan.",
             "en": "The site now looks tidier when installed or pinned to a device home screen: the site name shows correctly, the icon fits each screen size properly, and the background color follows the site theme. Unused icon data was also cleaned up to keep the site light."
+        },
+        {
+            "type": "new",
+            "id": "Dasbor pemantauan kini dilengkapi grafik tren kunjungan yang bisa dipilih rentangnya: sepekan, sebulan, atau dua belas bulan terakhir — jadi terlihat jelas kapan situs paling ramai.",
+            "en": "The monitoring dashboard now includes visit-trend charts with a switchable range: the past week, month, or twelve months — making it easy to see when the site is busiest."
+        },
+        {
+            "type": "new",
+            "id": "Tersedia juga peringkat kunjungan terbanyak: negara, peramban, sistem operasi, dan jenis layar yang paling sering dipakai, lengkap dengan batang proporsi agar mudah dibandingkan.",
+            "en": "Top rankings are also available: the countries, browsers, operating systems, and screen types most frequently used, complete with proportion bars for easy comparison."
+        },
+        {
+            "type": "improvement",
+            "id": "Detail setiap perangkat kini jauh lebih lengkap: peramban beserta versinya, sistem operasi beserta versinya (misalnya Android 14 atau iOS 18), jenis layar, dan tanda perangkat penuh — semuanya tampil di halaman rincian perangkat.",
+            "en": "Each device's detail is now far more complete: browser with its version, operating system with its version (such as Android 14 or iOS 18), screen type, and the full device string — all shown on the device detail page."
         }
     ]
 }
