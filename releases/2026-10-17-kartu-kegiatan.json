@@ -40,6 +40,11 @@
             "type": "new",
             "id": "Catatan Rilis kini punya halaman sendiri: buka tautan \"Catatan Rilis\" di bagian bawah situs untuk melihat seluruh riwayat perubahan per hari, dari fitur baru sampai perbaikan.",
             "en": "Changelog now has its own page: open the \"Changelog\" link at the bottom of the site to see the full day-by-day history of changes, from new features to fixes."
+        },
+        {
+            "type": "new",
+            "id": "Pengunjung kini dihitung berdasarkan perangkat dan ditampilkan di bagian bawah setiap halaman: berapa total pengunjung yang datang dan berapa yang berkunjung hari ini.",
+            "en": "Visitors are now counted by device and shown at the bottom of every page: how many visitors have arrived in total and how many visited today."
         }
     ]
 }
