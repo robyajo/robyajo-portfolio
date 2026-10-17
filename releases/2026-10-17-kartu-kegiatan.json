@@ -50,6 +50,16 @@
             "type": "improvement",
             "id": "Saat membuka halaman rincian proyek atau buku tamu, menu terkait di bagian atas kini tetap ditandai aktif, jadi Anda selalu tahu di bagian mana Anda berada.",
             "en": "When opening a project or guestbook detail page, the related top menu now stays marked active, so you always know which section you are in."
+        },
+        {
+            "type": "new",
+            "id": "Sebelum data statistik kunjungan diperhitungkan, tampil dulu pemberitahuan persetujuan yang jelas: Anda bebas memilih \"Saya setuju\" atau \"Kali ini tidak\", dan tidak ada kunjungan yang dicatat selama Anda belum menyetujuinya. Penjelasan lengkapnya tersedia di Kebijakan Privasi.",
+            "en": "Before visit statistics are counted, a clear consent notice now appears: you are free to choose \"I agree\" or \"Not this time\", and nothing is recorded until you agree. Full details are available in the Privacy Policy."
+        },
+        {
+            "type": "new",
+            "id": "Bagi pengelola situs, tersedia dasor pengawas kunjungan baru yang menampilkan gambaran pengunjung: status sedang daring, jenis perangkat, asal wilayah hingga kota, jumlah kunjungan, serta waktu kunjungan pertama dan terakhir.",
+            "en": "For site administrators, a new visitor monitor dashboard is available giving a picture of each visitor: online status, device type, origin down to the city, visit count, and first and last visit times."
         }
     ]
 }
