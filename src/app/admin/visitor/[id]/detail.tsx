@@ -51,6 +51,10 @@ export function VisitorDetail({ visitor }: { visitor: VisitorDetailData }) {
         .join(", ");
     const fields = [
         { label: t.device, value: visitor.device ?? dict.unknown },
+        { label: t.browser, value: visitor.browser || t.empty },
+        { label: t.os, value: visitor.os || t.empty },
+        { label: t.formFactor, value: visitor.formFactor || t.empty },
+        { label: t.userAgent, value: visitor.userAgent || t.empty },
         {
             label: t.location,
             value: locationParts || dict.unknown,

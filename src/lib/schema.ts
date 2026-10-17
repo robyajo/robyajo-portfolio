@@ -7,6 +7,7 @@ import {
     serial,
     boolean,
     text,
+    date,
     integer,
     unique,
     type AnyPgColumn,
@@ -269,8 +270,28 @@ export const visitors = pgTable(
         region: varchar("region", { length: 128 }),
         city: varchar("city", { length: 128 }),
         device: varchar("device", { length: 128 }),
+        browser: varchar("browser", { length: 64 }),
+        os: varchar("os", { length: 64 }),
+        formFactor: varchar("form_factor", { length: 32 }),
+        userAgent: text("user_agent"),
     },
     (table) => [
         index("visitors_last_seen_idx").on(table.lastSeenAt),
+    ],
+);
+
+/** Log kunjungan harian per perangkat anonim: dasar grafik 7 hari, 30 hari, 12 bulan. */
+export const visitorDays = pgTable(
+    "visitor_days",
+    {
+        /** Hash satu arah perangkat (sama seperti visitors.hash). */
+        hash: varchar("hash", { length: 64 }).notNull(),
+        /** Tanggal kunjungan (UTC). */
+        day: date("day").notNull(),
+        count: integer("count").default(1).notNull(),
+    },
+    (table) => [
+        primaryKey({ columns: [table.hash, table.day] }),
+        index("visitor_days_day_idx").on(table.day),
     ],
 );

@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { getVisitorMonitor } from "@/app/admin/actions";
 import type { VisitorMonitor } from "@/app/admin/actions";
+import type { VisitorOverview } from "@/lib/visitors";
+import { VisitorCharts } from "./charts";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -53,9 +55,11 @@ function Stat({ label, value, sub }: { label: string; value: number; sub?: strin
 
 export function VisitorPanel({
   initial,
+  overview,
   ariaLabel,
 }: {
   initial: VisitorMonitor;
+  overview: VisitorOverview;
   ariaLabel: string;
 }) {
   const dict = useDictionary().admin.visitor;
@@ -114,6 +118,8 @@ export function VisitorPanel({
         <Stat label={dict.cards.views} value={monitor.stats.views} />
         <Stat label={dict.cards.countries} value={monitor.stats.countries} />
       </div>
+
+      <VisitorCharts overview={overview} />
 
       {monitor.rows.length === 0 ? (
         <Empty>
