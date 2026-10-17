@@ -15,14 +15,13 @@ import { Suspense } from "react";
 const homeTitle = `${siteConfig.name} – ${siteConfig.role}`;
 
 export async function generateMetadata(): Promise<Metadata> {
-  const dict = await getDictionary();
   const locale = await getLocale();
   return {
     ...buildMeta({
     locale,
       title: siteConfig.name,
       pageTitle: homeTitle,
-      description: dict.footer.description,
+      description: siteConfig.description,
       path: "home",
       canonicalPath: "/",
       type: "profile",
@@ -32,13 +31,12 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Page() {
-  const dict = await getDictionary();
   return (
     <>
       <JsonLd
         type="webpage"
         title={siteConfig.name}
-        description={dict.footer.description}
+        description={siteConfig.description}
         canonicalUrl={`${siteConfig.baseUrl}`}
       />
       <Hero />

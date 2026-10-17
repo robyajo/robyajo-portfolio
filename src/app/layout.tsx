@@ -55,7 +55,7 @@ export async function generateMetadata(): Promise<Metadata> {
       default: `${siteConfig.name} – ${siteConfig.role}`,
       template: `%s – ${siteConfig.name}`,
     },
-    description: dict.footer.description,
+    description: siteConfig.description,
     openGraph: {
       locale: locale === "id" ? "id_ID" : "en_US",
       alternateLocale: locale === "id" ? ["en_US"] : ["id_ID"],
