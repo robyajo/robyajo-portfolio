@@ -65,6 +65,16 @@
             "type": "improvement",
             "id": "Saat situs ini dicari di mesin pencari seperti Google, ringkasan yang tampil kini jelas dan profesional: langsung memperkenalkan siapa saya dan layanan pengembangan apa yang saya kerjakan, sehingga lebih mudah dikenali dan menarik untuk diklik.",
             "en": "When this site shows up in search engines like Google, the summary displayed is now clear and professional: it immediately introduces who I am and what development services I do, making the site easier to recognize and click."
+        },
+        {
+            "type": "new",
+            "id": "Bagi pengelola situs, setiap perangkat pengunjung di dasbor kini dapat dibuka lebih detail: cukup klik ID-nya untuk melihat jenis perangkat, asal wilayah hingga kota, jumlah kunjungan, serta waktu kunjungan pertama dan terakhir dalam satu halaman ringkas.",
+            "en": "For site administrators, every visitor device on the dashboard can now be opened in more detail: just click its ID to see the device type, origin down to the city, visit count, and first and last visit times on one concise page."
+        },
+        {
+            "type": "improvement",
+            "id": "Rumusan persetujuan sebelum data aktivitas diperhitungkan kini semakin sederhana dan tenang: satu kalimat jelas tentang cara situs berjalan, tanpa jargon berat, dan tetap lengkap dengan tautan kebijakan privasi serta pilihan setuju atau tidak.",
+            "en": "The consent wording shown before any activity data is counted is now simpler and calmer: one clear sentence about how the site works, without heavy jargon, still complete with a privacy policy link and the agree or decline choice."
         }
     ]
 }
