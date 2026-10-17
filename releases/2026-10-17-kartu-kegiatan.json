@@ -75,6 +75,11 @@
             "type": "improvement",
             "id": "Rumusan persetujuan sebelum data aktivitas diperhitungkan kini semakin sederhana dan tenang: satu kalimat jelas tentang cara situs berjalan, tanpa jargon berat, dan tetap lengkap dengan tautan kebijakan privasi serta pilihan setuju atau tidak.",
             "en": "The consent wording shown before any activity data is counted is now simpler and calmer: one clear sentence about how the site works, without heavy jargon, still complete with a privacy policy link and the agree or decline choice."
+        },
+        {
+            "type": "improvement",
+            "id": "Tampilan situs saat dipasang atau disematkan di layar beranda perangkat kini lebih rapi: nama situs tampil benar, ikon pas dengan ukuran yang tepat untuk setiap layar, dan warna latar mengikuti tema situs. Data ikon yang tidak terpakai juga dibersihkan agar situs tetap ringan.",
+            "en": "The site now looks tidier when installed or pinned to a device home screen: the site name shows correctly, the icon fits each screen size properly, and the background color follows the site theme. Unused icon data was also cleaned up to keep the site light."
         }
     ]
 }
