@@ -17,6 +17,7 @@ export const siteConfig = {
     repoUrl: "https://github.com/robyajo/robyajo-portfolio",
     sameAs: [
         "https://github.com/robyajo",
+        "https://x.com/roby_karti",
         "https://id.linkedin.com/in/robykartis",
         "https://www.instagram.com/roby_karti",
         "https://robyajo.fyi",
@@ -34,6 +35,11 @@ export const siteConfig = {
             platform: "github",
             href: "https://github.com/robyajo",
             label: "GitHub",
+        },
+        {
+            platform: "x",
+            href: "https://x.com/roby_karti",
+            label: "X",
         },
         {
             platform: "linkedin",

@@ -26,6 +26,7 @@ import {
   MoonIcon,
   PencilIcon,
   SunIcon,
+  XLogoIcon,
 } from "@/components/shared/icons";
 import {
   getCommandMenuOpen,
@@ -48,6 +49,7 @@ const NAV_ICONS = {
 
 const SOCIAL_ICONS = {
   github: GithubLogoIcon,
+  x: XLogoIcon,
   linkedin: LinkedinLogoIcon,
   instagram: InstagramLogoIcon,
 } as const;

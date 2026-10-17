@@ -1,5 +1,6 @@
 import {
   GithubLogoIcon,
+  InstagramLogoIcon,
   LinkedinLogoIcon,
   XLogoIcon,
 } from "@/components/shared/icons";
@@ -8,6 +9,14 @@ import type { ReactNode } from "react";
 const iconMap: Record<string, (className?: string) => ReactNode> = {
   github: (className) => (
     <GithubLogoIcon
+      data-icon="inline-start"
+      weight="fill"
+      className={className}
+      aria-hidden="true"
+    />
+  ),
+  instagram: (className) => (
+    <InstagramLogoIcon
       data-icon="inline-start"
       weight="fill"
       className={className}
