@@ -141,6 +141,13 @@
       "when": 1792188672474,
       "tag": "0019_project-slug-sync-key",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1792200621747,
+      "tag": "0020_amusing_paladin",
+      "breakpoints": true
     }
   ]
 }

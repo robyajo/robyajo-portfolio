@@ -22,6 +22,8 @@ const id = {
     site: "Situs",
     rightsReserved: "Hak cipta dilindungi.",
     lastUpdate: "Terakhir diperbarui:",
+    visitors: "pengunjung",
+    visitorsToday: "kunjungan hari ini",
     toggleTheme: "Ganti tema",
     socialAria: "tautan sosial",
     tagline: "Membangun antarmuka web yang berpendirian.",

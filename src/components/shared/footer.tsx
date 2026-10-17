@@ -18,14 +18,17 @@ import { currentYear, formatShortDate } from "@/lib/date";
 import { getDictionary, getLocale } from "@/lib/i18n/server";
 import { navLabel, isNavHref } from "@/lib/i18n/nav";
 import { getRecentActivities } from "@/lib/activities";
+import { getVisitorStats } from "@/lib/visitors";
+import { VisitorPing } from "@/components/shared/visitor-ping";
 import Link from "next/link";
 import type { Route } from "next";
 
 export async function Footer() {
     const dict = await getDictionary();
-    const [locale, lastActivity] = await Promise.all([
+    const [locale, lastActivity, visitorStats] = await Promise.all([
         getLocale(),
         getRecentActivities(1),
+        getVisitorStats(),
     ]);
     const dateLocale = locale === "id" ? "id-ID" : "en-US";
     const lastUpdated = lastActivity[0];
@@ -43,6 +46,7 @@ export async function Footer() {
     ] as const;
     return (
         <footer className="relative -mt-px" aria-label="Site footer">
+            <VisitorPing />
             <div className="mx-auto max-w-5xl border border-b-0 border-line bg-line">
                 <div className="flex flex-col gap-14 rounded-t-2xl bg-background px-gutter pt-12 pb-12">
                     <EndOfPage />
@@ -145,6 +149,19 @@ export async function Footer() {
                                 <span className="block">
                                     {dict.footer.lastUpdate}{" "}
                                     {formatShortDate(lastUpdated.occurredAt, dateLocale)}
+                                </span>
+                            )}
+                            {(visitorStats.total > 0 || visitorStats.today > 0) && (
+                                <span className="block">
+                                    {visitorStats.total.toLocaleString(dateLocale)}{" "}
+                                    {dict.footer.visitors}
+                                    {visitorStats.today > 0 && (
+                                        <>
+                                            {" \u00b7 "}
+                                            {visitorStats.today.toLocaleString(dateLocale)}{" "}
+                                            {dict.footer.visitorsToday}
+                                        </>
+                                    )}
                                 </span>
                             )}
                         </TypographyMuted>

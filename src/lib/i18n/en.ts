@@ -24,6 +24,8 @@ const en: Dictionary = {
     site: "Site",
     rightsReserved: "All rights reserved.",
     lastUpdate: "Last updated:",
+    visitors: "visitors",
+    visitorsToday: "viewed today",
     toggleTheme: "Toggle theme",
     socialAria: "social links",
     tagline: "Building opinionated interfaces for the web.",

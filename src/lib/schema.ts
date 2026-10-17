@@ -256,3 +256,17 @@ export const linkSlugs = pgTable(
         index("link_slugs_link_idx").on(table.linkId),
     ],
 );
+
+export const visitors = pgTable(
+    "visitors",
+    {
+        /** Hash satu arah dari IP + perangkat (user-agent) + salt sisi server. */
+        hash: varchar("hash", { length: 64 }).primaryKey(),
+        views: integer("views").default(1).notNull(),
+        firstSeenAt: timestamp("first_seen_at", { withTimezone: true }).defaultNow().notNull(),
+        lastSeenAt: timestamp("last_seen_at", { withTimezone: true }).defaultNow().notNull(),
+    },
+    (table) => [
+        index("visitors_last_seen_idx").on(table.lastSeenAt),
+    ],
+);
