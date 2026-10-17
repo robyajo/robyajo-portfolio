@@ -159,8 +159,7 @@ const en: Dictionary = {
     },
     visitor: {
       title: "Visitors",
-      overview: "Site visitor monitoring per device — without any personal data.",
-      cards: {
+      overview: "Site visitor monitoring per device — without any personal data.",      cards: {
         devices: "Unique devices",
         today: "Today",
         online: "Active now",
@@ -181,6 +180,20 @@ const en: Dictionary = {
       unknown: "Unknown",
       emptyTitle: "No visitor data yet",
       emptyDescription: "Data will appear once visitors agree to statistics via the consent notice.",
+      detailHeading: "Visitor device detail",
+      description: "A full picture of one visitor device — without any personal data.",
+      detail: {
+        back: "All visitors",
+        hashNote: "The ID is taken from the first 8 characters of the anonymous device marker.",
+        status: "Status",
+        online: "Active now",
+        offline: "Offline",
+        device: "Device",
+        location: "Location",
+        views: "Visit count",
+        firstSeen: "First visit",
+        lastSeen: "Last visit",
+      },
     },
     overviewStats: {
       guestbook: "Guestbook entries",
@@ -923,12 +936,11 @@ const en: Dictionary = {
     },
   },
   consent: {
-    ariaLabel: "Consent notice",
-    title: "Visitor statistics (cookies)",
-    body: "This site counts anonymous visits per device: country, city, device type, and visit time. No personal identity is ever stored. Statistics are only used once you agree.",
-    more: "Read the privacy policy",
-    accept: "I agree",
-    decline: "Not this time",
+    ariaLabel: "Cookie notice",
+    body: "This site uses cookies and similar technologies to provide, secure, analyse and improve our services.",
+    more: "Read our Privacy Policy",
+    accept: "Accept",
+    decline: "Decline",
   },
   changelog: {
     title: "Changelog",

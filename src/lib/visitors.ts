@@ -125,7 +125,7 @@ export async function getVisitorRows(limit = 100): Promise<VisitorRow[]> {
         .orderBy(desc(visitors.lastSeenAt))
         .limit(Math.min(Math.max(limit, 1), 500));
     return rows.map((row) => ({
-        hash: `${row.hash.slice(0, 8)}…`,
+        hash: row.hash.slice(0, 8),
         views: row.views,
         firstSeenAt: row.firstSeenAt.toISOString(),
         lastSeenAt: row.lastSeenAt.toISOString(),
@@ -134,4 +134,37 @@ export async function getVisitorRows(limit = 100): Promise<VisitorRow[]> {
         city: row.city,
         device: row.device,
     }));
+}
+
+export interface VisitorDetail {
+    hash: string;
+    views: number;
+    firstSeenAt: string;
+    lastSeenAt: string;
+    country: string | null;
+    region: string | null;
+    city: string | null;
+    device: string | null;
+}
+
+/** Rincian satu perangkat berdasarkan 8 karakter awal hash-nya (untuk detail admin). */
+export async function getVisitorDetail(id: string): Promise<VisitorDetail | null> {
+    const clean = id.replace(/[^a-f0-9]/gi, "").toLowerCase().slice(0, 8);
+    if (clean.length !== 8) return null;
+    const [row] = await db
+        .select()
+        .from(visitors)
+        .where(sql`left(${visitors.hash}, 8) = ${clean}`)
+        .limit(1);
+    if (!row) return null;
+    return {
+        hash: clean,
+        views: row.views,
+        firstSeenAt: row.firstSeenAt.toISOString(),
+        lastSeenAt: row.lastSeenAt.toISOString(),
+        country: row.country,
+        region: row.region,
+        city: row.city,
+        device: row.device,
+    };
 }

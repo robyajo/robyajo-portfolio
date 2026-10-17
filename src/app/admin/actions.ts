@@ -23,8 +23,10 @@ import { safeQuery } from "@/lib/safe-query";
 import { projectInputSchema, type ProjectInput } from "@/lib/projects-schema";
 import { RESUME_CACHE_TAG } from "@/lib/resume";
 import {
+  getVisitorDetail as getVisitorDetailValue,
   getVisitorRows as getVisitorRowsValue,
   getVisitorStats as getVisitorStatsValue,
+  type VisitorDetail,
   type VisitorRow,
   type VisitorStats,
 } from "@/lib/visitors";
@@ -262,6 +264,11 @@ export async function getVisitorMonitor(): Promise<VisitorMonitor> {
         loadVisitorMonitor,
         { stats: { total: 0, today: 0, online: 0, views: 0, countries: 0 }, rows: [] },
     );
+}
+
+export async function getVisitor(id: string): Promise<VisitorDetail | null> {
+    await assertAdmin();
+    return safeQuery("getVisitorDetail", () => getVisitorDetailValue(id), null);
 }
 
 export async function createProject(raw: unknown): Promise<ActionResult> {

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { getVisitorMonitor } from "@/app/admin/actions";
 import type { VisitorMonitor } from "@/app/admin/actions";
 import { Button } from "@/components/ui/button";
@@ -151,7 +152,12 @@ export function VisitorPanel({
                           online ? "bg-(--color-available)" : "bg-muted-foreground/40",
                         )}
                       />
-                      <span className="font-mono text-xs">{row.hash}</span>
+                      <Link
+                        href={`/admin/visitor/${row.hash}`}
+                        className="font-mono text-xs underline-offset-2 hover:underline"
+                      >
+                        {row.hash}…
+                      </Link>
                       {online && (
                         <Badge variant="positive" size="tiny">
                           {dict.onlineLabel}

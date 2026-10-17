@@ -31,9 +31,6 @@ export function CookieConsent() {
         >
             <CookieIcon />
             <div className="flex flex-col gap-1">
-                <span className="text-sm font-medium text-foreground">
-                    {dict.title}
-                </span>
                 <span className="text-sm text-muted-foreground">
                     {dict.body}{" "}
                     <Link
