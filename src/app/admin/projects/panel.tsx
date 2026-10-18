@@ -2,20 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useForm, type Control } from "react-hook-form";
-import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
-import { z } from "zod";
-import { isHttpUrl } from "@/lib/links-schema";
-import { projectInputSchema } from "@/lib/projects-schema";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Spinner } from "@/components/ui/spinner";
 import { useQuery } from "@tanstack/react-query";
 import { useActionMutation } from "@/hooks/use-action-mutation";
 import { useDictionary } from "@/lib/i18n/provider";
@@ -35,8 +21,6 @@ import {
   ButtonGroup,
   ButtonGroupSeparator,
 } from "@/components/ui/button-group";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import {
   AlertDialog,
@@ -55,7 +39,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
 } from "@/components/ui/dialog";
 import {
   ArrowUpIcon,
@@ -64,11 +47,7 @@ import {
   TrashIcon,
   PlusIcon,
   FolderOpenIcon,
-  EyeIcon,
-  CopyIcon,
-  CheckIcon,
 } from "@/components/shared/icons";
-import { generateSyncKey, slugifyTitle } from "@/lib/sync-keys";
 import {
   Empty,
   EmptyContent,
@@ -87,302 +66,13 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { ProjectActivities } from "@/app/admin/projects/activities";
+import {
+  ProjectForm,
+  parseProjectHighlights,
+  type ProjectFormData,
+} from "@/app/admin/projects/_components/shredForm";
 import { cn } from "@/lib/cn";
 import { TypographyMuted, TypographySmall } from "@/components/ui/typography";
-
-const optionalUrlField = z
-  .string()
-  .trim()
-  .refine((value) => value === "" || isHttpUrl(value), {
-    message: "Enter a valid http(s):// URL.",
-  });
-
-const projectFormSchema = z.object({
-  title: projectInputSchema.shape.title,
-  slug: z.string().trim().max(256),
-  syncKey: z.string().trim().max(64),
-  description: projectInputSchema.shape.description,
-  highlights: z.string(),
-  live: optionalUrlField,
-  github: optionalUrlField,
-});
-
-type FormData = z.input<typeof projectFormSchema>;
-
-const emptyForm: FormData = {
-  title: "",
-  slug: "",
-  syncKey: "",
-  description: "",
-  highlights: "",
-  live: "",
-  github: "",
-};
-
-function parseHighlights(raw: string): string[] {
-  return raw
-    .split(",")
-    .map((s) => s.trim())
-    .filter(Boolean);
-}
-
-function useTextFields() {
-  const t = useDictionary().admin.projects;
-  return [
-    {
-      name: "title",
-      label: t.titleLabel,
-      placeholder: t.titlePlaceholder,
-    },
-    {
-      name: "highlights",
-      label: t.highlightsLabel,
-      hint: t.highlightsHint,
-      placeholder: t.highlightsPlaceholder,
-    },
-    {
-      name: "github",
-      label: t.githubLabel,
-      hint: t.optionalHint,
-      placeholder: t.githubPlaceholder,
-      type: "url",
-    },
-    {
-      name: "live",
-      label: t.liveLabel,
-      hint: t.optionalHint,
-      placeholder: t.livePlaceholder,
-      type: "url",
-    },
-  ] as const;
-}
-
-function ProjectTextField({
-  control,
-  field: spec,
-  disabled,
-}: {
-  control: Control<FormData>;
-  field: ReturnType<typeof useTextFields>[number];
-  disabled: boolean;
-}) {
-  return (
-    <FormField
-      control={control}
-      name={spec.name}
-      render={({ field }) => (
-        <FormItem>
-          <FormLabel>
-            {spec.label}
-            {"hint" in spec && (
-              <span className="text-xs font-normal text-muted-foreground">
-                {spec.hint}
-              </span>
-            )}
-          </FormLabel>
-          <FormControl>
-            <Input
-              autoComplete="off"
-              {...field}
-              placeholder={spec.placeholder}
-              type={"type" in spec ? spec.type : "text"}
-              disabled={disabled}
-            />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
-  );
-}
-
-function ProjectForm({
-  initial,
-  onSubmit,
-  onCancel,
-  submitting,
-}: {
-  initial: FormData;
-  onSubmit: (data: FormData) => void;
-  onCancel: () => void;
-  submitting: boolean;
-}) {
-  const form = useForm<FormData>({
-    resolver: standardSchemaResolver(projectFormSchema),
-    defaultValues: initial,
-    mode: "onSubmit",
-  });
-  const t = useDictionary().admin.projects;
-  const textFields = useTextFields();
-  const [titleField, ...restFields] = textFields;
-  const [keyVisible, setKeyVisible] = useState(false);
-  const [copied, setCopied] = useState(false);
-
-  function fillSlugFromTitle() {
-    const current = form.getValues("slug").trim();
-    if (current) return;
-    const slug = slugifyTitle(form.getValues("title"));
-    if (slug) form.setValue("slug", slug, { shouldValidate: true });
-  }
-
-  function generateKey() {
-    form.setValue("syncKey", generateSyncKey(), { shouldValidate: true });
-    setKeyVisible(true);
-  }
-
-  async function copyKey() {
-    try {
-      await navigator.clipboard.writeText(form.getValues("syncKey"));
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      /* clipboard unavailable */
-    }
-  }
-
-  return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-4"
-        noValidate
-      >
-        <ProjectTextField
-          control={form.control}
-          field={titleField}
-          disabled={submitting}
-        />
-        <FormField
-          control={form.control}
-          name="slug"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t.slugLabel}</FormLabel>
-              <FormControl>
-                <div className="flex gap-2">
-                  <Input
-                    autoComplete="off"
-                    {...field}
-                    placeholder={t.slugPlaceholder}
-                    disabled={submitting}
-                    className="font-mono"
-                  />
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={fillSlugFromTitle}
-                    disabled={submitting}
-                    className="shrink-0"
-                  >
-                    {t.slugAuto}
-                  </Button>
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="syncKey"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t.syncKeyLabel}</FormLabel>
-              <FormControl>
-                <div className="flex gap-2">
-                  <Input
-                    autoComplete="off"
-                    {...field}
-                    type={keyVisible ? "text" : "password"}
-                    placeholder={t.syncKeyPlaceholder}
-                    disabled={submitting}
-                    className="font-mono"
-                  />
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setKeyVisible((v) => !v)}
-                    disabled={submitting}
-                    className="shrink-0"
-                    aria-label={keyVisible ? t.keyHide : t.keyShow}
-                  >
-                    <EyeIcon size={14} className={keyVisible ? "" : "opacity-50"} />
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={generateKey}
-                    disabled={submitting}
-                    className="shrink-0"
-                  >
-                    {t.keyGenerate}
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={copyKey}
-                    disabled={submitting || !field.value}
-                    className="shrink-0"
-                    aria-label={t.keyCopy}
-                  >
-                    {copied ? <CheckIcon size={14} /> : <CopyIcon size={14} />}
-                  </Button>
-                </div>
-              </FormControl>
-              <p className="text-xs text-muted-foreground">{t.syncKeyHint}</p>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t.descriptionLabel}</FormLabel>
-              <FormControl>
-                <Textarea
-                  {...field}
-                  placeholder={t.descriptionPlaceholder}
-                  rows={3}
-                  className="resize-none"
-                  disabled={submitting}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        {restFields.map((spec) => (
-          <ProjectTextField
-            key={spec.name}
-            control={form.control}
-            field={spec}
-            disabled={submitting}
-          />
-        ))}
-        <DialogFooter>
-          <Button
-            type="button"
-            variant="outline"
-            onClick={onCancel}
-            disabled={submitting}
-          >
-            {t.cancel}
-          </Button>
-          <Button type="submit" disabled={submitting} aria-busy={submitting}>
-            {submitting && <Spinner data-icon="inline-start" aria-hidden="true" />}
-            {t.save}
-          </Button>
-        </DialogFooter>
-      </form>
-    </Form>
-  );
-}
 
 export function ProjectsPanel() {
   const { data: projects = [] } = useQuery({
@@ -439,13 +129,13 @@ export function ProjectsPanel() {
     setDialog({ open: true, target: project });
   }
 
-  function handleFormSubmit(form: FormData) {
+  function handleFormSubmit(form: ProjectFormData) {
     save.mutate({
       title: form.title.trim(),
       slug: form.slug.trim(),
       syncKey: form.syncKey.trim(),
       description: form.description.trim(),
-      highlights: parseHighlights(form.highlights),
+      highlights: parseProjectHighlights(form.highlights),
       live: form.live.trim() || null,
       github: form.github.trim() || null,
     });
@@ -711,7 +401,15 @@ export function ProjectsPanel() {
                     live: editTarget.live ?? "",
                     github: editTarget.github ?? "",
                   }
-                : emptyForm
+                : {
+                    title: "",
+                    slug: "",
+                    syncKey: "",
+                    description: "",
+                    highlights: "",
+                    live: "",
+                    github: "",
+                  }
             }
             onSubmit={handleFormSubmit}
             onCancel={() => setDialog((prev) => ({ ...prev, open: false }))}
