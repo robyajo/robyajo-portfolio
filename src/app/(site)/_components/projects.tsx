@@ -70,7 +70,7 @@ export async function ProjectGrid({
               </TypographyMuted>
               <TypographyMuted className="font-mono text-xs tracking-wide opacity-60">
                 {project.lastActivityAt
-                  ? `Updated ${timeAgo(project.lastActivityAt.toISOString(), locale)}`
+                  ? `Updated ${timeAgo(new Date(project.lastActivityAt).toISOString(), locale)}`
                   : "No activity yet"}
               </TypographyMuted>
               <ul
