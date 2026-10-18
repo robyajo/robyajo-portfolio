@@ -570,3 +570,35 @@ export async function deleteBlogTag(id: number): Promise<ActionResult> {
         revalidateBlogAdmin,
     );
 }
+
+export async function triggerBlogAutopilot(): Promise<ActionResult> {
+    await assertAdmin();
+    return safeQuery(
+        "triggerBlogAutopilot",
+        async () => {
+            const token = process.env.GITHUB_TOKEN ?? process.env.GH_TOKEN;
+            if (!token) {
+                return { success: false, error: "GitHub token tidak tersedia di server." };
+            }
+            const repo = "robyajo/robyajo-portfolio";
+            const response = await fetch(
+                `https://api.github.com/repos/${repo}/actions/workflows/blog-autopilot.yml/dispatches`,
+                {
+                    method: "POST",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        Accept: "application/vnd.github+json",
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ ref: "master" }),
+                },
+            );
+            if (!response.ok) {
+                const body = await response.text();
+                throw new Error(`GitHub API ${response.status}: ${body}`);
+            }
+            return { success: true };
+        },
+        { success: false, error: "Gagal memicu workflow." },
+    );
+}

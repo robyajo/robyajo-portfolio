@@ -10,6 +10,7 @@ import {
   getAdminBlogPostSource,
   getAdminBlogPosts,
   getAdminBlogTags,
+  triggerBlogAutopilot,
   updateBlogPost,
 } from "@/app/admin/blog/actions";
 import type { AdminBlogPost } from "@/lib/blog-admin";
@@ -85,6 +86,7 @@ import {
   ArrowSquareOutIcon,
   FileTextIcon,
   PencilIcon,
+  PlayIcon,
   PlusIcon,
   TrashIcon,
 } from "@/components/shared/icons";
@@ -574,6 +576,12 @@ export function BlogPostsPanel() {
 
   const englishCount = posts.filter((post) => post.hasEnglish).length;
 
+  const trigger = useActionMutation({
+    action: triggerBlogAutopilot,
+    successMessage: () => "Workflow dipicu! Cek tab Actions di GitHub.",
+    invalidate: [],
+  });
+
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
@@ -587,14 +595,25 @@ export function BlogPostsPanel() {
               .replace("{english}", String(englishCount))}
           </TypographyMuted>
         </div>
-        <Button
-          size="sm"
-          disabled={save.isPending || remove.isPending}
-          onClick={() => setDialog({ open: true, slug: null, create: true })}
-        >
-          <PlusIcon data-icon="inline-start" className="size-3.5" aria-hidden="true" />
-          {t.add}
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            size="sm"
+            variant="outline"
+            disabled={trigger.isPending}
+            onClick={() => trigger.mutate()}
+          >
+            <PlayIcon data-icon="inline-start" className="size-3.5" aria-hidden="true" />
+            {trigger.isPending ? "Memicu..." : "Trigger Autopilot"}
+          </Button>
+          <Button
+            size="sm"
+            disabled={save.isPending || remove.isPending || trigger.isPending}
+            onClick={() => setDialog({ open: true, slug: null, create: true })}
+          >
+            <PlusIcon data-icon="inline-start" className="size-3.5" aria-hidden="true" />
+            {t.add}
+          </Button>
+        </div>
       </div>
 
       <TypographyMuted asChild>
