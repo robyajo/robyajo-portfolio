@@ -89,6 +89,8 @@ const id = {
     noSync: "// proyek ini belum menautkan kunci sinkron.",
     detail: "Detail",
     detailAria: "Lihat detail {title}",
+    reportButtonText: "Buat laporan kerja",
+    reportGenerating: "Menyiapkan…",
   },
   activity: {
     section: "Kegiatan Terbaru",

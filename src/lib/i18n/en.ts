@@ -91,6 +91,8 @@ const en: Dictionary = {
     noSync: "// this project has no sync key linked yet.",
     detail: "Details",
     detailAria: "View details of {title}",
+    reportButtonText: "Generate work report",
+    reportGenerating: "Generating…",
   },
   activity: {
     section: "Latest Activity",

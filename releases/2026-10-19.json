@@ -3,12 +3,12 @@
   "type": "feature",
   "status": "published",
   "title": {
-    "id": "Artikel Otomatis Berita Teknologi, Proyek Terbaru di Atas & Halaman Detail Blog",
-    "en": "Automated Tech-News Article, Recent Projects First & Blog Detail Page"
+    "id": "Artikel Otomatis Berita Teknologi, Proyek Terbaru di Atas & Laporan Kerja Sekali Klik",
+    "en": "Automated Tech-News Article, Recent Projects First & One-Click Work Report"
   },
   "body": {
-    "id": "Blog kini menampilkan artikel harian tentang teknologi dan AI berdasarkan berita terkini, urutan proyek memunculkan yang terbaru di atas beserta tanggal kegiatannya, dan bagi pengelola situs tersedia halaman detail artikel serta penanda artikel buatan otomatis.",
-    "en": "The blog now shows a daily article about technology and AI based on current news, projects list the most recently updated ones first with their activity dates, and site administrators get a dedicated article detail page plus a marker for automatically written articles."
+    "id": "Blog kini menampilkan artikel harian tentang teknologi dan AI berdasarkan berita terkini, urutan proyek memunculkan yang terbaru di atas beserta tanggal kegiatannya, dan bagi pengelola situs tersedia halaman detail artikel, penanda artikel buatan otomatis, serta tombol untuk mengunduh laporan kerja dari setiap proyek.",
+    "en": "The blog now shows a daily article about technology and AI based on current news, projects list the most recently updated ones first with their activity dates, and site administrators get a dedicated article detail page, a marker for automatically written articles, and a button to download each project's work report."
   },
   "items": [
     {
@@ -35,6 +35,11 @@
       "type": "new",
       "id": "Bagi pengelola situs, artikel yang dibuat otomatis ditandai dengan label khusus di daftar blog, sehingga mudah dibedakan dari yang ditulis manual.",
       "en": "For site administrators, automatically written articles now carry a special label in the blog list, making them easy to tell apart from manually written ones."
+    },
+    {
+      "type": "new",
+      "id": "Bagi pengelola situs, halaman proyek kini punya tombol untuk mengunduh laporan kerja berisi seluruh riwayat kegiatan proyek, siap dilampirkan ke dokumen atau dikirim ke klien.",
+      "en": "For site administrators, each project page now has a button to download a work report containing the project's full activity history, ready to attach to documents or send to clients."
     },
     {
       "type": "improvement",

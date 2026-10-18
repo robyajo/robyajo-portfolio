@@ -10,6 +10,8 @@ import {
 } from "@/components/ui/typography";
 import { ActivityFeed } from "@/app/(site)/_components/activity-feed";
 import { ProjectLinks } from "@/app/(site)/projects/[slug]/links";
+import { WorkReportButton } from "@/app/(site)/projects/[slug]/report-button";
+import { isAdmin } from "@/lib/assert-admin";
 import { siteConfig } from "@/lib/config";
 import { buildMeta } from "@/lib/metadata";
 import { getProjectBySlug } from "@/lib/projects";
@@ -47,6 +49,7 @@ export default async function ProjectDetailPage({ params }: Props) {
   if (!project || !project.enabled) notFound();
   const dict = await getDictionary();
   const content = dict.projectsDetail;
+  const admin = await isAdmin();
 
   return (
     <>
@@ -73,6 +76,11 @@ export default async function ProjectDetailPage({ params }: Props) {
             </div>
           )}
           <ProjectLinks project={project} labels={content} />
+          {admin && (
+            <div className="pt-2">
+              <WorkReportButton slug={project.slug} />
+            </div>
+          )}
         </HeroWithArt>
       </Section>
 

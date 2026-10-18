@@ -52,6 +52,24 @@ export async function getRecentActivities(
     }, []);
 }
 
+/** Semua kegiatan satu proyek (tanpa batas jumlah) — dipakai laporan kerja. */
+export async function getProjectActivities(
+    projectKey: string,
+): Promise<Activity[]> {
+    return safeQuery(
+        "getProjectActivities",
+        async () => {
+            const rows = await db
+                .select()
+                .from(activities)
+                .where(eq(activities.projectKey, projectKey))
+                .orderBy(desc(activities.occurredAt), desc(activities.id));
+            return rows.map(toActivity);
+        },
+        [],
+    );
+}
+
 export async function getActivityCount(projectKey?: string): Promise<number> {
     return safeQuery("getActivityCount", async () => {
         const [row] = await db
