@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-19",
+  "type": "feature",
+  "status": "published",
+  "title": {
+    "id": "Artikel fesyen baru: Ketika Algoritma dan AI Mulai Mengatur Urusan Perumahan",
+    "en": "New fashion article: When Algorithms and AI Take Over Neighborhood Management"
+  },
+  "body": {
+    "id": "Satu tulisan baru ditambahkan ke blog: \"Ketika Algoritma dan AI Mulai Mengatur Urusan Perumahan\". Tulisannya membahas menyerahkan urusan denda warga dan tata kelola perumahan ke perangkat lunak otomatis terdengar efisien, padahal dampaknya bisa sangat merepotkan",
+    "en": "A new article was added to the blog: \"When Algorithms and AI Take Over Neighborhood Management\". It covers automating property rules and violation fines sounds clean on paper, but turning neighborhoods over to algorithmic systems brings new headaches"
+  },
+  "items": [
+    {
+      "type": "new",
+      "id": "Tulisan baru bertema fesyen: \"Ketika Algoritma dan AI Mulai Mengatur Urusan Perumahan\". Selengkapnya di https://ajoroby.is-a.dev/blog/ketika-algoritma-mulai-mengatur-perumahan",
+      "en": "New fashion article: \"When Algorithms and AI Take Over Neighborhood Management\". Read it at https://ajoroby.is-a.dev/blog/ketika-algoritma-mulai-mengatur-perumahan"
+    }
+  ]
+}
