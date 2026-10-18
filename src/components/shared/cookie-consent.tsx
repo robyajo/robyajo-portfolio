@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useDictionary } from "@/lib/i18n/provider";
-import { readConsent, useConsent, writeConsent } from "@/lib/consent";
+import { useConsent, writeConsent } from "@/lib/consent";
 
 function CookieIcon() {
     return (
@@ -18,8 +18,8 @@ function CookieIcon() {
 
 export function CookieConsent() {
     const dict = useDictionary().consent;
-    useConsent();
-    const choice = readConsent();
+    // Pilihan dibaca lewat hook SSR-safe agar hasil SSR dan hidrasi konsisten.
+    const choice = useConsent();
 
     if (choice) return null;
 

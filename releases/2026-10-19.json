@@ -3,12 +3,12 @@
   "type": "feature",
   "status": "published",
   "title": {
-    "id": "Artikel Otomatis Berita Teknologi & Laporan Kerja Word PDF Sekali Klik",
-    "en": "Automated Tech-News Article & One-Click Word/PDF Work Report"
+    "id": "Artikel Otomatis Berita Teknologi, Laporan Kerja Word PDF & Perbaikan Tampilan Halaman",
+    "en": "Automated Tech-News Article, Word/PDF Work Report & Page Rendering Fix"
   },
   "body": {
-    "id": "Blog kini menampilkan artikel harian tentang teknologi dan AI berdasarkan berita terkini, urutan proyek memunculkan yang terbaru di atas beserta tanggal kegiatannya, dan bagi pengelola situs tersedia halaman detail artikel, penanda artikel buatan otomatis, serta pemilih kegiatan untuk mengunduh laporan kerja berformat Word atau PDF.",
-    "en": "The blog now shows a daily article about technology and AI based on current news, projects list the most recently updated ones first with their activity dates, and site administrators get a dedicated article detail page, a marker for automatically written articles, and an activity picker to download work reports in Word or PDF format."
+    "id": "Blog kini menampilkan artikel harian tentang teknologi dan AI berdasarkan berita terkini, urutan proyek memunculkan yang terbaru di atas beserta tanggal kegiatannya; bagi pengelola situs tersedia lengkap dengan halaman detail artikel, penanda artikel buatan otomatis, dan pemilih kegiatan untuk laporan kerja Word atau PDF, ditambah perbaikan kegagalan render halaman saat perangkat memuat ulang.",
+    "en": "The blog now shows a daily article about technology and AI based on current news, projects list the most recently updated ones first with their activity dates; administrators also get an article detail page, a marker for automatically written articles, and an activity picker for Word or PDF work reports, plus a fix for transient page rendering glitches when a device reloads."
   },
   "items": [
     {
@@ -40,6 +40,11 @@
       "type": "new",
       "id": "Bagi pengelola situs, halaman proyek kini punya pemilih kegiatan untuk membuat laporan kerja: bisa rentang tanggal, sebagian kegiatan, atau full semua, lalu diunduh sebagai berkas Word yang siap dibuka di aplikasi dokumen atau dicetak disimpan sebagai PDF.",
       "en": "For site administrators, each project page now has an activity picker to build a work report: by date range, a few selected activities, or all of them, downloaded as a Word file ready to open in a document app or printed and saved as PDF."
+    },
+    {
+      "type": "fix",
+      "id": "Perbaikan kegagalan sinkron tampilan saat halaman dimuat ulang: notifikasi persetujuan kini muncul dan hilang dengan rapi tanpa membuat halaman terasa tersendat atau tampil dobel.",
+      "en": "Fixed a transient rendering glitch on page reload: the consent notice now appears and clears smoothly without making the page stutter or render inconsistently."
     },
     {
       "type": "improvement",
