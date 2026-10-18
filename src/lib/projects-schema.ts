@@ -69,6 +69,7 @@ export const projectInputSchema = z.object({
     .max(PROJECT_LIMITS.highlights, `Too many highlights (max ${PROJECT_LIMITS.highlights}).`)
     .transform((values) => values.filter((v) => v !== "")),
   live: optionalUrl,
+  liveVisibility: z.enum(["public", "private"]),
   github: optionalUrl,
   repoVisibility: z
     .string()

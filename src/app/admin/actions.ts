@@ -187,6 +187,7 @@ export type ProjectRow = {
     description: string;
     highlights: string[];
     live: string | null;
+    liveVisibility: string;
     github: string | null;
     repoVisibility: string;
     enabled: boolean;
@@ -235,6 +236,7 @@ async function loadAdminProjects(): Promise<ProjectRow[]> {
             description: projects.description,
             highlights: projects.highlights,
             live: projects.live,
+            liveVisibility: projects.liveVisibility,
             github: projects.github,
             repoVisibility: projects.repoVisibility,
             enabled: projects.enabled,

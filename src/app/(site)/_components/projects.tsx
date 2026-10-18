@@ -102,7 +102,7 @@ export async function ProjectGrid({
                     </Link>
                   </Button>
                   <ButtonGroupSeparator />
-                  {project.repoVisibility !== "private" && project.live && (
+                  {project.liveVisibility !== "private" && project.live && (
                     <>
                       <Button asChild size="sm" variant="default">
                         <Link

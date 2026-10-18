@@ -249,6 +249,10 @@ export const projects = pgTable(
         description: text("description").notNull(),
         highlights: text("highlights").array().notNull().default(sql`'{}'::text[]`),
         live: varchar("live", { length: 512 }),
+        /** Status tautan live — "private" menyembunyikan tautan demo publik. */
+        liveVisibility: varchar("live_visibility", { length: 16 })
+            .notNull()
+            .default("public"),
         github: varchar("github", { length: 512 }),
         /** Status repositori — "private" menyembunyikan tautan repo & demo publik. */
         repoVisibility: varchar("repo_visibility", { length: 16 })

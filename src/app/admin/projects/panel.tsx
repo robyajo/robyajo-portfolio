@@ -124,6 +124,7 @@ export function ProjectsPanel() {
             description: form.description.trim(),
             highlights: parseProjectHighlights(form.highlights),
             live: form.live.trim() || null,
+            liveVisibility: form.liveVisibility,
             github: form.github.trim() || null,
             repoVisibility: form.repoVisibility,
         });
@@ -255,6 +256,10 @@ export function ProjectsPanel() {
                                       highlights:
                                           editTarget.highlights.join(", "),
                                       live: editTarget.live ?? "",
+                                      liveVisibility:
+                                          editTarget.liveVisibility === "private"
+                                              ? "private"
+                                              : "public",
                                       github: editTarget.github ?? "",
                                       repoVisibility:
                                           editTarget.repoVisibility === "private"
@@ -268,6 +273,7 @@ export function ProjectsPanel() {
                                       description: "",
                                       highlights: "",
                                       live: "",
+                                      liveVisibility: "public",
                                       github: "",
                                       repoVisibility: "public",
                                   }

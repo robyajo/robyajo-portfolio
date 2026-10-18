@@ -42,6 +42,7 @@ const projectFormSchema = z.object({
   description: projectInputSchema.shape.description,
   highlights: z.string(),
   live: optionalUrlField,
+  liveVisibility: z.enum(["public", "private"]),
   github: optionalUrlField,
   repoVisibility: z.enum(["public", "private"]),
 });
@@ -218,33 +219,77 @@ function ProjectTextField({
   field: ReturnType<typeof useProjectTextFields>[number];
   disabled: boolean;
 }) {
+  const t = useDictionary().admin.projects;
   return (
-    <FormField
-      control={control}
-      name={spec.name}
-      render={({ field }) => (
-        <FormItem>
-          <FormLabel>
-            {spec.label}
-            {"hint" in spec && (
-              <span className="text-xs font-normal text-muted-foreground">
-                {spec.hint}
-              </span>
-            )}
-          </FormLabel>
-          <FormControl>
-            <Input
-              autoComplete="off"
-              {...field}
-              placeholder={spec.placeholder}
-              type={"type" in spec ? spec.type : "text"}
-              disabled={disabled}
-            />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
+    <>
+      <FormField
+        control={control}
+        name={spec.name}
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>
+              {spec.label}
+              {"hint" in spec && (
+                <span className="text-xs font-normal text-muted-foreground">
+                  {spec.hint}
+                </span>
+              )}
+            </FormLabel>
+            <FormControl>
+              <Input
+                autoComplete="off"
+                {...field}
+                placeholder={spec.placeholder}
+                type={"type" in spec ? spec.type : "text"}
+                disabled={disabled}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      {spec.name === "live" && (
+        <FormField
+          control={control}
+          name="liveVisibility"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                {t.liveVisibilityLabel}
+                <span className="text-xs font-normal text-muted-foreground">
+                  {t.liveVisibilityHint}
+                </span>
+              </FormLabel>
+              <FormControl>
+                <div className="flex gap-2">
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant={field.value === "public" ? "default" : "outline"}
+                    disabled={disabled}
+                    aria-pressed={field.value === "public"}
+                    onClick={() => field.onChange("public")}
+                  >
+                    {t.liveVisibilityPublic}
+                  </Button>
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant={field.value === "private" ? "default" : "outline"}
+                    disabled={disabled}
+                    aria-pressed={field.value === "private"}
+                    onClick={() => field.onChange("private")}
+                  >
+                    {t.liveVisibilityPrivate}
+                  </Button>
+                </div>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
       )}
-    />
+    </>
   );
 }
 

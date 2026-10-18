@@ -126,7 +126,8 @@ export function ProjectTable({
                           {t.hidden}
                         </Badge>
                       )}
-                      {project.repoVisibility === "private" && (
+                      {(project.repoVisibility === "private" ||
+                        project.liveVisibility === "private") && (
                         <Badge variant="warning" size="tiny">
                           {t.repoVisibilityPrivate}
                         </Badge>

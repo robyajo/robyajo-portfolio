@@ -68,8 +68,13 @@
     },
     {
       "type": "new",
-      "id": "Bagi pengelola situs, setiap proyek kini punya pilihan repositori Publik atau Privat: proyek dengan status Privat terus tampil di daftar, tetapi tombol GitHub dan tautan demonya disembunyikan dari pengunjung.",
-      "en": "For site administrators, every project now has a Public or Private repository choice: projects marked Private still appear in the list, but their GitHub button and demo link are hidden from visitors."
+      "id": "Bagi pengelola situs, setiap proyek kini punya pilihan repositori Publik atau Privat: proyek dengan status Privat terus tampil di daftar, tetapi tombol GitHub disembunyikan dari pengunjung.",
+      "en": "For site administrators, every project now has a Public or Private repository choice: projects marked Private still appear in the list, but their GitHub button is hidden from visitors."
+    },
+    {
+      "type": "new",
+      "id": "Bagi pengelola situs, selain repositori, tautan situs live proyek juga kini punya pilihan Publik atau Privat sendiri — cocok untuk situs yang hanya boleh diketahui kalangan instansi tertentu.",
+      "en": "For site administrators, in addition to the repository, the project's live site link now has its own Public or Private choice — handy for sites that should only be known within a certain institution."
     },
     {
       "type": "improvement",

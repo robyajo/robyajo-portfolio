@@ -15,7 +15,7 @@ export function ProjectLinks({
   if (!isPrivate && !project.live && !project.github) return null;
   return (
     <div className="flex flex-wrap gap-2 pt-2">
-      {!isPrivate && project.live && (
+      {project.liveVisibility !== "private" && project.live && (
         <Button asChild size="sm" variant="default">
           <Link
             href={project.live as never}
