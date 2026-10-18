@@ -3,12 +3,12 @@
   "type": "feature",
   "status": "published",
   "title": {
-    "id": "Artikel Otomatis Berita Teknologi, Proyek Terbaru di Atas & Laporan Kerja Sekali Klik",
-    "en": "Automated Tech-News Article, Recent Projects First & One-Click Work Report"
+    "id": "Artikel Otomatis Berita Teknologi & Laporan Kerja Word PDF Sekali Klik",
+    "en": "Automated Tech-News Article & One-Click Word/PDF Work Report"
   },
   "body": {
-    "id": "Blog kini menampilkan artikel harian tentang teknologi dan AI berdasarkan berita terkini, urutan proyek memunculkan yang terbaru di atas beserta tanggal kegiatannya, dan bagi pengelola situs tersedia halaman detail artikel, penanda artikel buatan otomatis, serta tombol untuk mengunduh laporan kerja dari setiap proyek.",
-    "en": "The blog now shows a daily article about technology and AI based on current news, projects list the most recently updated ones first with their activity dates, and site administrators get a dedicated article detail page, a marker for automatically written articles, and a button to download each project's work report."
+    "id": "Blog kini menampilkan artikel harian tentang teknologi dan AI berdasarkan berita terkini, urutan proyek memunculkan yang terbaru di atas beserta tanggal kegiatannya, dan bagi pengelola situs tersedia halaman detail artikel, penanda artikel buatan otomatis, serta pemilih kegiatan untuk mengunduh laporan kerja berformat Word atau PDF.",
+    "en": "The blog now shows a daily article about technology and AI based on current news, projects list the most recently updated ones first with their activity dates, and site administrators get a dedicated article detail page, a marker for automatically written articles, and an activity picker to download work reports in Word or PDF format."
   },
   "items": [
     {
@@ -38,8 +38,8 @@
     },
     {
       "type": "new",
-      "id": "Bagi pengelola situs, halaman proyek kini punya tombol untuk mengunduh laporan kerja berisi seluruh riwayat kegiatan proyek, siap dilampirkan ke dokumen atau dikirim ke klien.",
-      "en": "For site administrators, each project page now has a button to download a work report containing the project's full activity history, ready to attach to documents or send to clients."
+      "id": "Bagi pengelola situs, halaman proyek kini punya pemilih kegiatan untuk membuat laporan kerja: bisa rentang tanggal, sebagian kegiatan, atau full semua, lalu diunduh sebagai berkas Word yang siap dibuka di aplikasi dokumen atau dicetak disimpan sebagai PDF.",
+      "en": "For site administrators, each project page now has an activity picker to build a work report: by date range, a few selected activities, or all of them, downloaded as a Word file ready to open in a document app or printed and saved as PDF."
     },
     {
       "type": "improvement",

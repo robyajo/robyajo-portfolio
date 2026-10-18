@@ -91,6 +91,20 @@ const id = {
     detailAria: "Lihat detail {title}",
     reportButtonText: "Buat laporan kerja",
     reportGenerating: "Menyiapkan…",
+    reportTitle: "Buat Laporan Kerja",
+    reportDialogDescription:
+      "Pilih kegiatan dari rentang tanggal apa saja untuk jadi laporan — full semua atau sebagian saja.",
+    reportFrom: "Dari tanggal",
+    reportTo: "Sampai tanggal",
+    reportSelectAll: "Pilih semua",
+    reportClear: "Kosongkan",
+    reportSelected: "{count} kegiatan dipilih",
+    reportLoading: "Memuat daftar kegiatan…",
+    reportEmptyData: "Proyek ini belum punya kegiatan untuk dilaporkan.",
+    reportEmptySelection:
+      "Tidak ada kegiatan pada rentang tanggal yang dipilih.",
+    reportDownloadWord: "Unduh Word (.doc)",
+    reportDownloadPdf: "Cetak / Simpan PDF",
   },
   activity: {
     section: "Kegiatan Terbaru",
