@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-19",
+  "type": "improvement",
+  "status": "published",
+  "title": {
+    "id": "Proyek Terbaru Muncul Lebih Awal",
+    "en": "Recently Updated Projects Now Appear First"
+  },
+  "body": {
+    "id": "Daftar proyek kini otomatis menampilkan yang terbaru diperbarui di bagian atas, sehingga pengunjung lebih mudah menemukan perkembangan terakhir.",
+    "en": "The project list now automatically shows recently updated projects at the top, making it easier for visitors to find the latest updates."
+  },
+  "items": [
+    {
+      "type": "improvement",
+      "id": "Urutan proyek dihalaman utama dan halaman proyek diubah agar kegiatan terbaru selalu muncul di atas.",
+      "en": "Project ordering on the home page and projects page is updated so the most recent activity always appears first."
+    }
+  ]
+}

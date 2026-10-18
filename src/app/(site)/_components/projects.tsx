@@ -22,7 +22,7 @@ import Link from "next/link";
 import { padIndex } from "@/lib/text";
 import type { Route } from "next";
 import { Suspense } from "react";
-import { getPublicProjects } from "@/lib/projects";
+import { getPublicProjectsByActivity } from "@/lib/projects";
 import { getDictionary } from "@/lib/i18n/server";
 import { unstable_rethrow } from "next/navigation";
 
@@ -34,9 +34,9 @@ export async function ProjectGrid({
   const dict = await getDictionary();
   const content = dict.home.projects;
   const detail = dict.projectsDetail;
-  let projects: Awaited<ReturnType<typeof getPublicProjects>>;
-  try {
-    projects = await getPublicProjects();
+    let projects: Awaited<ReturnType<typeof getPublicProjectsByActivity>>;
+    try {
+        projects = await getPublicProjectsByActivity();
   } catch (error) {
     unstable_rethrow(error);
     console.error("Failed to load public projects:", error);
