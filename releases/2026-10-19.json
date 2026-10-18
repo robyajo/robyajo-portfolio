@@ -52,6 +52,11 @@
       "en": "The 'last updated' stamp on project cards is now calculated in whole days (Today/Yesterday/n days ago), so no card shows a time that feels off or shifts on its own."
     },
     {
+      "type": "fix",
+      "id": "Perbaikan tampilan halaman resume: pindah halaman dokumen kini stabil tanpa gangguan saat dokumen baru saja selesai dimuat.",
+      "en": "Resume page display fix: moving between document pages now stays stable without interruption when the document has just finished loading."
+    },
+    {
       "type": "improvement",
       "id": "Halaman pengelolaan proyek dan blog diperapikan: tabel dan formulir dipisah ke berkas sendiri sehingga lebih mudah diubah tanpa risiko merusak bagian lain.",
       "en": "The project and blog management pages are tidied: tables and forms now live in separate files, making them easier to update without risking other parts."

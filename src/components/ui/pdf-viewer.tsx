@@ -288,14 +288,15 @@ export const PdfViewerControls = ({
 
 export const PdfViewerPagination = () => {
   const { currentPage, goToPage, numPages } = usePdf();
+  const t = useDictionary().viewer;
   if (!numPages || numPages <= 1) return null;
 
   return (
-    <ButtonGroup aria-label={useDictionary().viewer.pageNav}>
+    <ButtonGroup aria-label={t.pageNav}>
       <Button
         variant="outline"
         size="icon"
-        aria-label={useDictionary().viewer.previousPage}
+        aria-label={t.previousPage}
         onClick={() => goToPage(currentPage - 1)}
       >
         <CaretLeftIcon className="size-4" aria-hidden="true" />
@@ -304,7 +305,9 @@ export const PdfViewerPagination = () => {
       <ButtonGroupText
         className="px-2.5 font-mono text-xs"
         aria-live="polite"
-        aria-label={useDictionary().viewer.pageOf.replace("{current}", String(currentPage)).replace("{total}", String(numPages))}
+        aria-label={t.pageOf
+          .replace("{current}", String(currentPage))
+          .replace("{total}", String(numPages))}
       >
         {currentPage}/{numPages}
       </ButtonGroupText>
@@ -312,7 +315,7 @@ export const PdfViewerPagination = () => {
       <Button
         variant="outline"
         size="icon"
-        aria-label={useDictionary().viewer.nextPage}
+        aria-label={t.nextPage}
         onClick={() => goToPage(currentPage + 1)}
       >
         <CaretRightIcon className="size-4" aria-hidden="true" />
@@ -387,11 +390,14 @@ export const PdfViewerOpen = () => {
 
 export const PdfViewerDownload = ({ label }: { label?: string }) => {
   const { downloadHref } = usePdf();
+  const t = useDictionary().viewer;
   return (
     <Button size="sm" asChild className="sm:px-3 px-2">
       <a
         href={downloadHref}
-        aria-label={label ? useDictionary().viewer.downloadLabeled.replace("{label}", label) : useDictionary().viewer.downloadPdf}
+        aria-label={label
+          ? t.downloadLabeled.replace("{label}", label)
+          : t.downloadPdf}
       >
         <DownloadIcon className="size-4" aria-hidden="true" />
         <span className="hidden sm:inline" aria-hidden="true">
