@@ -21,6 +21,9 @@ export const docs = defineDocs({
             // deploy host made every push re-date every post. Frontmatter is
             // deterministic and gives full control over what counts as an update.
             lastModified: z.coerce.date().optional(),
+            // Penanda asal tulis artikel. `autopilot` berarti artikel dibuat
+            // oleh alur tulis harian otomatis, bukan ditulis manual di admin.
+            author: z.string().optional(),
         }),
         postprocess: {
             includeProcessedMarkdown: true,

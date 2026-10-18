@@ -662,7 +662,7 @@ function renderPost(
 ): string {
     const article = data[lang];
     const slug = slugify(data.slug ?? data.id.title);
-    const tags = data.tags.length > 0 ? data.tags : ["Fesyen", "Teknologi"];
+    const tags = data.tags.length > 0 ? data.tags : ["Teknologi", "AI"];
     const frontmatter = [
         "---",
         `title: ${yamlString(article.title.trim())}`,
@@ -672,6 +672,7 @@ function renderPost(
         ...tags.map((tag) => `    - ${yamlString(tag)}`),
         `lang: ${lang}`,
         `translation: ${yamlString(sibling)}`,
+        `author: autopilot`,
         "---",
         "",
     ];
@@ -688,14 +689,17 @@ function updateRelease(
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? "https://ajoroby.is-a.dev";
     const url = `${baseUrl}/blog/${slug}`;
-    const existing = readdirSync(RELEASES_DIR).find((file) =>
-        file.startsWith(`${date}-`) && file.endsWith(".json"),
-    );
+    const existing = readdirSync(RELEASES_DIR)
+        .find(
+            (file) =>
+                (file === `${date}.json` || file.startsWith(`${date}-`)) &&
+                file.endsWith(".json"),
+        ) ?? `${date}.json`;
 
     const item = {
         type: "new",
-        id: `Tulisan baru bertema fesyen: "${data.id.title}". Selengkapnya di ${url}`,
-        en: `New fashion article: "${data.en.title}". Read it at ${url}`,
+        id: `Tulisan baru: "${data.id.title}". Selengkapnya di ${url}`,
+        en: `New article: "${data.en.title}". Read it at ${url}`,
     };
 
     if (existing) {
@@ -707,8 +711,8 @@ function updateRelease(
         };
         payload.items = [...(payload.items ?? []), item];
         if (payload.body) {
-            const extraId = ` Artikel fesyen terbaru: "${data.id.title}".`;
-            const extraEn = ` Latest fashion article: "${data.en.title}".`;
+            const extraId = ` Artikel terbaru: "${data.id.title}".`;
+            const extraEn = ` Latest article: "${data.en.title}".`;
             payload.body.id = `${payload.body.id ?? ""}${extraId}`.trim();
             payload.body.en = `${payload.body.en ?? ""}${extraEn}`.trim();
         }
@@ -717,8 +721,8 @@ function updateRelease(
         return path;
     }
 
-    const titleId = titleOverrideId ?? `Artikel fesyen baru: ${data.id.title}`;
-    const titleEn = `New fashion article: ${data.en.title}`;
+    const titleId = titleOverrideId ?? `Artikel baru: ${data.id.title}`;
+    const titleEn = `New article: ${data.en.title}`;
     const trim = (value: string) =>
         value.length > 80 ? `${value.slice(0, 77).trimEnd()}…` : value;
     const payload = {

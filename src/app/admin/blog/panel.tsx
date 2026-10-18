@@ -12,6 +12,7 @@ import {
 import type { AdminBlogPost } from "@/lib/blog-admin";
 import { useQuery } from "@tanstack/react-query";
 import { useActionMutation } from "@/hooks/use-action-mutation";
+import { useSearchParams } from "next/navigation";
 import { queryKeys } from "@/lib/query-keys";
 import { Button } from "@/components/ui/button";
 import {
@@ -42,6 +43,7 @@ import {
 export function BlogPostsPanel() {
   const t = useDictionary().admin.blog.posts;
   const notice = useDictionary().admin.blog.notice;
+  const editParam = useSearchParams().get("edit") ?? null;
   const { data: posts = [] } = useQuery({
     queryKey: queryKeys.admin.blogPosts,
     queryFn: getAdminBlogPosts,
@@ -51,7 +53,11 @@ export function BlogPostsPanel() {
     open: boolean;
     slug: string | null;
     create: boolean;
-  }>({ open: false, slug: null, create: true });
+  }>(() => ({
+    open: Boolean(editParam),
+    slug: editParam,
+    create: false,
+  }));
 
   const save = useActionMutation({
     action: (values: typeof emptyBlogValues extends () => infer R ? R : never) =>

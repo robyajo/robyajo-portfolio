@@ -1,14 +1,14 @@
 {
   "date": "2026-10-19",
-  "type": "improvement",
+  "type": "feature",
   "status": "published",
   "title": {
-    "id": "Proyek Terbaru di Atas, Tanggal Kegiatan, Blog Teknologi & Perapian Admin",
-    "en": "Recent Projects First, Activity Dates, Tech Blog & Admin Cleanup"
+    "id": "Artikel Otomatis Berita Teknologi, Proyek Terbaru di Atas & Halaman Detail Blog",
+    "en": "Automated Tech-News Article, Recent Projects First & Blog Detail Page"
   },
   "body": {
-    "id": "Urutan proyek memunculkan yang terbaru di atas, setiap kartu menampilkan tanggal kegiatan terakhir, artikel otomatis harian kini berbasis berita teknologi dan AI, serta halapan pengelolaan diperapikan agar lebih mudah diubah.",
-    "en": "Projects now show recently updated ones first, each card displays the last activity date, the daily article now covers technology and AI news, and the admin panel is tidier for future changes."
+    "id": "Blog kini menampilkan artikel harian tentang teknologi dan AI berdasarkan berita terkini, urutan proyek memunculkan yang terbaru di atas beserta tanggal kegiatannya, dan bagi pengelola situs tersedia halaman detail artikel serta penanda artikel buatan otomatis.",
+    "en": "The blog now shows a daily article about technology and AI based on current news, projects list the most recently updated ones first with their activity dates, and site administrators get a dedicated article detail page plus a marker for automatically written articles."
   },
   "items": [
     {
@@ -23,8 +23,18 @@
     },
     {
       "type": "new",
-      "id": "Artikel otomatis harian kini menulis topik teknologi dan AI berdasarkan berita terkini dari sumber terpercaya.",
-      "en": "The daily automatic article now writes about technology and AI topics based on the latest news from trusted sources."
+      "id": "Artikel otomatis harian kini menulis topik teknologi dan AI berdasarkan berita terkini dari sumber terpercaya. Artikel terbaru: \"Ketika Algoritma dan AI Mulai Mengatur Urusan Perumahan\" di https://ajoroby.is-a.dev/blog/ketika-algoritma-mulai-mengatur-perumahan",
+      "en": "The daily automatic article now writes about technology and AI topics based on the latest news from trusted sources. Latest article: \"When Algorithms and AI Take Over Neighborhood Management\" at https://ajoroby.is-a.dev/blog/ketika-algoritma-mulai-mengatur-perumahan"
+    },
+    {
+      "type": "new",
+      "id": "Bagi pengelola situs, setiap artikel blog kini punya halaman detail yang menampilkan ringkasan, tanggal, tag, kategori, dan pratinjau isinya.",
+      "en": "For site administrators, every blog post now has a detail page showing its summary, date, tags, category, and a content preview."
+    },
+    {
+      "type": "new",
+      "id": "Bagi pengelola situs, artikel yang dibuat otomatis ditandai dengan label khusus di daftar blog, sehingga mudah dibedakan dari yang ditulis manual.",
+      "en": "For site administrators, automatically written articles now carry a special label in the blog list, making them easy to tell apart from manually written ones."
     },
     {
       "type": "improvement",

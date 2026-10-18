@@ -67,6 +67,7 @@ interface PostIndexEntry {
     category: string | null;
     translation: string | null;
     lastModified: string | null;
+    author: string | null;
 }
 
 function isoDay(value: Date | string | undefined): string | null {
@@ -93,6 +94,7 @@ function indexPosts(): Map<string, PostIndexEntry> {
         const data = page.data as typeof page.data & {
             category?: string;
             translation?: string;
+            author?: string;
         };
         const isEnglish = data.lang === "en" || slug.endsWith("-en");
 
@@ -106,6 +108,7 @@ function indexPosts(): Map<string, PostIndexEntry> {
             category: data.category ?? null,
             translation: data.translation ?? null,
             lastModified: isoDay(data.lastModified),
+            author: data.author ?? null,
         });
     }
 
@@ -167,6 +170,7 @@ export async function getAdminBlogPosts(): Promise<AdminBlogPost[]> {
                         translation: sibling?.slug ?? null,
                         url: `/blog/${entry.slug}`,
                         lastModified: entry.lastModified,
+                        author: entry.author === "autopilot" ? "autopilot" : null,
                     } satisfies AdminBlogPost;
                 });
             return rows.sort((a, b) => b.date.localeCompare(a.date));

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
   ButtonGroup,
@@ -73,7 +74,22 @@ export function BlogTable({
               >
                 <TableCell className="py-3 max-w-sm">
                   <div className="flex flex-col gap-1">
-                    <TypographySmall>{post.title || post.slug}</TypographySmall>
+                    <TypographySmall asChild>
+                      <Link
+                        href={`/admin/blog/${post.slug}`}
+                        className="hover:underline"
+                      >
+                        {post.title || post.slug}
+                      </Link>
+                    </TypographySmall>
+                    {post.author && (
+                      <Badge
+                        variant="secondary"
+                        className="w-fit px-1.5 py-0 h-4 text-3xs"
+                      >
+                        {t.autopilotBadge}
+                      </Badge>
+                    )}
                     {post.tags.length > 0 && (
                       <div className="flex flex-wrap gap-1">
                         {post.tags.map((tag) => (

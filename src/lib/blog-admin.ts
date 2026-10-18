@@ -213,6 +213,7 @@ export interface AdminBlogPost {
     translation: string | null;
     url: string;
     lastModified: string | null;
+    author: string | null;
 }
 
 export interface BlogPostSource {
