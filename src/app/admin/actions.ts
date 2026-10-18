@@ -189,6 +189,7 @@ export type ProjectRow = {
     enabled: boolean;
     sortOrder: number;
     activityCount: number;
+    lastActivityAt: Date | null;
 };
 
 async function uniqueSlug(base: string, excludeId?: number): Promise<string> {
@@ -235,6 +236,7 @@ async function loadAdminProjects(): Promise<ProjectRow[]> {
             enabled: projects.enabled,
             sortOrder: projects.sortOrder,
             activityCount: sql<number>`count(${activities.id})::int`,
+            lastActivityAt: sql<Date | null>`max(${activities.occurredAt})`,
         })
         .from(projects)
         .leftJoin(

@@ -30,6 +30,11 @@
       "type": "improvement",
       "id": "Halaman pengelolaan proyek dan blog diperapikan: tabel dan formulir dipisah ke berkas sendiri sehingga lebih mudah diubah tanpa risiko merusak bagian lain.",
       "en": "The project and blog management pages are tidied: tables and forms now live in separate files, making them easier to update without risking other parts."
+    },
+    {
+      "type": "improvement",
+      "id": "Bagi pengelola situs, daftar proyek di halaman pengelolaan kini urut berdasarkan kegiatan terbaru sehingga proyek yang paling aktif tampil paling atas.",
+      "en": "For site administrators, the project list in the management area is now ordered by latest activity, so the most active projects appear first."
     }
   ]
 }

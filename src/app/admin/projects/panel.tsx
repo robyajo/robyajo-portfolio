@@ -131,9 +131,15 @@ export function ProjectsPanel() {
     if (pendingId === null) move.mutate({ id, direction });
   }
 
-  const sorted = [...projects].sort(
-    (a, b) => a.sortOrder - b.sortOrder || a.id - b.id,
-  );
+  const sorted = [...projects].sort((a, b) => {
+    const aTime = a.lastActivityAt ? new Date(a.lastActivityAt).getTime() : 0;
+    const bTime = b.lastActivityAt ? new Date(b.lastActivityAt).getTime() : 0;
+    return (
+      bTime - aTime ||
+      a.sortOrder - b.sortOrder ||
+      a.id - b.id
+    );
+  });
 
   return (
     <div className="flex flex-col gap-6">
