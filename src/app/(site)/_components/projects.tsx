@@ -23,17 +23,19 @@ import { padIndex } from "@/lib/text";
 import type { Route } from "next";
 import { Suspense } from "react";
 import { getPublicProjectsByActivity } from "@/lib/projects";
-import { getDictionary } from "@/lib/i18n/server";
+import { getDictionary, getLocale } from "@/lib/i18n/server";
+import { timeAgo } from "@/lib/date";
 import { unstable_rethrow } from "next/navigation";
 
 export async function ProjectGrid({
-  headingLevel = "h2",
+    headingLevel = "h2",
 }: {
-  headingLevel?: "h2" | "h3";
+    headingLevel?: "h2" | "h3";
 }) {
-  const dict = await getDictionary();
-  const content = dict.home.projects;
-  const detail = dict.projectsDetail;
+    const dict = await getDictionary();
+    const content = dict.home.projects;
+    const detail = dict.projectsDetail;
+    const locale = await getLocale();
     let projects: Awaited<ReturnType<typeof getPublicProjectsByActivity>>;
     try {
         projects = await getPublicProjectsByActivity();
@@ -65,6 +67,11 @@ export async function ProjectGrid({
               </Heading>
               <TypographyMuted className="leading-relaxed">
                 {project.description}
+              </TypographyMuted>
+              <TypographyMuted className="font-mono text-xs tracking-wide opacity-60">
+                {project.lastActivityAt
+                  ? `Updated ${timeAgo(project.lastActivityAt.toISOString(), locale)}`
+                  : "No activity yet"}
               </TypographyMuted>
               <ul
                 role="list"

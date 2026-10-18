@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-19",
+  "type": "improvement",
+  "status": "published",
+  "title": {
+    "id": "Tanggal Kegiatan Terakhir di Setiap Proyek",
+    "en": "Last Activity Date on Each Project"
+  },
+  "body": {
+    "id": "Setiap kartu proyek kini menampilkan kapan terakhir ada kegiatan, sehingga pengunjung tahu seberapa aktif sebuah proyek.",
+    "en": "Each project card now shows when the last activity occurred, so visitors can see how active a project is."
+  },
+  "items": [
+    {
+      "type": "new",
+      "id": "Label waktu kegiatan terakhir muncul di setiap kartu proyek di halaman utama dan halaman proyek.",
+      "en": "A last-activity time label now appears on each project card on the home page and projects page."
+    }
+  ]
+}
