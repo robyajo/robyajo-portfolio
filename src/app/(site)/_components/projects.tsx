@@ -24,7 +24,7 @@ import type { Route } from "next";
 import { Suspense } from "react";
 import { getPublicProjectsByActivity } from "@/lib/projects";
 import { getDictionary, getLocale } from "@/lib/i18n/server";
-import { timeAgo } from "@/lib/date";
+import { dayAgoLabel } from "@/lib/date";
 import { unstable_rethrow } from "next/navigation";
 
 export async function ProjectGrid({
@@ -70,7 +70,7 @@ export async function ProjectGrid({
               </TypographyMuted>
               <TypographyMuted className="font-mono text-xs tracking-wide opacity-60">
                 {project.lastActivityAt
-                  ? `Updated ${timeAgo(new Date(project.lastActivityAt).toISOString(), locale)}`
+                  ? `Updated ${dayAgoLabel(new Date(project.lastActivityAt).toISOString(), locale)}`
                   : "No activity yet"}
               </TypographyMuted>
               <ul

@@ -3,12 +3,12 @@
   "type": "feature",
   "status": "published",
   "title": {
-    "id": "Artikel Otomatis Berita Teknologi, Laporan Kerja Word PDF & Perbaikan Tampilan Halaman",
-    "en": "Automated Tech-News Article, Word/PDF Work Report & Page Rendering Fix"
+    "id": "Artikel Otomatis Berita Teknologi, Laporan Kerja Word PDF & Perbaikan Tanggal Proyek",
+    "en": "Automated Tech-News Article, Word/PDF Work Report & Project Date Fix"
   },
   "body": {
-    "id": "Blog kini menampilkan artikel harian tentang teknologi dan AI berdasarkan berita terkini, urutan proyek memunculkan yang terbaru di atas beserta tanggal kegiatannya; bagi pengelola situs tersedia lengkap dengan halaman detail artikel, penanda artikel buatan otomatis, dan pemilih kegiatan untuk laporan kerja Word atau PDF, ditambah perbaikan kegagalan render halaman saat perangkat memuat ulang.",
-    "en": "The blog now shows a daily article about technology and AI based on current news, projects list the most recently updated ones first with their activity dates; administrators also get an article detail page, a marker for automatically written articles, and an activity picker for Word or PDF work reports, plus a fix for transient page rendering glitches when a device reloads."
+    "id": "Blog kini menampilkan artikel harian tentang teknologi dan AI berdasarkan berita terkini, urutan proyek memunculkan yang terbaru di atas beserta tanggal kegiatannya; bagi pengelola situs tersedia lengkap dengan halaman detail artikel, penanda artikel buatan otomatis, dan pemilih kegiatan untuk laporan kerja Word atau PDF. Tanggal pembaruan proyek kini tampil sebagai hari berjalan (Hari ini/Kemarin/n hari) sehingga tidak lagi terlihat salah.",
+    "en": "The blog now shows a daily article about technology and AI based on current news, projects list the most recently updated ones first with their activity dates; administrators also get an article detail page, a marker for automatically written articles, and an activity picker for Word or PDF work reports. Project update dates now display in whole days (Today/Yesterday/n days ago) so they no longer look stale or wrong."
   },
   "items": [
     {
@@ -45,6 +45,11 @@
       "type": "fix",
       "id": "Perbaikan kegagalan sinkron tampilan saat halaman dimuat ulang: notifikasi persetujuan kini muncul dan hilang dengan rapi tanpa membuat halaman terasa tersendat atau tampil dobel.",
       "en": "Fixed a transient rendering glitch on page reload: the consent notice now appears and clears smoothly without making the page stutter or render inconsistently."
+    },
+    {
+      "type": "fix",
+      "id": "Tanggal 'terbaru diperbarui' pada kartu proyek kini dihitung per hari (Hari ini/Kemarin/n hari yang lalu), sehingga tidak ada lagi kartu yang menampilkan waktu yang terasa salah atau berubah sendiri.",
+      "en": "The 'last updated' stamp on project cards is now calculated in whole days (Today/Yesterday/n days ago), so no card shows a time that feels off or shifts on its own."
     },
     {
       "type": "improvement",

@@ -148,8 +148,44 @@ export function timeAgo(date: string, locale: string = "en"): string {
     return locale === "id" ? "baru saja" : "just now";
 }
 
-export function formatRelativeDate(iso: string): string {
-    const date = new Date(iso);
+/**
+ * Label relasi berbasis HARI (bukan jam/menit). Dipakai untuk data yang hanya
+ * akurat sampai tingkat hari (tanggal kegiatan), sehingga hasil label tetap
+ * benar walaupun halaman dibuat dari snapshot cache beberapa jam lama lalu.
+ * Selalu memakai zona Asia/Jakarta agar konsisten antara render server dan
+ * cache, terlepas dari zona waktu host.
+ */
+export function dayAgoLabel(iso: string, locale: string = "en"): string {
+    const zone = "Asia/Jakarta";
+    const dayKey = (value: Date): string =>
+        new Intl.DateTimeFormat("en-CA", { timeZone: zone }).format(value);
+    const dayNumber = (key: string): number =>
+        Date.parse(`${key}T00:00:00Z`) / 86_400_000;
+    const isId = locale.startsWith("id");
+    const diff = Math.round(
+        dayNumber(dayKey(new Date(iso))) - dayNumber(dayKey(new Date())),
+    );
+    const ago = Math.abs(diff);
+    if (ago === 0) return isId ? "Hari ini" : "Today";
+    if (ago === 1) return isId ? "Kemarin" : "Yesterday";
+    if (ago < 30) {
+        return isId
+            ? `${ago} hari yang lalu`
+            : `${ago} day${ago > 1 ? "s" : ""} ago`;
+    }
+    if (ago < 365) {
+        const months = Math.floor(ago / 30);
+        return isId
+            ? `${months} bulan yang lalu`
+            : `${months} month${months > 1 ? "s" : ""} ago`;
+    }
+    const years = Math.floor(ago / 365);
+    return isId
+        ? `${years} tahun yang lalu`
+        : `${years} year${years > 1 ? "s" : ""} ago`;
+}
+
+export function formatRelativeDate(iso: string): string {    const date = new Date(iso);
     const now = new Date();
     const diffDays = Math.floor((now.getTime() - date.getTime()) / 86_400_000);
 
