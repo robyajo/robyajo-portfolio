@@ -61,7 +61,6 @@ const BANNED_PHRASES = [
     "it's worth noting",
     "let's dive in",
     "revolutionize the",
-    "landscape of fashion",
 ];
 
 const BANNED_IDENTITIES = [
@@ -77,8 +76,15 @@ interface Pillar {
     angle: string;
 }
 
+interface NewsItem {
+    title: string;
+    url: string;
+    source: string;
+    publishedAt: string;
+}
+
 interface Pipeline {
-    trending: { geo: string; endpoint: string; lexicon: string[] };
+    news: { sources: { name: string; url: string }[]; lexicon: string[] };
     pillars: Pillar[];
 }
 
@@ -108,11 +114,6 @@ interface Generated {
     tags: string[];
     id: Article;
     en: Article;
-}
-
-interface TrendTerm {
-    term: string;
-    traffic: string;
 }
 
 function log(message: string): void {
@@ -230,37 +231,44 @@ async function fetchWithTimeout(
     }
 }
 
-async function fetchTrends(
-    endpoint: string,
+async function fetchNews(
+    sources: { name: string; url: string }[],
     attempt = 0,
-): Promise<TrendTerm[]> {
-    try {
-        const response = await fetchWithTimeout(
-            endpoint,
-            { headers: { "user-agent": "robyajo-portfolio-blog-bot" } },
-            15_000,
-        );
-        if (!response.ok) fail(`HTTP ${response.status}`);
-        const xml = await response.text();
-        const blocks = xml.split("<item>").slice(1);
-        return blocks
-            .map((block) => {
+): Promise<NewsItem[]> {
+    const items: NewsItem[] = [];
+    for (const source of sources) {
+        try {
+            const response = await fetchWithTimeout(
+                source.url,
+                { headers: { "user-agent": "robyajo-portfolio-blog-bot" } },
+                15_000,
+            );
+            if (!response.ok) continue;
+            const xml = await response.text();
+            const blocks = xml.split("<item>").slice(1);
+            for (const block of blocks.slice(0, 20)) {
                 const title = block.match(/<title>([\s\S]*?)<\/title>/)?.[1] ?? "";
-                const traffic =
-                    block.match(
-                        /<ht:approx_traffic>([\s\S]*?)<\/ht:approx_traffic>/,
-                    )?.[1] ?? "";
-                return { term: decodeXml(title), traffic: decodeXml(traffic) };
-            })
-            .filter((item) => item.term.length > 1);
-    } catch (error) {
-        if (attempt < 2) {
-            await sleep(2_000 * (attempt + 1));
-            return fetchTrends(endpoint, attempt + 1);
+                const url = block.match(/<link>([\s\S]*?)<\/link>/)?.[1] ?? "";
+                const pubDate = block.match(/<pubDate>([\s\S]*?)<\/pubDate>/)?.[1] ?? "";
+                const cleaned = decodeXml(title).replace(/<!\[CDATA\[|\]\]>/g, "").trim();
+                if (cleaned.length > 3 && url) {
+                    items.push({
+                        title: cleaned,
+                        url: url.trim(),
+                        source: source.name,
+                        publishedAt: pubDate,
+                    });
+                }
+            }
+        } catch {
+            continue;
         }
-        log(`tren gagal diambil (${(error as Error).message}); memakai rotasi pilar`);
-        return [];
     }
+    if (items.length === 0 && attempt < 2) {
+        await sleep(2_000 * (attempt + 1));
+        return fetchNews(sources, attempt + 1);
+    }
+    return items;
 }
 
 function sleep(ms: number): Promise<void> {
@@ -268,7 +276,7 @@ function sleep(ms: number): Promise<void> {
 }
 
 function pickTopic(
-    trends: TrendTerm[],
+    news: NewsItem[],
     pipeline: Pipeline,
     published: Published,
     forced?: string,
@@ -278,13 +286,13 @@ function pickTopic(
     if (forced) return { topic: forced, pillar, origin: "manual" };
 
     const used = new Set(published.topics.map((t) => t.toLowerCase()));
-    const lexicon = pipeline.trending.lexicon.map((k) => k.toLowerCase());
-    const matched = trends.find((trend) => {
-        const term = trend.term.toLowerCase();
-        if (used.has(term)) return false;
-        return lexicon.some((keyword) => term.includes(keyword));
+    const lexicon = pipeline.news.lexicon.map((k) => k.toLowerCase());
+    const matched = news.find((item) => {
+        const title = item.title.toLowerCase();
+        if (used.has(title)) return false;
+        return lexicon.some((keyword) => title.includes(keyword));
     });
-    if (matched) return { topic: matched.term, pillar, origin: "tren" };
+    if (matched) return { topic: matched.title, pillar, origin: "berita" };
 
     return { topic: pillar.label, pillar, origin: "pilar" };
 }
@@ -300,6 +308,7 @@ function buildSystemPrompt(
         "Pekanbaru, Indonesia. Kamu menulis SEBAGAI pemilik situs, orang pertama,",
         "dan tulisannya harus terasa ditulis manusia: santai, jujur, kadang",
         "bercanda, tidak rapi berlebihan, dan tidak pernah terdengar seperti mesin.",
+        "Fokus utama situs ini adalah teknologi dan kecerdasan buatan (AI).",
         "",
         "=== PANDUAN GAYA (ikuti) ===",
         style,
@@ -326,9 +335,9 @@ function buildSystemPrompt(
         "   markdown [teks](https://...). Tautan akan DIPERIKSA OTOMATIS dan URL",
         "   karangan langsung ditolak. Karena itu: pakai hanya tautan yang kamu yakin",
         "   ada. Bila ragu pada URL artikel yang panjang, tautkan halaman kategori",
-        "   atau beranda resmi sumbernya (contoh aman: https://www.vogue.com/fashion,",
-        "   https://www.kompas.com/, https://databoks.katadata.co.id/,",
-        "   https://www.statista.com/). Dilarang mengarang URL atau judul artikel.",
+        "   atau beranda resmi sumbernya (contoh aman: https://news.ycombinator.com/,",
+        "   https://www.techcrunch.com/, https://arstechnica.com/,",
+        "   https://www.theverge.com/). Dilarang mengarang URL atau judul artikel.",
         "   Semua angka atau statistik wajib punya tautan sumbernya.",
         "6. Struktur: 2-3 paragraf pembuka (mulai dari kejadian/observasi konkret),",
         "   3-5 subjudul `##`, lalu penutup pendek yang mengajak berpikir. Jangan menulis",
@@ -369,12 +378,12 @@ function buildUserPrompt(
         `Topik hari ini: "${topic}" (asal: ${origin}).`,
         `Sudut pandang pilar "${pillar.label}": ${pillar.angle}`,
         "",
-        "Tulisan wajib bertema FESYEN (pakaian, gaya, sepatu, tas, belanja pakaian,",
-        "tren berpakaian) dan boleh bersinggungan dengan teknologi, kebiasaan digital,",
-        "atau kehidupan sehari-hari di Indonesia. Kalau topik di atas tampak tidak",
-        "berhubungan dengan fesyen, tetap cari jembatannya (misalnya: kenapa barang",
-        "itu tiba-tiba jadi tren gaya, atau bagaimana orang membicarakannya di media",
-        "sosial). Jangan menulis artikel berita olahraga atau politik.",
+        "Tulisan wajib bertema TEKNOLOGI dan AI (perangkat lunak, kecerdasan buatan,",
+        "gadget, keamanan siber, alat developer, teknologi kehidupan sehari-hari)",
+        "dengan sudut pandang relevan untuk orang Indonesia. Kalau berita di atas",
+        "tampak sangat teknis, tetap cari jembatannya ke kehidupan sehari-hari",
+        "(misalnya: bagaimana ini mengubah cara orang bekerja, belajar, atau berbisnis).",
+        "Jangan menulis artikel berita olahraga, hiburan, atau politik semata.",
         "",
         avoid.length > 0
             ? `Jangan mengulang topik berikut: ${avoid.slice(-25).join("; ")}.`
@@ -801,7 +810,10 @@ async function main(): Promise<void> {
     }
 
     const pipeline = readJson<Pipeline>(join(PIPELINE_DIR, "pillars.json"), {
-        trending: { geo: "ID", endpoint: "", lexicon: [] },
+        news: {
+            sources: [{ name: "Hacker News", url: "https://hnrss.org/frontpage" }],
+            lexicon: [],
+        },
         pillars: [],
     });
     if (pipeline.pillars.length === 0) fail("pillars.json kosong");
@@ -826,13 +838,11 @@ async function main(): Promise<void> {
     );
     for (const slug of published.slugs) existingSlugs.add(slug);
 
-    const trends = args.topic
-        ? []
-        : await fetchTrends(pipeline.trending.endpoint);
-    if (trends.length > 0) log(`tren diambil: ${trends.length} kata kunci`);
+    const news = args.topic ? [] : await fetchNews(pipeline.news.sources);
+    if (news.length > 0) log(`berita diambil: ${news.length} item`);
 
     const chosen = pickTopic(
-        trends,
+        news,
         pipeline,
         published,
         typeof args.topic === "string" ? args.topic : undefined,

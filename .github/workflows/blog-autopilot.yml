@@ -1,7 +1,8 @@
 name: Blog Autopilot
 
-# Menulis satu artikel fesyen & teknologi per hari, dwibahasa (Indonesia utama
-# + Inggris), lalu commit ke `master` supaya terbit lewat Vercel.
+# Menulis satu artikel teknologi & AI per hari berdasarkan berita terbaru,
+# dwibahasa (Indonesia utama + Inggris), lalu commit ke `master` supaya
+# terbit lewat Vercel.
 #
 # Rahasia yang dibutuhkan (Settings -> Secrets and variables -> Actions):
 #   GEMINI_API_KEY          (wajib)  kunci Google AI Studio

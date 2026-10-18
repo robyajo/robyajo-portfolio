@@ -1,0 +1,30 @@
+{
+  "date": "2026-10-19",
+  "type": "improvement",
+  "status": "published",
+  "title": {
+    "id": "Proyek Terbaru di Atas, Tanggal Kegiatan, & Blog Berita Teknologi",
+    "en": "Recent Projects First, Activity Dates, & Tech News Blog"
+  },
+  "body": {
+    "id": "Urutan proyek kini memunculkan yang terbaru diperbarui di atas, setiap kartu menampilkan tanggal kegiatan terakhir, dan artikel otomatis harian kini membahas berita teknologi dan AI terkini.",
+    "en": "Projects now show recently updated ones first, each card displays the last activity date, and the daily automatic article now covers the latest technology and AI news."
+  },
+  "items": [
+    {
+      "type": "improvement",
+      "id": "Urutan proyek dihalaman utama dan halaman proyek diubah agar kegiatan terbaru selalu muncul di atas.",
+      "en": "Project ordering on the home page and projects page is updated so the most recent activity always appears first."
+    },
+    {
+      "type": "new",
+      "id": "Label waktu kegiatan terakhir muncul di setiap kartu proyek.",
+      "en": "A last-activity time label now appears on each project card."
+    },
+    {
+      "type": "new",
+      "id": "Artikel otomatis harian kini menulis topik teknologi dan AI berdasarkan berita terkini dari sumber terpercaya.",
+      "en": "The daily automatic article now writes about technology and AI topics based on the latest news from trusted sources."
+    }
+  ]
+}
