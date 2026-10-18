@@ -3,12 +3,12 @@
   "type": "feature",
   "status": "published",
   "title": {
-    "id": "Artikel Otomatis Berita Teknologi, Laporan Kerja Word PDF & Perbaikan Tanggal Proyek",
-    "en": "Automated Tech-News Article, Word/PDF Work Report & Project Date Fix"
+    "id": "Artikel Otomatis Berita Teknologi, Laporan Kerja Word PDF & Pemilih Stack Proyek",
+    "en": "Automated Tech-News Article, Word/PDF Work Report & Project Stack Picker"
   },
   "body": {
-    "id": "Blog kini menampilkan artikel harian tentang teknologi dan AI berdasarkan berita terkini, urutan proyek memunculkan yang terbaru di atas beserta tanggal kegiatannya; bagi pengelola situs tersedia lengkap dengan halaman detail artikel, penanda artikel buatan otomatis, dan pemilih kegiatan untuk laporan kerja Word atau PDF. Tanggal pembaruan proyek kini tampil sebagai hari berjalan (Hari ini/Kemarin/n hari) sehingga tidak lagi terlihat salah.",
-    "en": "The blog now shows a daily article about technology and AI based on current news, projects list the most recently updated ones first with their activity dates; administrators also get an article detail page, a marker for automatically written articles, and an activity picker for Word or PDF work reports. Project update dates now display in whole days (Today/Yesterday/n days ago) so they no longer look stale or wrong."
+    "id": "Blog kini menampilkan artikel harian tentang teknologi dan AI berdasarkan berita terkini, urutan proyek memunculkan yang terbaru di atas beserta tanggal kegiatannya; bagi pengelola situs tersedia lengkap dengan halaman detail artikel, penanda artikel buatan otomatis, dan pemilih kegiatan untuk laporan kerja Word atau PDF, plus daftar stack penguasaan yang kini dikelola rapi tinggal pilih per proyek. Tanggal pembaruan proyek kini tampil sebagai hari berjalan (Hari ini/Kemarin/n hari) sehingga tidak lagi terlihat salah.",
+    "en": "The blog now shows a daily article about technology and AI based on current news, projects list the most recently updated ones first with their activity dates; administrators also get an article detail page, a marker for automatically written articles, an activity picker for Word or PDF work reports, plus a tidy mastery-stack list that can now be picked per project. Project update dates now display in whole days (Today/Yesterday/n days ago) so they no longer look stale or wrong."
   },
   "items": [
     {
@@ -55,6 +55,16 @@
       "type": "fix",
       "id": "Perbaikan tampilan halaman resume: pindah halaman dokumen kini stabil tanpa gangguan saat dokumen baru saja selesai dimuat.",
       "en": "Resume page display fix: moving between document pages now stays stable without interruption when the document has just finished loading."
+    },
+    {
+      "type": "new",
+      "id": "Bagi pengelola situs, formulir proyek kini memakai pemilih stack berbentuk tombol: cukup klik stack yang dikuasai, dan stack baru bisa ditambah langsung dari dalam formulir.",
+      "en": "For site administrators, the project form now uses a button-style stack picker: just click the stacks mastered, and new stacks can be added right from the form."
+    },
+    {
+      "type": "new",
+      "id": "Bagi pengelola situs, kini tersedia tab Stack khusus untuk mengatur daftar teknologi yang dikuasai: tambah, ubah, sembunyikan, hapus, dan lihat berapa proyek yang memakainya.",
+      "en": "For site administrators, a dedicated Stacks tab is now available to manage the mastered technologies: add, edit, hide, delete, and see how many projects use each stack."
     },
     {
       "type": "improvement",

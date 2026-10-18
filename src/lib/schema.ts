@@ -261,6 +261,30 @@ export const projects = pgTable(
     ],
 );
 
+/**
+ * Daftar stack/teknologi kuasai pemilik situs. Proyek menyerap nama stack ini
+ * sebagai highlights lewat pemilih badge di panel admin, jadi tidak ada ragam
+ * kapitalisasi yang berhamburan.
+ */
+export const projectStacks = pgTable(
+    "project_stacks",
+    {
+        id: serial("id").primaryKey(),
+        name: varchar("name", { length: 64 }).notNull(),
+        slug: varchar("slug", { length: 64 }).notNull(),
+        description: text("description"),
+        sortOrder: integer("sort_order").default(0).notNull(),
+        visible: boolean("visible").default(true).notNull(),
+        createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+        updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+    },
+    (table) => [
+        unique("project_stacks_name_unique").on(table.name),
+        unique("project_stacks_slug_unique").on(table.slug),
+        index("project_stacks_visible_idx").on(table.visible),
+    ],
+);
+
 export const links = pgTable(
     "links",
     {

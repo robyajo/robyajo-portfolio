@@ -10,6 +10,7 @@ import {
     blogReads,
     guestbookEntries,
     guestbookLikes,
+    projectStacks,
     projects,
     syncProjects,
 } from "@/lib/schema";
@@ -21,6 +22,7 @@ import { resolveUser } from "@/lib/users";
 import { PROJECTS_CACHE_TAG } from "@/lib/projects";
 import { safeQuery } from "@/lib/safe-query";
 import { projectInputSchema, type ProjectInput } from "@/lib/projects-schema";
+import { stackInputSchema, stackSlug } from "@/lib/project-stacks-schema";
 import { RESUME_CACHE_TAG } from "@/lib/resume";
 import {
   getVisitorDetail as getVisitorDetailValue,
@@ -479,5 +481,113 @@ export async function deleteActivityAction(id: number): Promise<ActionResult> {
             .limit(1);
         if (proj) revalidatePath(`/projects/${proj.slug}`);
         revalidatePath("/projects");
+    }, revalidateProjects);
+}
+
+/* ================= Stack (teknologi kuasai) CRUD ================= */
+
+export interface AdminStackRow {
+    id: number;
+    name: string;
+    slug: string;
+    description: string | null;
+    sortOrder: number;
+    visible: boolean;
+    /** Jumlah proyek yang memakai stack ini sebagai highlight. */
+    usage: number;
+}
+
+function loadAdminStacks(): Promise<AdminStackRow[]> {
+    return db
+        .select({
+            id: projectStacks.id,
+            name: projectStacks.name,
+            slug: projectStacks.slug,
+            description: projectStacks.description,
+            sortOrder: projectStacks.sortOrder,
+            visible: projectStacks.visible,
+            usage: sql<number>`(
+                select count(*)
+                from projects p
+                where p.highlights @> array[${projectStacks.name}]::text[]
+            )::int`,
+        })
+        .from(projectStacks)
+        .orderBy(asc(projectStacks.sortOrder), asc(projectStacks.id));
+}
+
+export async function getAdminProjectStacks(): Promise<AdminStackRow[]> {
+    await assertAdmin();
+    return safeQuery("getAdminProjectStacks", loadAdminStacks, []);
+}
+
+export async function createProjectStack(
+    raw: unknown,
+): Promise<ActionResult> {
+    return adminMutation("create stack", async () => {
+        const parsed = stackInputSchema.safeParse(raw);
+        if (!parsed.success) {
+            return parsed.error.issues[0]?.message ?? "Invalid stack input.";
+        }
+        const data = parsed.data;
+        const slug = stackSlug(data.name);
+        const taken =
+            (await db
+                .select({ id: projectStacks.id })
+                .from(projectStacks)
+                .where(eq(projectStacks.name, data.name))
+                .limit(1)).length > 0 ||
+            (await db
+                .select({ id: projectStacks.id })
+                .from(projectStacks)
+                .where(eq(projectStacks.slug, slug))
+                .limit(1)).length > 0;
+        if (taken) return `Stack "${data.name}" sudah ada.`;
+        await db.insert(projectStacks).values({
+            name: data.name,
+            slug,
+            description: data.description || null,
+            sortOrder: data.sortOrder,
+            visible: data.visible,
+        });
+    }, revalidateProjects);
+}
+
+export async function updateProjectStack(
+    id: number,
+    raw: unknown,
+): Promise<ActionResult> {
+    return adminMutation("update stack", async () => {
+        const parsed = stackInputSchema.safeParse(raw);
+        if (!parsed.success) {
+            return parsed.error.issues[0]?.message ?? "Invalid stack input.";
+        }
+        const data = parsed.data;
+        const slug = stackSlug(data.name);
+        const clash = await db
+            .select({ id: projectStacks.id })
+            .from(projectStacks)
+            .where(eq(projectStacks.slug, slug))
+            .limit(1);
+        if (clash[0] && clash[0].id !== id) {
+            return `Stack "${data.name}" sudah ada.`;
+        }
+        await db
+            .update(projectStacks)
+            .set({
+                name: data.name,
+                slug,
+                description: data.description || null,
+                sortOrder: data.sortOrder,
+                visible: data.visible,
+                updatedAt: new Date(),
+            })
+            .where(eq(projectStacks.id, id));
+    }, revalidateProjects);
+}
+
+export async function deleteProjectStack(id: number): Promise<ActionResult> {
+    return adminMutation("delete stack", async () => {
+        await db.delete(projectStacks).where(eq(projectStacks.id, id));
     }, revalidateProjects);
 }

@@ -4,9 +4,11 @@ import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { z } from "zod";
 import { isHttpUrl } from "@/lib/links-schema";
 import { projectInputSchema } from "@/lib/projects-schema";
+import type { AdminStackRow } from "@/app/admin/actions";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -20,8 +22,11 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { useDictionary } from "@/lib/i18n/provider";
-import { EyeIcon, CheckIcon, CopyIcon } from "@/components/shared/icons";
+import { EyeIcon, CheckIcon, CopyIcon, PlusIcon } from "@/components/shared/icons";
+import { TypographyMuted } from "@/components/ui/typography";
 import { generateSyncKey, slugifyTitle } from "@/lib/sync-keys";
+import { stackSlug } from "@/lib/project-stacks-schema";
+import type { ActionResult } from "@/lib/action-result";
 
 const optionalUrlField = z
   .string()
@@ -49,6 +54,135 @@ export function parseProjectHighlights(raw: string): string[] {
     .filter(Boolean);
 }
 
+function StackPicker({
+  control,
+  stacks,
+  quickAdd,
+  disabled,
+}: {
+  control: Control<ProjectFormData>;
+  stacks: AdminStackRow[];
+  quickAdd: (name: string) => Promise<ActionResult>;
+  disabled: boolean;
+}) {
+  const t = useDictionary().admin.projects;
+  const [ newName, setNewName ] = useState("");
+  const [adding, setAdding] = useState(false);
+  const [addMessage, setAddMessage] = useState<string | null>(null);
+
+  const visibleStacks = stacks.filter((stack) => stack.visible);
+
+  async function handleQuickAdd() {
+    const name = newName.trim();
+    if (!name || adding) return;
+    setAdding(true);
+    setAddMessage(null);
+    const result = await quickAdd(name);
+    setAddMessage(result.success ? t.stackPickAdded : result.error);
+    if (result.success) setNewName("");
+    setAdding(false);
+  }
+
+  return (
+    <FormField
+      control={control}
+      name="highlights"
+      render={({ field }) => {
+        const selected = parseProjectHighlights(field.value);
+        const selectedSlugs = new Set(
+          selected.map((token) => stackSlug(token)),
+        );
+        const pickedNames = new Set(
+          selected.map((token) => token.toLowerCase()),
+        );
+        const customTokens = selected.filter((token) =>
+          !visibleStacks.some(
+            (stack) => stack.name.toLowerCase() === token.toLowerCase(),
+          ),
+        );
+
+        function toggle(stack: AdminStackRow) {
+          const lower = stack.name.toLowerCase();
+          const next = pickedNames.has(lower)
+            ? selected.filter((token) => token.toLowerCase() !== lower)
+            : [...selected, stack.name];
+          field.onChange(next.join(", "));
+        }
+
+        return (
+          <FormItem>
+            <FormLabel>
+              {t.stackPickLabel}
+              <span className="text-xs font-normal text-muted-foreground">
+                {t.stackPickHint}
+              </span>
+            </FormLabel>
+            <FormControl>
+              <div className="flex flex-wrap gap-2">
+                {visibleStacks.map((stack) => (
+                  <Button
+                    key={stack.id}
+                    type="button"
+                    size="sm"
+                    variant={selectedSlugs.has(stack.slug) ? "default" : "outline"}
+                    disabled={disabled}
+                    aria-pressed={selectedSlugs.has(stack.slug)}
+                    onClick={() => toggle(stack)}
+                  >
+                    {stack.name}
+                  </Button>
+                ))}
+                {visibleStacks.length === 0 && (
+                  <TypographyMuted asChild>
+                    <span className="text-xs">{t.stackPickEmpty}</span>
+                  </TypographyMuted>
+                )}
+              </div>
+            </FormControl>
+            {customTokens.length > 0 && (
+              <FormDescription>
+                {customTokens.join(", ")}
+              </FormDescription>
+            )}
+            {addMessage && (
+              <FormDescription>{addMessage}</FormDescription>
+            )}
+            <FormMessage />
+            <div className="flex gap-2">
+              <Input
+                autoComplete="off"
+                value={newName}
+                onChange={(event) => setNewName(event.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    event.preventDefault();
+                    handleQuickAdd();
+                  }
+                }}
+                placeholder={t.stackPickAddPlaceholder}
+                disabled={disabled || adding}
+                className="max-w-64"
+              />
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={handleQuickAdd}
+                disabled={disabled || adding}
+                className="shrink-0"
+              >
+                <PlusIcon className="size-3.5" aria-hidden="true" />
+                {t.stackPickAddButton}
+              </Button>
+            </div>
+            <FormDescription>{t.stackPickAdd}</FormDescription>
+          </FormItem>
+        );
+      }}
+    />
+  );
+}
+
 function useProjectTextFields() {
   const t = useDictionary().admin.projects;
   return [
@@ -56,12 +190,6 @@ function useProjectTextFields() {
       name: "title",
       label: t.titleLabel,
       placeholder: t.titlePlaceholder,
-    },
-    {
-      name: "highlights",
-      label: t.highlightsLabel,
-      hint: t.highlightsHint,
-      placeholder: t.highlightsPlaceholder,
     },
     {
       name: "github",
@@ -119,17 +247,23 @@ function ProjectTextField({
   );
 }
 
-export function ProjectForm({
-  initial,
-  onSubmit,
-  onCancel,
-  submitting,
-}: {
+export interface ProjectFormProps {
   initial: ProjectFormData;
+  stacks: AdminStackRow[];
+  quickAddStack: (name: string) => Promise<ActionResult>;
   onSubmit: (data: ProjectFormData) => void;
   onCancel: () => void;
   submitting: boolean;
-}) {
+}
+
+export function ProjectForm({
+  initial,
+  stacks,
+  quickAddStack,
+  onSubmit,
+  onCancel,
+  submitting,
+}: ProjectFormProps) {
   const form = useForm<ProjectFormData>({
     resolver: standardSchemaResolver(projectFormSchema),
     defaultValues: initial,
@@ -279,6 +413,12 @@ export function ProjectForm({
               <FormMessage />
             </FormItem>
           )}
+        />
+        <StackPicker
+          control={form.control}
+          stacks={stacks}
+          quickAdd={quickAddStack}
+          disabled={submitting}
         />
         {restFields.map((spec) => (
           <ProjectTextField
