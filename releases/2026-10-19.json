@@ -3,17 +3,17 @@
   "type": "improvement",
   "status": "published",
   "title": {
-    "id": "Proyek Terbaru di Atas, Tanggal Kegiatan, & Blog Berita Teknologi",
-    "en": "Recent Projects First, Activity Dates, & Tech News Blog"
+    "id": "Proyek Terbaru di Atas, Tanggal Kegiatan, Blog Teknologi & Perapian Admin",
+    "en": "Recent Projects First, Activity Dates, Tech Blog & Admin Cleanup"
   },
   "body": {
-    "id": "Urutan proyek kini memunculkan yang terbaru diperbarui di atas, setiap kartu menampilkan tanggal kegiatan terakhir, dan artikel otomatis harian kini membahas berita teknologi dan AI terkini.",
-    "en": "Projects now show recently updated ones first, each card displays the last activity date, and the daily automatic article now covers the latest technology and AI news."
+    "id": "Urutan proyek memunculkan yang terbaru di atas, setiap kartu menampilkan tanggal kegiatan terakhir, artikel otomatis harian kini berbasis berita teknologi dan AI, serta halapan pengelolaan diperapikan agar lebih mudah diubah.",
+    "en": "Projects now show recently updated ones first, each card displays the last activity date, the daily article now covers technology and AI news, and the admin panel is tidier for future changes."
   },
   "items": [
     {
       "type": "improvement",
-      "id": "Urutan proyek dihalaman utama dan halaman proyek diubah agar kegiatan terbaru selalu muncul di atas.",
+      "id": "Urutan proyek di halaman utama dan halaman proyek diubah agar kegiatan terbaru selalu muncul di atas.",
       "en": "Project ordering on the home page and projects page is updated so the most recent activity always appears first."
     },
     {
@@ -25,6 +25,11 @@
       "type": "new",
       "id": "Artikel otomatis harian kini menulis topik teknologi dan AI berdasarkan berita terkini dari sumber terpercaya.",
       "en": "The daily automatic article now writes about technology and AI topics based on the latest news from trusted sources."
+    },
+    {
+      "type": "improvement",
+      "id": "Halaman pengelolaan proyek dan blog diperapikan: tabel dan formulir dipisah ke berkas sendiri sehingga lebih mudah diubah tanpa risiko merusak bagian lain.",
+      "en": "The project and blog management pages are tidied: tables and forms now live in separate files, making them easier to update without risking other parts."
     }
   ]
 }
