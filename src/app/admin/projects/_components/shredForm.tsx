@@ -43,6 +43,7 @@ const projectFormSchema = z.object({
   highlights: z.string(),
   live: optionalUrlField,
   github: optionalUrlField,
+  repoVisibility: z.enum(["public", "private"]),
 });
 
 export type ProjectFormData = z.input<typeof projectFormSchema>;
@@ -419,6 +420,45 @@ export function ProjectForm({
           stacks={stacks}
           quickAdd={quickAddStack}
           disabled={submitting}
+        />
+        <FormField
+          control={form.control}
+          name="repoVisibility"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                {t.repoVisibilityLabel}
+                <span className="text-xs font-normal text-muted-foreground">
+                  {t.repoVisibilityHint}
+                </span>
+              </FormLabel>
+              <FormControl>
+                <div className="flex gap-2">
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant={field.value === "public" ? "default" : "outline"}
+                    disabled={submitting}
+                    aria-pressed={field.value === "public"}
+                    onClick={() => field.onChange("public")}
+                  >
+                    {t.repoVisibilityPublic}
+                  </Button>
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant={field.value === "private" ? "default" : "outline"}
+                    disabled={submitting}
+                    aria-pressed={field.value === "private"}
+                    onClick={() => field.onChange("private")}
+                  >
+                    {t.repoVisibilityPrivate}
+                  </Button>
+                </div>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
         {restFields.map((spec) => (
           <ProjectTextField

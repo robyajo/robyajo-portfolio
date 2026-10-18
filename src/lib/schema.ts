@@ -250,6 +250,10 @@ export const projects = pgTable(
         highlights: text("highlights").array().notNull().default(sql`'{}'::text[]`),
         live: varchar("live", { length: 512 }),
         github: varchar("github", { length: 512 }),
+        /** Status repositori — "private" menyembunyikan tautan repo & demo publik. */
+        repoVisibility: varchar("repo_visibility", { length: 16 })
+            .notNull()
+            .default("public"),
         enabled: boolean("enabled").default(true).notNull(),
         sortOrder: integer("sort_order").default(0).notNull(),
         createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),

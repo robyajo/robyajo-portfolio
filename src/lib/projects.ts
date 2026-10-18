@@ -14,6 +14,7 @@ export type Project = {
     highlights: string[];
     live: string | null;
     github: string | null;
+    repoVisibility: string;
     enabled: boolean;
     sortOrder: number;
     updatedAt: Date;
@@ -31,6 +32,7 @@ export const getPublicProjects = unstable_cache(
                 highlights: projectsTable.highlights,
                 live: projectsTable.live,
                 github: projectsTable.github,
+                repoVisibility: projectsTable.repoVisibility,
                 enabled: projectsTable.enabled,
                 sortOrder: projectsTable.sortOrder,
                 updatedAt: projectsTable.updatedAt,
@@ -61,6 +63,7 @@ export const getPublicProjectsByActivity = unstable_cache(
                 highlights: projectsTable.highlights,
                 live: projectsTable.live,
                 github: projectsTable.github,
+                repoVisibility: projectsTable.repoVisibility,
                 enabled: projectsTable.enabled,
                 sortOrder: projectsTable.sortOrder,
                 updatedAt: projectsTable.updatedAt,
@@ -92,6 +95,7 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
             highlights: projectsTable.highlights,
             live: projectsTable.live,
             github: projectsTable.github,
+                repoVisibility: projectsTable.repoVisibility,
             enabled: projectsTable.enabled,
             sortOrder: projectsTable.sortOrder,
             updatedAt: projectsTable.updatedAt,

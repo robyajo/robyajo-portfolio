@@ -122,11 +122,13 @@ export function ProjectTable({
                         {project.title}
                       </Link>
                       {!project.enabled && (
-                        <Badge
-                          variant="outline"
-                          className="text-3xs px-1.5 py-0 h-4"
-                        >
+                        <Badge variant="outline" size="tiny">
                           {t.hidden}
+                        </Badge>
+                      )}
+                      {project.repoVisibility === "private" && (
+                        <Badge variant="warning" size="tiny">
+                          {t.repoVisibilityPrivate}
                         </Badge>
                       )}
                       {project.syncKey ? (

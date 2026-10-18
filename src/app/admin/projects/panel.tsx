@@ -125,6 +125,7 @@ export function ProjectsPanel() {
             highlights: parseProjectHighlights(form.highlights),
             live: form.live.trim() || null,
             github: form.github.trim() || null,
+            repoVisibility: form.repoVisibility,
         });
     }
 
@@ -255,6 +256,10 @@ export function ProjectsPanel() {
                                           editTarget.highlights.join(", "),
                                       live: editTarget.live ?? "",
                                       github: editTarget.github ?? "",
+                                      repoVisibility:
+                                          editTarget.repoVisibility === "private"
+                                              ? "private"
+                                              : "public",
                                   }
                                 : {
                                       title: "",
@@ -264,6 +269,7 @@ export function ProjectsPanel() {
                                       highlights: "",
                                       live: "",
                                       github: "",
+                                      repoVisibility: "public",
                                   }
                         }
                         onSubmit={handleFormSubmit}

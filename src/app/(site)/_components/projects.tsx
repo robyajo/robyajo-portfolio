@@ -102,7 +102,7 @@ export async function ProjectGrid({
                     </Link>
                   </Button>
                   <ButtonGroupSeparator />
-                  {project.live && (
+                  {project.repoVisibility !== "private" && project.live && (
                     <>
                       <Button asChild size="sm" variant="default">
                         <Link
@@ -123,7 +123,7 @@ export async function ProjectGrid({
                       <ButtonGroupSeparator />
                     </>
                   )}
-                  {project.github && (
+                  {project.repoVisibility !== "private" && project.github && (
                     <Button asChild size="sm" variant="outline">
                       <Link
                         href={project.github as Route}

@@ -317,6 +317,10 @@ const en: Dictionary = {
       stackPickAddPlaceholder: "e.g. Go, Tailwind, PostgreSQL…",
       stackPickAddButton: "Add",
       stackPickAdded: "Stack added.",
+      repoVisibilityLabel: "Repo status",
+      repoVisibilityHint: "Private = site hides this project's GitHub and live links.",
+      repoVisibilityPublic: "Public",
+      repoVisibilityPrivate: "Private",
       stackExists: "Stack already exists.",
       stacksLabel: "Stacks",
       stacks: {

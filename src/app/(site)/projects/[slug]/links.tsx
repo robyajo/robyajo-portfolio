@@ -11,10 +11,11 @@ export function ProjectLinks({
   project: Project;
   labels: Dictionary["projectsDetail"];
 }) {
-  if (!project.live && !project.github) return null;
+  const isPrivate = project.repoVisibility === "private";
+  if (!isPrivate && !project.live && !project.github) return null;
   return (
     <div className="flex flex-wrap gap-2 pt-2">
-      {project.live && (
+      {!isPrivate && project.live && (
         <Button asChild size="sm" variant="default">
           <Link
             href={project.live as never}
@@ -30,7 +31,7 @@ export function ProjectLinks({
           </Link>
         </Button>
       )}
-      {project.github && (
+      {!isPrivate && project.github && (
         <Button asChild size="sm" variant="outline">
           <Link
             href={project.github as never}

@@ -70,6 +70,12 @@ export const projectInputSchema = z.object({
     .transform((values) => values.filter((v) => v !== "")),
   live: optionalUrl,
   github: optionalUrl,
+  repoVisibility: z
+    .string()
+    .refine((v) => v === "public" || v === "private", {
+      message: "Repo visibility must be public or private.",
+    })
+    .default("public"),
 });
 
 export type ProjectInput = z.infer<typeof projectInputSchema>;

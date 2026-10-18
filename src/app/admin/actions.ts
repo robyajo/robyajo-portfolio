@@ -188,6 +188,7 @@ export type ProjectRow = {
     highlights: string[];
     live: string | null;
     github: string | null;
+    repoVisibility: string;
     enabled: boolean;
     sortOrder: number;
     activityCount: number;
@@ -235,6 +236,7 @@ async function loadAdminProjects(): Promise<ProjectRow[]> {
             highlights: projects.highlights,
             live: projects.live,
             github: projects.github,
+            repoVisibility: projects.repoVisibility,
             enabled: projects.enabled,
             sortOrder: projects.sortOrder,
             activityCount: sql<number>`count(${activities.id})::int`,

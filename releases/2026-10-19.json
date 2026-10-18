@@ -67,6 +67,11 @@
       "en": "For site administrators, a dedicated Stacks tab is now available to manage the mastered technologies: add, edit, hide, delete, and see how many projects use each stack."
     },
     {
+      "type": "new",
+      "id": "Bagi pengelola situs, setiap proyek kini punya pilihan repositori Publik atau Privat: proyek dengan status Privat terus tampil di daftar, tetapi tombol GitHub dan tautan demonya disembunyikan dari pengunjung.",
+      "en": "For site administrators, every project now has a Public or Private repository choice: projects marked Private still appear in the list, but their GitHub button and demo link are hidden from visitors."
+    },
+    {
       "type": "improvement",
       "id": "Halaman pengelolaan proyek dan blog diperapikan: tabel dan formulir dipisah ke berkas sendiri sehingga lebih mudah diubah tanpa risiko merusak bagian lain.",
       "en": "The project and blog management pages are tidied: tables and forms now live in separate files, making them easier to update without risking other parts."

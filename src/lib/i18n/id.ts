@@ -317,6 +317,10 @@ const id = {
       stackPickAddPlaceholder: "mis. Go, Tailwind, PostgreSQL…",
       stackPickAddButton: "Tambah",
       stackPickAdded: "Stack ditambahkan.",
+      repoVisibilityLabel: "Status repositori",
+      repoVisibilityHint: "Privat = GitHub dan tautan live proyek ini disembunyikan dari situs.",
+      repoVisibilityPublic: "Publik",
+      repoVisibilityPrivate: "Privat",
       stackExists: "Stack sudah ada.",
       stacksLabel: "Stack",
       stacks: {
