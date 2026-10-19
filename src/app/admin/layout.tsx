@@ -1,5 +1,6 @@
 import { AuthProvider } from "@/components/shared/auth-session";
 import { getAuth } from "@/lib/auth";
+import { getUnreadContactCount } from "@/lib/contact";
 import { redirect } from "next/navigation";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { AdminSidebar } from "@/app/admin/sidebar";
@@ -25,10 +26,12 @@ export default async function AdminLayout({
   const isOwner = userId === process.env.OWNER_USER_ID;
   if (role !== "admin" && !isOwner) return <AdminUnauthorized />;
 
+  const unreadMessages = await getUnreadContactCount().catch(() => 0);
+
   return (
     <AuthProvider>
       <SidebarProvider>
-        <AdminSidebar />
+        <AdminSidebar unreadMessages={unreadMessages} />
         <SidebarInset>
           <AdminHeader />
           {children}

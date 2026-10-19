@@ -17,6 +17,7 @@ import { formatLongDate, toISOString, toTimestamp } from "@/lib/date";
 import { buildMeta } from "@/lib/metadata";
 import { getDictionary, getLocale } from "@/lib/i18n/server";
 import { getPublicProjectsByActivity } from "@/lib/projects";
+import { getRecentActivities } from "@/lib/activities";
 import { source } from "@/lib/source";
 import type { Metadata, Route } from "next";
 import Link from "next/link";
@@ -56,6 +57,16 @@ export default async function NowPage() {
     .sort((a, b) => toTimestamp(b.data.date) - toTimestamp(a.data.date))
     .slice(0, 3);
 
+  const [latestActivity] = await getRecentActivities(1);
+  const lastUpdated = [
+    latestActivity?.occurredAt,
+    posts[0]?.data.date,
+    activeProjects[0]?.lastActivityAt,
+    activeProjects[0]?.updatedAt,
+  ]
+    .filter((value): value is string => Boolean(value))
+    .sort((a, b) => toTimestamp(b) - toTimestamp(a))[0];
+
   return (
     <>
       <JsonLd
@@ -72,10 +83,12 @@ export default async function NowPage() {
             <TypographyMark>{content.leadHighlight}</TypographyMark>
             {content.leadSuffix}
           </TypographyLead>
-          {activeProjects[0] && (
+          {lastUpdated && (
             <p className="font-mono text-xs text-muted-foreground">
               {content.lastUpdated}{" "}
-              {formatLongDate(activeProjects[0].updatedAt, dateLocale)}
+              <time dateTime={toISOString(lastUpdated)}>
+                {formatLongDate(lastUpdated, dateLocale)}
+              </time>
             </p>
           )}
         </HeroWithArt>

@@ -19,6 +19,16 @@ export function GET() {
 
 > ${siteConfig.description}
 
+## Halaman
+
+- [Tentang](${siteConfig.baseUrl}/about): profil, cara bekerja, dan teknologi yang dipakai.
+- [Sekarang](${siteConfig.baseUrl}/now): proyek dan tulisan terbaru.
+- [Perkakas](${siteConfig.baseUrl}/uses): teknologi yang dipakai beserta jumlah proyeknya.
+- [Kegiatan](${siteConfig.baseUrl}/activity): riwayat rilis situs.
+- [Proyek](${siteConfig.baseUrl}/projects): karya yang sudah dirilis.
+- [Kontak](${siteConfig.baseUrl}/contact): formulir pesan langsung.
+- [Resume](${siteConfig.baseUrl}/resume): pengalaman dan keahlian.
+
 ## Blog
 
 ${links}

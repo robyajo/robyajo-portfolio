@@ -1185,6 +1185,7 @@ const id = {
     exploreActivity: "Semua kegiatan",
     exploreProjects: "Proyek",
     exploreBlogs: "Tulisan",
+    exploreContact: "Kontak",
     exploreResume: "Resume",
   },
   nowPage: {
@@ -1259,6 +1260,7 @@ const id = {
     successTitle: "Pesan terkirim.",
     successBody: "Terima kasih. Saya akan membalas lewat email yang Anda cantumkan.",
     sendAnother: "Kirim pesan lain",
+    privacyLink: "Baca kebijakan privasi",
     privacyNote: "Data hanya dipakai untuk membalas pesan ini.",
     directTitle: "Atau sapa lewat email",
     directLead: "Kalau lebih nyaman, email langsung juga diterima.",

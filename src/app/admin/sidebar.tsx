@@ -9,6 +9,7 @@ import {
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
+  SidebarMenuBadge,
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
@@ -45,7 +46,11 @@ function useNavItems() {
   ];
 }
 
-export function AdminSidebar() {
+export function AdminSidebar({
+  unreadMessages = 0,
+}: {
+  unreadMessages?: number;
+}) {
   const pathname = usePathname();
   const { signOut } = useSignOut();
   const t = useDictionary().admin;
@@ -90,6 +95,11 @@ export function AdminSidebar() {
                   <Link href={href as Route}>
                     <Icon className="size-4" />
                     <span>{title}</span>
+                    {href === "/admin/messages" && unreadMessages > 0 && (
+                        <SidebarMenuBadge>
+                            {unreadMessages}
+                        </SidebarMenuBadge>
+                    )}
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>

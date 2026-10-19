@@ -48,6 +48,7 @@ export default async function AboutPage() {
     { href: "/projects", label: content.exploreProjects },
     { href: "/blogs", label: content.exploreBlogs },
     { href: "/resume", label: content.exploreResume },
+    { href: "/contact", label: content.exploreContact },
   ];
 
   return (

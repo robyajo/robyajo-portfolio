@@ -10,7 +10,7 @@ import {
 import { useActionMutation } from "@/hooks/use-action-mutation";
 import { queryKeys } from "@/lib/query-keys";
 import { useDictionary, useLocale } from "@/lib/i18n/provider";
-import { formatShortDate } from "@/lib/date";
+import { dayAgoLabel, formatLongDate, toISOString } from "@/lib/date";
 import { cn } from "@/lib/cn";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -151,8 +151,18 @@ export function MessagesPanel() {
                                         {t.unreadBadge}
                                     </Badge>
                                 )}
-                                <TypographyMuted className="ml-auto">
-                                    {formatShortDate(message.createdAt, dateLocale)}
+                                <TypographyMuted
+                                    className="ml-auto"
+                                    title={formatLongDate(
+                                        message.createdAt,
+                                        dateLocale,
+                                    )}
+                                >
+                                    <time
+                                        dateTime={toISOString(message.createdAt)}
+                                    >
+                                        {dayAgoLabel(message.createdAt, dateLocale)}
+                                    </time>
                                 </TypographyMuted>
                             </div>
 

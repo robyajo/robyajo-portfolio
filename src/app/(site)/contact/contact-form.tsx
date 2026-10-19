@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { submitContactMessage } from "@/app/(site)/contact/actions";
@@ -22,6 +23,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Spinner } from "@/components/ui/spinner";
 import {
     TypographyH3,
     TypographyMuted,
@@ -55,7 +57,10 @@ export function ContactForm() {
 
     if (sent) {
         return (
-            <div className="flex flex-col gap-3 rounded-xl border border-line p-6">
+            <div
+                role="status"
+                className="flex flex-col gap-3 rounded-xl border border-line p-6"
+            >
                 <TypographyH3>{content.successTitle}</TypographyH3>
                 <TypographyP>{content.successBody}</TypographyP>
                 <Button
@@ -182,12 +187,21 @@ export function ContactForm() {
                         type="submit"
                         disabled={form.formState.isSubmitting}
                     >
+                        {form.formState.isSubmitting && (
+                            <Spinner data-icon="inline-start" aria-hidden="true" />
+                        )}
                         {form.formState.isSubmitting
                             ? content.sending
                             : content.send}
                     </Button>
                     <TypographyMuted>
-                        {content.privacyNote}
+                        {content.privacyNote}{" "}
+                        <Link
+                            href="/privacy-policy"
+                            className="underline underline-offset-4 hover:text-foreground"
+                        >
+                            {content.privacyLink}
+                        </Link>
                     </TypographyMuted>
                 </div>
             </form>

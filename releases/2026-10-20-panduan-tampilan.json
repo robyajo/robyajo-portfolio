@@ -7,79 +7,34 @@
         "en": "Visual Guide, Project Case Studies, Information Pages, Contact Form, and Quick Search"
     },
     "body": {
-        "id": "Pembaruan hari ini menambah cerita di balik setiap proyek — masalah, peran, hasil, metrik, dan galeri — penyaring berdasarkan teknologi, serta pencarian cepat untuk artikel dan proyek. Kini tersedia halaman Tentang, Sekarang, Perkakas, dan Kegiatan, plus formulir kontak yang dilengkapi penahan pesan berulang dan kotak pesan khusus pemilik situs. Pratinjau tautan, label artikel berbantuan kecerdasan buatan, dan informasi tanggal/bahasa juga dirapikan.",
-        "en": "Today's update adds the story behind each project — problem, role, outcome, metrics, and gallery — filtering by technology, and quick search across articles and projects. New About, Now, Uses, and Activity pages are live, plus a contact form with repeat-message protection and a private owner inbox. Link previews, AI-assisted article labels, and date/language information were cleaned up as well."
+        "id": "Pembaruan hari ini menambah cerita di balik setiap proyek — masalah, peran, hasil, metrik, dan galeri — penyaring berdasarkan teknologi, serta pencarian cepat untuk artikel dan proyek. Kini tersedia halaman Tentang, Sekarang, Perkakas, dan Kegiatan, plus formulir kontak yang dilengkapi penahan pesan berulang dan kotak pesan khusus pemilik situs. Tanggal pembaruan, umpan balik formulir, kotak pesan, dan pratinjau tautan juga dipoles.",
+        "en": "Today's update adds the story behind each project — problem, role, outcome, metrics, and gallery — filtering by technology, and quick search across articles and projects. New About, Now, Uses, and Activity pages are live, plus a contact form with repeat-message protection and a private owner inbox. Update dates, form feedback, the inbox, and link previews were polished as well."
     },
     "items": [
         {
-            "type": "new",
-            "id": "Setiap halaman proyek kini dapat memuat studi kasus: masalah yang dihadapi, peran saya, hasil yang dicapai, periode pengerjaan, metrik dampak, dan galeri tangkapan layar.",
-            "en": "Each project page can now carry a case study: the problem, my role, the outcome, the period, impact metrics, and a screenshot gallery."
-        },
-        {
-            "type": "new",
-            "id": "Menu pencarian cepat (⌘K atau Ctrl+K) kini menemukan artikel dan proyek, tidak hanya navigasi; cukup ketik dua huruf untuk melihat hasil yang cocok.",
-            "en": "The quick search menu (⌘K or Ctrl+K) now finds articles and projects, not just navigation; type two letters to see matching results."
-        },
-        {
-            "type": "new",
-            "id": "Halaman daftar proyek kini dapat disaring berdasarkan teknologi yang dipakai, sehingga pengunjung cepat menemukan karya yang relevan.",
-            "en": "The project list can now be filtered by the technology used, so visitors can quickly find relevant work."
+            "type": "improvement",
+            "id": "Halaman Tentang kini menautkan formulir kontak, dan ringkasan situs untuk alat bantu mencantumkan seluruh halaman utama.",
+            "en": "The About page now links to the contact form, and the machine-readable site summary lists every main page."
         },
         {
             "type": "improvement",
-            "id": "Panel pengelolaan proyek menyediakan kolom baru untuk mengisi studi kasus dan tautan tangkapan layar; bagian yang dibiarkan kosong tidak ditampilkan ke publik.",
-            "en": "The project management panel gained fields for the case study and screenshot links; any part left empty stays hidden from the public."
-        },
-        {
-            "type": "new",
-            "id": "Penanda “Bantuan AI” kini tampil pada artikel yang disusun dengan bantuan kecerdasan buatan, sehingga pembaca mengetahui bagaimana tulisan itu dibuat.",
-            "en": "An “AI assisted” label now appears on articles written with artificial intelligence, so readers know how the piece was produced."
+            "id": "Formulir kontak menampilkan indikator saat pesan sedang dikirim serta tautan kebijakan privasi; kotak pesan admin menunjukkan jumlah pesan belum dibaca dan waktu relatif.",
+            "en": "The contact form shows a sending indicator and a privacy policy link; the admin inbox shows the unread count and relative times."
         },
         {
             "type": "fix",
-            "id": "Pratinjau tautan saat artikel dibagikan ke media sosial kini memakai nama, alamat situs, dan peran pemilik situs yang benar.",
-            "en": "Link previews when articles are shared on social media now use the owner's correct name, site address, and role."
-        },
-        {
-            "type": "improvement",
-            "id": "Peta situs kini mencantumkan tanggal pembaruan yang sebenarnya dan menautkan versi bahasa Indonesia–Inggris, memudahkan mesin pencari menampilkan halaman yang tepat.",
-            "en": "The site map now lists real update dates and links Indonesian–English versions, helping search engines surface the right page."
-        },
-        {
-            "type": "improvement",
-            "id": "Sumber berita langganan kini menyatakan bahasa Indonesia serta mencantumkan nama penulis dan kategori setiap artikel.",
-            "en": "The subscription news feed now declares Indonesian and includes the author and categories for every article."
-        },
-        {
-            "type": "fix",
-            "id": "Tautan versi teks artikel pada ringkasan situs kini mengarah ke halaman teks yang benar, sehingga pembaca dan alat bantu tidak lagi mendarat di halaman kosong.",
-            "en": "Article text links in the site summary now point to the correct text page, so readers and assistive tools no longer land on an empty page."
+            "id": "Tanggal “Terakhir diperbarui” di halaman Sekarang kini mengikuti rilis terbaru, bukan tanggal proyek yang lebih lama.",
+            "en": "The “Last updated” date on the Now page now follows the latest release instead of an older project date."
         },
         {
             "type": "new",
-            "id": "Panduan tampilan situs dibakukan agar warna, huruf, dan tata letak tetap konsisten di setiap halaman baru.",
-            "en": "The site's visual guide is now standardized so colors, type, and layout stay consistent on every new page."
+            "id": "Pemilik situs kini memiliki kotak pesan untuk membaca, menandai, dan menghapus pesan masuk; alamat email hanya dipakai untuk membalas pesan tersebut.",
+            "en": "The site owner now has an inbox to read, mark, and delete incoming messages; email addresses are used only to reply to that message."
         },
         {
             "type": "new",
-            "id": "Halaman Tentang memuat profil singkat, cara bekerja, teknologi yang benar-benar dipakai, dan tautan untuk menjelajah lebih jauh.",
-            "en": "The About page brings together a short profile, how I work, the tools actually used, and links to explore further."
-        },
-        {
-            "type": "new",
-            "id": "Halaman Sekarang merangkum proyek dan tulisan terbaru, sehingga pengunjung langsung tahu apa yang sedang dikerjakan.",
-            "en": "The Now page summarizes the latest projects and writing, so visitors can immediately see what is in progress."
-        },
-        {
-            "type": "new",
-            "id": "Halaman Perkakas menampilkan teknologi yang dipakai beserta jumlah proyeknya; satu klik membuka daftar proyek yang relevan.",
-            "en": "The Uses page lists the tools in use with their project counts; one click opens the relevant project list."
-        },
-        {
-            "type": "new",
-            "id": "Halaman Kegiatan menyajikan seluruh riwayat rilis berurutan, tanpa perlu berlangganan apa pun.",
-            "en": "The Activity page presents the entire release history in order, without any subscription."
+            "id": "Formulir kontak baru memudahkan pengunjung mengirim pesan tanpa membuka aplikasi email; pesan yang dikirim berulang dalam waktu singkat ditahan otomatis agar kotak masuk tetap rapi.",
+            "en": "A new contact form lets visitors send a message without opening an email app; messages sent repeatedly in a short time are held back automatically to keep the inbox tidy."
         },
         {
             "type": "improvement",
@@ -88,13 +43,73 @@
         },
         {
             "type": "new",
-            "id": "Formulir kontak baru memudahkan pengunjung mengirim pesan tanpa membuka aplikasi email; pesan yang dikirim berulang dalam waktu singkat ditahan otomatis agar kotak masuk tetap rapi.",
-            "en": "A new contact form lets visitors send a message without opening an email app; messages sent repeatedly in a short time are held back automatically to keep the inbox tidy."
+            "id": "Halaman Kegiatan menyajikan seluruh riwayat rilis berurutan, tanpa perlu berlangganan apa pun.",
+            "en": "The Activity page presents the entire release history in order, without any subscription."
         },
         {
             "type": "new",
-            "id": "Pemilik situs kini memiliki kotak pesan untuk membaca, menandai, dan menghapus pesan masuk; alamat email hanya dipakai untuk membalas pesan tersebut.",
-            "en": "The site owner now has an inbox to read, mark, and delete incoming messages; email addresses are used only to reply to that message."
+            "id": "Halaman Perkakas menampilkan teknologi yang dipakai beserta jumlah proyeknya; satu klik membuka daftar proyek yang relevan.",
+            "en": "The Uses page lists the tools in use with their project counts; one click opens the relevant project list."
+        },
+        {
+            "type": "new",
+            "id": "Halaman Sekarang merangkum proyek dan tulisan terbaru, sehingga pengunjung langsung tahu apa yang sedang dikerjakan.",
+            "en": "The Now page summarizes the latest projects and writing, so visitors can immediately see what is in progress."
+        },
+        {
+            "type": "new",
+            "id": "Halaman Tentang memuat profil singkat, cara bekerja, teknologi yang benar-benar dipakai, dan tautan untuk menjelajah lebih jauh.",
+            "en": "The About page brings together a short profile, how I work, the tools actually used, and links to explore further."
+        },
+        {
+            "type": "new",
+            "id": "Panduan tampilan situs dibakukan agar warna, huruf, dan tata letak tetap konsisten di setiap halaman baru.",
+            "en": "The site's visual guide is now standardized so colors, type, and layout stay consistent on every new page."
+        },
+        {
+            "type": "fix",
+            "id": "Tautan versi teks artikel pada ringkasan situs kini mengarah ke halaman teks yang benar, sehingga pembaca dan alat bantu tidak lagi mendarat di halaman kosong.",
+            "en": "Article text links in the site summary now point to the correct text page, so readers and assistive tools no longer land on an empty page."
+        },
+        {
+            "type": "improvement",
+            "id": "Sumber berita langganan kini menyatakan bahasa Indonesia serta mencantumkan nama penulis dan kategori setiap artikel.",
+            "en": "The subscription news feed now declares Indonesian and includes the author and categories for every article."
+        },
+        {
+            "type": "improvement",
+            "id": "Peta situs kini mencantumkan tanggal pembaruan yang sebenarnya dan menautkan versi bahasa Indonesia–Inggris, memudahkan mesin pencari menampilkan halaman yang tepat.",
+            "en": "The site map now lists real update dates and links Indonesian–English versions, helping search engines surface the right page."
+        },
+        {
+            "type": "fix",
+            "id": "Pratinjau tautan saat artikel dibagikan ke media sosial kini memakai nama, alamat situs, dan peran pemilik situs yang benar.",
+            "en": "Link previews when articles are shared on social media now use the owner's correct name, site address, and role."
+        },
+        {
+            "type": "new",
+            "id": "Penanda “Bantuan AI” kini tampil pada artikel yang disusun dengan bantuan kecerdasan buatan, sehingga pembaca mengetahui bagaimana tulisan itu dibuat.",
+            "en": "An “AI assisted” label now appears on articles written with artificial intelligence, so readers know how the piece was produced."
+        },
+        {
+            "type": "improvement",
+            "id": "Panel pengelolaan proyek menyediakan kolom baru untuk mengisi studi kasus dan tautan tangkapan layar; bagian yang dibiarkan kosong tidak ditampilkan ke publik.",
+            "en": "The project management panel gained fields for the case study and screenshot links; any part left empty stays hidden from the public."
+        },
+        {
+            "type": "new",
+            "id": "Halaman daftar proyek kini dapat disaring berdasarkan teknologi yang dipakai, sehingga pengunjung cepat menemukan karya yang relevan.",
+            "en": "The project list can now be filtered by the technology used, so visitors can quickly find relevant work."
+        },
+        {
+            "type": "new",
+            "id": "Menu pencarian cepat (⌘K atau Ctrl+K) kini menemukan artikel dan proyek, tidak hanya navigasi; cukup ketik dua huruf untuk melihat hasil yang cocok.",
+            "en": "The quick search menu (⌘K or Ctrl+K) now finds articles and projects, not just navigation; type two letters to see matching results."
+        },
+        {
+            "type": "new",
+            "id": "Setiap halaman proyek kini dapat memuat studi kasus: masalah yang dihadapi, peran saya, hasil yang dicapai, periode pengerjaan, metrik dampak, dan galeri tangkapan layar.",
+            "en": "Each project page can now carry a case study: the problem, my role, the outcome, the period, impact metrics, and a screenshot gallery."
         }
     ]
 }

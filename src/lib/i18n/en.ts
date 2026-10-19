@@ -1184,6 +1184,7 @@ const en: Dictionary = {
     exploreActivity: "All activity",
     exploreProjects: "Projects",
     exploreBlogs: "Writing",
+    exploreContact: "Contact",
     exploreResume: "Resume",
   },
   nowPage: {
@@ -1258,6 +1259,7 @@ const en: Dictionary = {
     successTitle: "Message sent.",
     successBody: "Thank you. I will reply to the email address you provided.",
     sendAnother: "Send another message",
+    privacyLink: "Read the privacy policy",
     privacyNote: "Your details are only used to reply to this message.",
     directTitle: "Or say hello by email",
     directLead: "If you prefer, you can email me directly.",
