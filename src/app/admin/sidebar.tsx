@@ -15,6 +15,7 @@ import {
 import {
   BookOpenIcon,
   ChatCircleIcon,
+  EnvelopeIcon,
   HouseIcon,
   LinkIcon,
   ListIcon,
@@ -36,6 +37,7 @@ function useNavItems() {
     { title: t.overview, href: "/admin", icon: ListIcon },
     { title: t.guestbook, href: "/admin/guestbook", icon: ChatCircleIcon },
     { title: t.comments, href: "/admin/comments", icon: BookOpenIcon },
+    { title: t.messages, href: "/admin/messages", icon: EnvelopeIcon },
     { title: t.projects, href: "/admin/projects", icon: FolderOpenIcon },
     { title: t.visitors, href: "/admin/visitor", icon: UsersIcon },
     { title: t.links, href: "/admin/links", icon: LinkIcon },

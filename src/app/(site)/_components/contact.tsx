@@ -1,7 +1,11 @@
 import { ArtStage } from "@/components/layouts/hero-art";
 import { PageArt } from "@/components/diagrams/page-art";
 import Link from "next/link";
-import { EnvelopeIcon, ArrowUpRightIcon } from "@/components/shared/icons";
+import {
+  EnvelopeIcon,
+  ArrowUpRightIcon,
+  ChatCircleIcon,
+} from "@/components/shared/icons";
 import { Section } from "@/components/layouts/page";
 import { Reveal } from "@/components/shared/reveal";
 import {
@@ -45,7 +49,7 @@ export async function Contact() {
 
             <nav aria-label={content.linksLabel} className="pt-4 pb-10">
               <div className="flex flex-wrap items-center gap-3">
-                <Button asChild size="lg" className="font-semibold">
+                <Button asChild size="lg">
                   <Link
                     href={`mailto:${siteConfig.email}`}
                     aria-label={content.sayHelloAria}
@@ -59,6 +63,17 @@ export async function Contact() {
                   </Link>
                 </Button>
 
+                <Button asChild size="lg" variant="outline">
+                  <Link href="/contact" aria-label={content.writeMessageAria}>
+                    <ChatCircleIcon
+                      data-icon="inline-start"
+                      className="size-4 shrink-0"
+                      aria-hidden="true"
+                    />
+                    {content.writeMessage}
+                  </Link>
+                </Button>
+
                 <div className="relative">
                   <ButtonGroup>
                     {siteConfig.social.map((item, index) => (
@@ -68,7 +83,6 @@ export async function Contact() {
                           asChild
                           size="lg"
                           variant="outline"
-                          className="font-semibold"
                         >
                           <a
                             href={item.href}

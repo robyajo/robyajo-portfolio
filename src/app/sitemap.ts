@@ -54,6 +54,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         ...projectPages,
         { url: `${siteConfig.baseUrl}/resume`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
         { url: `${siteConfig.baseUrl}/about`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
+        { url: `${siteConfig.baseUrl}/contact`, lastModified: now, changeFrequency: "yearly", priority: 0.6 },
         { url: `${siteConfig.baseUrl}/now`, lastModified: now, changeFrequency: "weekly", priority: 0.6 },
         { url: `${siteConfig.baseUrl}/uses`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
         { url: `${siteConfig.baseUrl}/activity`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },

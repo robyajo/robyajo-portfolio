@@ -212,6 +212,24 @@ export const guestbookLikes = pgTable(
     ],
 );
 
+export const contactMessages = pgTable(
+    "contact_messages",
+    {
+        id: serial("id").primaryKey(),
+        name: varchar("name", { length: 120 }).notNull(),
+        email: varchar("email", { length: 254 }).notNull(),
+        subject: varchar("subject", { length: 160 }),
+        message: text("message").notNull(),
+        ipHash: varchar("ip_hash", { length: 64 }).notNull(),
+        isRead: boolean("is_read").default(false).notNull(),
+        createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    },
+    (table) => [
+        index("contact_messages_created_at_idx").on(table.createdAt),
+        index("contact_messages_ip_created_idx").on(table.ipHash, table.createdAt),
+    ],
+);
+
 export const blogComments = pgTable(
     "blog_comments",
     {

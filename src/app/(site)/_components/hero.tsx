@@ -28,7 +28,7 @@ export async function Hero() {
 
     return (
         <Section variant="hero" aria-label={hero.intro}>
-            <div className="w-full max-w-5xl flex flex-col gap-8">
+            <div className="w-full max-w-7xl flex flex-col gap-8">
                 <div className="relative">
                     <PhotoCallout />
                     <div className="relative w-full border rounded-md overflow-hidden lg:max-h-95">

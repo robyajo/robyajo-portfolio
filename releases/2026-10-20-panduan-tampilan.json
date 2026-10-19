@@ -3,12 +3,12 @@
     "type": "feature",
     "status": "published",
     "title": {
-        "id": "Panduan Tampilan, Studi Kasus Proyek, Penyaring Teknologi, Halaman Tentang–Sekarang–Perkakas, dan Pencarian Cepat",
-        "en": "Visual Guide, Project Case Studies, Stack Filtering, About–Now–Uses Pages, and Quick Search"
+        "id": "Panduan Tampilan, Studi Kasus Proyek, Halaman Informasi, Formulir Kontak, dan Pencarian Cepat",
+        "en": "Visual Guide, Project Case Studies, Information Pages, Contact Form, and Quick Search"
     },
     "body": {
-        "id": "Pembaruan hari ini menambah cerita di balik setiap proyek — masalah, peran, hasil, metrik, dan galeri — penyaring berdasarkan teknologi, serta pencarian cepat untuk artikel dan proyek. Kini tersedia halaman Tentang, Sekarang, Perkakas, dan Kegiatan yang merangkum siapa pemilik situs, apa yang sedang dikerjakan, teknologi yang dipakai, dan seluruh riwayat rilis. Pratinjau tautan, label artikel berbantuan kecerdasan buatan, dan informasi tanggal/bahasa juga dirapikan.",
-        "en": "Today's update adds the story behind each project — problem, role, outcome, metrics, and gallery — filtering by technology, and quick search across articles and projects. New About, Now, Uses, and Activity pages summarize who runs the site, what is in progress, the tools in use, and the full release history. Link previews, AI-assisted article labels, and date/language information were cleaned up as well."
+        "id": "Pembaruan hari ini menambah cerita di balik setiap proyek — masalah, peran, hasil, metrik, dan galeri — penyaring berdasarkan teknologi, serta pencarian cepat untuk artikel dan proyek. Kini tersedia halaman Tentang, Sekarang, Perkakas, dan Kegiatan, plus formulir kontak yang dilengkapi penahan pesan berulang dan kotak pesan khusus pemilik situs. Pratinjau tautan, label artikel berbantuan kecerdasan buatan, dan informasi tanggal/bahasa juga dirapikan.",
+        "en": "Today's update adds the story behind each project — problem, role, outcome, metrics, and gallery — filtering by technology, and quick search across articles and projects. New About, Now, Uses, and Activity pages are live, plus a contact form with repeat-message protection and a private owner inbox. Link previews, AI-assisted article labels, and date/language information were cleaned up as well."
     },
     "items": [
         {
@@ -85,6 +85,16 @@
             "type": "improvement",
             "id": "Menu utama kini menautkan halaman Tentang agar profil pemilik situs mudah ditemukan.",
             "en": "The main menu now links the About page so the site owner’s profile is easy to find."
+        },
+        {
+            "type": "new",
+            "id": "Formulir kontak baru memudahkan pengunjung mengirim pesan tanpa membuka aplikasi email; pesan yang dikirim berulang dalam waktu singkat ditahan otomatis agar kotak masuk tetap rapi.",
+            "en": "A new contact form lets visitors send a message without opening an email app; messages sent repeatedly in a short time are held back automatically to keep the inbox tidy."
+        },
+        {
+            "type": "new",
+            "id": "Pemilik situs kini memiliki kotak pesan untuk membaca, menandai, dan menghapus pesan masuk; alamat email hanya dipakai untuk membalas pesan tersebut.",
+            "en": "The site owner now has an inbox to read, mark, and delete incoming messages; email addresses are used only to reply to that message."
         }
     ]
 }
