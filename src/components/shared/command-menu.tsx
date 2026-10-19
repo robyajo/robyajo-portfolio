@@ -1,7 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
+import type { Route } from "next";
 import { useTheme } from "next-themes";
 
 import {
@@ -36,6 +37,7 @@ import {
   toggleCommandMenu,
 } from "@/lib/command-menu-store";
 import { siteConfig } from "@/lib/config";
+import type { SearchEntry, SearchIndex } from "@/lib/search-index";
 import { useIsMac } from "@/hooks/use-is-mac";
 import { useDictionary } from "@/lib/i18n/provider";
 import { navLabel } from "@/lib/i18n/nav";
@@ -62,7 +64,36 @@ function isEditableTarget(target: EventTarget | null): boolean {
   return target.isContentEditable;
 }
 
-export function CommandMenu() {
+function SearchResults({
+  heading,
+  icon: Icon,
+  entries,
+  onSelect,
+}: {
+  heading: string;
+  icon: typeof FileTextIcon;
+  entries: SearchEntry[];
+  onSelect: (url: string) => void;
+}) {
+  if (entries.length === 0) return null;
+  return (
+    <CommandGroup heading={heading}>
+      {entries.map((entry) => (
+        <CommandItem
+          key={entry.url}
+          value={[entry.title, entry.description, entry.keywords].join(" ")}
+          onSelect={() => onSelect(entry.url)}
+        >
+          <Icon aria-hidden="true" />
+          <span className="truncate">{entry.title}</span>
+        </CommandItem>
+      ))}
+    </CommandGroup>
+  );
+}
+
+export function CommandMenu({ index }: { index: SearchIndex }) {
+  const [query, setQuery] = useState("");
   const dict = useDictionary();
   const palette = dict.palette;
   const open = useSyncExternalStore(
@@ -91,19 +122,45 @@ export function CommandMenu() {
 
   const runCommand = useCallback((action: () => void) => {
     setCommandMenuOpen(false);
+    setQuery("");
     action();
   }, []);
 
   return (
     <CommandDialog
       open={open}
-      onOpenChange={setCommandMenuOpen}
+      onOpenChange={(next) => {
+        if (!next) setQuery("");
+        setCommandMenuOpen(next);
+      }}
       title={palette.title}
       description={palette.description}
     >
-      <CommandInput placeholder={palette.placeholder} />
+      <CommandInput
+        placeholder={palette.placeholder}
+        value={query}
+        onValueChange={setQuery}
+      />
       <CommandList>
         <CommandEmpty>{palette.empty}</CommandEmpty>
+
+        {query.trim().length >= 2 && (
+          <>
+            <SearchResults
+              heading={palette.searchPosts}
+              icon={FileTextIcon}
+              entries={index.posts}
+              onSelect={(url) => runCommand(() => router.push(url as Route))}
+            />
+            <SearchResults
+              heading={palette.searchProjects}
+              icon={BriefcaseIcon}
+              entries={index.projects}
+              onSelect={(url) => runCommand(() => router.push(url as Route))}
+            />
+            <CommandSeparator />
+          </>
+        )}
 
         <CommandGroup heading={palette.navigation}>
           <CommandItem onSelect={() => runCommand(() => router.push("/"))}>

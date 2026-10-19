@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { LanguageProvider } from "@/lib/i18n/provider";
 import { getDictionary, getLocale } from "@/lib/i18n/server";
 import { siteConfig } from "@/lib/config";
+import { getSearchIndex } from "@/lib/search-index";
 import { ThemeProvider } from "next-themes";
 import type { Metadata, Viewport } from "next";
 import {
@@ -95,6 +96,7 @@ export default async function Layout({
 }) {
   const locale = await getLocale();
   const dict = await getDictionary(locale);
+  const searchIndex = await getSearchIndex();
   return (
     <html
       lang={locale}
@@ -125,7 +127,7 @@ export default async function Layout({
               <PhosphorProvider>
                 <LanguageProvider locale={locale} dict={dict}>
                   <ThemeHotkey />
-                  <CommandMenu />
+                  <CommandMenu index={searchIndex} />
                   {children}
                   <Toaster />
                 </LanguageProvider>

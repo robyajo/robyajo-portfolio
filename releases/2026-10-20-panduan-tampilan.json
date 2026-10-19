@@ -3,18 +3,23 @@
     "type": "feature",
     "status": "published",
     "title": {
-        "id": "Panduan Tampilan, Studi Kasus Proyek, dan Penyaring Teknologi",
-        "en": "Visual Guide, Project Case Studies, and Stack Filtering"
+        "id": "Panduan Tampilan, Studi Kasus Proyek, Penyaring Teknologi, dan Pencarian Cepat",
+        "en": "Visual Guide, Project Case Studies, Stack Filtering, and Quick Search"
     },
     "body": {
-        "id": "Pembaruan hari ini menambah cerita di balik setiap proyek — masalah, peran, hasil, metrik, dan galeri — serta penyaring berdasarkan teknologi. Pratinjau tautan, label artikel berbantuan kecerdasan buatan, dan informasi tanggal/bahasa juga dirapikan.",
-        "en": "Today's update adds the story behind each project — problem, role, outcome, metrics, and gallery — plus filtering by technology. Link previews, AI-assisted article labels, and date/language information were cleaned up as well."
+        "id": "Pembaruan hari ini menambah cerita di balik setiap proyek — masalah, peran, hasil, metrik, dan galeri — penyaring berdasarkan teknologi, serta pencarian cepat untuk artikel dan proyek. Pratinjau tautan, label artikel berbantuan kecerdasan buatan, dan informasi tanggal/bahasa juga dirapikan.",
+        "en": "Today's update adds the story behind each project — problem, role, outcome, metrics, and gallery — filtering by technology, and quick search across articles and projects. Link previews, AI-assisted article labels, and date/language information were cleaned up as well."
     },
     "items": [
         {
             "type": "new",
             "id": "Setiap halaman proyek kini dapat memuat studi kasus: masalah yang dihadapi, peran saya, hasil yang dicapai, periode pengerjaan, metrik dampak, dan galeri tangkapan layar.",
             "en": "Each project page can now carry a case study: the problem, my role, the outcome, the period, impact metrics, and a screenshot gallery."
+        },
+        {
+            "type": "new",
+            "id": "Menu pencarian cepat (⌘K atau Ctrl+K) kini menemukan artikel dan proyek, tidak hanya navigasi; cukup ketik dua huruf untuk melihat hasil yang cocok.",
+            "en": "The quick search menu (⌘K or Ctrl+K) now finds articles and projects, not just navigation; type two letters to see matching results."
         },
         {
             "type": "new",

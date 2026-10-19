@@ -703,6 +703,8 @@ const en: Dictionary = {
     darkTheme: "Switch to dark theme",
     downloadResume: "Download resume",
     elsewhere: "Elsewhere",
+    searchPosts: "Blog posts",
+    searchProjects: "Projects",
   },
   hire: {
     open: "Open",

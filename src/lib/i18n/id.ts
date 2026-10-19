@@ -705,6 +705,8 @@ const id = {
     darkTheme: "Ganti ke tema gelap",
     downloadResume: "Unduh resume",
     elsewhere: "Di Tempat Lain",
+    searchPosts: "Tulisan blog",
+    searchProjects: "Proyek",
   },
   hire: {
     open: "Buka",
