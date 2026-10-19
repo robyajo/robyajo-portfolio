@@ -38,6 +38,33 @@ const en: Dictionary = {
     description:
       "I build interfaces, bots, and questionable automation scripts, mostly so I don't have to repeat myself.",
   },
+  endOfPage: {
+    sectionLabel: "End of the page",
+    title: "Aaah, you hit the bottom.",
+    description:
+      "Scrolled all the way down and still curious? Good. There's more lying around. Pick a sign and wander off.",
+    exploreAria: "Keep exploring",
+    backToTop: "Back to top",
+    backToTopNote: "one more lap?",
+    destinations: {
+      guestbook: {
+        label: "Guestbook",
+        note: "sign it!",
+      },
+      blogs: {
+        label: "Blogs",
+        note: "rants & fixes",
+      },
+      projects: {
+        label: "Projects",
+        note: "shipped chaos",
+      },
+      resume: {
+        label: "Resume",
+        note: "the serious one",
+      },
+    },
+  },
   common: {
     loading: "Loading…",
     backToHome: "Back to home",

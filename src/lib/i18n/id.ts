@@ -36,6 +36,33 @@ const id = {
     description:
       "Saya membangun antarmuka, bot, dan skrip otomasi yang dipertanyakan — kebanyakan agar saya tidak perlu mengulanginya.",
   },
+  endOfPage: {
+    sectionLabel: "Ujung halaman",
+    title: "Aaah, kamu sampai di dasar.",
+    description:
+      "Gulir sampai habis dan masih penasaran? Bagus. Masih banyak hal menarik di sekitar. Pilih salah satu penunjuk dan jelajahi.",
+    exploreAria: "Lanjut menjelajah",
+    backToTop: "Kembali ke atas",
+    backToTopNote: "satu putaran lagi?",
+    destinations: {
+      guestbook: {
+        label: "Buku Tamu",
+        note: "tulis pesanmu!",
+      },
+      blogs: {
+        label: "Blog",
+        note: "cerita & solusi",
+      },
+      projects: {
+        label: "Proyek",
+        note: "karya yang dirilis",
+      },
+      resume: {
+        label: "Resume",
+        note: "yang lebih formal",
+      },
+    },
+  },
   common: {
     loading: "Memuat…",
     backToHome: "Kembali ke beranda",

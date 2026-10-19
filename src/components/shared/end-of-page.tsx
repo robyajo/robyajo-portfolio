@@ -7,17 +7,11 @@ import {
 } from "@/components/ui/typography";
 import { cn } from "@/lib/cn";
 import { Signpost } from "@/components/shared/doodles";
+import { useDictionary } from "@/lib/i18n/provider";
 import type { Route } from "next";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { CSSProperties, ReactNode } from "react";
-
-const DESTINATIONS = [
-  { href: "/guestbook", label: "Guestbook", note: "sign it!", accent: true },
-  { href: "/blogs", label: "Blogs", note: "rants & fixes" },
-  { href: "/projects", label: "Projects", note: "shipped chaos" },
-  { href: "/resume", label: "Resume", note: "the serious one" },
-];
 
 const TILTS = [-4, 3, -2, 4];
 
@@ -68,33 +62,63 @@ function backToTop() {
 
 export function EndOfPage() {
   const pathname = usePathname();
-  const planks = DESTINATIONS.filter((d) => !pathname.startsWith(d.href)).slice(
-    0,
-    3,
-  );
+  const dict = useDictionary();
+  const t = dict.endOfPage;
+
+  const destinations: Array<{
+    href: Route;
+    label: string;
+    note: string;
+    accent?: boolean;
+  }> = [
+    {
+      href: "/guestbook" as Route,
+      label: t.destinations.guestbook.label,
+      note: t.destinations.guestbook.note,
+      accent: true,
+    },
+    {
+      href: "/blogs" as Route,
+      label: t.destinations.blogs.label,
+      note: t.destinations.blogs.note,
+    },
+    {
+      href: "/projects" as Route,
+      label: t.destinations.projects.label,
+      note: t.destinations.projects.note,
+    },
+    {
+      href: "/resume" as Route,
+      label: t.destinations.resume.label,
+      note: t.destinations.resume.note,
+    },
+  ];
+
+  const planks = destinations
+    .filter((d) => !pathname.startsWith(d.href))
+    .slice(0, 3);
 
   return (
     <div className="grid items-center gap-8 sm:grid-cols-[minmax(0,1fr)_18rem]">
       <div className="flex flex-col gap-3">
         <SectionLabel pixel className="text-(--brand-text)">
-          End of the page
+          {t.sectionLabel}
         </SectionLabel>
-        <TypographyLarge>Aaah, you hit the bottom.</TypographyLarge>
+        <TypographyLarge>{t.title}</TypographyLarge>
         <TypographyMuted className="max-w-sm text-pretty leading-relaxed">
-          Scrolled all the way down and still curious? Good. There&apos;s more
-          lying around. Pick a sign and wander off.
+          {t.description}
         </TypographyMuted>
       </div>
 
       <nav
-        aria-label="Keep exploring"
+        aria-label={t.exploreAria}
         className="relative mx-auto h-62 w-full max-w-72"
       >
         <Signpost />
         {planks.map(({ href, label, note, accent }, index) => (
           <Link
             key={href}
-            href={href as Route}
+            href={href}
             aria-label={`${label}, ${note}`}
             className={plankClass({ index, accent })}
             // eslint-disable-next-line shadcn/no-inline-styles
@@ -107,12 +131,12 @@ export function EndOfPage() {
         <button
           type="button"
           onClick={backToTop}
-          aria-label="Back to top"
+          aria-label={t.backToTop}
           className={plankClass({ index: planks.length })}
           // eslint-disable-next-line shadcn/no-inline-styles
           style={plankStyle(planks.length)}
         >
-          <PlankText label="Back to top" note="one more lap?" />
+          <PlankText label={t.backToTop} note={t.backToTopNote} />
         </button>
       </nav>
     </div>

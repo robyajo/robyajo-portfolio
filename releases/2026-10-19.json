@@ -27,6 +27,11 @@
       "en": "Standardized article web addresses for full consistency across the site, complete with automatic redirection to keep existing bookmarks and links working smoothly."
     },
     {
+      "type": "improvement",
+      "id": "Seluruh teks dan penunjuk arah di bagian ujung bawah halaman kini sepenuhnya mendukung pilihan dwibahasa (Indonesia dan Inggris).",
+      "en": "All text and signpost destinations at the bottom of the page now fully support bilingual selection (Indonesian and English)."
+    },
+    {
       "type": "new",
       "id": "Bagi pengelola situs, tersedia pembuat laporan kerja terintegrasi yang dapat diunduh sebagai dokumen Word atau disimpan sebagai PDF dengan pilihan rentang kegiatan.",
       "en": "For site administrators, an integrated work report builder is now available, downloadable as a Word document or saved as PDF with custom date ranges."
