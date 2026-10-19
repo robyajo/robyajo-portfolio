@@ -47,7 +47,7 @@ export async function Footer() {
     return (
         <footer className="relative -mt-px" aria-label="Site footer">
             <VisitorPing />
-            <div className="mx-auto max-w-5xl border border-b-0 border-line bg-line">
+            <div className="mx-auto max-w-7xl border border-b-0 border-line bg-line">
                 <div className="flex flex-col gap-14 rounded-t-2xl bg-background px-gutter pt-12 pb-12">
                     <EndOfPage />
 
@@ -148,17 +148,25 @@ export async function Footer() {
                             {lastUpdated && (
                                 <span className="block">
                                     {dict.footer.lastUpdate}{" "}
-                                    {formatShortDate(lastUpdated.occurredAt, dateLocale)}
+                                    {formatShortDate(
+                                        lastUpdated.occurredAt,
+                                        dateLocale,
+                                    )}
                                 </span>
                             )}
-                            {(visitorStats.total > 0 || visitorStats.today > 0) && (
+                            {(visitorStats.total > 0 ||
+                                visitorStats.today > 0) && (
                                 <span className="block">
-                                    {visitorStats.total.toLocaleString(dateLocale)}{" "}
+                                    {visitorStats.total.toLocaleString(
+                                        dateLocale,
+                                    )}{" "}
                                     {dict.footer.visitors}
                                     {visitorStats.today > 0 && (
                                         <>
                                             {" \u00b7 "}
-                                            {visitorStats.today.toLocaleString(dateLocale)}{" "}
+                                            {visitorStats.today.toLocaleString(
+                                                dateLocale,
+                                            )}{" "}
                                             {dict.footer.visitorsToday}
                                         </>
                                     )}

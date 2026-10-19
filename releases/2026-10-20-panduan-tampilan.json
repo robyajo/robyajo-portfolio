@@ -3,12 +3,12 @@
     "type": "feature",
     "status": "published",
     "title": {
-        "id": "Panduan Tampilan, Studi Kasus Proyek, Penyaring Teknologi, dan Pencarian Cepat",
-        "en": "Visual Guide, Project Case Studies, Stack Filtering, and Quick Search"
+        "id": "Panduan Tampilan, Studi Kasus Proyek, Penyaring Teknologi, Halaman Tentang–Sekarang–Perkakas, dan Pencarian Cepat",
+        "en": "Visual Guide, Project Case Studies, Stack Filtering, About–Now–Uses Pages, and Quick Search"
     },
     "body": {
-        "id": "Pembaruan hari ini menambah cerita di balik setiap proyek — masalah, peran, hasil, metrik, dan galeri — penyaring berdasarkan teknologi, serta pencarian cepat untuk artikel dan proyek. Pratinjau tautan, label artikel berbantuan kecerdasan buatan, dan informasi tanggal/bahasa juga dirapikan.",
-        "en": "Today's update adds the story behind each project — problem, role, outcome, metrics, and gallery — filtering by technology, and quick search across articles and projects. Link previews, AI-assisted article labels, and date/language information were cleaned up as well."
+        "id": "Pembaruan hari ini menambah cerita di balik setiap proyek — masalah, peran, hasil, metrik, dan galeri — penyaring berdasarkan teknologi, serta pencarian cepat untuk artikel dan proyek. Kini tersedia halaman Tentang, Sekarang, Perkakas, dan Kegiatan yang merangkum siapa pemilik situs, apa yang sedang dikerjakan, teknologi yang dipakai, dan seluruh riwayat rilis. Pratinjau tautan, label artikel berbantuan kecerdasan buatan, dan informasi tanggal/bahasa juga dirapikan.",
+        "en": "Today's update adds the story behind each project — problem, role, outcome, metrics, and gallery — filtering by technology, and quick search across articles and projects. New About, Now, Uses, and Activity pages summarize who runs the site, what is in progress, the tools in use, and the full release history. Link previews, AI-assisted article labels, and date/language information were cleaned up as well."
     },
     "items": [
         {
@@ -60,6 +60,31 @@
             "type": "new",
             "id": "Panduan tampilan situs dibakukan agar warna, huruf, dan tata letak tetap konsisten di setiap halaman baru.",
             "en": "The site's visual guide is now standardized so colors, type, and layout stay consistent on every new page."
+        },
+        {
+            "type": "new",
+            "id": "Halaman Tentang memuat profil singkat, cara bekerja, teknologi yang benar-benar dipakai, dan tautan untuk menjelajah lebih jauh.",
+            "en": "The About page brings together a short profile, how I work, the tools actually used, and links to explore further."
+        },
+        {
+            "type": "new",
+            "id": "Halaman Sekarang merangkum proyek dan tulisan terbaru, sehingga pengunjung langsung tahu apa yang sedang dikerjakan.",
+            "en": "The Now page summarizes the latest projects and writing, so visitors can immediately see what is in progress."
+        },
+        {
+            "type": "new",
+            "id": "Halaman Perkakas menampilkan teknologi yang dipakai beserta jumlah proyeknya; satu klik membuka daftar proyek yang relevan.",
+            "en": "The Uses page lists the tools in use with their project counts; one click opens the relevant project list."
+        },
+        {
+            "type": "new",
+            "id": "Halaman Kegiatan menyajikan seluruh riwayat rilis berurutan, tanpa perlu berlangganan apa pun.",
+            "en": "The Activity page presents the entire release history in order, without any subscription."
+        },
+        {
+            "type": "improvement",
+            "id": "Menu utama kini menautkan halaman Tentang agar profil pemilik situs mudah ditemukan.",
+            "en": "The main menu now links the About page so the site owner’s profile is easy to find."
         }
     ]
 }

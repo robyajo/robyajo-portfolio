@@ -1,4 +1,6 @@
 export const RESERVED_SEGMENTS = new Set<string>([
+  "about",
+  "activity",
   "admin",
   "api",
   "og",
@@ -6,6 +8,7 @@ export const RESERVED_SEGMENTS = new Set<string>([
   "blogs",
   "branding",
   "guestbook",
+  "now",
   "llms",
   "privacy-policy",
   "projects",
@@ -16,6 +19,7 @@ export const RESERVED_SEGMENTS = new Set<string>([
   "apple-icon",
   "stats",
   "svg",
+  "uses",
   "_next",
   "favicon-dark",
   "favicon-light",

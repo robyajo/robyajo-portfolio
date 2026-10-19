@@ -27,6 +27,7 @@ import {
   MoonIcon,
   PencilIcon,
   SunIcon,
+  UserIcon,
   XLogoIcon,
 } from "@/components/shared/icons";
 import {
@@ -45,6 +46,7 @@ import { navLabel } from "@/lib/i18n/nav";
 const NAV_ICONS = {
   "/projects": BriefcaseIcon,
   "/blogs": BookOpenIcon,
+  "/about": UserIcon,
   "/resume": FileTextIcon,
   "/guestbook": PencilIcon,
 } as const;
