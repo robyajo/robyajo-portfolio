@@ -28,6 +28,11 @@
     },
     {
       "type": "improvement",
+      "id": "Halaman rincian proyek kini terbuka instan dengan pemuatan bertahap, menampilkan informasi utama terlebih dahulu sambil memuat riwayat kegiatan dengan animasi yang lebih responsif.",
+      "en": "Project detail pages now open instantly with streaming delivery, displaying core information immediately while loading activity history with more responsive animations."
+    },
+    {
+      "type": "improvement",
       "id": "Seluruh teks dan penunjuk arah di bagian ujung bawah halaman kini sepenuhnya mendukung pilihan dwibahasa (Indonesia dan Inggris).",
       "en": "All text and signpost destinations at the bottom of the page now fully support bilingual selection (Indonesian and English)."
     },

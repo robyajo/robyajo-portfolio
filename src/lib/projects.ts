@@ -2,6 +2,7 @@ import { db } from "@/lib/db";
 import { activities, projects as projectsTable } from "@/lib/schema";
 import { asc, desc, eq, sql } from "drizzle-orm";
 import { unstable_cache } from "next/cache";
+import { cache } from "react";
 
 export const PROJECTS_CACHE_TAG = "public-projects";
 
@@ -87,7 +88,8 @@ export const getPublicProjectsByActivity = unstable_cache(
     { revalidate: 3600, tags: [PROJECTS_CACHE_TAG] },
 );
 
-export async function getProjectBySlug(slug: string): Promise<Project | null> {
+export const getProjectBySlug = cache(
+    async (slug: string): Promise<Project | null> => {
     const [row] = await db
         .select({
             id: projectsTable.id,
@@ -108,4 +110,4 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
         .where(eq(projectsTable.slug, slug))
         .limit(1);
     return row ?? null;
-}
+});

@@ -32,7 +32,7 @@ export function Reveal({ children, className, delay = 0 }: RevealProps) {
           observer.disconnect();
         }
       },
-      { threshold: 0.1, rootMargin: "0px 0px -32px 0px" },
+      { threshold: 0, rootMargin: "0px 0px 80px 0px" },
     );
 
     observer.observe(el);
@@ -45,8 +45,8 @@ export function Reveal({ children, className, delay = 0 }: RevealProps) {
       data-revealed={visible || undefined}
       className={cn(
         mounted && !visible
-          ? "opacity-0 translate-y-5"
-          : "opacity-100 translate-y-0 transition-[opacity,translate] duration-700 ease-out",
+          ? "opacity-0 translate-y-3"
+          : "opacity-100 translate-y-0 transition-[opacity,translate] duration-300 ease-out",
         className,
       )}
       style={delay ? { transitionDelay: `${delay}ms` } : undefined}

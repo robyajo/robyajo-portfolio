@@ -9,6 +9,7 @@ import {
   TypographyMuted,
 } from "@/components/ui/typography";
 import { ActivityFeed } from "@/app/(site)/_components/activity-feed";
+import { ActivityFeedSkeleton } from "@/app/(site)/_components/activity-feed-skeleton";
 import { ProjectLinks } from "@/app/(site)/projects/[slug]/links";
 import { WorkReportButton } from "@/app/(site)/projects/[slug]/report-button";
 import { isAdmin } from "@/lib/assert-admin";
@@ -19,6 +20,7 @@ import { getDictionary, getLocale } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
 export const dynamic = "force-dynamic";
 
@@ -85,7 +87,9 @@ export default async function ProjectDetailPage({ params }: Props) {
       </Section>
 
       {project.syncKey ? (
-        <ActivityFeed projectKey={project.syncKey} limit={20} showLead={false} />
+        <Suspense fallback={<ActivityFeedSkeleton count={3} />}>
+          <ActivityFeed projectKey={project.syncKey} limit={20} showLead={false} />
+        </Suspense>
       ) : (
         <Section aria-label={content.activitiesLabel}>
           <TypographyMuted className="font-mono text-sm">
