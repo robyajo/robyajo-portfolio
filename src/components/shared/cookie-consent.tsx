@@ -8,7 +8,14 @@ import { useConsent, writeConsent } from "@/lib/consent";
 function CookieIcon() {
     return (
         <svg viewBox="0 0 16 16" aria-hidden="true" className="size-4 shrink-0">
-            <circle cx="8" cy="8" r="6.4" className="fill-(--brand)/25 stroke-(--brand)" strokeWidth="1" strokeDasharray="2.2 1.4" />
+            <circle
+                cx="8"
+                cy="8"
+                r="6.4"
+                className="fill-(--brand)/25 stroke-(--brand)"
+                strokeWidth="1"
+                strokeDasharray="2.2 1.4"
+            />
             <circle cx="6" cy="6.4" r="1" className="fill-(--brand)" />
             <circle cx="9.6" cy="8.4" r="0.9" className="fill-(--brand)" />
             <circle cx="7.2" cy="10.4" r="0.8" className="fill-(--brand)" />
@@ -27,7 +34,7 @@ export function CookieConsent() {
         <div
             role="region"
             aria-label={dict.ariaLabel}
-            className="fixed inset-x-3 bottom-3 z-[60] mx-auto flex max-w-5xl flex-col gap-3 rounded-xl border border-line bg-background/95 p-4 shadow-lg backdrop-blur sm:flex-row sm:items-center sm:gap-4 sm:p-5"
+            className="fixed inset-x-3 bottom-3 z-[60] mx-auto flex max-w-7xl flex-col gap-3 rounded-xl border border-line bg-background/95 p-4 shadow-lg backdrop-blur sm:flex-row sm:items-center sm:gap-4 sm:p-5"
         >
             <CookieIcon />
             <div className="flex flex-col gap-1">
