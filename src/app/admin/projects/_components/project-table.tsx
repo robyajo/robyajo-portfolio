@@ -63,6 +63,9 @@ export function ProjectTable({
             <TableHead className="w-16">{t.order}</TableHead>
             <TableHead>{t.project}</TableHead>
             <TableHead className="hidden md:table-cell">{t.stack}</TableHead>
+            <TableHead className="hidden md:table-cell w-24 text-center">
+              {t.views}
+            </TableHead>
             <TableHead className="w-20 text-center">{t.visible}</TableHead>
             <TableHead className="w-20 text-right">{t.actions}</TableHead>
           </TableRow>
@@ -170,6 +173,10 @@ export function ProjectTable({
                       </span>
                     )}
                   </div>
+                </TableCell>
+
+                <TableCell className="hidden md:table-cell text-center">
+                  <span className="tabular-nums text-sm">{project.viewCount}</span>
                 </TableCell>
 
                 <TableCell className="text-center py-3">

@@ -60,6 +60,16 @@
       "type": "fix",
       "id": "Penyempurnaan kenyamanan tampilan: notifikasi persetujuan kini tampil dan ditutup tanpa jeda, serta pembaca dokumen resume lebih stabil saat dimuat.",
       "en": "Visual experience polish: the consent notice now shows and dismisses smoothly, and the resume viewer stays stable during loading."
+    },
+    {
+      "type": "new",
+      "id": "Setiap halaman proyek kini menghitung pengunjungnya sendiri; jumlahnya tampil di halaman proyek, daftar proyek, dan tabel pengelolaan proyek.",
+      "en": "Each project page now counts its own visitors; the number appears on the project page, the project list, and the project management table."
+    },
+    {
+      "type": "new",
+      "id": "Jumlah pembaca setiap artikel kini juga tampil di daftar artikel dan tabel pengelolaan artikel, sehingga mudah melihat tulisan yang paling banyak dibaca.",
+      "en": "Each article's reader count now also appears in the article list and the article management table, making it easy to see the most-read posts."
     }
   ]
 }

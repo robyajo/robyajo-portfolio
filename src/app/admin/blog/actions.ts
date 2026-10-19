@@ -24,6 +24,7 @@ import {
 import { db } from "@/lib/db";
 import { blogCategories, blogTags } from "@/lib/schema";
 import { safeQuery } from "@/lib/safe-query";
+import { getReadsCounts } from "@/lib/blog-reads";
 import { source } from "@/lib/source";
 import { asc, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
@@ -171,9 +172,12 @@ export async function getAdminBlogPosts(): Promise<AdminBlogPost[]> {
                         url: `/blogs/${entry.slug}`,
                         lastModified: entry.lastModified,
                         author: entry.author === "autopilot" ? "autopilot" : null,
-                    } satisfies AdminBlogPost;
+                    };
                 });
-            return rows.sort((a, b) => b.date.localeCompare(a.date));
+            const reads = await getReadsCounts(rows.map((row) => row.url));
+            return rows
+                .map((row) => ({ ...row, reads: reads[row.url] ?? 0 }))
+                .sort((a, b) => b.date.localeCompare(a.date));
         },
         [],
     );

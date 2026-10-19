@@ -27,6 +27,7 @@ import {
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { toISOString, toTimestamp } from "@/lib/date";
+import { getReadsCounts } from "@/lib/blog-reads";
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = (await getDictionary()).blog.page;
@@ -42,6 +43,8 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
+export const revalidate = 60;
+
 export default async function BlogPage() {
   const pages = source
     .getPages()
@@ -49,6 +52,8 @@ export default async function BlogPage() {
     .sort((a, b) => {
       return toTimestamp(b.data.date) - toTimestamp(a.data.date);
     });
+
+  const reads = await getReadsCounts(pages.map((page) => page.url));
 
   const posts: BlogPost[] = pages.map((page, i) => ({
     url: page.url,
@@ -59,6 +64,7 @@ export default async function BlogPage() {
     category: (page.data as { category?: string }).category,
     number: pages.length - i,
     cover: <BlogCover slug={page.slugs.at(-1) ?? ""} />,
+    reads: reads[page.url] ?? 0,
   }));
 
   const [locale, tagRegistry, categoryRows] = await Promise.all([

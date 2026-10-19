@@ -60,6 +60,7 @@ export type BlogPost = {
   category?: string;
   number: number;
   cover: ReactNode;
+  reads?: number;
 };
 
 export type BlogCategoryOption = {

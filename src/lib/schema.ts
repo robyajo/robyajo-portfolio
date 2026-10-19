@@ -162,6 +162,21 @@ export const blogReads = pgTable(
     ],
 );
 
+export const projectViews = pgTable(
+    "project_views",
+    {
+        projectId: integer("project_id")
+            .notNull()
+            .references(() => projects.id, { onDelete: "cascade", onUpdate: "cascade" }),
+        ipHash: varchar("ip_hash", { length: 64 }).notNull(),
+        createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    },
+    (table) => [
+        primaryKey({ columns: [table.projectId, table.ipHash] }),
+        index("project_views_project_idx").on(table.projectId),
+    ],
+);
+
 export const guestbookEntries = pgTable(
     "guestbook_entries",
     {

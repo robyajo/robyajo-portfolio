@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { activities, projects as projectsTable } from "@/lib/schema";
+import { activities, projectViews, projects as projectsTable } from "@/lib/schema";
 import { asc, desc, eq, sql } from "drizzle-orm";
 import { unstable_cache } from "next/cache";
 import { cache } from "react";
@@ -52,7 +52,10 @@ export const getPublicProjects = unstable_cache(
     { revalidate: 3600, tags: [PROJECTS_CACHE_TAG] },
 );
 
-export type ProjectWithActivity = Project & { lastActivityAt: Date | null };
+export type ProjectWithActivity = Project & {
+    lastActivityAt: Date | null;
+    viewCount: number;
+};
 
 export const getPublicProjectsByActivity = unstable_cache(
     async (): Promise<ProjectWithActivity[]> => {
@@ -72,6 +75,7 @@ export const getPublicProjectsByActivity = unstable_cache(
                 sortOrder: projectsTable.sortOrder,
                 updatedAt: projectsTable.updatedAt,
                 lastActivityAt: sql<Date | null>`max(${activities.occurredAt})`,
+                viewCount: sql<number>`(select count(*)::int from ${projectViews} where ${projectViews.projectId} = ${projectsTable.id})`,
             })
             .from(projectsTable)
             .leftJoin(activities, eq(activities.projectKey, projectsTable.syncKey))

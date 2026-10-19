@@ -16,6 +16,7 @@ import { isAdmin } from "@/lib/assert-admin";
 import { siteConfig } from "@/lib/config";
 import { buildMeta } from "@/lib/metadata";
 import { getProjectBySlug } from "@/lib/projects";
+import { trackProjectView, getProjectViewCount } from "@/lib/project-views";
 import { getDictionary, getLocale } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -52,6 +53,8 @@ export default async function ProjectDetailPage({ params }: Props) {
   const dict = await getDictionary();
   const content = dict.projectsDetail;
   const admin = await isAdmin();
+  await trackProjectView(project.id);
+  const views = await getProjectViewCount(project.id);
 
   return (
     <>
@@ -78,6 +81,9 @@ export default async function ProjectDetailPage({ params }: Props) {
             </div>
           )}
           <ProjectLinks project={project} labels={content} />
+          <p className="pt-1 font-mono text-xs tabular-nums text-muted-foreground">
+            {views} {views === 1 ? content.visitorOne : content.visitorMany}
+          </p>
           {admin && (
             <div className="pt-2">
               <WorkReportButton slug={project.slug} />

@@ -72,6 +72,11 @@ export async function ProjectGrid({
                 {project.lastActivityAt
                   ? `Updated ${dayAgoLabel(new Date(project.lastActivityAt).toISOString(), locale)}`
                   : "No activity yet"}
+                {" · "}
+                {project.viewCount}{" "}
+                {project.viewCount === 1
+                  ? content.visitorOne
+                  : content.visitorMany}
               </TypographyMuted>
               <ul
                 role="list"

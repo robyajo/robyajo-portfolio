@@ -214,6 +214,7 @@ export interface AdminBlogPost {
     url: string;
     lastModified: string | null;
     author: string | null;
+    reads: number;
 }
 
 export interface BlogPostSource {

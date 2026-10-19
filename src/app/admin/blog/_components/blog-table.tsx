@@ -58,6 +58,7 @@ export function BlogTable({
             <TableHead>{t.colDate}</TableHead>
             <TableHead>{t.colCategory}</TableHead>
             <TableHead>{t.colLang}</TableHead>
+            <TableHead className="text-right">{t.colReads}</TableHead>
             <TableHead className="text-right">{t.colActions}</TableHead>
           </TableRow>
         </TableHeader>
@@ -132,6 +133,11 @@ export function BlogTable({
                       <span className="text-3xs">ID</span>
                     </TypographyMuted>
                   )}
+                </TableCell>
+                <TableCell className="py-3 text-right">
+                  <span className="tabular-nums text-xs text-muted-foreground">
+                    {post.reads}
+                  </span>
                 </TableCell>
                 <TableCell className="py-3 text-right">
                   <ButtonGroup className="justify-end">

@@ -110,6 +110,12 @@ export function PostCard({ post, featured = false }: PostCardProps) {
             <time dateTime={post.date}>{date}</time>
           </TypographyMuted>
         )}
+        {typeof post.reads === "number" && (
+          <span className="font-mono text-xs tabular-nums text-muted-foreground">
+            {post.reads}{" "}
+            {post.reads === 1 ? dict.blog.post.readOne : dict.blog.post.readMany}
+          </span>
+        )}
         <ViewTransition
           name={postTransitionName(post.url)}
           share="auto"
