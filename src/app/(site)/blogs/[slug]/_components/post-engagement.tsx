@@ -8,13 +8,13 @@ import {
   toggleCommentLike,
   type CommentWithMeta,
   type MoodId,
-} from "@/app/(site)/blog/[[...slug]]/actions";
-import { CommentComposerArea } from "@/app/(site)/blog/[[...slug]]/_components/comment-composer-area";
-import { CommentList } from "@/app/(site)/blog/[[...slug]]/_components/comment-list";
+} from "@/app/(site)/blogs/[slug]/actions";
+import { CommentComposerArea } from "@/app/(site)/blogs/[slug]/_components/comment-composer-area";
+import { CommentList } from "@/app/(site)/blogs/[slug]/_components/comment-list";
 import {
   type MoodState,
   MoodPicker,
-} from "@/app/(site)/blog/[[...slug]]/_components/mood-picker";
+} from "@/app/(site)/blogs/[slug]/_components/mood-picker";
 import { Panel, PanelRow } from "@/components/layouts/page";
 import { SectionLabel } from "@/components/ui/typography";
 import { nowISO } from "@/lib/date";

@@ -57,6 +57,10 @@ export async function loadRecentPosts(
   const recent = pages.slice(0, limit);
   if (recent.length === 0) return { total: 0, posts: [] };
 
+  const candidateSlugs = recent.flatMap((page) => [
+    page.url,
+    page.url.replace(/^\/blogs\//, "/blog/"),
+  ]);
   const reads = await db
     .select({
       slug: blogPosts.slug,
@@ -64,9 +68,15 @@ export async function loadRecentPosts(
     })
     .from(blogPosts)
     .leftJoin(blogReads, eq(blogReads.postId, blogPosts.id))
-    .where(inArray(blogPosts.slug, recent.map((page) => page.url)))
+    .where(inArray(blogPosts.slug, candidateSlugs))
     .groupBy(blogPosts.slug);
-  const views = new Map(reads.map(({ slug, count }) => [slug, count]));
+  const views = new Map<string, number>();
+  for (const { slug, count } of reads) {
+    views.set(slug, count);
+    if (slug.startsWith("/blog/")) {
+      views.set("/blogs/" + slug.slice("/blog/".length), count);
+    }
+  }
 
   return {
     total: pages.length,

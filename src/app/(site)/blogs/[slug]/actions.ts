@@ -33,15 +33,35 @@ async function getIpHash(): Promise<string> {
     return hashIp(getClientIp(hdrs));
 }
 
+function getSlugCandidates(slug: string): string[] {
+    const list = [slug];
+    if (slug.startsWith("/blogs/")) {
+        list.push("/blog/" + slug.slice("/blogs/".length));
+    } else if (slug.startsWith("/blog/")) {
+        list.push("/blogs/" + slug.slice("/blog/".length));
+    } else {
+        list.push(`/blogs/${slug}`, `/blog/${slug}`);
+    }
+    return list;
+}
+
+function revalidatePostPaths(pathOrSlug: string) {
+    const clean = pathOrSlug.replace(/^\/(blogs|blog)\//, "");
+    revalidatePath(`/blogs/${clean}`);
+    revalidatePath(`/blog/${clean}`);
+}
+
 const isKnownPost = cache(async (slug: string): Promise<boolean> => {
-    return source.getPages().some((page) => page.url === slug);
+    const candidates = getSlugCandidates(slug);
+    return source.getPages().some((page) => candidates.includes(page.url));
 });
 
 const getPostIdBySlug = cache(async (slug: string): Promise<number | null> => {
+    const candidates = getSlugCandidates(slug);
     const [post] = await db
         .select({ id: blogPosts.id })
         .from(blogPosts)
-        .where(eq(blogPosts.slug, slug))
+        .where(inArray(blogPosts.slug, candidates))
         .limit(1);
     return post?.id ?? null;
 });
@@ -49,10 +69,11 @@ const getPostIdBySlug = cache(async (slug: string): Promise<number | null> => {
 async function getOrCreatePost(slug: string): Promise<number | null> {
     if (!(await isKnownPost(slug))) return null;
 
+    const candidates = getSlugCandidates(slug);
     const [existing] = await db
         .select({ id: blogPosts.id })
         .from(blogPosts)
-        .where(eq(blogPosts.slug, slug))
+        .where(inArray(blogPosts.slug, candidates))
         .limit(1);
 
     if (existing) return existing.id;
@@ -68,7 +89,7 @@ async function getOrCreatePost(slug: string): Promise<number | null> {
     const [retry] = await db
         .select({ id: blogPosts.id })
         .from(blogPosts)
-        .where(eq(blogPosts.slug, slug))
+        .where(inArray(blogPosts.slug, candidates))
         .limit(1);
 
     return retry?.id ?? null;
@@ -332,7 +353,7 @@ export async function submitComment(
             .values({ postId, userId, authorName: name, authorImage: image, body: trimmed, parentId: resolvedParentId })
             .returning({ id: blogComments.id });
 
-        revalidatePath(`/blog/${slug}`);
+        revalidatePostPaths(slug);
         return { success: true, id: inserted.id };
     } catch (err) {
         if (err instanceof ValidationError) return { success: false, error: err.message };
@@ -373,7 +394,7 @@ export async function deleteComment(
             .where(eq(blogPosts.id, comment.postId))
             .limit(1);
 
-        if (post) revalidatePath(`/blog/${post.slug}`);
+        if (post) revalidatePostPaths(post.slug);
         return { success: true };
     } catch {
         return { success: false, error: (await getDictionary()).guestbook.errors.generic };
@@ -407,7 +428,7 @@ export async function togglePinComment(
             .where(eq(blogPosts.id, comment.postId))
             .limit(1);
 
-        if (post) revalidatePath(`/blog/${post.slug}`);
+        if (post) revalidatePostPaths(post.slug);
         return { success: true };
     } catch {
         return { success: false, error: (await getDictionary()).guestbook.errors.generic };

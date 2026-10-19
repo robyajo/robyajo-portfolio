@@ -55,7 +55,7 @@ export function BlogPostDetail({
           )}
         </div>
         <TypographyMuted asChild>
-          <span className="font-mono text-xs">/blog/{post.slug}</span>
+          <span className="font-mono text-xs">/blogs/{post.slug}</span>
         </TypographyMuted>
         {source?.id.description && (
           <TypographyMuted asChild>

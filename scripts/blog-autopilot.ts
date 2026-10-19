@@ -688,7 +688,7 @@ function updateRelease(
     if (!existsSync(RELEASES_DIR)) mkdirSync(RELEASES_DIR, { recursive: true });
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? "https://ajoroby.is-a.dev";
-    const url = `${baseUrl}/blog/${slug}`;
+    const url = `${baseUrl}/blogs/${slug}`;
     const existing = readdirSync(RELEASES_DIR)
         .find(
             (file) =>

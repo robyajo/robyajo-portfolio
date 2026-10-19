@@ -1,7 +1,7 @@
 "use client";
 
-import type { CommentWithMeta } from "@/app/(site)/blog/[[...slug]]/actions";
-import { CommentCard } from "@/app/(site)/blog/[[...slug]]/_components/comment-card";
+import type { CommentWithMeta } from "@/app/(site)/blogs/[slug]/actions";
+import { CommentCard } from "@/app/(site)/blogs/[slug]/_components/comment-card";
 import { CricketDoodle } from "@/components/shared/doodles";
 import { EngagementEmptyState } from "@/components/engagement/empty-state";
 import { EngagementNudge } from "@/components/engagement/nudge";

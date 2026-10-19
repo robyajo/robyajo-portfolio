@@ -499,7 +499,7 @@ const en: Dictionary = {
         dialogEditBody: "Update this post. The slug cannot be changed.",
         slugLabel: "Slug",
         slugDescription:
-          "Post address: /blog/{slug}. Use lowercase letters and dashes.",
+          "Post address: /blogs/{slug}. Use lowercase letters and dashes.",
         slugPlaceholder: "my-new-post",
         dateLabel: "Publish date",
         categoryLabel: "Category",

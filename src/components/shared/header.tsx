@@ -31,7 +31,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 function isActive(pathname: string, href: string) {
   if (pathname === href) return true;
-  if (href === "/blogs") return pathname.startsWith("/blog/");
+  if (href === "/blogs") return pathname.startsWith("/blogs/") || pathname.startsWith("/blog/");
   if (href === "/projects") return pathname.startsWith("/projects/");
   if (href === "/guestbook") return pathname.startsWith("/guestbook");
   if (href === "/admin") return pathname.startsWith("/admin");

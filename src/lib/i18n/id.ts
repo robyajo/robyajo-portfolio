@@ -501,7 +501,7 @@ const id = {
         dialogEditBody: "Perbarui artikel ini. Slug tidak bisa diubah.",
         slugLabel: "Slug",
         slugDescription:
-          "Alamat artikel: /blog/{slug}. Pakai huruf kecil dan tanda hubung.",
+          "Alamat artikel: /blogs/{slug}. Pakai huruf kecil dan tanda hubung.",
         slugPlaceholder: "judul-artikel-baru",
         dateLabel: "Tanggal terbit",
         categoryLabel: "Kategori",

@@ -1,6 +1,6 @@
 "use client";
 
-import type { CommentWithMeta } from "@/app/(site)/blog/[[...slug]]/actions";
+import type { CommentWithMeta } from "@/app/(site)/blogs/[slug]/actions";
 import { Avatar } from "@/components/engagement/avatar";
 import { Composer } from "@/components/engagement/composer";
 import {

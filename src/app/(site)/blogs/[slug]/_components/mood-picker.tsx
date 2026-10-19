@@ -3,7 +3,7 @@
 import type {
   MoodId,
   ReactionCounts,
-} from "@/app/(site)/blog/[[...slug]]/actions";
+} from "@/app/(site)/blogs/[slug]/actions";
 import { ReactionMascot } from "@/components/shared/doodles";
 import {
   HeartIcon,

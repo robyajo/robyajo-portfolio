@@ -55,6 +55,10 @@ const config = {
         source: "/blog/:path*.mdx",
         destination: "/llms.mdx/blog/:path*",
       },
+      {
+        source: "/blogs/:path*.mdx",
+        destination: "/llms.mdx/blog/:path*",
+      },
     ];
   },
   async redirects() {
@@ -63,7 +67,17 @@ const config = {
         source:
           "/blog/i-built-a-4am-alert-system-to-get-RCB-tickets-and%20-it-actually-worked",
         destination:
-          "/blog/rcb-tickets-are-broken-so-i-built-an-alert-system-at-4am",
+          "/blogs/rcb-tickets-are-broken-so-i-built-an-alert-system-at-4am",
+        permanent: true,
+      },
+      {
+        source: "/blog/:slug+",
+        destination: "/blogs/:slug+",
+        permanent: true,
+      },
+      {
+        source: "/blog",
+        destination: "/blogs",
         permanent: true,
       },
     ];

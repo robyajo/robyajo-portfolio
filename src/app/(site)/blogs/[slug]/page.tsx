@@ -3,16 +3,16 @@ import { HeroWithArt } from "@/components/layouts/hero-art";
 import {
   EndOfPost,
   ScrollToEngagement,
-} from "@/app/(site)/blog/[[...slug]]/_components/end-of-post";
+} from "@/app/(site)/blogs/[slug]/_components/end-of-post";
 import {
   getBlogReadsCount,
   getCommentCount,
   trackRead,
-} from "@/app/(site)/blog/[[...slug]]/actions";
+} from "@/app/(site)/blogs/[slug]/actions";
 import {
   CommentsFallback,
   CommentsSection,
-} from "@/app/(site)/blog/[[...slug]]/_components/comments-section";
+} from "@/app/(site)/blogs/[slug]/_components/comments-section";
 import { BlogBody } from "@/components/layouts/blog";
 import { BlogPostNav } from "@/components/layouts/blog-nav";
 import { Section } from "@/components/layouts/page";
@@ -56,10 +56,10 @@ import { Suspense, ViewTransition } from "react";
 import { postTransitionName } from "@/lib/view-transition";
 
 export default async function Page(props: {
-  params: Promise<{ slug: string[] }>;
+  params: Promise<{ slug: string }>;
 }) {
-  const params = await props.params;
-  const page = source.getPage(params.slug);
+  const { slug } = await props.params;
+  const page = source.getPage([slug]);
   if (!page) notFound();
 
   const { userId } = await auth();
@@ -286,14 +286,16 @@ export default async function Page(props: {
 }
 
 export async function generateStaticParams() {
-  return source.generateParams();
+  return source.generateParams().map((p) => ({
+    slug: p.slug.join("/"),
+  }));
 }
 
 export async function generateMetadata(props: {
-  params: Promise<{ slug: string[] }>;
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const params = await props.params;
-  const page = source.getPage(params.slug);
+  const { slug } = await props.params;
+  const page = source.getPage([slug]);
   if (!page) notFound();
 
   const rawTitle = page.data.title;
@@ -325,7 +327,7 @@ export async function generateMetadata(props: {
     title: rawTitle,
     pageTitle: metaTitle,
     description: metaDesc,
-    path: `home / blog / ${params.slug?.join(" / ") ?? ""}`,
+    path: `home / blogs / ${slug}`,
     canonicalPath: page.url,
     type: "article",
     tags: (page.data.tags as string[] | undefined) ?? [],

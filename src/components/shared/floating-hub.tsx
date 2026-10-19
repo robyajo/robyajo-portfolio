@@ -54,7 +54,7 @@ function HubLabel({ children }: { children: React.ReactNode }) {
 }
 
 function greetingFor(pathname: string, hub: Dictionary["hub"]): [string, string] {
-  if (pathname.startsWith("/blog/"))
+  if (pathname.startsWith("/blogs/") || pathname.startsWith("/blog/"))
     return [hub.greetBlog, hub.greetBlogSub];
   if (pathname === "/resume") return [hub.greetResume, hub.greetResumeSub];
   if (pathname.startsWith("/guestbook"))
@@ -218,7 +218,9 @@ function HubBody({
   const hub = dict.hub;
   const engagement = useEngagementAnchor();
   const showAuth =
-    pathname.startsWith("/guestbook") || pathname.startsWith("/blog");
+    pathname.startsWith("/guestbook") ||
+    pathname.startsWith("/blogs") ||
+    pathname.startsWith("/blog");
   const isResume = pathname === "/resume";
 
   return (

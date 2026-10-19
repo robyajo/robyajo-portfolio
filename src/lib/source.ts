@@ -5,7 +5,7 @@ import { siteConfig } from '@/lib/config';
 import { toTimestamp } from '@/lib/date';
 
 export const source = loader({
-    baseUrl: '/blog',
+    baseUrl: '/blogs',
     source: docs.toFumadocsSource(),
 });
 
@@ -13,7 +13,7 @@ export function getPageImage(page: InferPageType<typeof source>) {
     const url = buildOGUrl({
         title: page.data.title,
         description: page.data.description ?? '',
-        path: `home / blog / ${page.slugs.join(' / ')}`,
+        path: `home / blogs / ${page.slugs.join(' / ')}`,
         tags: (page.data.tags as string[] | undefined) ?? [],
         role: siteConfig.role,
         available: siteConfig.availableForHire,

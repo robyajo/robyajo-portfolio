@@ -3,12 +3,12 @@
   "type": "feature",
   "status": "published",
   "title": {
-    "id": "Artikel Otomatis Berita Teknologi, Bilah Saring Mobile & Pembuat Laporan Kerja",
-    "en": "Automated Tech-News Articles, Mobile Filter Stacking & Work Report Generator"
+    "id": "Artikel Otomatis Berita Teknologi, Bilah Saring Mobile, Penyeragaman Tautan & Pembuat Laporan Kerja",
+    "en": "Automated Tech-News Articles, Mobile Filters, Unified Links & Work Report Generator"
   },
   "body": {
-    "id": "Blog kini menghadirkan artikel harian tentang perkembangan teknologi dan AI terkini dengan bilah penyaring yang nyaman di ponsel. Pengelola situs juga mendapatkan pembuat laporan kerja dokumen, pengaturan stack keahlian, dan opsi privasi proyek.",
-    "en": "The blog now delivers daily articles on recent tech and AI news with mobile-friendly filters. Site administrators also gain a document work report builder, skills stack manager, and project privacy controls."
+    "id": "Blog kini menghadirkan artikel harian tentang perkembangan teknologi dan AI terkini dengan bilah penyaring yang nyaman di ponsel serta alamat tautan yang seragam dan terpadu. Pengelola situs juga mendapatkan pembuat laporan kerja dokumen, pengaturan stack keahlian, dan opsi privasi proyek.",
+    "en": "The blog now delivers daily articles on recent tech and AI news with mobile-friendly filters and unified article web addresses. Site administrators also gain a document work report builder, skills stack manager, and project privacy controls."
   },
   "items": [
     {
@@ -20,6 +20,11 @@
       "type": "improvement",
       "id": "Bilah penyaring tulisan di layar ponsel kini tersusun rapi ke bawah, memudahkan penjelajahan kategori, tag, dan jumlah artikel per halaman tanpa terpotong.",
       "en": "The post filter bar on mobile screens is now neatly stacked vertically, making it easy to browse categories, tags, and articles per page without clipping."
+    },
+    {
+      "type": "improvement",
+      "id": "Penyeragaman alamat tautan artikel agar lebih konsisten di seluruh bagian situs, dilengkapi pengalihan otomatis sehingga tautan lama tetap dapat diakses dengan lancar tanpa terputus.",
+      "en": "Standardized article web addresses for full consistency across the site, complete with automatic redirection to keep existing bookmarks and links working smoothly."
     },
     {
       "type": "new",

@@ -27,7 +27,7 @@ function meta({ date, readingMinutes }: PostCard) {
 }
 
 const FIXTURE: PostCard = {
-  url: "/blog/rcb-tickets-are-broken-so-i-built-an-alert-system-at-4am",
+  url: "/blogs/rcb-tickets-are-broken-so-i-built-an-alert-system-at-4am",
   title: "RCB Tickets Are Broken, So I Built an Alert System at 4AM",
   description:
     "Two hours of sleep-deprived coding, a Discord ping at 3:30pm, and tickets in hand by 3:40pm.",

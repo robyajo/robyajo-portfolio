@@ -10,7 +10,7 @@ import Link from "next/link";
 import {
   deleteComment,
   togglePinComment,
-} from "@/app/(site)/blog/[[...slug]]/actions";
+} from "@/app/(site)/blogs/[slug]/actions";
 import type { AdminCommentRow } from "@/app/admin/actions";
 import { Button } from "@/components/ui/button";
 import {
@@ -64,7 +64,7 @@ const searchParsers = {
 };
 
 function slugToTitle(slug: string): string {
-  const segment = slug.replace(/^\/blog\//, "").replace(/\//g, " / ");
+  const segment = slug.replace(/^\/blogs?\//, "").replace(/\//g, " / ");
   return segment
     .split("-")
     .map((w) => w.charAt(0).toUpperCase() + w.slice(1))

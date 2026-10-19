@@ -1,5 +1,5 @@
-import { getComments } from "@/app/(site)/blog/[[...slug]]/actions";
-import { PostEngagement } from "@/app/(site)/blog/[[...slug]]/_components/post-engagement";
+import { getComments } from "@/app/(site)/blogs/[slug]/actions";
+import { PostEngagement } from "@/app/(site)/blogs/[slug]/_components/post-engagement";
 import { Panel, PanelRow } from "@/components/layouts/page";
 
 export async function CommentsSection({

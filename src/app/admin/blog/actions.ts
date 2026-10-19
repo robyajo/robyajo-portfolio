@@ -168,7 +168,7 @@ export async function getAdminBlogPosts(): Promise<AdminBlogPost[]> {
                         category: entry.category,
                         hasEnglish: Boolean(sibling),
                         translation: sibling?.slug ?? null,
-                        url: `/blog/${entry.slug}`,
+                        url: `/blogs/${entry.slug}`,
                         lastModified: entry.lastModified,
                         author: entry.author === "autopilot" ? "autopilot" : null,
                     } satisfies AdminBlogPost;

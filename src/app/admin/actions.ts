@@ -38,7 +38,7 @@ import { asc, count, desc, eq, sql } from "drizzle-orm";
 import { revalidatePath, updateTag } from "next/cache";
 import { z } from "zod";
 import type { GuestbookEntryWithMeta } from "@/app/(site)/guestbook/actions";
-import type { CommentUser } from "@/app/(site)/blog/[[...slug]]/actions";
+import type { CommentUser } from "@/app/(site)/blogs/[slug]/actions";
 
 export interface AdminCommentRow {
     id: number;

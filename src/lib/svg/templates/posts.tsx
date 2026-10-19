@@ -51,21 +51,21 @@ function Post({ theme, index, post }: { theme: Theme; index: number; post: PostR
 
 const FIXTURE: PostRow[] = [
   {
-    url: "/blog/rcb-tickets-are-broken-so-i-built-an-alert-system-at-4am",
+    url: "/blogs/rcb-tickets-are-broken-so-i-built-an-alert-system-at-4am",
     title: "RCB Tickets Are Broken, So I Built an Alert System at 4AM",
     date: "2026-04-28T00:00:00.000Z",
     readingMinutes: 9,
     views: 1284,
   },
   {
-    url: "/blog/making-my-resume-machine-readable",
+    url: "/blogs/making-my-resume-machine-readable",
     title: "Making My Résumé Machine-Readable",
     date: "2026-03-06T00:00:00.000Z",
     readingMinutes: 7,
     views: 642,
   },
   {
-    url: "/blog/how-i-started-coding",
+    url: "/blogs/how-i-started-coding",
     title: "I Never Thought I'd Code, Until This One Moment Changed Everything About How I Work",
     date: "2025-11-02T00:00:00.000Z",
     readingMinutes: 12,
