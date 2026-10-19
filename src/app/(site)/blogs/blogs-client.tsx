@@ -1,10 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-  ButtonGroup,
-  ButtonGroupSeparator,
-} from "@/components/ui/button-group";
+import { ButtonGroupSeparator } from "@/components/ui/button-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Divider } from "@/components/ui/divider";
 import { Label } from "@/components/ui/label";
@@ -186,7 +183,11 @@ export function BlogsClient({
           </InputGroup>
         </div>
 
-        <ButtonGroup className="w-full sm:w-auto [&>button]:flex-1 *:data-[slot=select-trigger]:flex-1">
+        <div
+          role="group"
+          data-slot="button-group"
+          className="flex flex-col sm:flex-row w-full sm:w-auto gap-2 sm:gap-0 sm:items-stretch sm:*:focus-visible:z-10 sm:*:focus-visible:relative sm:[&>*:not(:first-child)]:rounded-l-none sm:[&>*:not(:first-child)]:border-l-0 sm:[&>*:not(:last-child)]:rounded-r-none sm:[&>button]:flex-1 sm:*:data-[slot=select-trigger]:flex-1"
+        >
           {categories.length > 0 && (
             <>
               <Select
@@ -199,7 +200,7 @@ export function BlogsClient({
                 }
               >
                 <SelectTrigger
-                  className="cursor-pointer font-semibold w-full"
+                  className="cursor-pointer font-semibold w-full sm:w-auto"
                   aria-label={t.categoryAria}
                 >
                   <SelectValue />
@@ -219,7 +220,7 @@ export function BlogsClient({
                   ))}
                 </SelectContent>
               </Select>
-              <ButtonGroupSeparator />
+              <ButtonGroupSeparator className="hidden sm:block" />
             </>
           )}
           {allTags.length > 0 && (
@@ -233,19 +234,20 @@ export function BlogsClient({
                         ? t.tagsSelected.replace("{count}", String(tags.length))
                         : t.tagsAria
                     }
-                    className="cursor-pointer gap-1.5 shrink-0 justify-start font-semibold"
+                    className="cursor-pointer gap-1.5 font-semibold w-full sm:w-auto justify-between sm:justify-start"
                   >
-                    <TagIcon
-                  data-icon="inline-start"
-                  className="size-4"
-                  aria-hidden="true"
-                />
-
-                    <span className="text-left">{t.tagsLabel}</span>
+                    <span className="flex items-center gap-1.5 min-w-0">
+                      <TagIcon
+                        data-icon="inline-start"
+                        className="size-4 shrink-0"
+                        aria-hidden="true"
+                      />
+                      <span className="text-left">{t.tagsLabel}</span>
+                    </span>
                     {tags.length > 0 && (
                       <span
                         aria-hidden="true"
-                        className="flex items-center justify-center rounded-full bg-primary text-primary-foreground size-5 text-xs"
+                        className="flex items-center justify-center rounded-full bg-primary text-primary-foreground size-5 text-xs shrink-0"
                       >
                         {tags.length}
                       </span>
@@ -297,7 +299,7 @@ export function BlogsClient({
                   </ul>
                 </PopoverContent>
               </Popover>
-              <ButtonGroupSeparator />
+              <ButtonGroupSeparator className="hidden sm:block" />
             </>
           )}
 
@@ -308,7 +310,7 @@ export function BlogsClient({
             }
           >
             <SelectTrigger
-              className="cursor-pointer font-semibold w-full"
+              className="cursor-pointer font-semibold w-full sm:w-auto"
               aria-label={t.postsPerPage}
             >
               <SelectValue />
@@ -325,7 +327,7 @@ export function BlogsClient({
               ))}
             </SelectContent>
           </Select>
-        </ButtonGroup>
+        </div>
       </div>
 
       <TypographyMuted role="status" className="sr-only">

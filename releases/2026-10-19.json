@@ -3,88 +3,48 @@
   "type": "feature",
   "status": "published",
   "title": {
-    "id": "Artikel Otomatis Berita Teknologi, Laporan Kerja Word PDF & Pemilih Stack Proyek",
-    "en": "Automated Tech-News Article, Word/PDF Work Report & Project Stack Picker"
+    "id": "Artikel Otomatis Berita Teknologi, Bilah Saring Mobile & Pembuat Laporan Kerja",
+    "en": "Automated Tech-News Articles, Mobile Filter Stacking & Work Report Generator"
   },
   "body": {
-    "id": "Blog kini menampilkan artikel harian tentang teknologi dan AI berdasarkan berita terkini, urutan proyek memunculkan yang terbaru di atas beserta tanggal kegiatannya; bagi pengelola situs tersedia lengkap dengan halaman detail artikel, penanda artikel buatan otomatis, dan pemilih kegiatan untuk laporan kerja Word atau PDF, plus daftar stack penguasaan yang kini dikelola rapi tinggal pilih per proyek. Tanggal pembaruan proyek kini tampil sebagai hari berjalan (Hari ini/Kemarin/n hari) sehingga tidak lagi terlihat salah.",
-    "en": "The blog now shows a daily article about technology and AI based on current news, projects list the most recently updated ones first with their activity dates; administrators also get an article detail page, a marker for automatically written articles, an activity picker for Word or PDF work reports, plus a tidy mastery-stack list that can now be picked per project. Project update dates now display in whole days (Today/Yesterday/n days ago) so they no longer look stale or wrong."
+    "id": "Blog kini menghadirkan artikel harian tentang perkembangan teknologi dan AI terkini dengan bilah penyaring yang nyaman di ponsel. Pengelola situs juga mendapatkan pembuat laporan kerja dokumen, pengaturan stack keahlian, dan opsi privasi proyek.",
+    "en": "The blog now delivers daily articles on recent tech and AI news with mobile-friendly filters. Site administrators also gain a document work report builder, skills stack manager, and project privacy controls."
   },
   "items": [
     {
-      "type": "improvement",
-      "id": "Urutan proyek di halaman utama dan halaman proyek diubah agar kegiatan terbaru selalu muncul di atas.",
-      "en": "Project ordering on the home page and projects page is updated so the most recent activity always appears first."
-    },
-    {
       "type": "new",
-      "id": "Label waktu kegiatan terakhir muncul di setiap kartu proyek.",
-      "en": "A last-activity time label now appears on each project card."
-    },
-    {
-      "type": "new",
-      "id": "Artikel otomatis harian kini menulis topik teknologi dan AI berdasarkan berita terkini dari sumber terpercaya. Artikel terbaru: \"Ketika Algoritma dan AI Mulai Mengatur Urusan Perumahan\" di https://ajoroby.is-a.dev/blog/ketika-algoritma-mulai-mengatur-perumahan",
-      "en": "The daily automatic article now writes about technology and AI topics based on the latest news from trusted sources. Latest article: \"When Algorithms and AI Take Over Neighborhood Management\" at https://ajoroby.is-a.dev/blog/ketika-algoritma-mulai-mengatur-perumahan"
-    },
-    {
-      "type": "new",
-      "id": "Bagi pengelola situs, setiap artikel blog kini punya halaman detail yang menampilkan ringkasan, tanggal, tag, kategori, dan pratinjau isinya.",
-      "en": "For site administrators, every blog post now has a detail page showing its summary, date, tags, category, and a content preview."
-    },
-    {
-      "type": "new",
-      "id": "Bagi pengelola situs, artikel yang dibuat otomatis ditandai dengan label khusus di daftar blog, sehingga mudah dibedakan dari yang ditulis manual.",
-      "en": "For site administrators, automatically written articles now carry a special label in the blog list, making them easy to tell apart from manually written ones."
-    },
-    {
-      "type": "new",
-      "id": "Bagi pengelola situs, halaman proyek kini punya pemilih kegiatan untuk membuat laporan kerja: bisa rentang tanggal, sebagian kegiatan, atau full semua, lalu diunduh sebagai berkas Word yang siap dibuka di aplikasi dokumen atau dicetak disimpan sebagai PDF.",
-      "en": "For site administrators, each project page now has an activity picker to build a work report: by date range, a few selected activities, or all of them, downloaded as a Word file ready to open in a document app or printed and saved as PDF."
-    },
-    {
-      "type": "fix",
-      "id": "Perbaikan kegagalan sinkron tampilan saat halaman dimuat ulang: notifikasi persetujuan kini muncul dan hilang dengan rapi tanpa membuat halaman terasa tersendat atau tampil dobel.",
-      "en": "Fixed a transient rendering glitch on page reload: the consent notice now appears and clears smoothly without making the page stutter or render inconsistently."
-    },
-    {
-      "type": "fix",
-      "id": "Tanggal 'terbaru diperbarui' pada kartu proyek kini dihitung per hari (Hari ini/Kemarin/n hari yang lalu), sehingga tidak ada lagi kartu yang menampilkan waktu yang terasa salah atau berubah sendiri.",
-      "en": "The 'last updated' stamp on project cards is now calculated in whole days (Today/Yesterday/n days ago), so no card shows a time that feels off or shifts on its own."
-    },
-    {
-      "type": "fix",
-      "id": "Perbaikan tampilan halaman resume: pindah halaman dokumen kini stabil tanpa gangguan saat dokumen baru saja selesai dimuat.",
-      "en": "Resume page display fix: moving between document pages now stays stable without interruption when the document has just finished loading."
-    },
-    {
-      "type": "new",
-      "id": "Bagi pengelola situs, formulir proyek kini memakai pemilih stack berbentuk tombol: cukup klik stack yang dikuasai, dan stack baru bisa ditambah langsung dari dalam formulir.",
-      "en": "For site administrators, the project form now uses a button-style stack picker: just click the stacks mastered, and new stacks can be added right from the form."
-    },
-    {
-      "type": "new",
-      "id": "Bagi pengelola situs, kini tersedia tab Stack khusus untuk mengatur daftar teknologi yang dikuasai: tambah, ubah, sembunyikan, hapus, dan lihat berapa proyek yang memakainya.",
-      "en": "For site administrators, a dedicated Stacks tab is now available to manage the mastered technologies: add, edit, hide, delete, and see how many projects use each stack."
-    },
-    {
-      "type": "new",
-      "id": "Bagi pengelola situs, setiap proyek kini punya pilihan repositori Publik atau Privat: proyek dengan status Privat terus tampil di daftar, tetapi tombol GitHub disembunyikan dari pengunjung.",
-      "en": "For site administrators, every project now has a Public or Private repository choice: projects marked Private still appear in the list, but their GitHub button is hidden from visitors."
-    },
-    {
-      "type": "new",
-      "id": "Bagi pengelola situs, selain repositori, tautan situs live proyek juga kini punya pilihan Publik atau Privat sendiri — cocok untuk situs yang hanya boleh diketahui kalangan instansi tertentu.",
-      "en": "For site administrators, in addition to the repository, the project's live site link now has its own Public or Private choice — handy for sites that should only be known within a certain institution."
+      "id": "Artikel harian otomatis kini mengulas perkembangan teknologi dan AI terkini dari sumber terpercaya (artikel perdana: \"Ketika Algoritma dan AI Mulai Mengatur Urusan Perumahan\").",
+      "en": "Daily automatic articles now cover recent tech and AI developments from trusted sources (inaugural post: \"When Algorithms and AI Take Over Neighborhood Management\")."
     },
     {
       "type": "improvement",
-      "id": "Halaman pengelolaan proyek dan blog diperapikan: tabel dan formulir dipisah ke berkas sendiri sehingga lebih mudah diubah tanpa risiko merusak bagian lain.",
-      "en": "The project and blog management pages are tidied: tables and forms now live in separate files, making them easier to update without risking other parts."
+      "id": "Bilah penyaring tulisan di layar ponsel kini tersusun rapi ke bawah, memudahkan penjelajahan kategori, tag, dan jumlah artikel per halaman tanpa terpotong.",
+      "en": "The post filter bar on mobile screens is now neatly stacked vertically, making it easy to browse categories, tags, and articles per page without clipping."
+    },
+    {
+      "type": "new",
+      "id": "Bagi pengelola situs, tersedia pembuat laporan kerja terintegrasi yang dapat diunduh sebagai dokumen Word atau disimpan sebagai PDF dengan pilihan rentang kegiatan.",
+      "en": "For site administrators, an integrated work report builder is now available, downloadable as a Word document or saved as PDF with custom date ranges."
+    },
+    {
+      "type": "new",
+      "id": "Bagi pengelola situs, kini tersedia tab pengaturan stack teknologi serta pengaturan visibilitas Publik/Privat terpisah untuk repositori dan tautan situs proyek.",
+      "en": "For site administrators, a dedicated tech stack manager is now available along with separate Public/Private visibility controls for project repositories and live links."
+    },
+    {
+      "type": "new",
+      "id": "Bagi pengelola situs, daftar artikel kini memiliki halaman rincian lengkap dengan pratinjau isi serta penanda khusus untuk tulisan yang dibuat otomatis.",
+      "en": "For site administrators, the article list now includes a detailed preview page and a special badge identifying automated posts."
     },
     {
       "type": "improvement",
-      "id": "Bagi pengelola situs, daftar proyek di halaman pengelolaan kini urut berdasarkan kegiatan terbaru sehingga proyek yang paling aktif tampil paling atas.",
-      "en": "For site administrators, the project list in the management area is now ordered by latest activity, so the most active projects appear first."
+      "id": "Urutan proyek kini memprioritaskan pembaruan paling aktif di urutan teratas, lengkap dengan label waktu hari berjalan yang akurat.",
+      "en": "Project lists now highlight the most active updates at the top, complete with accurate relative day labels."
+    },
+    {
+      "type": "fix",
+      "id": "Penyempurnaan kenyamanan tampilan: notifikasi persetujuan kini tampil dan ditutup tanpa jeda, serta pembaca dokumen resume lebih stabil saat dimuat.",
+      "en": "Visual experience polish: the consent notice now shows and dismisses smoothly, and the resume viewer stays stable during loading."
     }
   ]
 }

@@ -10,9 +10,10 @@ export function BlogsSkeleton({ count }: { count: number }) {
     <div className="flex flex-col -mt-6" aria-hidden="true">
       <div className="flex flex-wrap sm:flex-nowrap sm:justify-end gap-3 pb-6">
         <Skeleton className="h-9 w-full sm:flex-1 min-w-0" />
-        <div className="flex w-full sm:w-auto gap-3">
+        <div className="flex flex-col sm:flex-row w-full sm:w-auto gap-2 sm:gap-3">
+          <Skeleton className="h-9 w-full sm:w-32" />
+          <Skeleton className="h-9 w-full sm:w-20" />
           <Skeleton className="h-9 w-full sm:w-28" />
-          <Skeleton className="h-9 w-full sm:w-36" />
         </div>
       </div>
 
