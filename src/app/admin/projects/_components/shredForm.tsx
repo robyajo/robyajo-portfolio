@@ -3,7 +3,7 @@ import { useForm, type Control } from "react-hook-form";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { z } from "zod";
 import { isHttpUrl } from "@/lib/links-schema";
-import { projectInputSchema } from "@/lib/projects-schema";
+import { projectInputSchema, PROJECT_LIMITS, type ProjectMetric } from "@/lib/projects-schema";
 import type { AdminStackRow } from "@/app/admin/actions";
 import {
   Form,
@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/dialog";
 import { useDictionary } from "@/lib/i18n/provider";
 import { EyeIcon, CheckIcon, CopyIcon, PlusIcon } from "@/components/shared/icons";
-import { TypographyMuted } from "@/components/ui/typography";
+import { TypographyMuted, TypographySmall } from "@/components/ui/typography";
 import { generateSyncKey, slugifyTitle } from "@/lib/sync-keys";
 import { stackSlug } from "@/lib/project-stacks-schema";
 import type { ActionResult } from "@/lib/action-result";
@@ -45,6 +45,12 @@ const projectFormSchema = z.object({
   liveVisibility: z.enum(["public", "private"]),
   github: optionalUrlField,
   repoVisibility: z.enum(["public", "private"]),
+  period: z.string().trim().max(PROJECT_LIMITS.period),
+  problem: z.string().trim().max(PROJECT_LIMITS.caseStudy),
+  role: z.string().trim().max(PROJECT_LIMITS.caseStudy),
+  outcome: z.string().trim().max(PROJECT_LIMITS.caseStudy),
+  metrics: z.string(),
+  gallery: z.string(),
 });
 
 export type ProjectFormData = z.input<typeof projectFormSchema>;
@@ -54,6 +60,36 @@ export function parseProjectHighlights(raw: string): string[] {
     .split(",")
     .map((s) => s.trim())
     .filter(Boolean);
+}
+
+/** One metric per line, formatted as "Label: value". */
+export function parseProjectMetrics(raw: string): ProjectMetric[] {
+  return raw
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line) => {
+      const separator = line.indexOf(":");
+      if (separator === -1) return { label: line, value: line };
+      return {
+        label: line.slice(0, separator).trim(),
+        value: line.slice(separator + 1).trim(),
+      };
+    })
+    .filter((metric) => metric.label !== "" && metric.value !== "")
+    .slice(0, PROJECT_LIMITS.metrics);
+}
+
+export function formatProjectMetrics(metrics: ProjectMetric[]): string {
+  return metrics.map((metric) => `${metric.label}: ${metric.value}`).join("\n");
+}
+
+export function parseProjectGallery(raw: string): string[] {
+  return raw
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .slice(0, PROJECT_LIMITS.gallery);
 }
 
 function StackPicker({
@@ -513,6 +549,129 @@ export function ProjectForm({
             disabled={submitting}
           />
         ))}
+        <div className="flex flex-col gap-4 border-t pt-4">
+          <div>
+            <TypographySmall>{t.caseStudyHeading}</TypographySmall>
+            <p className="text-xs text-muted-foreground">
+              {t.caseStudyHint}
+            </p>
+          </div>
+          <FormField
+            control={form.control}
+            name="period"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t.periodLabel}</FormLabel>
+                <FormControl>
+                  <Input
+                    autoComplete="off"
+                    {...field}
+                    placeholder={t.periodPlaceholder}
+                    disabled={submitting}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="problem"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t.problemLabel}</FormLabel>
+                <FormControl>
+                  <Textarea
+                    {...field}
+                    placeholder={t.problemPlaceholder}
+                    rows={3}
+                    className="resize-none"
+                    disabled={submitting}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="role"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t.roleLabel}</FormLabel>
+                <FormControl>
+                  <Textarea
+                    {...field}
+                    placeholder={t.rolePlaceholder}
+                    rows={3}
+                    className="resize-none"
+                    disabled={submitting}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="outcome"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t.outcomeLabel}</FormLabel>
+                <FormControl>
+                  <Textarea
+                    {...field}
+                    placeholder={t.outcomePlaceholder}
+                    rows={3}
+                    className="resize-none"
+                    disabled={submitting}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="metrics"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t.metricsLabel}</FormLabel>
+                <FormControl>
+                  <Textarea
+                    {...field}
+                    placeholder={t.metricsPlaceholder}
+                    rows={3}
+                    className="resize-none"
+                    disabled={submitting}
+                  />
+                </FormControl>
+                <FormDescription>{t.metricsHint}</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="gallery"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t.galleryLabel}</FormLabel>
+                <FormControl>
+                  <Textarea
+                    {...field}
+                    placeholder={t.galleryPlaceholder}
+                    rows={3}
+                    className="resize-none"
+                    disabled={submitting}
+                  />
+                </FormControl>
+                <FormDescription>{t.galleryHint}</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
         <DialogFooter>
           <Button
             type="button"

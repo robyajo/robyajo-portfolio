@@ -1,16 +1,31 @@
 {
     "date": "2026-10-20",
-    "type": "improvement",
+    "type": "feature",
     "status": "published",
     "title": {
-        "id": "Panduan Tampilan Baru dan Informasi Artikel yang Lebih Jelas",
-        "en": "New Visual Guide and Clearer Article Information"
+        "id": "Panduan Tampilan, Studi Kasus Proyek, dan Penyaring Teknologi",
+        "en": "Visual Guide, Project Case Studies, and Stack Filtering"
     },
     "body": {
-        "id": "Pembaruan hari ini memastikan pratinjau tautan selalu menampilkan identitas situs yang benar, memberi penanda pada artikel berbantuan kecerdasan buatan, serta memperjelas tanggal, bahasa, dan kategori artikel di mesin pencari maupun pembaca berita.",
-        "en": "Today's update makes shared link previews show the correct site identity, labels AI-assisted articles, and clarifies article dates, languages, and categories in search engines and news readers."
+        "id": "Pembaruan hari ini menambah cerita di balik setiap proyek — masalah, peran, hasil, metrik, dan galeri — serta penyaring berdasarkan teknologi. Pratinjau tautan, label artikel berbantuan kecerdasan buatan, dan informasi tanggal/bahasa juga dirapikan.",
+        "en": "Today's update adds the story behind each project — problem, role, outcome, metrics, and gallery — plus filtering by technology. Link previews, AI-assisted article labels, and date/language information were cleaned up as well."
     },
     "items": [
+        {
+            "type": "new",
+            "id": "Setiap halaman proyek kini dapat memuat studi kasus: masalah yang dihadapi, peran saya, hasil yang dicapai, periode pengerjaan, metrik dampak, dan galeri tangkapan layar.",
+            "en": "Each project page can now carry a case study: the problem, my role, the outcome, the period, impact metrics, and a screenshot gallery."
+        },
+        {
+            "type": "new",
+            "id": "Halaman daftar proyek kini dapat disaring berdasarkan teknologi yang dipakai, sehingga pengunjung cepat menemukan karya yang relevan.",
+            "en": "The project list can now be filtered by the technology used, so visitors can quickly find relevant work."
+        },
+        {
+            "type": "improvement",
+            "id": "Panel pengelolaan proyek menyediakan kolom baru untuk mengisi studi kasus dan tautan tangkapan layar; bagian yang dibiarkan kosong tidak ditampilkan ke publik.",
+            "en": "The project management panel gained fields for the case study and screenshot links; any part left empty stays hidden from the public."
+        },
         {
             "type": "new",
             "id": "Penanda “Bantuan AI” kini tampil pada artikel yang disusun dengan bantuan kecerdasan buatan, sehingga pembaca mengetahui bagaimana tulisan itu dibuat.",

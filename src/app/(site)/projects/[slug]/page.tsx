@@ -4,9 +4,11 @@ import { Section } from "@/components/layouts/page";
 import { JsonLd } from "@/components/shared/json-ld";
 import {
   TypographyH1,
+  TypographyH2,
   TypographyLead,
   TypographyMark,
   TypographyMuted,
+  TypographyP,
 } from "@/components/ui/typography";
 import { ActivityFeed } from "@/app/(site)/_components/activity-feed";
 import { ActivityFeedSkeleton } from "@/app/(site)/_components/activity-feed-skeleton";
@@ -55,6 +57,15 @@ export default async function ProjectDetailPage({ params }: Props) {
   const admin = await isAdmin();
   await trackProjectView(project.id);
   const views = await getProjectViewCount(project.id);
+  const caseStudyBlocks = [
+    { label: content.problemLabel, body: project.problem },
+    { label: content.roleLabel, body: project.role },
+    { label: content.outcomeLabel, body: project.outcome },
+  ].filter((block) => block.body);
+  const hasCaseStudy =
+    caseStudyBlocks.length > 0 ||
+    project.metrics.length > 0 ||
+    project.gallery.length > 0;
 
   return (
     <>
@@ -91,6 +102,83 @@ export default async function ProjectDetailPage({ params }: Props) {
           )}
         </HeroWithArt>
       </Section>
+
+      {hasCaseStudy && (
+        <Section aria-label={content.caseStudyAria}>
+          <div className="flex flex-col gap-10">
+            <div className="flex flex-wrap items-baseline justify-between gap-3">
+              <TypographyH2>{content.caseStudyTitle}</TypographyH2>
+              {project.period && (
+                <span className="font-mono text-xs text-muted-foreground">
+                  {project.period}
+                </span>
+              )}
+            </div>
+
+            {caseStudyBlocks.length > 0 && (
+              <div className="grid gap-8 border-t pt-8 md:grid-cols-3">
+                {caseStudyBlocks.map((block) => (
+                  <div key={block.label} className="space-y-3">
+                    <h3 className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
+                      {block.label}
+                    </h3>
+                    <TypographyP>{block.body}</TypographyP>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {project.metrics.length > 0 && (
+              <ul
+                aria-label={content.metricsAria}
+                className="grid grid-cols-2 gap-3 sm:grid-cols-3"
+              >
+                {project.metrics.map((metric) => (
+                  <li
+                    key={`${metric.label}-${metric.value}`}
+                    className="rounded-panel border bg-card p-4"
+                  >
+                    <p className="font-display text-2xl font-semibold tracking-tight">
+                      {metric.value}
+                    </p>
+                    <p className="mt-1 font-mono text-xs text-muted-foreground">
+                      {metric.label}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {project.gallery.length > 0 && (
+              <ul
+                aria-label={content.galleryAria}
+                className="grid gap-3 sm:grid-cols-2"
+              >
+                {project.gallery.map((src, index) => (
+                  <li key={src}>
+                    <a
+                      href={src}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block overflow-hidden rounded-panel border bg-muted"
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={src}
+                        alt={content.galleryAlt
+                          .replace("{n}", String(index + 1))
+                          .replace("{title}", project.title)}
+                        loading="lazy"
+                        className="aspect-video w-full object-cover"
+                      />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </Section>
+      )}
 
       {project.syncKey ? (
         <Suspense fallback={<ActivityFeedSkeleton count={3} />}>

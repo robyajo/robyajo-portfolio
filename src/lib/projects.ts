@@ -13,6 +13,12 @@ export type Project = {
     syncKey: string | null;
     description: string;
     highlights: string[];
+    problem: string | null;
+    role: string | null;
+    outcome: string | null;
+    period: string | null;
+    metrics: { label: string; value: string }[];
+    gallery: string[];
     live: string | null;
     liveVisibility: string;
     github: string | null;
@@ -32,6 +38,12 @@ export const getPublicProjects = unstable_cache(
                 syncKey: projectsTable.syncKey,
                 description: projectsTable.description,
                 highlights: projectsTable.highlights,
+                problem: projectsTable.problem,
+                role: projectsTable.role,
+                outcome: projectsTable.outcome,
+                period: projectsTable.period,
+                metrics: projectsTable.metrics,
+                gallery: projectsTable.gallery,
                 live: projectsTable.live,
                 liveVisibility: projectsTable.liveVisibility,
                 github: projectsTable.github,
@@ -67,6 +79,12 @@ export const getPublicProjectsByActivity = unstable_cache(
                 syncKey: projectsTable.syncKey,
                 description: projectsTable.description,
                 highlights: projectsTable.highlights,
+                problem: projectsTable.problem,
+                role: projectsTable.role,
+                outcome: projectsTable.outcome,
+                period: projectsTable.period,
+                metrics: projectsTable.metrics,
+                gallery: projectsTable.gallery,
                 live: projectsTable.live,
                 liveVisibility: projectsTable.liveVisibility,
                 github: projectsTable.github,
@@ -102,6 +120,12 @@ export const getProjectBySlug = cache(
             syncKey: projectsTable.syncKey,
             description: projectsTable.description,
             highlights: projectsTable.highlights,
+            problem: projectsTable.problem,
+            role: projectsTable.role,
+            outcome: projectsTable.outcome,
+            period: projectsTable.period,
+            metrics: projectsTable.metrics,
+            gallery: projectsTable.gallery,
             live: projectsTable.live,
             liveVisibility: projectsTable.liveVisibility,
             github: projectsTable.github,

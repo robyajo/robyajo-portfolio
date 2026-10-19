@@ -186,6 +186,12 @@ export type ProjectRow = {
     syncKey: string | null;
     description: string;
     highlights: string[];
+    problem: string | null;
+    role: string | null;
+    outcome: string | null;
+    period: string | null;
+    metrics: { label: string; value: string }[];
+    gallery: string[];
     live: string | null;
     liveVisibility: string;
     github: string | null;
@@ -236,6 +242,12 @@ async function loadAdminProjects(): Promise<ProjectRow[]> {
             syncKey: projects.syncKey,
             description: projects.description,
             highlights: projects.highlights,
+            problem: projects.problem,
+            role: projects.role,
+            outcome: projects.outcome,
+            period: projects.period,
+            metrics: projects.metrics,
+            gallery: projects.gallery,
             live: projects.live,
             liveVisibility: projects.liveVisibility,
             github: projects.github,

@@ -29,7 +29,7 @@ Source code for [ajoroby.is-a.dev](https://ajoroby.is-a.dev): portfolio, blog, d
 | ---------------------------- | ------------------------------------------------------------------------------------------------------------------- |
 | `/`                          | Hero with doodles, project teasers, latest post, guestbook rotator                                                  |
 | `/blogs`, `/blogs/*`         | MDX posts via [fumadocs](https://fumadocs.dev), isometric covers, reading time, anonymous reactions, view counts, threaded comments |
-| `/projects`                  | Pulled from the database, not a hardcoded array; ordered and toggled from the admin                                 |
+| `/projects`                  | Pulled from the database, not a hardcoded array; ordered and toggled from the admin, with an optional case study (problem, role, outcome, metrics, gallery) and filtering by stack |
 | `/resume`                    | PDF rendered inline with react-pdf, streamed from the latest GitHub release; `/api/resume/download` saves it         |
 | `/guestbook`                 | OAuth-authenticated messages (GitHub/Google) with likes, pinning, and soft delete                                 |
 | `/branding`                  | Type scale, logo downloads (SVG or PNG, 16 to 512 px), the doodle set, and a live OG preview                         |
@@ -159,7 +159,7 @@ Every post gets an isometric cover. Give it a bespoke scene by adding the slug t
 
 ## Admin
 
-`/admin` is gated on `OWNER_USER_ID` matching the signed-in OAuth user. There's no role system, just the one ID. It gives you stats, blog post management (create/edit/delete, category, tags, optional English version), project CRUD with ordering and stack picker, comment and guestbook moderation (pin, soft delete), short-link management, visitor stats, and a button to bust the cached resume PDF. Without OAuth configured, `/admin` redirects to `/`.
+`/admin` is gated on `OWNER_USER_ID` matching the signed-in OAuth user. There's no role system, just the one ID. It gives you stats, blog post management (create/edit/delete, category, tags, optional English version), project CRUD with ordering, stack picker, and case-study fields, comment and guestbook moderation (pin, soft delete), short-link management, visitor stats, and a button to bust the cached resume PDF. Without OAuth configured, `/admin` redirects to `/`.
 
 ---
 

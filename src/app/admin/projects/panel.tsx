@@ -48,7 +48,10 @@ import {
 import { ProjectActivities } from "@/app/admin/projects/activities";
 import {
     ProjectForm,
+    formatProjectMetrics,
+    parseProjectGallery,
     parseProjectHighlights,
+    parseProjectMetrics,
     type ProjectFormData,
 } from "@/app/admin/projects/_components/shredForm";
 import { ProjectTable } from "@/app/admin/projects/_components/project-table";
@@ -127,6 +130,12 @@ export function ProjectsPanel() {
             liveVisibility: form.liveVisibility,
             github: form.github.trim() || null,
             repoVisibility: form.repoVisibility,
+            problem: form.problem.trim(),
+            role: form.role.trim(),
+            outcome: form.outcome.trim(),
+            period: form.period.trim(),
+            metrics: parseProjectMetrics(form.metrics),
+            gallery: parseProjectGallery(form.gallery),
         });
     }
 
@@ -265,6 +274,14 @@ export function ProjectsPanel() {
                                           editTarget.repoVisibility === "private"
                                               ? "private"
                                               : "public",
+                                      period: editTarget.period ?? "",
+                                      problem: editTarget.problem ?? "",
+                                      role: editTarget.role ?? "",
+                                      outcome: editTarget.outcome ?? "",
+                                      metrics: formatProjectMetrics(
+                                          editTarget.metrics,
+                                      ),
+                                      gallery: editTarget.gallery.join("\n"),
                                   }
                                 : {
                                       title: "",
@@ -276,6 +293,12 @@ export function ProjectsPanel() {
                                       liveVisibility: "public",
                                       github: "",
                                       repoVisibility: "public",
+                                      period: "",
+                                      problem: "",
+                                      role: "",
+                                      outcome: "",
+                                      metrics: "",
+                                      gallery: "",
                                   }
                         }
                         onSubmit={handleFormSubmit}

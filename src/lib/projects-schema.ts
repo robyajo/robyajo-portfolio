@@ -9,6 +9,13 @@ export const PROJECT_LIMITS = {
   highlight: 300,
   highlights: 12,
   url: 512,
+  caseStudy: 2000,
+  period: 64,
+  metricLabel: 40,
+  metricValue: 40,
+  metrics: 6,
+  gallery: 8,
+  galleryUrl: 1024,
 } as const;
 
 const slugField = z
@@ -39,6 +46,57 @@ const optionalUrl = z
   })
   .transform((v) => (v === "" ? null : v))
   .nullable();
+
+const optionalCaseStudyText = z
+  .string()
+  .trim()
+  .max(
+    PROJECT_LIMITS.caseStudy,
+    `Case study text must be ${PROJECT_LIMITS.caseStudy} characters or fewer.`,
+  )
+  .transform((v) => (v === "" ? null : v))
+  .nullable()
+  .default(null);
+
+const periodField = z
+  .string()
+  .trim()
+  .max(PROJECT_LIMITS.period, `Period must be ${PROJECT_LIMITS.period} characters or fewer.`)
+  .transform((v) => (v === "" ? null : v))
+  .nullable()
+  .default(null);
+
+const galleryUrl = z
+  .string()
+  .trim()
+  .max(
+    PROJECT_LIMITS.galleryUrl,
+    `Screenshot URL must be ${PROJECT_LIMITS.galleryUrl} characters or fewer.`,
+  )
+  .refine((v) => isHttpUrl(v), {
+    message: "Screenshot URL must be a valid http(s):// URL.",
+  });
+
+export const projectMetricSchema = z.object({
+  label: z
+    .string()
+    .trim()
+    .min(1, "Metric label is required.")
+    .max(
+      PROJECT_LIMITS.metricLabel,
+      `Metric label must be ${PROJECT_LIMITS.metricLabel} characters or fewer.`,
+    ),
+  value: z
+    .string()
+    .trim()
+    .min(1, "Metric value is required.")
+    .max(
+      PROJECT_LIMITS.metricValue,
+      `Metric value must be ${PROJECT_LIMITS.metricValue} characters or fewer.`,
+    ),
+});
+
+export type ProjectMetric = z.infer<typeof projectMetricSchema>;
 
 export const projectInputSchema = z.object({
   title: z
@@ -77,6 +135,18 @@ export const projectInputSchema = z.object({
       message: "Repo visibility must be public or private.",
     })
     .default("public"),
+  problem: optionalCaseStudyText,
+  role: optionalCaseStudyText,
+  outcome: optionalCaseStudyText,
+  period: periodField,
+  metrics: z
+    .array(projectMetricSchema)
+    .max(PROJECT_LIMITS.metrics, `Too many metrics (max ${PROJECT_LIMITS.metrics}).`)
+    .default([]),
+  gallery: z
+    .array(galleryUrl)
+    .max(PROJECT_LIMITS.gallery, `Too many screenshots (max ${PROJECT_LIMITS.gallery}).`)
+    .default([]),
 });
 
 export type ProjectInput = z.infer<typeof projectInputSchema>;

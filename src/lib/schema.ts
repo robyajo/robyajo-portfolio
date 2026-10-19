@@ -7,6 +7,7 @@ import {
     serial,
     boolean,
     text,
+    jsonb,
     date,
     integer,
     unique,
@@ -263,6 +264,20 @@ export const projects = pgTable(
         syncKey: varchar("sync_key", { length: 64 }),
         description: text("description").notNull(),
         highlights: text("highlights").array().notNull().default(sql`'{}'::text[]`),
+        /** Case study: the problem this project solved. */
+        problem: text("problem"),
+        /** Case study: what the owner personally did. */
+        role: text("role"),
+        /** Case study: the measurable or visible result. */
+        outcome: text("outcome"),
+        period: varchar("period", { length: 64 }),
+        /** Short impact metrics, e.g. [{ label: "Response time", value: "-40%" }]. */
+        metrics: jsonb("metrics")
+            .$type<{ label: string; value: string }[]>()
+            .notNull()
+            .default(sql`'[]'::jsonb`),
+        /** Screenshot URLs shown as a gallery on the project page. */
+        gallery: text("gallery").array().notNull().default(sql`'{}'::text[]`),
         live: varchar("live", { length: 512 }),
         /** Status tautan live — "private" menyembunyikan tautan demo publik. */
         liveVisibility: varchar("live_visibility", { length: 16 })

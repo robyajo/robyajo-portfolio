@@ -29,7 +29,12 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
-export default async function ProjectsPage() {
+interface Props {
+  searchParams: Promise<{ stack?: string }>;
+}
+
+export default async function ProjectsPage({ searchParams }: Props) {
+  const { stack } = await searchParams;
   const page = (await getDictionary()).projectsPage;
   return (
     <>
@@ -51,7 +56,7 @@ export default async function ProjectsPage() {
       </Section>
       <Section variant="flush" aria-label={page.listAria}>
         <Suspense fallback={<ProjectsSkeleton count={6} />}>
-          <ProjectGrid />
+          <ProjectGrid showFilters activeStack={stack} />
         </Suspense>
       </Section>
     </>

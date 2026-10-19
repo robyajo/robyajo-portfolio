@@ -23,17 +23,23 @@ import { padIndex } from "@/lib/text";
 import type { Route } from "next";
 import { Suspense } from "react";
 import { getPublicProjectsByActivity } from "@/lib/projects";
+import { stackSlug } from "@/lib/project-stacks-schema";
 import { getDictionary, getLocale } from "@/lib/i18n/server";
 import { dayAgoLabel } from "@/lib/date";
 import { unstable_rethrow } from "next/navigation";
 
 export async function ProjectGrid({
     headingLevel = "h2",
+    showFilters = false,
+    activeStack,
 }: {
     headingLevel?: "h2" | "h3";
+    showFilters?: boolean;
+    activeStack?: string;
 }) {
     const dict = await getDictionary();
     const content = dict.home.projects;
+    const page = dict.projectsPage;
     const detail = dict.projectsDetail;
     const locale = await getLocale();
     let projects: Awaited<ReturnType<typeof getPublicProjectsByActivity>>;
@@ -45,6 +51,34 @@ export async function ProjectGrid({
     projects = [];
   }
 
+  const stackNames = Array.from(
+    new Set(projects.flatMap((project) => project.highlights)),
+  ).sort((a, b) => a.localeCompare(b));
+  const activeSlug = showFilters && activeStack ? activeStack : null;
+  const visible = activeSlug
+    ? projects.filter((project) =>
+        project.highlights.some((highlight) => stackSlug(highlight) === activeSlug),
+      )
+    : projects;
+
+  const filters = showFilters && stackNames.length > 0 && (
+    <nav aria-label={page.filterAria} className="mb-8 flex flex-wrap gap-2">
+      <Button asChild size="sm" variant={activeSlug ? "outline" : "default"}>
+        <Link href="/projects">{page.filterAll}</Link>
+      </Button>
+      {stackNames.map((name) => (
+        <Button
+          key={name}
+          asChild
+          size="sm"
+          variant={activeSlug === stackSlug(name) ? "default" : "outline"}
+        >
+          <Link href={`/projects?stack=${stackSlug(name)}`}>{name}</Link>
+        </Button>
+      ))}
+    </nav>
+  );
+
   if (projects.length === 0) {
     return (
       <TypographyMuted className="py-12 text-center font-mono text-sm">
@@ -53,9 +87,22 @@ export async function ProjectGrid({
     );
   }
 
+  if (visible.length === 0) {
+    return (
+      <>
+        {filters}
+        <TypographyMuted className="py-12 text-center font-mono text-sm">
+          {page.filterEmpty}
+        </TypographyMuted>
+      </>
+    );
+  }
+
   return (
-    <CardGrid>
-      {projects.map((project, index) => (
+    <>
+      {filters}
+      <CardGrid>
+      {visible.map((project, index) => (
         <CardGridItem key={project.title}>
           <SectionLabel pixel className="absolute top-4 right-4 @sm:top-6 @sm:right-6">
             No.{padIndex(index + 1)}
@@ -153,7 +200,8 @@ export async function ProjectGrid({
           </Reveal>
         </CardGridItem>
       ))}
-    </CardGrid>
+      </CardGrid>
+    </>
   );
 }
 
