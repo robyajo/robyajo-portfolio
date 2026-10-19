@@ -1,12 +1,15 @@
 {
   "slugs": [
-    "ketika-algoritma-mulai-mengatur-perumahan"
+    "ketika-algoritma-mulai-mengatur-perumahan",
+    "openbsd-driver-grafis-dan-dilema-keamanan-kernel"
   ],
   "titles": [
-    "Ketika Algoritma dan AI Mulai Mengatur Urusan Perumahan"
+    "Ketika Algoritma dan AI Mulai Mengatur Urusan Perumahan",
+    "Driver Grafis Modern di OpenBSD dan Dilema Keamanan Kita"
   ],
   "topics": [
-    "Florida's HOAs and condo associations are making the housing crisis worse"
+    "Florida's HOAs and condo associations are making the housing crisis worse",
+    "OpenBSD 8.0 release will have inteldrm/radeondrm/amdgpu drivers from Linux 6.18"
   ],
-  "lastPublishedDate": "2026-10-19"
+  "lastPublishedDate": "2026-10-20"
 }
