@@ -12,6 +12,11 @@
   },
   "items": [
     {
+      "type": "new",
+      "id": "Tulisan baru: \"Driver Grafis Modern di OpenBSD dan Dilema Keamanan Kita\". Selengkapnya di https://ajoroby.is-a.dev/blogs/openbsd-driver-grafis-dan-dilema-keamanan-kernel",
+      "en": "New article: \"Modern Graphics Drivers on OpenBSD and Our Kernel Security Dilemma\". Read it at https://ajoroby.is-a.dev/blogs/openbsd-driver-grafis-dan-dilema-keamanan-kernel"
+    },
+    {
       "type": "improvement",
       "id": "Halaman Tentang kini menautkan formulir kontak, dan ringkasan situs untuk alat bantu mencantumkan seluruh halaman utama.",
       "en": "The About page now links to the contact form, and the machine-readable site summary lists every main page."
@@ -110,11 +115,6 @@
       "type": "new",
       "id": "Setiap halaman proyek kini dapat memuat studi kasus: masalah yang dihadapi, peran saya, hasil yang dicapai, periode pengerjaan, metrik dampak, dan galeri tangkapan layar.",
       "en": "Each project page can now carry a case study: the problem, my role, the outcome, the period, impact metrics, and a screenshot gallery."
-    },
-    {
-      "type": "new",
-      "id": "Tulisan baru: \"Driver Grafis Modern di OpenBSD dan Dilema Keamanan Kita\". Selengkapnya di https://ajoroby.is-a.dev/blogs/openbsd-driver-grafis-dan-dilema-keamanan-kernel",
-      "en": "New article: \"Modern Graphics Drivers on OpenBSD and Our Kernel Security Dilemma\". Read it at https://ajoroby.is-a.dev/blogs/openbsd-driver-grafis-dan-dilema-keamanan-kernel"
     }
   ]
 }
