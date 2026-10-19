@@ -782,6 +782,10 @@ const en: Dictionary = {
       home: "Home",
       headerAria: "Post header",
       published: "Published",
+      aiBadge: "AI assisted",
+      aiBadgeTitle:
+        "This article was written with the help of artificial intelligence.",
+
       updated: "Updated",
       minRead: "{n} min read",
       readOne: "read",

@@ -1,0 +1,45 @@
+{
+    "date": "2026-10-20",
+    "type": "improvement",
+    "status": "published",
+    "title": {
+        "id": "Panduan Tampilan Baru dan Informasi Artikel yang Lebih Jelas",
+        "en": "New Visual Guide and Clearer Article Information"
+    },
+    "body": {
+        "id": "Pembaruan hari ini memastikan pratinjau tautan selalu menampilkan identitas situs yang benar, memberi penanda pada artikel berbantuan kecerdasan buatan, serta memperjelas tanggal, bahasa, dan kategori artikel di mesin pencari maupun pembaca berita.",
+        "en": "Today's update makes shared link previews show the correct site identity, labels AI-assisted articles, and clarifies article dates, languages, and categories in search engines and news readers."
+    },
+    "items": [
+        {
+            "type": "new",
+            "id": "Penanda “Bantuan AI” kini tampil pada artikel yang disusun dengan bantuan kecerdasan buatan, sehingga pembaca mengetahui bagaimana tulisan itu dibuat.",
+            "en": "An “AI assisted” label now appears on articles written with artificial intelligence, so readers know how the piece was produced."
+        },
+        {
+            "type": "fix",
+            "id": "Pratinjau tautan saat artikel dibagikan ke media sosial kini memakai nama, alamat situs, dan peran pemilik situs yang benar.",
+            "en": "Link previews when articles are shared on social media now use the owner's correct name, site address, and role."
+        },
+        {
+            "type": "improvement",
+            "id": "Peta situs kini mencantumkan tanggal pembaruan yang sebenarnya dan menautkan versi bahasa Indonesia–Inggris, memudahkan mesin pencari menampilkan halaman yang tepat.",
+            "en": "The site map now lists real update dates and links Indonesian–English versions, helping search engines surface the right page."
+        },
+        {
+            "type": "improvement",
+            "id": "Sumber berita langganan kini menyatakan bahasa Indonesia serta mencantumkan nama penulis dan kategori setiap artikel.",
+            "en": "The subscription news feed now declares Indonesian and includes the author and categories for every article."
+        },
+        {
+            "type": "fix",
+            "id": "Tautan versi teks artikel pada ringkasan situs kini mengarah ke halaman teks yang benar, sehingga pembaca dan alat bantu tidak lagi mendarat di halaman kosong.",
+            "en": "Article text links in the site summary now point to the correct text page, so readers and assistive tools no longer land on an empty page."
+        },
+        {
+            "type": "new",
+            "id": "Panduan tampilan situs dibakukan agar warna, huruf, dan tata letak tetap konsisten di setiap halaman baru.",
+            "en": "The site's visual guide is now standardized so colors, type, and layout stay consistent on every new page."
+        }
+    ]
+}

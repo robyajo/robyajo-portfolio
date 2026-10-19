@@ -7,23 +7,39 @@ import { toISOString } from "@/lib/date";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const now = new Date();
 
-    const blogPages = source.getPages().map((page) => ({
-        url: `${siteConfig.baseUrl}${page.url}`,
-        lastModified: page.data.lastModified
-            ? toISOString(page.data.lastModified)
-            : page.data.date
-                ? toISOString(page.data.date)
-                : now,
-        changeFrequency: "monthly" as const,
-        priority: 0.7,
-    }));
+    const blogPages = source.getPages().map((page) => {
+        const sibling = page.data.translation
+            ? source.getPage([page.data.translation])
+            : undefined;
+        const languages: Record<string, string> = {};
+
+        if (page.data.lang && sibling?.data.lang) {
+            languages[page.data.lang] = `${siteConfig.baseUrl}${page.url}`;
+            languages[sibling.data.lang] = `${siteConfig.baseUrl}${sibling.url}`;
+            languages["x-default"] = languages.id ?? languages.en;
+        }
+
+        return {
+            url: `${siteConfig.baseUrl}${page.url}`,
+            lastModified: page.data.lastModified
+                ? toISOString(page.data.lastModified)
+                : page.data.date
+                    ? toISOString(page.data.date)
+                    : now,
+            changeFrequency: "monthly" as const,
+            priority: 0.7,
+            ...(Object.keys(languages).length > 0
+                ? { alternates: { languages } }
+                : {}),
+        };
+    });
 
     let projectPages: MetadataRoute.Sitemap = [];
     try {
         const projects = await getPublicProjects();
         projectPages = projects.map((p) => ({
             url: `${siteConfig.baseUrl}/projects/${p.slug}`,
-            lastModified: now,
+            lastModified: toISOString(p.updatedAt),
             changeFrequency: "weekly" as const,
             priority: 0.8,
         }));

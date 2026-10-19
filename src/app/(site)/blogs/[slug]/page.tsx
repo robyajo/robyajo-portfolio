@@ -18,6 +18,7 @@ import { BlogPostNav } from "@/components/layouts/blog-nav";
 import { Section } from "@/components/layouts/page";
 import { JsonLd } from "@/components/shared/json-ld";
 import { Signature } from "@/components/ui/signature";
+import { Badge } from "@/components/ui/badge";
 import {
   TypographyH1,
   TypographyLead,
@@ -167,6 +168,11 @@ export default async function Page(props: {
                 </Link>
               </TypographyMuted>
             </address>
+            {page.data.author === "autopilot" && (
+              <Badge variant="neutral" size="tiny" title={post.aiBadgeTitle}>
+                {post.aiBadge}
+              </Badge>
+            )}
             {page.data.date && (
               <TypographyMuted className="font-mono text-xs flex items-center gap-1.5">
                 <CalendarIcon className="size-3.5 shrink-0" aria-hidden="true" />

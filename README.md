@@ -28,18 +28,18 @@ Source code for [ajoroby.is-a.dev](https://ajoroby.is-a.dev): portfolio, blog, d
 | Route                        | What it does                                                                                                        |
 | ---------------------------- | ------------------------------------------------------------------------------------------------------------------- |
 | `/`                          | Hero with doodles, project teasers, latest post, guestbook rotator                                                  |
-| `/blogs`, `/blog/*`          | MDX posts via [fumadocs](https://fumadocs.dev), isometric covers, reading time, anonymous reactions, view counts, threaded comments |
+| `/blogs`, `/blogs/*`         | MDX posts via [fumadocs](https://fumadocs.dev), isometric covers, reading time, anonymous reactions, view counts, threaded comments |
 | `/projects`                  | Pulled from the database, not a hardcoded array; ordered and toggled from the admin                                 |
 | `/resume`                    | PDF rendered inline with react-pdf, streamed from the latest GitHub release; `/api/resume/download` saves it         |
 | `/guestbook`                 | OAuth-authenticated messages (GitHub/Google) with likes, pinning, and soft delete                                 |
 | `/branding`                  | Type scale, logo downloads (SVG or PNG, 16 to 512 px), the doodle set, and a live OG preview                         |
 | `/privacy-policy`            | What gets stored, where, and why                                                                                     |
-| `/admin/*`                   | Owner-only dashboard for comments, guestbook, links, and projects                                                    |
+| `/admin/*`                   | Owner-only dashboard for posts, projects and stacks, comments, guestbook, short links, and visitor stats            |
 | `/og`                        | Generated OpenGraph cards with the isometric mascot ([takumi](https://github.com/kane50613/takumi), not Satori)      |
 | `/svg`                       | SVG cards for GitHub READMEs: headings, posts, activity, calendar, guestbook and more                                |
 | `/blogs/latest`              | Redirects to the newest post, so a README link always matches the post card                                          |
-| `/feed.xml`                  | RSS 2.0 feed of every post, linked from page metadata for autodiscovery                                              |
-| `/llms.txt`                  | Machine-readable site summary; every post also serves raw MDX at `/blog/<slug>.mdx`                                  |
+| `/feed.xml`                  | RSS 2.0 feed of Indonesian posts, linked from page metadata for autodiscovery                                        |
+| `/llms.txt`                  | Machine-readable site summary; every post also serves raw MDX at `/blogs/<slug>.mdx`                                 |
 | `/sitemap.xml`, `/robots.txt`| The sitemap is built from the post source, so new posts show up without touching it                                  |
 | `/<slug>`                    | Short-link resolver with click counts (lihat bagian Short links)                                                     |
 
@@ -129,7 +129,7 @@ pnpm db:seed:guestbook:cleanup  # remove seeded entries
 pnpm db:seed:links              # seed short links
 ```
 
-CI ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs `types:check` and `test` on every push to `main` and every PR, with a read-only token. Lint and knip are local-only for now.
+CI ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) runs `types:check` and `test` on every push to `master` and every PR, with a read-only token. Lint and knip are local-only for now.
 
 ---
 
@@ -159,7 +159,7 @@ Every post gets an isometric cover. Give it a bespoke scene by adding the slug t
 
 ## Admin
 
-`/admin` is gated on `OWNER_USER_ID` matching the signed-in OAuth user. There's no role system, just the one ID. It gives you stats, comment and guestbook moderation (pin, soft delete), project CRUD with ordering, short-link management, and a button to bust the cached resume PDF. Without OAuth configured, `/admin` redirects to `/`.
+`/admin` is gated on `OWNER_USER_ID` matching the signed-in OAuth user. There's no role system, just the one ID. It gives you stats, blog post management (create/edit/delete, category, tags, optional English version), project CRUD with ordering and stack picker, comment and guestbook moderation (pin, soft delete), short-link management, visitor stats, and a button to bust the cached resume PDF. Without OAuth configured, `/admin` redirects to `/`.
 
 ---
 
@@ -260,7 +260,6 @@ Target: Vercel, project `robyajo-portfolio`.
 - [ ] Artwork README `.github/banner-*.svg`, `.github/license-*.svg`
 - [ ] `LICENSE.md` — masih atas nama penulis template; putuskan lisensi repo ini
 - [ ] `src/app/(site)/privacy-policy/page.tsx` — tulis sesuai setup sendiri
-- [ ] `src/app/og/route.tsx` — fallback nama/domain/role
 - [ ] Cek lisensi `public/fonts/LastoriaBoldRegular.otf` sebelum dipakai produksi
 - [ ] Upload resume PDF ke GitHub release repo ini (`siteConfig.resumeURL`)
 

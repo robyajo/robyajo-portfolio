@@ -37,6 +37,14 @@ export function GET() {
                 );
             }
 
+            parts.push(
+                `            <dc:creator>${escapeXml(siteConfig.name)}</dc:creator>`,
+            );
+
+            for (const tag of page.data.tags ?? []) {
+                parts.push(`            <category>${escapeXml(tag)}</category>`);
+            }
+
             return `        <item>
 ${parts.join("\n")}
         </item>`;
@@ -46,12 +54,12 @@ ${parts.join("\n")}
     const feedUrl = `${siteConfig.baseUrl}/feed.xml`;
 
     const body = `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
     <channel>
         <title>${escapeXml(siteConfig.name)}</title>
         <link>${escapeXml(siteConfig.baseUrl)}</link>
         <description>${escapeXml(siteConfig.description)}</description>
-        <language>en-US</language>
+        <language>id-ID</language>
         <atom:link href="${escapeXml(feedUrl)}" rel="self" type="application/rss+xml"/>
 ${items}
     </channel>

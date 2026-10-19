@@ -38,7 +38,7 @@ Konten: `content/blog/*.mdx` (4 postingan, frontmatter `title/description/date/t
 | Teknologi | Versi | Kegunaan di app ini |
 |---|---|---|
 | `@neondatabase/serverless` | ^1.1.0 | Driver Postgres serverless (Neon); dipakai di `src/lib/db.ts` + script seeding |
-| `drizzle-orm` | ^0.45.3 | Query builder + skema (`src/lib/schema.ts`): 10 tabel — `blog_posts`, `blog_reactions`, `blog_reads`, `guestbook_entries`, `guestbook_likes`, `blog_comments`, `blog_comment_likes`, `projects`, `links`, `link_slugs` |
+| `drizzle-orm` | ^0.45.3 | Query builder + skema (`src/lib/schema.ts`): 19 tabel — `users`, `sync_projects`, `activities`, `blog_posts`, `blog_categories`, `blog_tags`, `blog_reactions`, `blog_reads`, `project_views`, `guestbook_entries`, `guestbook_likes`, `blog_comments`, `blog_comment_likes`, `projects`, `project_stacks`, `links`, `link_slugs`, `visitors`, `visitor_days` |
 | `drizzle-kit` | ^0.31.11 | CLI migrasi: `db:migrate`, `db:push`, `db:studio`; output ke `drizzle/` |
 
 > Catatan: `src/lib/db.ts` dibuat lazy-init agar `next build` dan runtime tetap jalan tanpa `DATABASE_URL`; query baca dibungkus `safeQuery()` (`src/lib/safe-query.ts`) dengan fallback kosong.
@@ -96,7 +96,7 @@ Konten: `content/blog/*.mdx` (4 postingan, frontmatter `title/description/date/t
 |---|---|---|
 | Blog + RSS/LLM (`/feed.xml`, `/llms.txt`, `/blog/*.mdx`) | fumadocs, MDX | `src/app/(site)/blog`, `content/blog` |
 | Guestbook + komentar/like blog | NextAuth, Neon, react-query, react-virtual | `src/app/(site)/guestbook`, `.../blog/[[...slug]]` |
-| Panel admin (`/admin/*`: overview, guestbook, comments, projects, links) | NextAuth (owner-only), react-table, react-hook-form | `src/app/admin` |
+| Panel admin (`/admin/*`: overview, blog, guestbook, comments, projects + stacks, links, visitors) | NextAuth (owner-only), react-table, react-hook-form | `src/app/admin` |
 | Shortlink multi-domain | `SHORTLINK_DOMAIN` di `src/proxy.ts` + tabel `links`/`link_slugs` | `src/app/[...link]` |
 | Kartu SVG dinamis + playground (`/svg`, `/svg/preview`) | takumi-js, zod | `src/app/svg`, `src/lib/svg` |
 | Download resume (`/api/resume*`) | react-pdf, Neon (cache) | `src/app/api/resume` |

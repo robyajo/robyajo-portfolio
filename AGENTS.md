@@ -8,6 +8,14 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 <!-- END:nextjs-agent-rules -->
 
+## Design system
+
+Sebelum mengubah UI, baca `DESIGN.md` (token, tipografi, aturan komponen). Sumber
+kebenaran visual adalah `src/app/global.css`; jika token berubah di sana, perbarui
+`DESIGN.md` juga dan validasi dengan `npx @google/design.md lint DESIGN.md`
+(0 error). Jangan menambah warna/gradient/shadow di luar token, dan jangan menimpa
+tipografi, spacing, atau warna komponen design-system lewat `className`.
+
 ## Neon setup
 
 Set up this app on Neon.

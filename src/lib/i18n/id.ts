@@ -784,6 +784,10 @@ const id = {
       home: "Beranda",
       headerAria: "Kepala tulisan",
       published: "Diterbitkan",
+      aiBadge: "Bantuan AI",
+      aiBadgeTitle:
+        "Artikel ini disusun dengan bantuan kecerdasan buatan.",
+
       updated: "Diperbarui",
       minRead: "{n} mnt baca",
       readOne: "dibaca",

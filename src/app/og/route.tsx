@@ -1,4 +1,5 @@
 import { OG_SIZE, OGImage } from "@/components/shared/OG";
+import { siteConfig } from "@/lib/config";
 import { loadFonts } from "@/lib/svg/fonts";
 import { ImageResponse } from "takumi-js/response";
 import type { NextRequest } from "next/server";
@@ -21,23 +22,18 @@ function getParam(
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
 
-  const title = getParam(
-    searchParams,
-    "title",
-    "Designing scalable frontend systems",
-    100,
-  );
+  const title = getParam(searchParams, "title", siteConfig.name, 100);
   const description = getParam(
     searchParams,
     "description",
-    "Exploring the intersection of performance, architecture, and UX.",
+    siteConfig.description,
     180,
   );
-  const name = getParam(searchParams, "name", "Anish Shobith P S", 40);
-  const domain = getParam(searchParams, "domain", "anishshobithps.com", 50);
-  const path = getParam(searchParams, "path", "home / blog", 60);
-  const role = getParam(searchParams, "role", "Software Developer", 50);
-  const availableForHire = searchParams.get("available") !== "false";
+  const name = getParam(searchParams, "name", siteConfig.name, 40);
+  const domain = getParam(searchParams, "domain", siteConfig.domain, 50);
+  const path = getParam(searchParams, "path", "home", 60);
+  const role = getParam(searchParams, "role", siteConfig.role, 50);
+  const availableForHire = siteConfig.availableForHire && searchParams.get("available") !== "false";
   const tags = (searchParams.get("tags")?.split(",") ?? [])
     .map((tag) => tag.trim())
     .filter(Boolean)
