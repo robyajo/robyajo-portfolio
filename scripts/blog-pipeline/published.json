@@ -1,15 +1,18 @@
 {
   "slugs": [
     "ketika-algoritma-mulai-mengatur-perumahan",
-    "openbsd-driver-grafis-dan-dilema-keamanan-kernel"
+    "openbsd-driver-grafis-dan-dilema-keamanan-kernel",
+    "pure-functional-programming-vs-c-realitas-performa"
   ],
   "titles": [
     "Ketika Algoritma dan AI Mulai Mengatur Urusan Perumahan",
-    "Driver Grafis Modern di OpenBSD dan Dilema Keamanan Kita"
+    "Driver Grafis Modern di OpenBSD dan Dilema Keamanan Kita",
+    "Seberapa Dekat Pemrograman Fungsional Murni Menandingi C?"
   ],
   "topics": [
     "Florida's HOAs and condo associations are making the housing crisis worse",
-    "OpenBSD 8.0 release will have inteldrm/radeondrm/amdgpu drivers from Linux 6.18"
+    "OpenBSD 8.0 release will have inteldrm/radeondrm/amdgpu drivers from Linux 6.18",
+    "How close can pure functional programming get to C?"
   ],
-  "lastPublishedDate": "2026-10-20"
+  "lastPublishedDate": "2026-10-24"
 }

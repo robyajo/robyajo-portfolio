@@ -1,24 +1,29 @@
 {
-    "date": "2026-10-24",
-    "type": "fix",
-    "title": {
-        "id": "Catatan kegiatan tersimpan utuh",
-        "en": "Activity details are preserved"
+  "date": "2026-10-24",
+  "type": "fix",
+  "title": {
+    "id": "Catatan kegiatan tersimpan utuh",
+    "en": "Activity details are preserved"
+  },
+  "body": {
+    "id": "Ringkasan dan seluruh rincian kegiatan kini dapat tersimpan utuh dengan kapasitas yang lebih luas. Artikel terbaru: \"Seberapa Dekat Pemrograman Fungsional Murni Menandingi C?\".",
+    "en": "Activity summaries and details can now be preserved more fully with expanded capacity. Latest article: \"How Close Can Pure Functional Programming Get to C?\"."
+  },
+  "items": [
+    {
+      "type": "fix",
+      "id": "Kiriman yang terlalu panjang kini diberi pemberitahuan, bukan dipotong tanpa diketahui.",
+      "en": "Overlong submissions now receive a clear notice instead of being silently cut off."
     },
-    "body": {
-        "id": "Ringkasan dan seluruh rincian kegiatan kini dapat tersimpan utuh dengan kapasitas yang lebih luas.",
-        "en": "Activity summaries and details can now be preserved more fully with expanded capacity."
+    {
+      "type": "improvement",
+      "id": "Lebih banyak rincian, termasuk catatan panjang, dapat tersimpan utuh dalam satu kegiatan.",
+      "en": "More details, including longer notes, can now be preserved in a single activity."
     },
-    "items": [
-        {
-            "type": "fix",
-            "id": "Kiriman yang terlalu panjang kini diberi pemberitahuan, bukan dipotong tanpa diketahui.",
-            "en": "Overlong submissions now receive a clear notice instead of being silently cut off."
-        },
-        {
-            "type": "improvement",
-            "id": "Lebih banyak rincian, termasuk catatan panjang, dapat tersimpan utuh dalam satu kegiatan.",
-            "en": "More details, including longer notes, can now be preserved in a single activity."
-        }
-    ]
+    {
+      "type": "new",
+      "id": "Tulisan baru: \"Seberapa Dekat Pemrograman Fungsional Murni Menandingi C?\". Selengkapnya di https://ajoroby.is-a.dev/blogs/pure-functional-programming-vs-c-realitas-performa",
+      "en": "New article: \"How Close Can Pure Functional Programming Get to C?\". Read it at https://ajoroby.is-a.dev/blogs/pure-functional-programming-vs-c-realitas-performa"
+    }
+  ]
 }
