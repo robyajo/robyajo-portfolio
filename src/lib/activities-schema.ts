@@ -192,8 +192,8 @@ export function normalizeActivityPayload(raw: unknown): unknown {
         source: typeof source === "string" && source.trim() ? source.trim() : undefined,
         title: input.title,
         body: {
-            id: bodyId.slice(0, ACTIVITY_LIMITS.body),
-            en: bodyEn.slice(0, ACTIVITY_LIMITS.body),
+            id: bodyId,
+            en: bodyEn,
         },
         url: input.url,
         occurred_at: occurredAt,

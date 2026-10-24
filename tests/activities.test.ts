@@ -161,18 +161,34 @@ describe("activityIngestSchema — bentuk berkas rilis", () => {
         }
     });
 
-    it("truncates an overlong body composed from items", () => {
+    it("preserves all items when the composed body fits the limit", () => {
+        const firstItem = "x".repeat(1992);
         const parsed = activityIngestSchema.safeParse({
             title: { id: "J", en: "T" },
-            items: Array.from({ length: 200 }, (_, i) => ({
-                id: `butir ${i} ${"x".repeat(30)}`,
-                en: `bullet ${i} ${"x".repeat(30)}`,
-            })),
+            body: { id: "R", en: "S" },
+            items: [
+                { id: firstItem, en: "y".repeat(1992) },
+                { id: "A", en: "B" },
+            ],
         });
+
         expect(parsed.success).toBe(true);
         if (parsed.success) {
-            expect((parsed.data.body?.id ?? "").length).toBeLessThanOrEqual(2000);
+            expect(parsed.data.body?.id).toContain(firstItem);
+            expect(parsed.data.body?.id).toContain("- A");
+            expect(parsed.data.body?.id).toHaveLength(2000);
+            expect(parsed.data.body?.en).toContain("- B");
         }
+    });
+
+    it("rejects a composed body over the limit instead of truncating items", () => {
+        const parsed = activityIngestSchema.safeParse({
+            title: { id: "J", en: "T" },
+            body: { id: "Ringkasan", en: "Summary" },
+            items: [{ id: "x".repeat(2000), en: "y".repeat(2000) }],
+        });
+
+        expect(parsed.success).toBe(false);
     });
 
     it("falls back to unknown types as update", () => {

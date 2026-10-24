@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-24",
+  "type": "fix",
+  "title": {
+    "id": "Catatan kegiatan tersimpan utuh",
+    "en": "Activity details are preserved"
+  },
+  "body": {
+    "id": "Ringkasan dan seluruh rincian kegiatan kini dipertahankan bersama selama muat dalam kapasitas yang tersedia.",
+    "en": "Activity summaries and all details are now preserved together when they fit within the available capacity."
+  },
+  "items": [
+    {
+      "type": "fix",
+      "id": "Kiriman yang terlalu panjang kini diberi pemberitahuan, bukan dipotong tanpa diketahui.",
+      "en": "Overlong submissions now receive a clear notice instead of being silently cut off."
+    }
+  ]
+}

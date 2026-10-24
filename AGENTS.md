@@ -100,8 +100,10 @@ tak terlihat pengguna: jangan kirim.
    di folder `.agents/skills/activity-sync/` — JANGAN commit berkas kunci ke
    git, JANGAN tampilkan ke user kecuali diminta.
 4. Setiap kiriman wajib dwibahasa (`id` + `en`), maksimal 300 karakter judul /
-   2000 karakter isi, bahasa pelayanan publik (dilarang menyebut library,
-   framework, database, file kode, atau mekanisme internal).
+   2000 karakter isi gabungan `body` + seluruh `items[]` per bahasa, dengan bahasa
+   pelayanan publik (dilarang menyebut library, framework, database, file kode,
+   atau mekanisme internal). Semua rincian harus dikirim; API menolak total yang
+   melebihi batas, bukan memotong isinya diam-diam.
 5. Untuk rilis lama yang belum terkirim: ikuti `DOCS/sync/activity-sync/backfill.md`.
 6. Laporkan ke user: apa yang dikirim (id baris), hasil verifikasi, dan apa
    pun yang gagal.
