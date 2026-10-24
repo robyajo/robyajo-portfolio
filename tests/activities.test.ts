@@ -161,31 +161,45 @@ describe("activityIngestSchema — bentuk berkas rilis", () => {
         }
     });
 
-    it("preserves all items when the composed body fits the limit", () => {
-        const firstItem = "x".repeat(1992);
+    it("accepts all 19 details when the composed bodies are about 4,000 characters", () => {
+        const items = Array.from({ length: 19 }, (_, index) => ({
+            id: "Rincian " + index + " " + "i".repeat(200),
+            en: "Details " + index + " " + "e".repeat(200),
+        }));
         const parsed = activityIngestSchema.safeParse({
             title: { id: "J", en: "T" },
-            body: { id: "R", en: "S" },
-            items: [
-                { id: firstItem, en: "y".repeat(1992) },
-                { id: "A", en: "B" },
-            ],
+            body: { id: "Ringkasan", en: "Summary" },
+            items,
         });
 
         expect(parsed.success).toBe(true);
         if (parsed.success) {
-            expect(parsed.data.body?.id).toContain(firstItem);
-            expect(parsed.data.body?.id).toContain("- A");
-            expect(parsed.data.body?.id).toHaveLength(2000);
-            expect(parsed.data.body?.en).toContain("- B");
+            expect(parsed.data.body?.id?.length ?? 0).toBeGreaterThan(2000);
+            expect(parsed.data.body?.id?.length ?? 0).toBeLessThanOrEqual(10000);
+            expect(parsed.data.body?.id).toContain("Rincian 18");
+            expect(parsed.data.body?.en).toContain("Details 18");
         }
     });
 
-    it("rejects a composed body over the limit instead of truncating items", () => {
+    it("accepts bodies exactly at the new 10,000-character limit", () => {
         const parsed = activityIngestSchema.safeParse({
             title: { id: "J", en: "T" },
-            body: { id: "Ringkasan", en: "Summary" },
-            items: [{ id: "x".repeat(2000), en: "y".repeat(2000) }],
+            body: { id: "R", en: "S" },
+            items: [{ id: "x".repeat(9996), en: "y".repeat(9996) }],
+        });
+
+        expect(parsed.success).toBe(true);
+        if (parsed.success) {
+            expect(parsed.data.body?.id).toHaveLength(10000);
+            expect(parsed.data.body?.en).toHaveLength(10000);
+        }
+    });
+
+    it("rejects composed bodies above the new limit instead of truncating them", () => {
+        const parsed = activityIngestSchema.safeParse({
+            title: { id: "J", en: "T" },
+            body: { id: "R", en: "S" },
+            items: [{ id: "x".repeat(9997), en: "y".repeat(9997) }],
         });
 
         expect(parsed.success).toBe(false);

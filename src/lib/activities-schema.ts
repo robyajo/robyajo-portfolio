@@ -20,7 +20,8 @@ export const ACTIVITY_LIMITS = {
     projectKey: 64,
     projectName: 256,
     title: 300,
-    body: 2000,
+    body: 10_000,
+    projectDescription: 2000,
     url: 2048,
     limit: 50,
 } as const;
@@ -32,7 +33,7 @@ const activityCanonicalSchema = z.object({
         .object({
             name: z.string().trim().min(1).max(ACTIVITY_LIMITS.projectName).optional(),
             url: z.string().trim().max(ACTIVITY_LIMITS.url).optional().or(z.literal("")),
-            description: z.string().trim().max(ACTIVITY_LIMITS.body).optional().or(z.literal("")),
+            description: z.string().trim().max(ACTIVITY_LIMITS.projectDescription).optional().or(z.literal("")),
         })
         .optional(),
     /** Id stabil dari pengirim (mis. nama berkas rilis) — bila sama, baris DIUPDATE. */
