@@ -23,10 +23,10 @@ import { padIndex } from "@/lib/text";
 import type { Route } from "next";
 import { Suspense } from "react";
 import { getPublicProjectsByActivity } from "@/lib/projects";
-import { stackSlug } from "@/lib/project-stacks-schema";
 import { getDictionary, getLocale } from "@/lib/i18n/server";
 import { dayAgoLabel } from "@/lib/date";
 import { unstable_rethrow } from "next/navigation";
+import { ProjectsClient } from "@/app/(site)/projects/projects-client";
 
 export async function ProjectGrid({
     headingLevel = "h2",
@@ -39,7 +39,6 @@ export async function ProjectGrid({
 }) {
     const dict = await getDictionary();
     const content = dict.home.projects;
-    const page = dict.projectsPage;
     const detail = dict.projectsDetail;
     const locale = await getLocale();
     let projects: Awaited<ReturnType<typeof getPublicProjectsByActivity>>;
@@ -51,205 +50,163 @@ export async function ProjectGrid({
         projects = [];
     }
 
-    const stackNames = Array.from(
-        new Set(projects.flatMap((project) => project.highlights)),
-    ).sort((a, b) => a.localeCompare(b));
-    const activeSlug = showFilters && activeStack ? activeStack : null;
-    const visible = activeSlug
-        ? projects.filter((project) =>
-              project.highlights.some(
-                  (highlight) => stackSlug(highlight) === activeSlug,
-              ),
-          )
-        : projects;
-
-    const filters = showFilters && stackNames.length > 0 && (
-        <nav aria-label={page.filterAria} className="my-8 flex flex-wrap gap-2">
-            <Button
-                asChild
-                size="sm"
-                variant={activeSlug ? "outline" : "default"}
-            >
-                <Link href="/projects">{page.filterAll}</Link>
-            </Button>
-            {stackNames.map((name) => (
-                <Button
-                    key={name}
-                    asChild
-                    size="sm"
-                    variant={
-                        activeSlug === stackSlug(name) ? "default" : "outline"
-                    }
-                >
-                    <Link href={`/projects?stack=${stackSlug(name)}`}>
-                        {name}
-                    </Link>
-                </Button>
-            ))}
-        </nav>
-    );
-
     if (projects.length === 0) {
         return (
-            <TypographyMuted className="py-12 text-center font-mono text-sm">
+            <div className="py-12 text-center font-mono text-sm text-muted-foreground">
                 {content.empty}
-            </TypographyMuted>
+            </div>
         );
     }
 
-    if (visible.length === 0) {
+    if (showFilters) {
         return (
-            <>
-                {filters}
-                <TypographyMuted className="py-12 text-center font-mono text-sm">
-                    {page.filterEmpty}
-                </TypographyMuted>
-            </>
+            <ProjectsClient
+                projects={projects}
+                initialStack={activeStack}
+            />
         );
     }
 
     return (
-        <>
-            {filters}
-            <CardGrid>
-                {visible.map((project, index) => (
-                    <CardGridItem key={project.title}>
-                        <SectionLabel
-                            pixel
-                            className="absolute top-4 right-4 @sm:top-6 @sm:right-6"
+        <CardGrid>
+            {projects.map((project, index) => (
+                <CardGridItem key={project.title}>
+                    <SectionLabel
+                        pixel
+                        className="absolute top-4 right-4 @sm:top-6 @sm:right-6"
+                    >
+                        No.{padIndex(index + 1)}
+                    </SectionLabel>
+                    <Reveal delay={index * 90}>
+                        <article
+                            className="space-y-4"
+                            aria-label={project.title}
                         >
-                            No.{padIndex(index + 1)}
-                        </SectionLabel>
-                        <Reveal delay={index * 90}>
-                            <article
-                                className="space-y-4"
-                                aria-label={project.title}
-                            >
+                            <div className="pr-14">
                                 <Heading
                                     as={headingLevel}
                                     level="h2"
-                                    className="pr-14 text-xl"
                                 >
                                     {project.title}
                                 </Heading>
-                                <TypographyMuted className="leading-relaxed">
-                                    {project.description}
-                                </TypographyMuted>
-                                <TypographyMuted className="font-mono text-xs tracking-wide opacity-60">
-                                    {project.lastActivityAt
-                                        ? `Updated ${dayAgoLabel(new Date(project.lastActivityAt).toISOString(), locale)}`
-                                        : "No activity yet"}
-                                    {" · "}
-                                    {project.viewCount}{" "}
-                                    {project.viewCount === 1
-                                        ? content.visitorOne
-                                        : content.visitorMany}
-                                </TypographyMuted>
-                                <ul
-                                    role="list"
-                                    aria-label={content.techAria}
-                                    className="flex flex-wrap gap-2 pt-2"
-                                >
-                                    {project.highlights.map((tag) => (
-                                        <li key={tag}>
-                                            <Badge variant="outline">
-                                                {tag}
-                                            </Badge>
-                                        </li>
-                                    ))}
-                                </ul>
-                                <nav
-                                    aria-label={`${content.linksFor} ${project.title}`}
-                                    className="pt-4"
-                                >
-                                    <ButtonGroup>
-                                        <Button
-                                            asChild
-                                            size="sm"
-                                            variant="default"
-                                        >
-                                            <Link
-                                                href={
-                                                    `/projects/${project.slug}` as Route
-                                                }
-                                                aria-label={detail.detailAria.replace(
-                                                    "{title}",
-                                                    project.title,
-                                                )}
-                                            >
-                                                <ArrowUpRightIcon
-                                                    data-icon="inline-start"
-                                                    className="size-4"
-                                                    aria-hidden="true"
-                                                />
-                                                <span>{detail.detail}</span>
-                                            </Link>
-                                        </Button>
-                                        <ButtonGroupSeparator />
-                                        {project.liveVisibility !== "private" &&
-                                            project.live && (
-                                                <>
-                                                    <Button
-                                                        asChild
-                                                        size="sm"
-                                                        variant="default"
-                                                    >
-                                                        <Link
-                                                            href={
-                                                                project.live as Route
-                                                            }
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            aria-label={`${content.liveAria} ${project.title}`}
-                                                        >
-                                                            <ArrowUpRightIcon
-                                                                data-icon="inline-start"
-                                                                className="size-4"
-                                                                aria-hidden="true"
-                                                            />
-
-                                                            <span>
-                                                                {content.live}
-                                                            </span>
-                                                        </Link>
-                                                    </Button>
-                                                    <ButtonGroupSeparator />
-                                                </>
+                            </div>
+                            <TypographyMuted>
+                                {project.description}
+                            </TypographyMuted>
+                            <p className="font-mono text-xs tracking-wide opacity-60 text-muted-foreground">
+                                {project.lastActivityAt
+                                    ? `Updated ${dayAgoLabel(new Date(project.lastActivityAt).toISOString(), locale)}`
+                                    : "No activity yet"}
+                                {" · "}
+                                {project.viewCount}{" "}
+                                {project.viewCount === 1
+                                    ? content.visitorOne
+                                    : content.visitorMany}
+                            </p>
+                            <ul
+                                role="list"
+                                aria-label={content.techAria}
+                                className="flex flex-wrap gap-2 pt-2"
+                            >
+                                {project.highlights.map((tag) => (
+                                    <li key={tag}>
+                                        <Badge variant="outline">
+                                            {tag}
+                                        </Badge>
+                                    </li>
+                                ))}
+                            </ul>
+                            <nav
+                                aria-label={`${content.linksFor} ${project.title}`}
+                                className="pt-4"
+                            >
+                                <ButtonGroup>
+                                    <Button
+                                        asChild
+                                        size="sm"
+                                        variant="default"
+                                    >
+                                        <Link
+                                            href={
+                                                `/projects/${project.slug}` as Route
+                                            }
+                                            aria-label={detail.detailAria.replace(
+                                                "{title}",
+                                                project.title,
                                             )}
-                                        {project.repoVisibility !== "private" &&
-                                            project.github && (
+                                        >
+                                            <ArrowUpRightIcon
+                                                data-icon="inline-start"
+                                                className="size-4"
+                                                aria-hidden="true"
+                                            />
+                                            <span>{detail.detail}</span>
+                                        </Link>
+                                    </Button>
+                                    <ButtonGroupSeparator />
+                                    {project.liveVisibility !== "private" &&
+                                        project.live && (
+                                            <>
                                                 <Button
                                                     asChild
                                                     size="sm"
-                                                    variant="outline"
+                                                    variant="default"
                                                 >
                                                     <Link
                                                         href={
-                                                            project.github as Route
+                                                            project.live as Route
                                                         }
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        aria-label={`${content.githubAria} ${project.title}`}
+                                                        aria-label={`${content.liveAria} ${project.title}`}
                                                     >
-                                                        <GithubLogoIcon
+                                                        <ArrowUpRightIcon
                                                             data-icon="inline-start"
                                                             className="size-4"
                                                             aria-hidden="true"
                                                         />
-                                                        <span aria-hidden="true">
-                                                            GitHub
+
+                                                        <span>
+                                                            {content.live}
                                                         </span>
                                                     </Link>
                                                 </Button>
-                                            )}
-                                    </ButtonGroup>
-                                </nav>
-                            </article>
-                        </Reveal>
-                    </CardGridItem>
-                ))}
-            </CardGrid>
-        </>
+                                                <ButtonGroupSeparator />
+                                            </>
+                                        )}
+                                    {project.repoVisibility !== "private" &&
+                                        project.github && (
+                                            <Button
+                                                asChild
+                                                size="sm"
+                                                variant="outline"
+                                            >
+                                                <Link
+                                                    href={
+                                                        project.github as Route
+                                                    }
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    aria-label={`${content.githubAria} ${project.title}`}
+                                                >
+                                                    <GithubLogoIcon
+                                                        data-icon="inline-start"
+                                                        className="size-4"
+                                                        aria-hidden="true"
+                                                    />
+                                                    <span aria-hidden="true">
+                                                        GitHub
+                                                    </span>
+                                                </Link>
+                                            </Button>
+                                        )}
+                                </ButtonGroup>
+                            </nav>
+                        </article>
+                    </Reveal>
+                </CardGridItem>
+            ))}
+        </CardGrid>
     );
 }
 
@@ -280,7 +237,7 @@ export async function BuiltThings() {
                     <TypographyMark>{content.moreHighlight}</TypographyMark>{" "}
                     {content.moreSuffix}
                 </TypographyLead>
-                <Button asChild size="lg" className="rounded-lg font-semibold">
+                <Button asChild size="lg">
                     <Link
                         href="https://github.com/robyajo"
                         target="_blank"

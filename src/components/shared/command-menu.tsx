@@ -26,6 +26,7 @@ import {
   LinkedinLogoIcon,
   MoonIcon,
   PencilIcon,
+  RobotIcon,
   SunIcon,
   UserIcon,
   XLogoIcon,
@@ -37,6 +38,7 @@ import {
   subscribeCommandMenu,
   toggleCommandMenu,
 } from "@/lib/command-menu-store";
+import { setChatOpen } from "@/lib/chat-store";
 import { siteConfig } from "@/lib/config";
 import type { SearchEntry, SearchIndex } from "@/lib/search-index";
 import { useIsMac } from "@/hooks/use-is-mac";
@@ -98,35 +100,36 @@ export function CommandMenu({ index }: { index: SearchIndex }) {
   const [query, setQuery] = useState("");
   const dict = useDictionary();
   const palette = dict.palette;
+  const router = useRouter();
+  const { setTheme, resolvedTheme } = useTheme();
+  const isMac = useIsMac();
   const open = useSyncExternalStore(
     subscribeCommandMenu,
     getCommandMenuOpen,
     getCommandMenuServerSnapshot,
   );
-  const router = useRouter();
-  const { setTheme } = useTheme();
-  const isMac = useIsMac();
-  const themeShortcut = isMac ? "⇧⌘D" : "Ctrl+Shift+D";
 
   useEffect(() => {
-    function onKeyDown(event: KeyboardEvent) {
-      const isCmdOrCtrlK =
-        event.key.toLowerCase() === "k" && (event.metaKey || event.ctrlKey);
-      if (!isCmdOrCtrlK || isEditableTarget(event.target)) return;
-
-      event.preventDefault();
-      toggleCommandMenu();
-    }
-
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (
+        (event.metaKey || event.ctrlKey) &&
+        (event.key === "k" || event.key === "K")
+      ) {
+        if (isEditableTarget(event.target)) return;
+        event.preventDefault();
+        toggleCommandMenu();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  const runCommand = useCallback((action: () => void) => {
+  const runCommand = useCallback((callback: () => void) => {
     setCommandMenuOpen(false);
-    setQuery("");
-    action();
+    callback();
   }, []);
+
+  const themeShortcut = resolvedTheme === "dark" ? "light" : "dark";
 
   return (
     <CommandDialog
@@ -186,6 +189,17 @@ export function CommandMenu({ index }: { index: SearchIndex }) {
         <CommandSeparator />
 
         <CommandGroup heading={palette.actions}>
+          <CommandItem
+            onSelect={() =>
+              runCommand(() => {
+                setChatOpen(true);
+              })
+            }
+          >
+            <RobotIcon aria-hidden="true" />
+            {dict.chat.title}
+            <CommandShortcut>AI</CommandShortcut>
+          </CommandItem>
           <CommandItem
             onSelect={() => runCommand(() => setTheme("light"))}
           >

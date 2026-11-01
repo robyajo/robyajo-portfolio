@@ -19,24 +19,17 @@ import {
 } from "@/app/admin/actions";
 import { Button } from "@/components/ui/button";
 import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import {
     Dialog,
     DialogContent,
     DialogDescription,
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
-import { PlusIcon, FolderOpenIcon } from "@/components/shared/icons";
+import {
+    PlusIcon,
+    FolderOpenIcon,
+    ArrowCounterClockwiseIcon,
+} from "@/components/shared/icons";
 import {
     Empty,
     EmptyContent,
@@ -45,7 +38,6 @@ import {
     EmptyMedia,
     EmptyTitle,
 } from "@/components/ui/empty";
-import { ProjectActivities } from "@/app/admin/projects/activities";
 import {
     ProjectForm,
     formatProjectMetrics,
@@ -55,6 +47,7 @@ import {
     type ProjectFormData,
 } from "@/app/admin/projects/_components/shredForm";
 import { ProjectTable } from "@/app/admin/projects/_components/project-table";
+import { ProjectFilter } from "@/app/admin/projects/_components/project-filter";
 import { TypographyMuted, TypographySmall } from "@/components/ui/typography";
 
 export function ProjectsPanel() {
@@ -73,6 +66,10 @@ export function ProjectsPanel() {
     }>({ open: false, target: null });
     const dialogOpen = dialog.open;
     const editTarget = dialog.target;
+
+    const [search, setSearch] = useState("");
+    const [status, setStatus] = useState<"all" | "enabled" | "disabled">("all");
+    const [stack, setStack] = useState<string>("all");
 
     const dict = useDictionary();
     const t = dict.admin.projects;
@@ -166,6 +163,16 @@ export function ProjectsPanel() {
         if (pendingId === null) move.mutate({ id, direction });
     }
 
+    function handleResetFilters() {
+        setSearch("");
+        setStatus("all");
+        setStack("all");
+    }
+
+    const availableStacks = Array.from(
+        new Set(projects.flatMap((p) => p.highlights)),
+    ).sort((a, b) => a.localeCompare(b));
+
     const sorted = [...projects].sort((a, b) => {
         const aTime = a.lastActivityAt
             ? new Date(a.lastActivityAt).getTime()
@@ -176,17 +183,36 @@ export function ProjectsPanel() {
         return bTime - aTime || a.sortOrder - b.sortOrder || a.id - b.id;
     });
 
+    const hasActiveFilter =
+        search.trim() !== "" || status !== "all" || stack !== "all";
+
+    const filtered = sorted.filter((p) => {
+        if (status === "enabled" && !p.enabled) return false;
+        if (status === "disabled" && p.enabled) return false;
+        if (stack !== "all" && !p.highlights.includes(stack)) return false;
+        if (search.trim()) {
+            const q = search.toLowerCase().trim();
+            const inTitle = p.title.toLowerCase().includes(q);
+            const inSlug = p.slug.toLowerCase().includes(q);
+            const inDesc = p.description.toLowerCase().includes(q);
+            const inStack = p.highlights.some((h) =>
+                h.toLowerCase().includes(q),
+            );
+            if (!inTitle && !inSlug && !inDesc && !inStack) return false;
+        }
+        return true;
+    });
+
     return (
         <div className="flex flex-col gap-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <TypographySmall className="font-semibold">
+                    <TypographySmall>
                         {t.heading}
                     </TypographySmall>
                     <TypographyMuted
                         role="status"
                         aria-live="polite"
-                        className="text-xs"
                     >
                         {t.visibleStatus
                             .replace(
@@ -208,6 +234,20 @@ export function ProjectsPanel() {
                 </Button>
             </div>
 
+            {sorted.length > 0 && (
+                <ProjectFilter
+                    search={search}
+                    onSearchChange={setSearch}
+                    status={status}
+                    onStatusChange={setStatus}
+                    stack={stack}
+                    onStackChange={setStack}
+                    stacks={availableStacks}
+                    onReset={handleResetFilters}
+                    hasActiveFilter={hasActiveFilter}
+                />
+            )}
+
             {sorted.length === 0 ? (
                 <Empty bordered>
                     <EmptyHeader>
@@ -228,9 +268,33 @@ export function ProjectsPanel() {
                         </Button>
                     </EmptyContent>
                 </Empty>
+            ) : filtered.length === 0 ? (
+                <Empty bordered>
+                    <EmptyHeader>
+                        <EmptyMedia variant="icon">
+                            <FolderOpenIcon aria-hidden="true" />
+                        </EmptyMedia>
+                        <EmptyTitle>{t.emptyTitle}</EmptyTitle>
+                        <EmptyDescription>{t.noFilteredResults}</EmptyDescription>
+                    </EmptyHeader>
+                    <EmptyContent>
+                        <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={handleResetFilters}
+                        >
+                            <ArrowCounterClockwiseIcon
+                                data-icon="inline-start"
+                                className="size-3.5"
+                                aria-hidden="true"
+                            />
+                            {t.resetFilter}
+                        </Button>
+                    </EmptyContent>
+                </Empty>
             ) : (
                 <ProjectTable
-                    projects={sorted}
+                    projects={filtered}
                     pendingId={pendingId}
                     onMove={handleMove}
                     onToggle={handleToggle}
@@ -301,22 +365,14 @@ export function ProjectsPanel() {
                                       gallery: "",
                                   }
                         }
+                        stacks={stacks}
+                        submitting={save.isPending}
                         onSubmit={handleFormSubmit}
                         onCancel={() =>
                             setDialog((prev) => ({ ...prev, open: false }))
                         }
-                        submitting={save.isPending}
-                        stacks={stacks}
                         quickAddStack={handleQuickAddStack}
                     />
-                    {editTarget?.syncKey && (
-                        <div className="mt-4">
-                            <ProjectActivities
-                                key={editTarget.id}
-                                syncKey={editTarget.syncKey}
-                            />
-                        </div>
-                    )}
                 </DialogContent>
             </Dialog>
         </div>

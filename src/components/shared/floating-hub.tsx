@@ -19,11 +19,14 @@ import { Button } from "@/components/ui/button";
 import { Text, TypographyMuted } from "@/components/ui/typography";
 import {
   ArrowDownIcon,
+  ArrowRightIcon,
   DownloadIcon,
+  RobotIcon,
   SignInIcon,
   SignOutIcon,
   XIcon,
 } from "@/components/shared/icons";
+import { setChatOpen } from "@/lib/chat-store";
 import { LogoMascot } from "@/components/shared/logo-mascot";
 import {
   CommentBubble,
@@ -227,6 +230,36 @@ function HubBody({
     // eslint-disable-next-line shadcn/no-arbitrary-values
     <div className="flex flex-col gap-6 p-4 pb-[calc(1rem+env(safe-area-inset-bottom))]">
       <HubHeader />
+
+      <section className="flex flex-col gap-2">
+        <HubLabel>{hub.aiAssistant}</HubLabel>
+        <Button
+          type="button"
+          variant="secondary"
+          onClick={() => {
+            onClose();
+            setChatOpen(true);
+          }}
+          className={CARD_CLASS}
+        >
+          <span className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-border bg-muted/60 text-foreground">
+            <RobotIcon aria-hidden="true" className="size-4.5 text-(--brand)" />
+          </span>
+          <span className="flex min-w-0 flex-1 flex-col">
+            <Text as="span" variant="small" className="text-foreground">
+              {hub.askAiTitle}
+            </Text>
+            <Text as="span" variant="muted" className="text-xs">
+              {hub.askAiSub}
+            </Text>
+          </span>
+          <ArrowRightIcon
+            data-icon="inline-end"
+            aria-hidden="true"
+            className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5"
+          />
+        </Button>
+      </section>
 
       {engagement.present && (
         <section className="flex flex-col gap-2">

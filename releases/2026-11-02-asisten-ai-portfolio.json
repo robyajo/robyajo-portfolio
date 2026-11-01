@@ -1,0 +1,34 @@
+{
+  "date": "2026-11-02",
+  "type": "feature",
+  "title": {
+    "id": "Asisten ER AI, Pencarian Proyek, dan Pembaruan Halaman Blog",
+    "en": "ER AI Assistant, Project Search & Filters, and Blog Updates"
+  },
+  "body": {
+    "id": "Menghadirkan asisten cerdas ER AI Assistant untuk tanya jawab portfolio, fitur pencarian dan filter proyek di halaman publik maupun admin, serta pembaruan tampilan halaman Blog.",
+    "en": "Introducing ER AI Assistant for portfolio Q&A, comprehensive project search and filter tools across public and admin pages, alongside Blog header refinements."
+  },
+  "items": [
+    {
+      "type": "new",
+      "id": "Asisten cerdas ER AI Assistant dengan tombol mengambang (floating chat) di halaman publik, rekomendasi pertanyaan cepat, perbaikan scroll, dan jawaban interaktif.",
+      "en": "Intelligent ER AI Assistant with a public floating chat trigger, suggested questions, smooth scrolling, and interactive answers."
+    },
+    {
+      "type": "new",
+      "id": "Fitur pencarian dan filter proyek interaktif di halaman publik untuk mencari karya berdasarkan nama, deskripsi, atau teknologi yang digunakan.",
+      "en": "Interactive project search and filter on the public projects page by title, description, or tech stack."
+    },
+    {
+      "type": "new",
+      "id": "Pencarian dan penyaringan proyek di panel admin berdasarkan kata kunci, status visibilitas, dan kategori teknologi.",
+      "en": "Admin project search and filters by keyword, publication status, and tech category."
+    },
+    {
+      "type": "improvement",
+      "id": "Pembaruan judul dan deskripsi halaman Blog publik agar lebih ringkas, elegan, dan selaras.",
+      "en": "Refined title and description on the public Blog page for enhanced clarity and elegance."
+    }
+  ]
+}
