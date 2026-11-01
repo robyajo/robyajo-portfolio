@@ -2,17 +2,20 @@
   "slugs": [
     "ketika-algoritma-mulai-mengatur-perumahan",
     "openbsd-driver-grafis-dan-dilema-keamanan-kernel",
-    "pure-functional-programming-vs-c-realitas-performa"
+    "pure-functional-programming-vs-c-realitas-performa",
+    "smart-tv-dan-masalah-privasi-ruang-keluarga"
   ],
   "titles": [
     "Ketika Algoritma dan AI Mulai Mengatur Urusan Perumahan",
     "Driver Grafis Modern di OpenBSD dan Dilema Keamanan Kita",
-    "Seberapa Dekat Pemrograman Fungsional Murni Menandingi C?"
+    "Seberapa Dekat Pemrograman Fungsional Murni Menandingi C?",
+    "Smart TV Makin Murah tapi Mengapa Privasi Kita yang Dijual?"
   ],
   "topics": [
     "Florida's HOAs and condo associations are making the housing crisis worse",
     "OpenBSD 8.0 release will have inteldrm/radeondrm/amdgpu drivers from Linux 6.18",
-    "How close can pure functional programming get to C?"
+    "How close can pure functional programming get to C?",
+    "Ask HN: Which TV do you recommend for privacy?"
   ],
-  "lastPublishedDate": "2026-10-24"
+  "lastPublishedDate": "2026-11-02"
 }

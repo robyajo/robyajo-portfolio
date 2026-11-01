@@ -6,8 +6,8 @@
     "en": "ER AI Assistant, Project Search & Filters, and Blog Updates"
   },
   "body": {
-    "id": "Menghadirkan asisten cerdas ER AI Assistant untuk tanya jawab portfolio, fitur pencarian dan filter proyek di halaman publik maupun admin, serta pembaruan tampilan halaman Blog.",
-    "en": "Introducing ER AI Assistant for portfolio Q&A, comprehensive project search and filter tools across public and admin pages, alongside Blog header refinements."
+    "id": "Menghadirkan asisten cerdas ER AI Assistant untuk tanya jawab portfolio, fitur pencarian dan filter proyek di halaman publik maupun admin, serta pembaruan tampilan halaman Blog. Artikel terbaru: \"Smart TV Makin Murah tapi Mengapa Privasi Kita yang Dijual?\".",
+    "en": "Introducing ER AI Assistant for portfolio Q&A, comprehensive project search and filter tools across public and admin pages, alongside Blog header refinements. Latest article: \"Smart TVs Are Getting Cheaper but Is Our Privacy the Real Price?\"."
   },
   "items": [
     {
@@ -29,6 +29,11 @@
       "type": "improvement",
       "id": "Pembaruan judul dan deskripsi halaman Blog publik agar lebih ringkas, elegan, dan selaras.",
       "en": "Refined title and description on the public Blog page for enhanced clarity and elegance."
+    },
+    {
+      "type": "new",
+      "id": "Tulisan baru: \"Smart TV Makin Murah tapi Mengapa Privasi Kita yang Dijual?\". Selengkapnya di https://ajoroby.is-a.dev/blogs/smart-tv-dan-masalah-privasi-ruang-keluarga",
+      "en": "New article: \"Smart TVs Are Getting Cheaper but Is Our Privacy the Real Price?\". Read it at https://ajoroby.is-a.dev/blogs/smart-tv-dan-masalah-privasi-ruang-keluarga"
     }
   ]
 }
