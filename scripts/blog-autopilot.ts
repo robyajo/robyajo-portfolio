@@ -37,6 +37,7 @@ const MIN_LINKS = 3;
 const MAX_TITLE = 70;
 
 const DEFAULT_MODELS = [
+    "gemini-3.8-flash-high",
     "gemini-3.8-flash",
     "gemini-3.7-flash",
     "gemini-3.6-flash",
@@ -399,11 +400,11 @@ async function callModel(
     messages: { role: string; content: string }[],
     models: string[],
 ): Promise<string> {
-    const apiKey = process.env.GEMINI_API_KEY ?? process.env.LLM_API_KEY;
-    if (!apiKey) fail("GEMINI_API_KEY tidak diset");
+    const apiKey = process.env.LLM_API_KEY ?? process.env.GEMINI_API_KEY;
+    if (!apiKey) fail("LLM_API_KEY / GEMINI_API_KEY tidak diset");
     const baseUrl =
         process.env.LLM_BASE_URL ??
-        "https://generativelanguage.googleapis.com/v1beta/openai";
+        "https://roby-agy.mooo.com/v1";
 
     let lastError = "";
     for (let round = 0; round < 2; round += 1) {
@@ -422,23 +423,68 @@ async function callModel(
                             messages,
                             temperature: 0.95,
                             max_tokens: 8192,
-                            response_format: { type: "json_object" },
+                            stream: true,
                         }),
                     },
                     180_000,
                 );
-                const raw = await response.text();
                 if (!response.ok) {
+                    const raw = await response.text();
                     lastError = `${model}: HTTP ${response.status} ${raw.slice(0, 160)}`;
                     log(lastError);
                     await sleep(2_500);
                     continue;
                 }
-                const parsed = JSON.parse(raw) as
-                    | { choices?: { message?: { content?: string } }[] }
-                    | { choices?: { message?: { content?: string } }[] }[];
-                const payload = Array.isArray(parsed) ? parsed[0] : parsed;
-                const content = payload.choices?.[0]?.message?.content;
+
+                let content = "";
+                const contentType = response.headers.get("content-type") || "";
+                if (contentType.includes("event-stream") && response.body) {
+                    const reader = response.body.getReader();
+                    const decoder = new TextDecoder();
+                    let buffer = "";
+
+                    let isDone = false;
+                    while (!isDone) {
+                        const { done, value } = await reader.read();
+                        if (done) break;
+
+                        buffer += decoder.decode(value, { stream: true });
+                        const lines = buffer.split("\n");
+                        buffer = lines.pop() || "";
+
+                        for (const line of lines) {
+                            const trimmed = line.trim();
+                            if (!trimmed) continue;
+                            if (trimmed === "data: [DONE]") {
+                                isDone = true;
+                                break;
+                            }
+
+                            if (trimmed.startsWith("data: ")) {
+                                try {
+                                    const data = JSON.parse(trimmed.slice(6));
+                                    const textDelta =
+                                        data.choices?.[0]?.delta?.content ||
+                                        data.choices?.[0]?.delta?.reasoning_content;
+
+                                    if (textDelta) {
+                                        content += textDelta;
+                                    }
+                                } catch {
+                                    // lewati chunk tidak valid
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    const raw = await response.text();
+                    const parsed = JSON.parse(raw) as
+                        | { choices?: { message?: { content?: string } }[] }
+                        | { choices?: { message?: { content?: string } }[] }[];
+                    const payload = Array.isArray(parsed) ? parsed[0] : parsed;
+                    content = payload?.choices?.[0]?.message?.content || "";
+                }
+
                 if (!content) {
                     lastError = `${model}: balasan kosong`;
                     log(lastError);

@@ -56,6 +56,9 @@ jobs:
       - name: Tulis artikel
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          LLM_BASE_URL: ${{ secrets.LLM_BASE_URL || 'https://roby-agy.mooo.com/v1' }}
+          LLM_MODELS: ${{ secrets.LLM_MODELS || 'gemini-3.8-flash-high,gemini-3.8-flash,gemini-3.7-flash' }}
           NEXT_PUBLIC_BASE_URL: https://ajoroby.is-a.dev
           INPUT_TOPIC: ${{ inputs.topic }}
           INPUT_DRY: ${{ inputs.dry_run }}
