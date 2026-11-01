@@ -58,7 +58,7 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
           LLM_BASE_URL: ${{ secrets.LLM_BASE_URL || 'https://roby-agy.mooo.com/v1' }}
-          LLM_MODELS: ${{ secrets.LLM_MODELS || 'gemini-3.8-flash-high,gemini-3.8-flash,gemini-3.7-flash' }}
+          LLM_MODELS: ${{ secrets.LLM_MODELS || 'gemini-3.8-flash-high,gemini-3.8-flash,gemini-3.8-flash-medium,gemini-3.8-flash-low' }}
           NEXT_PUBLIC_BASE_URL: https://ajoroby.is-a.dev
           INPUT_TOPIC: ${{ inputs.topic }}
           INPUT_DRY: ${{ inputs.dry_run }}
@@ -93,7 +93,7 @@ jobs:
             exit 0
           fi
           SUMMARY=$(git diff --cached --name-only | tr '\n' ' ')
-          git commit -m "Blog: artikel fesyen harian" -m "$SUMMARY"
+          git commit -m "Blog: artikel harian" -m "$SUMMARY"
           git pull --rebase origin master
           git push origin master
           echo "changed=true" >> "$GITHUB_OUTPUT"

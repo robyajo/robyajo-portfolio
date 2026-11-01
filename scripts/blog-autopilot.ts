@@ -39,10 +39,8 @@ const MAX_TITLE = 70;
 const DEFAULT_MODELS = [
     "gemini-3.8-flash-high",
     "gemini-3.8-flash",
-    "gemini-3.7-flash",
-    "gemini-3.6-flash",
-    "gemini-3.5-flash",
-    "gemini-flash-latest",
+    "gemini-3.8-flash-medium",
+    "gemini-3.8-flash-low",
 ];
 
 const BANNED_PHRASES = [
@@ -463,6 +461,11 @@ async function callModel(
                             if (trimmed.startsWith("data: ")) {
                                 try {
                                     const data = JSON.parse(trimmed.slice(6));
+                                    if (data.error) {
+                                        const errMsg = data.error.message || JSON.stringify(data.error);
+                                        log(`[stream error ${model}] ${errMsg}`);
+                                        lastError = `${model}: ${errMsg}`;
+                                    }
                                     const textDelta =
                                         data.choices?.[0]?.delta?.content ||
                                         data.choices?.[0]?.delta?.reasoning_content;
