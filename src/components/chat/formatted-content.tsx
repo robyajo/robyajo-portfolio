@@ -296,13 +296,58 @@ function groupLinesIntoBlocks(rawText: string): ContentBlock[] {
   return blocks;
 }
 
+interface ParsedContentSegment {
+  type: "code" | "markdown";
+  lang?: string;
+  code?: string;
+  markdown?: string;
+  isIncomplete?: boolean;
+}
+
+function parseContentSegments(rawText: string): ParsedContentSegment[] {
+  const segments: ParsedContentSegment[] = [];
+  const codeBlockRegex = /```([a-zA-Z0-9_-]*)\n([\s\S]*?)(?:```|$)/g;
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+
+  while ((match = codeBlockRegex.exec(rawText)) !== null) {
+    if (match.index > lastIndex) {
+      const textBefore = rawText.slice(lastIndex, match.index);
+      if (textBefore.trim()) {
+        segments.push({ type: "markdown", markdown: textBefore });
+      }
+    }
+
+    const lang = match[1] || "code";
+    const code = match[2];
+    const isClosed = match[0].endsWith("```");
+
+    segments.push({
+      type: "code",
+      lang,
+      code,
+      isIncomplete: !isClosed,
+    });
+
+    lastIndex = match.index + match[0].length;
+  }
+
+  if (lastIndex < rawText.length) {
+    const remaining = rawText.slice(lastIndex);
+    if (remaining.trim()) {
+      segments.push({ type: "markdown", markdown: remaining });
+    }
+  }
+
+  return segments;
+}
+
 export function FormattedContent({
   text,
   onNavigate,
   className,
 }: FormattedContentProps) {
-  // Split segments by code fences: ```lang\ncode\n```
-  const segments = text.split(/(```[a-zA-Z0-9_-]*\n[\s\S]*?```)/g);
+  const parsedSegments = parseContentSegments(text);
 
   return (
     <div
@@ -311,20 +356,20 @@ export function FormattedContent({
         className,
       )}
     >
-      {segments.map((segment, sIdx) => {
-        // Code Block
-        const codeMatch = segment.match(
-          /^```([a-zA-Z0-9_-]*)\n([\s\S]*?)```$/,
-        );
-        if (codeMatch) {
-          const [, lang, code] = codeMatch;
+      {parsedSegments.map((segment, sIdx) => {
+        if (segment.type === "code") {
           return (
-            <CodeBlock key={sIdx} language={lang || "code"} code={code} />
+            <CodeBlock
+              key={sIdx}
+              language={segment.lang || "code"}
+              code={segment.code || ""}
+              isIncomplete={segment.isIncomplete}
+            />
           );
         }
 
         // Markdown Blocks
-        const blocks = groupLinesIntoBlocks(segment);
+        const blocks = groupLinesIntoBlocks(segment.markdown || "");
         return (
           <React.Fragment key={sIdx}>
             {blocks.map((block, bIdx) => {

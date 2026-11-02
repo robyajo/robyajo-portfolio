@@ -631,22 +631,19 @@ function ChatInnerGateway({
                             onNavigate={handleInternalNavigate}
                           />
                           {isCurrentStreaming && (
-                            <div className="mt-3 flex items-center gap-2 rounded-lg border border-(--brand-text)/30 bg-muted/40 px-3 py-1.5 text-2xs font-mono text-muted-foreground">
-                              <RobotAgentAnimation
-                                state="working"
-                                variant="avatar"
-                                size={22}
-                                interactive={false}
-                              />
-                              <span className="truncate font-pixel text-3xs uppercase tracking-wider">
-                                {chatDict.robotWorking ||
-                                  "Sedang menulis kode & penjelasan..."}
+                            <div className="mt-2.5 flex items-center gap-2 border-t border-border/40 pt-2 font-mono text-3xs text-muted-foreground">
+                              <span className="size-1.5 rounded-full bg-(--brand-text) animate-ping" />
+                              <span className="font-pixel text-3xs font-semibold uppercase tracking-widest text-(--brand-text)">
+                                [STREAMING]
                               </span>
-                              <span className="ml-auto size-1.5 rounded-full bg-(--brand-text) animate-ping" />
+                              <span className="truncate opacity-80">
+                                {chatDict.robotWorking ||
+                                  "Menulis kode & penjelasan..."}
+                              </span>
                             </div>
                           )}
                           {isRecentlyCompleted && (
-                            <div className="mt-2.5 flex items-center gap-1.5 font-pixel text-3xs uppercase tracking-widest text-(--available)">
+                            <div className="mt-2.5 flex items-center gap-1.5 border-t border-border/30 pt-1.5 font-pixel text-3xs uppercase tracking-widest text-(--available)">
                               <SparkleIcon className="size-3 text-(--available)" />
                               <span>
                                 [STATUS // {chatDict.robotSuccess || "Jawaban selesai disiapkan!"}]
@@ -655,16 +652,17 @@ function ChatInnerGateway({
                           )}
                         </>
                       ) : loading ? (
-                        <div className="py-1">
-                          <RobotAgentAnimation
-                            state="thinking"
-                            variant="compact"
-                            interactive={false}
-                            statusText={
-                              chatDict.robotThinking ||
-                              "Sedang menganalisis & mencari konteks..."
-                            }
-                          />
+                        <div className="flex items-center gap-2.5 py-1 text-muted-foreground font-mono text-xs">
+                          <div className="flex items-center gap-1.5">
+                            <span className="size-2 rounded-full bg-(--brand-text) animate-ping" />
+                            <span className="font-pixel text-3xs font-semibold uppercase tracking-widest text-(--brand-text)">
+                              [SYS // ANALYZING]
+                            </span>
+                          </div>
+                          <span className="text-2xs text-muted-foreground/80 animate-pulse">
+                            {chatDict.robotThinking ||
+                              "Menganalisis kode & konteks..."}
+                          </span>
                         </div>
                       ) : null}
                     </>

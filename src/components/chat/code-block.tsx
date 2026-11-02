@@ -162,7 +162,15 @@ export function HighlightedLine({ text }: { text: string }) {
   return <>{parts}</>;
 }
 
-export function CodeBlock({ code, language }: { code: string; language: string }) {
+export function CodeBlock({
+  code,
+  language,
+  isIncomplete = false,
+}: {
+  code: string;
+  language: string;
+  isIncomplete?: boolean;
+}) {
   const [copied, setCopied] = useState(false);
   const dict = useDictionary();
   const chatDict = dict.chat;
@@ -192,9 +200,15 @@ export function CodeBlock({ code, language }: { code: string; language: string }
             <span className="font-pixel text-3xs uppercase tracking-widest font-semibold text-foreground">
               {displayLang}
             </span>
-            <span className="font-pixel text-3xs uppercase tracking-wider text-muted-foreground/70">
-              // {lines.length} {lines.length === 1 ? "LOC" : "LINES"}
-            </span>
+            {isIncomplete ? (
+              <span className="font-pixel text-3xs uppercase tracking-wider text-(--brand-text) animate-pulse">
+                // STREAMING...
+              </span>
+            ) : (
+              <span className="font-pixel text-3xs uppercase tracking-wider text-muted-foreground/70">
+                // {lines.length} {lines.length === 1 ? "LOC" : "LINES"}
+              </span>
+            )}
           </div>
         </div>
         <button
@@ -231,6 +245,9 @@ export function CodeBlock({ code, language }: { code: string; language: string }
               </span>
               <span className="min-w-0 pl-1 whitespace-pre">
                 <HighlightedLine text={line} />
+                {isIncomplete && idx === lines.length - 1 && (
+                  <span className="inline-block w-1.5 h-3.5 bg-(--brand-text) animate-pulse ml-0.5 align-middle" />
+                )}
               </span>
             </span>
           ))}
