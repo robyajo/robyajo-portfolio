@@ -49,6 +49,8 @@ export {
   LinkedinLogoIcon,
   LinkIcon,
   ListIcon,
+  LockKeyIcon,
+  ShieldCheckIcon,
   MagnifyingGlassIcon,
   MagnifyingGlassMinusIcon,
   MagnifyingGlassPlusIcon,
