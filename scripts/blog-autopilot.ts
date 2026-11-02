@@ -409,7 +409,7 @@ function getLlmConfig() {
         process.env.AGY_BASE_URL,
         process.env.LLM_BASE_URL,
     ];
-    const baseUrl = urlCandidates.find((u) => typeof u === "string" && u.trim().length > 0) || "https://roby-agy.mooo.com/agy/v1";
+    const baseUrl = urlCandidates.find((u) => typeof u === "string" && u.trim().length > 0) || "https://er-ai-api.mooo.com/agy/v1";
 
     return { apiKey, baseUrl };
 }
