@@ -74,11 +74,21 @@ export async function POST(req: Request) {
         content: String(msg.content || "").slice(0, 800),
       }));
 
+    const apiKey =
+      process.env.CHAT_LLM_API_KEY ??
+      process.env.LLAMA_API_KEY ??
+      process.env.LLM_API_KEY;
+
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    };
+    if (apiKey) {
+      headers["Authorization"] = `Bearer ${apiKey}`;
+    }
+
     const response = await fetch(siteConfig.llmApiUrl, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers,
       body: JSON.stringify({
         model: siteConfig.llmModel,
         messages: [
@@ -86,9 +96,8 @@ export async function POST(req: Request) {
           ...recentMessages,
         ],
         stream: true,
-        max_tokens: 600,
+        max_tokens: 1200,
         temperature: 0.7,
-        chat_template_kwargs: { enable_thinking: false },
       }),
     });
 
@@ -111,6 +120,9 @@ export async function POST(req: Request) {
     const stream = new ReadableStream({
       async start(controller) {
         let buffer = "";
+        let isThinking = false;
+        let receivedFirst = false;
+        let prefixBuffer = "";
 
         try {
           while (true) {
@@ -132,12 +144,62 @@ export async function POST(req: Request) {
                   const textDelta = data.choices?.[0]?.delta?.content;
 
                   if (textDelta) {
+                    if (!receivedFirst) {
+                      prefixBuffer += textDelta;
+                      if (
+                        prefixBuffer.includes("Thinking Process:") ||
+                        prefixBuffer.includes("<think>")
+                      ) {
+                        isThinking = true;
+                        receivedFirst = true;
+                      } else if (prefixBuffer.length > 25) {
+                        receivedFirst = true;
+                        controller.enqueue(encoder.encode(prefixBuffer));
+                        prefixBuffer = "";
+                      }
+                      continue;
+                    }
+
+                    if (isThinking) {
+                      prefixBuffer += textDelta;
+                      if (prefixBuffer.includes("</think>")) {
+                        const after = prefixBuffer.split("</think>")[1] || "";
+                        isThinking = false;
+                        prefixBuffer = "";
+                        if (after.trim()) {
+                          controller.enqueue(encoder.encode(after.trimStart()));
+                        }
+                      } else {
+                        const doubleBreak = prefixBuffer.indexOf("\n\n\n");
+                        if (doubleBreak !== -1) {
+                          const after = prefixBuffer.slice(doubleBreak + 3);
+                          isThinking = false;
+                          prefixBuffer = "";
+                          if (after.trim()) {
+                            controller.enqueue(encoder.encode(after.trimStart()));
+                          }
+                        }
+                      }
+                      continue;
+                    }
+
                     controller.enqueue(encoder.encode(textDelta));
                   }
                 } catch {
                   // Lewati chunk yang tidak valid
                 }
               }
+            }
+          }
+
+          if (prefixBuffer && !isThinking) {
+            controller.enqueue(encoder.encode(prefixBuffer));
+          } else if (prefixBuffer && isThinking) {
+            const cleaned = prefixBuffer
+              .replace(/Thinking Process:[\s\S]*?(?=\n\n[^\n*#0-9-]|\n{3,}|$)/i, "")
+              .trim();
+            if (cleaned) {
+              controller.enqueue(encoder.encode(cleaned));
             }
           }
         } catch (err) {
@@ -150,17 +212,14 @@ export async function POST(req: Request) {
 
     return new Response(stream, {
       headers: {
-        "Content-Type": "text/plain; charset=utf-8",
+        "Content-Type": "text/event-stream; charset=utf-8",
         "Cache-Control": "no-cache, no-transform",
+        Connection: "keep-alive",
       },
     });
-  } catch (error) {
-    return NextResponse.json(
-      {
-        error: "Terjadi kesalahan internal saat memproses obrolan.",
-        detail: error instanceof Error ? error.message : String(error),
-      },
-      { status: 500 },
-    );
+  } catch (err) {
+    const message =
+      err instanceof Error ? err.message : "Terjadi kesalahan pada server.";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

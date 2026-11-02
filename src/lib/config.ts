@@ -17,8 +17,8 @@ export const siteConfig = {
     repoUrl: "https://github.com/robyajo/robyajo-portfolio",
     llmApiUrl:
         process.env.LLM_API_URL ??
-        "https://roby-llama.mooo.com/v1/chat/completions",
-    llmModel: process.env.LLM_MODEL ?? "Qwen3.5-0.8B-Q8_0",
+        "https://er-ai-api.mooo.com/llama/v1/chat/completions",
+    llmModel: process.env.LLM_MODEL ?? "qwen3.5-0.8b",
     sameAs: [
         "https://github.com/robyajo",
         "https://x.com/roby_karti",
