@@ -8,10 +8,11 @@ Tugasmu adalah menjawab pertanyaan pengunjung seputar latar belakang, pengalaman
 
 PANDUAN MENJAWAB & GAYA KOMUNIKASI:
 1. Bersikaplah seperti asisten virtual yang cerdas dan bersahabat. Bicarakan Roby dalam sudut pandang orang ketiga (contoh: "Roby adalah...", "Beliau saat ini menjabat sebagai...", "Proyek yang dibangun beliau..."). Jangan berbicara seolah-olah dirimu adalah Roby secara langsung.
-2. Jawab langsung ke inti pertanyaan pengunjung. Jika penanya bertanya tentang proyek, fokus jelaskan proyek; jika bertanya tentang tech stack, jelaskan tech stack. Jangan memuntahkan seluruh riwayat hidup bila tidak relevan.
+2. Jawab langsung ke inti pertanyaan pengunjung dengan ringkas dan padat (maksimal 1-2 paragraf singkat). Jangan memuntahkan seluruh riwayat hidup bila tidak diminta.
 3. Gunakan format Markdown yang rapi: gunakan bullet points untuk daftar, cetak tebal (**bold**) untuk kata kunci, dan berikan tautan internal/eksternal yang relevan (contoh: [Halaman Proyek](/projects), [Lihat Resume](/resume), [Blog](/blogs), [Kontak](/contact), atau [LinkedIn](https://id.linkedin.com/in/robykartis)).
 4. Sesuaikan bahasa dengan penanya (Bahasa Indonesia untuk penanya Indonesia, English for English queries).
 5. Jangan pernah mengarang data di luar profil resmi di bawah ini.
+6. Berikan jawaban secara langsung tanpa intro berulang-ulang agar respon cepat dan hemat daya komputasi.
 
 INFORMASI RESMI ROBY KARTI S., S.Kom.:
 - Identitas: Roby Karti S., S.Kom. | Lahir: Tiram Tapakis, 16 Juli 1994 | Domisili: Pekanbaru, Riau, Indonesia.
@@ -66,12 +67,12 @@ export async function POST(req: Request) {
       );
     }
 
-    // Ambil 6 pesan terakhir agar context fokus dan cepat diproses
+    // Ambil 4 pesan terakhir agar konteks fokus, ringan, dan cepat diproses oleh VPS
     const recentMessages = rawMessages
-      .slice(-6)
+      .slice(-4)
       .map((msg) => ({
         role: msg.role === "assistant" ? "assistant" : "user",
-        content: String(msg.content || "").slice(0, 800),
+        content: String(msg.content || "").slice(0, 500),
       }));
 
     const apiKey =
@@ -86,9 +87,11 @@ export async function POST(req: Request) {
       headers["Authorization"] = `Bearer ${apiKey}`;
     }
 
+    // Sambungkan signal client ke upstream agar pembatalan seketika menghentikan inferensi di VPS
     const response = await fetch(siteConfig.llmApiUrl, {
       method: "POST",
       headers,
+      signal: req.signal,
       body: JSON.stringify({
         model: siteConfig.llmModel,
         messages: [
@@ -96,7 +99,7 @@ export async function POST(req: Request) {
           ...recentMessages,
         ],
         stream: true,
-        max_tokens: 1200,
+        max_tokens: 650,
         temperature: 0.7,
       }),
     });
@@ -208,6 +211,9 @@ export async function POST(req: Request) {
           controller.close();
         }
       },
+      cancel() {
+        reader.cancel().catch(() => {});
+      },
     });
 
     return new Response(stream, {
@@ -218,6 +224,9 @@ export async function POST(req: Request) {
       },
     });
   } catch (err) {
+    if (err instanceof Error && err.name === "AbortError") {
+      return new Response(null, { status: 499 });
+    }
     const message =
       err instanceof Error ? err.message : "Terjadi kesalahan pada server.";
     return NextResponse.json({ error: message }, { status: 500 });
