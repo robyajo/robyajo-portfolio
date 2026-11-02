@@ -805,6 +805,8 @@ const en: Dictionary = {
   chat: {
     title: "ER AI Assistant",
     subtitle: "Interactive portfolio assistant for Roby Karti S.",
+    triggerSubtitle: "Ask anything",
+    triggerBadge: "ER AI",
     statusOnline: "Online",
     disclaimer: "Intelligent assistant for Roby Karti S.'s portfolio.",
     welcomeMessage:

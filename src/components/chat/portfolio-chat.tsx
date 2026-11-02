@@ -82,7 +82,7 @@ function FormattedContent({ text }: { text: string }) {
 }
 
 function InlineFormatted({ text }: { text: string }) {
-  const parts = text.split(/(\*\*[^*]+\*\*|`[^`]+`)/g);
+  const parts = text.split(/(\*\*[^*]+\*\*|`[^`]+`|\[[^\]]+\]\([^)]+\))/g);
 
   return (
     <>
@@ -102,6 +102,22 @@ function InlineFormatted({ text }: { text: string }) {
             >
               {part.slice(1, -1)}
             </code>
+          );
+        }
+        const linkMatch = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+        if (linkMatch) {
+          const [, label, href] = linkMatch;
+          const isInternal = href.startsWith("/") || href.startsWith("#");
+          return (
+            <a
+              key={idx}
+              href={href}
+              target={isInternal ? undefined : "_blank"}
+              rel={isInternal ? undefined : "noopener noreferrer"}
+              className="font-medium text-primary underline underline-offset-3 hover:text-primary/80 transition-colors inline-flex items-center gap-0.5"
+            >
+              {label}
+            </a>
           );
         }
         return part;
@@ -423,20 +439,38 @@ function ChatInner({ onClose }: { onClose: () => void }) {
 
 function FloatingChatTrigger({ onClick }: { onClick: () => void }) {
   const dict = useDictionary();
+  const chatDict = dict.chat;
 
   return (
-    <div className="fixed bottom-20 right-4 z-40 rounded-md shadow-lg backdrop-blur-md transition-transform hover:-translate-y-0.5 print:hidden">
-      <Button
+    <div className="fixed bottom-20 right-4 z-40 print:hidden">
+      <button
         type="button"
-        variant="outline"
-        size="sm"
         onClick={onClick}
-        aria-label={dict.chat.title}
+        aria-label={chatDict.title}
+        className="group relative flex items-center gap-2.5 rounded-full border border-primary/20 bg-background/85 p-1.5 pr-4 shadow-xl shadow-primary/10 backdrop-blur-xl transition-all duration-300 hover:scale-105 hover:border-primary/50 hover:bg-background/95 hover:shadow-2xl hover:shadow-primary/20 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       >
-        <RobotIcon aria-hidden="true" className="size-4 text-(--brand)" />
-        <span className="text-xs font-medium">{dict.chat.title}</span>
-        <span className="size-1.5 rounded-full bg-(--color-available) animate-pulse" />
-      </Button>
+        {/* Animated glowing gradient avatar orb */}
+        <div className="relative flex size-9 shrink-0 items-center justify-center rounded-full bg-linear-to-tr from-sky-500 via-indigo-600 to-violet-500 text-white shadow-md transition-transform duration-300 group-hover:rotate-6">
+          <RobotIcon className="size-5 transition-transform duration-300 group-hover:scale-110" />
+          <span className="absolute -top-0.5 -right-0.5 flex size-2.5">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+            <span className="relative inline-flex size-2.5 rounded-full border-2 border-background bg-emerald-500" />
+          </span>
+        </div>
+
+        {/* Text container */}
+        <div className="flex flex-col text-left">
+          <div className="flex items-center gap-1">
+            <span className="text-xs font-semibold tracking-tight text-foreground">
+              {chatDict.title}
+            </span>
+            <SparkleIcon className="size-3 text-amber-500 animate-pulse" />
+          </div>
+          <span className="text-3xs text-muted-foreground transition-colors group-hover:text-primary">
+            {chatDict.triggerSubtitle || "Tanya apa saja"}
+          </span>
+        </div>
+      </button>
     </div>
   );
 }

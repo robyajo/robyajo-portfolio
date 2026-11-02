@@ -807,6 +807,8 @@ const id = {
   chat: {
     title: "ER AI Assistant",
     subtitle: "Asisten interaktif portfolio Roby Karti S.",
+    triggerSubtitle: "Tanya apa saja",
+    triggerBadge: "ER AI",
     statusOnline: "Online",
     disclaimer: "Asisten cerdas untuk portfolio Roby Karti S.",
     welcomeMessage:
