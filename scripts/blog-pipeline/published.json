@@ -4,21 +4,24 @@
     "openbsd-driver-grafis-dan-dilema-keamanan-kernel",
     "pure-functional-programming-vs-c-realitas-performa",
     "smart-tv-dan-masalah-privasi-ruang-keluarga",
-    "china-ai-export-controls-what-it-means-for-indonesian-startu"
+    "china-ai-export-controls-what-it-means-for-indonesian-startu",
+    "linux-system-calls-and-tech-regulations"
   ],
   "titles": [
     "Ketika Algoritma dan AI Mulai Mengatur Urusan Perumahan",
     "Driver Grafis Modern di OpenBSD dan Dilema Keamanan Kita",
     "Seberapa Dekat Pemrograman Fungsional Murni Menandingi C?",
     "Smart TV Makin Murah tapi Mengapa Privasi Kita yang Dijual?",
-    "Kontrol Ekspor AI China dan Apa Artinya buat Startup Kita"
+    "Kontrol Ekspor AI China dan Apa Artinya buat Startup Kita",
+    "Menghubungkan Audit Regulasi Keamanan dengan System Call Linux"
   ],
   "topics": [
     "Florida's HOAs and condo associations are making the housing crisis worse",
     "OpenBSD 8.0 release will have inteldrm/radeondrm/amdgpu drivers from Linux 6.18",
     "How close can pure functional programming get to C?",
     "Ask HN: Which TV do you recommend for privacy?",
-    "China's First Frontier AI Export Controls: Mofcom Announcement No. 48"
+    "China's First Frontier AI Export Controls: Mofcom Announcement No. 48",
+    "Show HN: I've updated my Linux System Call website and API"
   ],
   "lastPublishedDate": "2026-11-02"
 }
