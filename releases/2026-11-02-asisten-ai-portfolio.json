@@ -44,6 +44,11 @@
       "type": "new",
       "id": "Tulisan baru: \"Menghubungkan Audit Regulasi Keamanan dengan System Call Linux\". Selengkapnya di https://ajoroby.is-a.dev/blogs/linux-system-calls-and-tech-regulations",
       "en": "New article: \"Connecting Security Regulation Audits to Linux System Calls\". Read it at https://ajoroby.is-a.dev/blogs/linux-system-calls-and-tech-regulations"
+    },
+    {
+      "type": "improvement",
+      "id": "Tampilan tombol mengambang (floating trigger) ER AI Assistant kini lebih menarik dengan animasi avatar gradient, status aktif, serta perbaikan persona dan tautan interaktif pada jawaban AI.",
+      "en": "Enhanced floating trigger for ER AI Assistant with animated gradient avatar, online status indicator, along with improved response persona and interactive links."
     }
   ]
 }
