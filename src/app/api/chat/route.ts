@@ -76,9 +76,8 @@ export async function POST(req: Request) {
       }));
 
     const apiKey =
-      process.env.CHAT_LLM_API_KEY ??
       process.env.LLAMA_API_KEY ??
-      process.env.LLM_API_KEY;
+      process.env.CHAT_LLM_API_KEY;
 
     const headers: Record<string, string> = {
       "Content-Type": "application/json",
