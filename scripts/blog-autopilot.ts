@@ -37,12 +37,7 @@ const MIN_LINKS = 3;
 const MAX_TITLE = 70;
 
 const DEFAULT_MODELS = [
-    "gemini-3.8-flash-high",
-    "gemini-3.8-flash",
     "gemini-3.8-flash-medium",
-    "gemini-3.8-flash-low",
-    "claude-sonnet-4-6",
-    "gpt-oss-120b-medium",
 ];
 
 const BANNED_PHRASES = [
@@ -433,12 +428,15 @@ async function resolveModels(baseUrl: string, apiKey?: string): Promise<string[]
                 const data = (await response.json()) as { data?: { id: string }[] };
                 if (Array.isArray(data?.data) && data.data.length > 0) {
                     const ids = data.data.map((m) => m.id);
-                    log(`model dinamis terdeteksi dari server agy (${ids.length} model): ${ids.join(", ")}`);
-                    return ids;
+                    if (ids.includes("gemini-3.8-flash-medium")) {
+                        log("model gemini-3.8-flash-medium terverifikasi tersedia di server.");
+                        return ["gemini-3.8-flash-medium"];
+                    }
+                    log(`model server terdeteksi: ${ids.join(", ")}`);
                 }
             }
         } catch (err) {
-            log(`deteksi model dinamis dilewati (${(err as Error).message}), memakai model cadangan.`);
+            log(`verifikasi model dilewati (${(err as Error).message}), memakai model default.`);
         }
     }
     return DEFAULT_MODELS;
