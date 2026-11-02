@@ -6,8 +6,8 @@
     "en": "ER AI Assistant, Project Search & Filters, and Blog Updates"
   },
   "body": {
-    "id": "Menghadirkan asisten cerdas ER AI Assistant untuk tanya jawab portfolio yang ditenagai model kecerdasan artifisial lokal, fitur pencarian dan filter proyek di halaman publik maupun admin, serta pembaruan tampilan halaman Blog. Artikel terbaru: \"Smart TV Makin Murah tapi Mengapa Privasi Kita yang Dijual?\". Artikel terbaru: \"Kontrol Ekspor AI China dan Apa Artinya buat Startup Kita\". Artikel terbaru: \"Menghubungkan Audit Regulasi Keamanan dengan System Call Linux\".",
-    "en": "Introducing ER AI Assistant for portfolio Q&A powered by local AI model integration, comprehensive project search and filter tools across public and admin pages, alongside Blog header refinements. Latest article: \"Smart TVs Are Getting Cheaper but Is Our Privacy the Real Price?\". Latest article: \"China's AI Export Controls and What They Mean for Indonesian Startups\". Latest article: \"Connecting Security Regulation Audits to Linux System Calls\"."
+    "id": "Menghadirkan asisten cerdas ER AI Assistant untuk tanya jawab portfolio yang ditenagai model kecerdasan artifisial lokal, fitur pencarian dan filter proyek di halaman publik maupun admin, serta pembaruan tampilan halaman Blog. Artikel terbaru: \"Smart TV Makin Murah tapi Mengapa Privasi Kita yang Dijual?\". Artikel terbaru: \"Kontrol Ekspor AI China dan Apa Artinya buat Startup Kita\". Artikel terbaru: \"Menghubungkan Audit Regulasi Keamanan dengan System Call Linux\". Artikel terbaru: \"Janji Privasi Ford dan Ilusi Kendali Data Mobil Cerdas\".",
+    "en": "Introducing ER AI Assistant for portfolio Q&A powered by local AI model integration, comprehensive project search and filter tools across public and admin pages, alongside Blog header refinements. Latest article: \"Smart TVs Are Getting Cheaper but Is Our Privacy the Real Price?\". Latest article: \"China's AI Export Controls and What They Mean for Indonesian Startups\". Latest article: \"Connecting Security Regulation Audits to Linux System Calls\". Latest article: \"Ford Privacy Promise and the Illusion of Smart Car Data Control\"."
   },
   "items": [
     {
@@ -49,6 +49,11 @@
       "type": "improvement",
       "id": "Peningkatan tampilan tombol mengambang (floating trigger) ER AI Assistant dengan animasi avatar gradient, indikator aktif, integrasi gateway AI mandiri, dan penyaringan respon interaktif.",
       "en": "Enhanced floating trigger for ER AI Assistant with animated gradient avatar, online status indicator, dedicated local AI gateway integration, and interactive response filtering."
+    },
+    {
+      "type": "new",
+      "id": "Tulisan baru: \"Janji Privasi Ford dan Ilusi Kendali Data Mobil Cerdas\". Selengkapnya di https://ajoroby.is-a.dev/blogs/janji-privasi-mobil-pintar-ford-dan-data-kita",
+      "en": "New article: \"Ford Privacy Promise and the Illusion of Smart Car Data Control\". Read it at https://ajoroby.is-a.dev/blogs/janji-privasi-mobil-pintar-ford-dan-data-kita"
     }
   ]
 }
