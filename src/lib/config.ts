@@ -15,10 +15,21 @@ export const siteConfig = {
     twitterHandle: "robyajo",
     githubRepo: "robyajo/robyajo-portfolio",
     repoUrl: "https://github.com/robyajo/robyajo-portfolio",
-    llmApiUrl:
-        process.env.LLM_API_URL ??
-        "https://er-ai-api.mooo.com/llama/v1/chat/completions",
-    llmModel: process.env.LLM_MODEL ?? "qwen3.5-0.8b",
+    llmBaseUrl:
+        (process.env.LLM_BASE_URL ?? "https://er-ai-api.mooo.com").replace(
+            /\/+$/,
+            "",
+        ),
+    get llmApiUrl(): string {
+        return (
+            process.env.LLM_API_URL ??
+            `${this.llmBaseUrl}/llama/v1/chat/completions`
+        );
+    },
+    llmModel:
+        process.env.CHAT_LLM_MODEL ??
+        process.env.LLM_MODEL ??
+        "qwen3.5-0.8b",
     sameAs: [
         "https://github.com/robyajo",
         "https://x.com/roby_karti",
@@ -51,6 +62,5 @@ export const siteConfig = {
             href: "https://id.linkedin.com/in/robykartis",
             label: "LinkedIn",
         },
-        { platform: "instagram", href: "https://www.instagram.com/roby_karti", label: "Instagram" },
     ] as const,
 } as const;

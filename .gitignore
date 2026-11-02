@@ -21,7 +21,9 @@ yarn-debug.log*
 yarn-error.log*
 
 # others
-.env*.local
+.env*
+!.env.example
+.vercel.local
 .vercel
 next-env.d.ts
 
@@ -40,3 +42,4 @@ scripts/.seed-guestbook-ids.json
 
 # activity-sync packet lives in its own repo (github.com/robyajo/activity-sync)
 DOCS/sync/activity-sync/
+.env*

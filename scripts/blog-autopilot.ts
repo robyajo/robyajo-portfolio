@@ -404,14 +404,17 @@ function getLlmConfig() {
         process.env.AGY_BASE_URL,
         process.env.LLM_BASE_URL,
     ];
-    const baseUrl = urlCandidates.find((u) => typeof u === "string" && u.trim().length > 0) || "https://er-ai-api.mooo.com/agy/v1";
+    const rawCandidate = urlCandidates.find((u) => typeof u === "string" && u.trim().length > 0) || "https://er-ai-api.mooo.com";
+    const cleaned = rawCandidate.trim().replace(/\/+$/, "");
+    const baseUrl = cleaned.endsWith("/agy/v1") ? cleaned : `${cleaned}/agy/v1`;
 
     return { apiKey, baseUrl };
 }
 
 async function resolveModels(baseUrl: string, apiKey?: string): Promise<string[]> {
-    if (process.env.LLM_MODELS && process.env.LLM_MODELS.trim().length > 0) {
-        return process.env.LLM_MODELS.split(",").map((m) => m.trim()).filter(Boolean);
+    const specifiedModels = process.env.BLOG_LLM_MODEL ?? process.env.LLM_MODELS;
+    if (specifiedModels && specifiedModels.trim().length > 0) {
+        return specifiedModels.split(",").map((m) => m.trim()).filter(Boolean);
     }
     if (apiKey) {
         try {
