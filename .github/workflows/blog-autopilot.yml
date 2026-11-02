@@ -29,6 +29,11 @@ on:
         type: boolean
         required: false
         default: false
+      force:
+        description: "Paksa tulis artikel baru meskipun sudah ada artikel hari ini"
+        type: boolean
+        required: false
+        default: false
 
 permissions:
   contents: write
@@ -65,10 +70,12 @@ jobs:
           NEXT_PUBLIC_BASE_URL: https://ajoroby.is-a.dev
           INPUT_TOPIC: ${{ inputs.topic }}
           INPUT_DRY: ${{ inputs.dry_run }}
+          INPUT_FORCE: ${{ inputs.force }}
         run: |
           ARGS=()
           if [ -n "$INPUT_TOPIC" ]; then ARGS+=(--topic "$INPUT_TOPIC"); fi
           if [ "$INPUT_DRY" = "true" ]; then ARGS+=(--dry-run); fi
+          if [ "$INPUT_FORCE" = "true" ]; then ARGS+=(--force); fi
           pnpm tsx scripts/blog-autopilot.ts "${ARGS[@]}"
 
       - name: Verifikasi

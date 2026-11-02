@@ -598,7 +598,10 @@ export async function triggerBlogAutopilot(): Promise<ActionResult> {
                         Accept: "application/vnd.github+json",
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({ ref: "master" }),
+                    body: JSON.stringify({
+                        ref: "master",
+                        inputs: { force: true },
+                    }),
                 },
             );
             if (!response.ok) {
