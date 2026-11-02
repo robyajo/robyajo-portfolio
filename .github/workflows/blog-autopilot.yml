@@ -5,9 +5,11 @@ name: Blog Autopilot
 # terbit lewat Vercel.
 #
 # Rahasia yang dibutuhkan (Settings -> Secrets and variables -> Actions):
-#   GEMINI_API_KEY          (wajib)  kunci Google AI Studio
-#   ACTIVITY_PROJECT_KEYS   (opsional) untuk sinkronisasi ke API kegiatan
-#   DATABASE_URL            (opsional) bila ingin verifikasi `next build` penuh
+#   AGY_API_KEY / LLM_API_KEY (wajib)  kunci API layanan Antigravity CLI (agy-rest)
+#   LLM_BASE_URL              (opsional) endpoint remote, default: https://roby-agy.mooo.com/agy/v1
+#   LLM_MODELS                (opsional) urutan model; bila kosong akan query dinamis ke /models
+#   ACTIVITY_PROJECT_KEYS     (opsional) untuk sinkronisasi ke API kegiatan
+#   DATABASE_URL              (opsional) bila ingin verifikasi `next build` penuh
 #
 # Tanpa DATABASE_URL, verifikasi tetap berjalan (tipe + kompilasi MDX) dan
 # build penuh diserahkan ke Vercel.
@@ -55,10 +57,11 @@ jobs:
 
       - name: Tulis artikel
         env:
+          AGY_API_KEY: ${{ secrets.AGY_API_KEY }}
+          LLM_API_KEY: ${{ secrets.AGY_API_KEY || secrets.LLM_API_KEY || secrets.API_KEY || secrets.GEMINI_API_KEY }}
+          LLM_BASE_URL: ${{ secrets.AGY_BASE_URL || secrets.LLM_BASE_URL || 'https://roby-agy.mooo.com/agy/v1' }}
+          LLM_MODELS: ${{ secrets.LLM_MODELS }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
-          LLM_BASE_URL: ${{ secrets.LLM_BASE_URL || 'https://roby-agy.mooo.com/v1' }}
-          LLM_MODELS: ${{ secrets.LLM_MODELS || 'gemini-3.8-flash-high,gemini-3.8-flash,gemini-3.8-flash-medium,gemini-3.8-flash-low' }}
           NEXT_PUBLIC_BASE_URL: https://ajoroby.is-a.dev
           INPUT_TOPIC: ${{ inputs.topic }}
           INPUT_DRY: ${{ inputs.dry_run }}

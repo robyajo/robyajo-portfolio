@@ -41,6 +41,8 @@ const DEFAULT_MODELS = [
     "gemini-3.8-flash",
     "gemini-3.8-flash-medium",
     "gemini-3.8-flash-low",
+    "claude-sonnet-4-6",
+    "gpt-oss-120b-medium",
 ];
 
 const BANNED_PHRASES = [
@@ -394,15 +396,55 @@ function buildUserPrompt(
         .join("\n");
 }
 
+function getLlmConfig() {
+    const apiKey =
+        process.env.AGY_API_KEY ??
+        process.env.LLM_API_KEY ??
+        process.env.API_KEY ??
+        process.env.GEMINI_API_KEY;
+    const baseUrl =
+        process.env.AGY_BASE_URL ??
+        process.env.LLM_BASE_URL ??
+        "https://roby-agy.mooo.com/agy/v1";
+    return { apiKey, baseUrl };
+}
+
+async function resolveModels(baseUrl: string, apiKey?: string): Promise<string[]> {
+    if (process.env.LLM_MODELS && process.env.LLM_MODELS.trim().length > 0) {
+        return process.env.LLM_MODELS.split(",").map((m) => m.trim()).filter(Boolean);
+    }
+    if (apiKey) {
+        try {
+            const response = await fetchWithTimeout(
+                `${baseUrl}/models`,
+                {
+                    headers: {
+                        authorization: `Bearer ${apiKey}`,
+                    },
+                },
+                5_000,
+            );
+            if (response.ok) {
+                const data = (await response.json()) as { data?: { id: string }[] };
+                if (Array.isArray(data?.data) && data.data.length > 0) {
+                    const ids = data.data.map((m) => m.id);
+                    log(`model dinamis terdeteksi dari server agy (${ids.length} model): ${ids.join(", ")}`);
+                    return ids;
+                }
+            }
+        } catch (err) {
+            log(`deteksi model dinamis dilewati (${(err as Error).message}), memakai model cadangan.`);
+        }
+    }
+    return DEFAULT_MODELS;
+}
+
 async function callModel(
     messages: { role: string; content: string }[],
     models: string[],
 ): Promise<string> {
-    const apiKey = process.env.LLM_API_KEY ?? process.env.GEMINI_API_KEY;
-    if (!apiKey) fail("LLM_API_KEY / GEMINI_API_KEY tidak diset");
-    const baseUrl =
-        process.env.LLM_BASE_URL ??
-        "https://roby-agy.mooo.com/v1";
+    const { apiKey, baseUrl } = getLlmConfig();
+    if (!apiKey) fail("AGY_API_KEY / LLM_API_KEY / GEMINI_API_KEY tidak diset");
 
     let lastError = "";
     for (let round = 0; round < 2; round += 1) {
@@ -910,9 +952,8 @@ async function main(): Promise<void> {
         published.topics,
     );
 
-    const models = process.env.LLM_MODELS
-        ? process.env.LLM_MODELS.split(",").map((m) => m.trim()).filter(Boolean)
-        : DEFAULT_MODELS;
+    const { apiKey, baseUrl } = getLlmConfig();
+    const models = await resolveModels(baseUrl, apiKey);
 
     const content = await callModel(
         [
