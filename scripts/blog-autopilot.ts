@@ -397,15 +397,20 @@ function buildUserPrompt(
 }
 
 function getLlmConfig() {
-    const apiKey =
-        process.env.AGY_API_KEY ??
-        process.env.LLM_API_KEY ??
-        process.env.API_KEY ??
-        process.env.GEMINI_API_KEY;
-    const baseUrl =
-        process.env.AGY_BASE_URL ??
-        process.env.LLM_BASE_URL ??
-        "https://roby-agy.mooo.com/agy/v1";
+    const candidates = [
+        process.env.AGY_API_KEY,
+        process.env.LLM_API_KEY,
+        process.env.API_KEY,
+        process.env.GEMINI_API_KEY,
+    ];
+    const apiKey = candidates.find((k) => typeof k === "string" && k.trim().length > 0);
+
+    const urlCandidates = [
+        process.env.AGY_BASE_URL,
+        process.env.LLM_BASE_URL,
+    ];
+    const baseUrl = urlCandidates.find((u) => typeof u === "string" && u.trim().length > 0) || "https://roby-agy.mooo.com/agy/v1";
+
     return { apiKey, baseUrl };
 }
 
