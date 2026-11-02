@@ -86,15 +86,15 @@ export function ChatCategoryNav({
         <SparkleIcon className="size-3 text-(--brand-text)" />
         // {title || "Jelajahi Berdasarkan Topik:"}
       </span>
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         {categories.map((cat) => (
           <button
             key={cat.id}
             type="button"
             onClick={() => onSelect(cat.prompt)}
-            className="group flex items-center gap-2 rounded-lg border border-border/80 bg-background/60 p-2 text-left text-xs transition-all hover:border-(--brand-text)/50 hover:bg-muted/50 active:scale-95 shadow-xs"
+            className="group flex items-center gap-2 rounded-lg border border-border/80 bg-background/80 dark:bg-card/70 p-2 text-left text-xs transition-all hover:border-(--brand-text)/50 hover:bg-muted/60 active:scale-95 shadow-xs"
           >
-            <span className="flex size-6 shrink-0 items-center justify-center rounded-md border border-border/60 bg-muted transition-transform group-hover:scale-105 group-hover:border-(--brand-text)/40">
+            <span className="flex size-6 shrink-0 items-center justify-center rounded-md border border-border/60 bg-muted/80 dark:bg-muted/50 transition-transform group-hover:scale-105 group-hover:border-(--brand-text)/40">
               {getCategoryIcon(cat.id)}
             </span>
             <div className="min-w-0 flex-1">

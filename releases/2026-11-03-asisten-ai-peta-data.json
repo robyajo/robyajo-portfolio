@@ -59,6 +59,11 @@
       "type": "improvement",
       "id": "Penyempurnaan tata huruf berkarakter futuristik terpadu menggunakan tipografi piksel teknis pada label status, judul indikator, daftar berbutir berlian, dan badge navigasi yang rapi dan nyaman dibaca.",
       "en": "Refined futuristic typography hierarchy leveraging technical pixel font styling across status labels, indicator headers, diamond list pips, and neat navigation badges for optimal readability."
+    },
+    {
+      "type": "improvement",
+      "id": "Penyempurnaan responsivitas panel asisten pada layar ponsel serta optimasi keterbacaan warna teks dan kode pada mode malam (dark mode).",
+      "en": "Refined assistant panel responsiveness on mobile devices and optimized text and syntax contrast across dark mode."
     }
   ]
 }

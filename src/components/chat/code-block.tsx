@@ -179,8 +179,8 @@ export function CodeBlock({ code, language }: { code: string; language: string }
   const displayLang = formatLanguageName(language);
 
   return (
-    <div className="my-2.5 overflow-hidden rounded-xl border border-border/80 bg-muted/40 shadow-xs">
-      <div className="flex items-center justify-between border-b border-border/70 bg-muted/70 px-3 py-1.5">
+    <div className="my-2.5 overflow-hidden rounded-xl border border-border/80 bg-background/80 dark:bg-background/95 shadow-xs">
+      <div className="flex items-center justify-between border-b border-border/70 bg-muted/60 dark:bg-muted/20 px-3 py-1.5">
         <div className="flex items-center gap-2.5">
           <div className="flex items-center gap-1.5 opacity-60">
             <span className="size-2 rounded-full bg-rose-500/80" />

@@ -5,10 +5,12 @@ import Link from "next/link";
 import type { Route } from "next";
 import { ArrowUpRightIcon } from "@/components/shared/icons";
 import { CodeBlock } from "./code-block";
+import { cn } from "@/lib/cn";
 
 interface FormattedContentProps {
   text: string;
   onNavigate?: (href: string) => void;
+  className?: string;
 }
 
 interface InlineToken {
@@ -130,7 +132,7 @@ function InlineRenderer({
       {tokens.map((token, idx) => {
         if (token.type === "bold") {
           return (
-            <strong key={idx} className="font-semibold text-foreground">
+            <strong key={idx} className="font-semibold text-inherit">
               {token.text}
             </strong>
           );
@@ -140,7 +142,7 @@ function InlineRenderer({
           return (
             <code
               key={idx}
-              className="rounded border border-border/80 bg-muted/80 px-1.5 py-0.5 font-mono text-2xs text-foreground"
+              className="rounded border border-border/80 bg-muted/80 dark:bg-muted/50 px-1.5 py-0.5 font-mono text-2xs text-inherit"
             >
               {token.text}
             </code>
@@ -294,12 +296,21 @@ function groupLinesIntoBlocks(rawText: string): ContentBlock[] {
   return blocks;
 }
 
-export function FormattedContent({ text, onNavigate }: FormattedContentProps) {
+export function FormattedContent({
+  text,
+  onNavigate,
+  className,
+}: FormattedContentProps) {
   // Split segments by code fences: ```lang\ncode\n```
   const segments = text.split(/(```[a-zA-Z0-9_-]*\n[\s\S]*?```)/g);
 
   return (
-    <div className="flex flex-col gap-2.5 leading-relaxed text-foreground">
+    <div
+      className={cn(
+        "flex flex-col gap-2.5 leading-relaxed text-inherit",
+        className,
+      )}
+    >
       {segments.map((segment, sIdx) => {
         // Code Block
         const codeMatch = segment.match(

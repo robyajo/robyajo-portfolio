@@ -16,20 +16,23 @@ export const siteConfig = {
     githubRepo: "robyajo/robyajo-portfolio",
     repoUrl: "https://github.com/robyajo/robyajo-portfolio",
     llmBaseUrl:
-        (process.env.LLM_BASE_URL ?? "https://er-ai-api.mooo.com").replace(
-            /\/+$/,
-            "",
-        ),
+        (
+            process.env.CF_GATEWAY_URL?.replace(/\/v1\/chat\/completions$/, "") ??
+            process.env.LLM_BASE_URL ??
+            "https://er-ai-gateway.duckdns.org"
+        ).replace(/\/+$/, ""),
     get llmApiUrl(): string {
         return (
+            process.env.CF_GATEWAY_URL ??
             process.env.LLM_API_URL ??
-            `${this.llmBaseUrl}/llama/v1/chat/completions`
+            "https://er-ai-gateway.duckdns.org/v1/chat/completions"
         );
     },
     llmModel:
+        process.env.CF_GATEWAY_MODEL ??
         process.env.CHAT_LLM_MODEL ??
         process.env.LLM_MODEL ??
-        "qwen3.5-0.8b",
+        "@cf/zai-org/glm-4.7-flash",
     sameAs: [
         "https://github.com/robyajo",
         "https://x.com/roby_karti",

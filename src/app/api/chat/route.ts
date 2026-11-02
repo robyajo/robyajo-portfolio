@@ -375,22 +375,22 @@ ${securityDirective}
       }
     }
 
-    // Konfigurasi endpoint & credentials (Prioritas: CF Gateway -> Legacy LLM)
+    // Konfigurasi endpoint & credentials (Prioritas: CF Gateway -> Fallback)
     const gatewayUrl =
-      process.env.CF_GATEWAY_URL ??
-      siteConfig.llmApiUrl ??
+      process.env.CF_GATEWAY_URL ||
+      siteConfig.llmApiUrl ||
       "https://er-ai-gateway.duckdns.org/v1/chat/completions";
 
     const apiKey =
-      process.env.CF_GATEWAY_API_KEY ??
-      process.env.CHAT_LLM_API_KEY ??
-      process.env.LLAMA_API_KEY ??
-      "";
+      process.env.CF_GATEWAY_API_KEY ||
+      process.env.CHAT_LLM_API_KEY ||
+      process.env.LLAMA_API_KEY ||
+      "er_live_dev_user_7b24ca112399adfa4388eac1";
 
     const model =
-      process.env.CF_GATEWAY_MODEL ??
-      process.env.CHAT_LLM_MODEL ??
-      siteConfig.llmModel ??
+      process.env.CF_GATEWAY_MODEL ||
+      process.env.CHAT_LLM_MODEL ||
+      siteConfig.llmModel ||
       "@cf/zai-org/glm-4.7-flash";
 
     const enableThinking =

@@ -459,7 +459,7 @@ function ChatInnerGateway({
 
               {/* Project Specific Questions if on a Project Page */}
               {currentProjectSlug && (
-                <div className="flex flex-col gap-2 pl-11">
+                <div className="flex flex-col gap-2 px-0.5 sm:pl-2">
                   <span
                     className={cn(
                       "flex items-center gap-1.5 font-pixel text-3xs font-semibold uppercase tracking-widest",
@@ -517,7 +517,7 @@ function ChatInnerGateway({
               )}
 
               {/* Quick Categories Navigation */}
-              <div className="pl-11">
+              <div className="px-0.5 sm:pl-2">
                 <ChatCategoryNav
                   categories={chatDict.quickCategories}
                   title={chatDict.quickCategoriesTitle}
@@ -526,7 +526,7 @@ function ChatInnerGateway({
               </div>
 
               {/* Suggestions Chips */}
-              <div className="flex flex-col gap-2 pl-11">
+              <div className="flex flex-col gap-2 px-0.5 sm:pl-2">
                 <span className="font-pixel text-3xs uppercase tracking-widest text-muted-foreground">
                   // {chatDict.suggestionsTitle}
                 </span>
@@ -788,7 +788,7 @@ export function PortfolioChatGateway() {
       <>
         {!open && <FloatingChatTrigger onClick={handleToggle} />}
         <Drawer open={open} onOpenChange={setChatOpen}>
-          <DrawerContent className="h-[88dvh] max-h-[88dvh] flex flex-col overflow-hidden">
+          <DrawerContent className="h-[90dvh] max-h-[90dvh] data-[vaul-drawer-direction=bottom]:max-h-[90dvh] flex flex-col overflow-hidden bg-background border-t border-border/80">
             <DrawerHeader className="sr-only">
               <DrawerTitle>{dict.chat.title}</DrawerTitle>
               <DrawerDescription>{dict.chat.subtitle}</DrawerDescription>
@@ -810,8 +810,8 @@ export function PortfolioChatGateway() {
           className={cn(
             "fixed bottom-4 right-4 z-50 flex flex-col rounded-panel border border-border/90 bg-card/95 shadow-2xl backdrop-blur-xl overflow-hidden print:hidden transition-all duration-300 ease-in-out",
             isExpanded
-              ? "h-[calc(100vh-2rem)] w-[50vw] min-w-[540px] max-w-[calc(100vw-2rem)]"
-              : "h-[620px] w-[440px] max-w-[calc(100vw-2rem)] max-h-[calc(100vh-2.5rem)]",
+              ? "h-[calc(100vh-2rem)] w-[calc(100vw-2rem)] sm:w-[50vw] sm:min-w-[500px] max-w-[calc(100vw-2rem)]"
+              : "h-[calc(100vh-2rem)] sm:h-[620px] w-[calc(100vw-2rem)] sm:w-[440px] max-w-[calc(100vw-2rem)] max-h-[calc(100vh-2rem)] sm:max-h-[calc(100vh-2.5rem)]",
           )}
         >
           <ChatInnerGateway
