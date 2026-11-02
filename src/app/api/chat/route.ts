@@ -8,11 +8,11 @@ Tugasmu adalah menjawab pertanyaan pengunjung seputar latar belakang, pengalaman
 
 PANDUAN MENJAWAB & GAYA KOMUNIKASI:
 1. Bersikaplah seperti asisten virtual yang cerdas dan bersahabat. Bicarakan Roby dalam sudut pandang orang ketiga (contoh: "Roby adalah...", "Beliau saat ini menjabat sebagai...", "Proyek yang dibangun beliau..."). Jangan berbicara seolah-olah dirimu adalah Roby secara langsung.
-2. Jawab langsung ke inti pertanyaan pengunjung dengan ringkas dan padat (maksimal 1-2 paragraf singkat). Jangan memuntahkan seluruh riwayat hidup bila tidak diminta.
+2. Jawab langsung ke inti pertanyaan pengunjung dengan ringkas dan padat (maksimal 1-2 paragraf singkat).
 3. Gunakan format Markdown yang rapi: gunakan bullet points untuk daftar, cetak tebal (**bold**) untuk kata kunci, dan berikan tautan internal/eksternal yang relevan (contoh: [Halaman Proyek](/projects), [Lihat Resume](/resume), [Blog](/blogs), [Kontak](/contact), atau [LinkedIn](https://id.linkedin.com/in/robykartis)).
 4. Sesuaikan bahasa dengan penanya (Bahasa Indonesia untuk penanya Indonesia, English for English queries).
 5. Jangan pernah mengarang data di luar profil resmi di bawah ini.
-6. Berikan jawaban secara langsung tanpa intro berulang-ulang agar respon cepat dan hemat daya komputasi.
+6. Langsung berikan jawaban tanpa kalimat pembuka yang berulang-ulang agar respon cepat dan hemat komputasi server.
 
 INFORMASI RESMI ROBY KARTI S., S.Kom.:
 - Identitas: Roby Karti S., S.Kom. | Lahir: Tiram Tapakis, 16 Juli 1994 | Domisili: Pekanbaru, Riau, Indonesia.
@@ -98,7 +98,7 @@ export async function POST(req: Request) {
           ...recentMessages,
         ],
         stream: true,
-        max_tokens: 650,
+        max_tokens: 500,
         temperature: 0.7,
       }),
     });
@@ -122,9 +122,7 @@ export async function POST(req: Request) {
     const stream = new ReadableStream({
       async start(controller) {
         let buffer = "";
-        let isThinking = false;
-        let receivedFirst = false;
-        let prefixBuffer = "";
+        let insideThinkTag = false;
 
         try {
           while (true) {
@@ -142,66 +140,28 @@ export async function POST(req: Request) {
               if (trimmed.startsWith("data: ")) {
                 try {
                   const data = JSON.parse(trimmed.slice(6));
-                  // Hanya kirimkan delta content (cegah kebocoran reasoning internal)
                   const textDelta = data.choices?.[0]?.delta?.content;
 
                   if (textDelta) {
-                    if (!receivedFirst) {
-                      prefixBuffer += textDelta;
-                      if (
-                        prefixBuffer.includes("Thinking Process:") ||
-                        prefixBuffer.includes("<think>")
-                      ) {
-                        isThinking = true;
-                        receivedFirst = true;
-                      } else if (prefixBuffer.length > 25) {
-                        receivedFirst = true;
-                        controller.enqueue(encoder.encode(prefixBuffer));
-                        prefixBuffer = "";
-                      }
+                    if (textDelta.includes("<think>")) {
+                      insideThinkTag = true;
+                      continue;
+                    }
+                    if (textDelta.includes("</think>")) {
+                      insideThinkTag = false;
+                      continue;
+                    }
+                    if (insideThinkTag) {
                       continue;
                     }
 
-                    if (isThinking) {
-                      prefixBuffer += textDelta;
-                      if (prefixBuffer.includes("</think>")) {
-                        const after = prefixBuffer.split("</think>")[1] || "";
-                        isThinking = false;
-                        prefixBuffer = "";
-                        if (after.trim()) {
-                          controller.enqueue(encoder.encode(after.trimStart()));
-                        }
-                      } else {
-                        const doubleBreak = prefixBuffer.indexOf("\n\n\n");
-                        if (doubleBreak !== -1) {
-                          const after = prefixBuffer.slice(doubleBreak + 3);
-                          isThinking = false;
-                          prefixBuffer = "";
-                          if (after.trim()) {
-                            controller.enqueue(encoder.encode(after.trimStart()));
-                          }
-                        }
-                      }
-                      continue;
-                    }
-
+                    // Teruskan langsung setiap token (realtime stream: true) tanpa buffering beban
                     controller.enqueue(encoder.encode(textDelta));
                   }
                 } catch {
                   // Lewati chunk yang tidak valid
                 }
               }
-            }
-          }
-
-          if (prefixBuffer && !isThinking) {
-            controller.enqueue(encoder.encode(prefixBuffer));
-          } else if (prefixBuffer && isThinking) {
-            const cleaned = prefixBuffer
-              .replace(/Thinking Process:[\s\S]*?(?=\n\n[^\n*#0-9-]|\n{3,}|$)/i, "")
-              .trim();
-            if (cleaned) {
-              controller.enqueue(encoder.encode(cleaned));
             }
           }
         } catch (err) {
@@ -211,6 +171,7 @@ export async function POST(req: Request) {
         }
       },
       cancel() {
+        // Hentikan pembacaan di VPS seketika saat browser memutus koneksi
         reader.cancel().catch(() => {});
       },
     });
@@ -220,6 +181,7 @@ export async function POST(req: Request) {
         "Content-Type": "text/event-stream; charset=utf-8",
         "Cache-Control": "no-cache, no-transform",
         Connection: "keep-alive",
+        "X-Accel-Buffering": "no",
       },
     });
   } catch (err) {
