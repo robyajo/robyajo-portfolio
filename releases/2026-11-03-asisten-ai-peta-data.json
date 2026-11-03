@@ -6,8 +6,8 @@
     "en": "Interactive Assistant Enhancement, Full Information Mapping, and Topic Navigation"
   },
   "body": {
-    "id": "Menghadirkan pembaruan antarmuka asisten interaktif dengan penjelajahan topik terpadu, pemetaan menyeluruh seluruh data karya dan layanan, animasi robot interaktif, tata huruf futuristik yang rapi, serta perlindungan akses keamanan proyek yang aman bagi publik.",
-    "en": "Introducing an enhanced interactive assistant interface featuring topic-based exploration, comprehensive portfolio data mapping, interactive robot animation, refined futuristic typography, and secure project status protection for public safety."
+    "id": "Menghadirkan pembaruan antarmuka asisten interaktif dengan penjelajahan topik terpadu, pemetaan menyeluruh seluruh data karya dan layanan, animasi robot interaktif, tata huruf futuristik yang rapi, serta perlindungan akses keamanan proyek yang aman bagi publik. Artikel terbaru: \"Melawan Balik Pelatihan AI Tanpa Izin di Ruang Digital Kita\".",
+    "en": "Introducing an enhanced interactive assistant interface featuring topic-based exploration, comprehensive portfolio data mapping, interactive robot animation, refined futuristic typography, and secure project status protection for public safety. Latest article: \"Small Acts of Resistance Against Quiet AI Data Scraping\"."
   },
   "items": [
     {
@@ -84,6 +84,11 @@
       "type": "new",
       "id": "Fitur uji percakapan interaktif (Test Chat) untuk setiap penyedia AI di panel admin, memungkinkan pengelola menguji respons model secara langsung dengan SSE streaming, pengukuran latensi respons, preset prompt, serta diagnostik pesan galat hulu.",
       "en": "Interactive Test Chat feature for each AI provider in the admin panel, enabling administrators to test model responses live with SSE streaming, response latency benchmarks, prompt presets, and upstream error diagnostics."
+    },
+    {
+      "type": "new",
+      "id": "Tulisan baru: \"Melawan Balik Pelatihan AI Tanpa Izin di Ruang Digital Kita\". Selengkapnya di https://ajoroby.is-a.dev/blogs/small-acts-of-resistance-against-ai-scraping",
+      "en": "New article: \"Small Acts of Resistance Against Quiet AI Data Scraping\". Read it at https://ajoroby.is-a.dev/blogs/small-acts-of-resistance-against-ai-scraping"
     }
   ]
 }
