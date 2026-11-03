@@ -1,5 +1,5 @@
 import { siteConfig } from "@/lib/config";
-import { getActiveAiConfig } from "@/lib/ai-config";
+import { getActiveAiConfig, getFallbackAiConfig } from "@/lib/ai-config";
 import { getProjectBySlug } from "@/lib/projects";
 import { getAuth } from "@/lib/auth";
 import { NextResponse } from "next/server";
@@ -384,26 +384,25 @@ ${securityDirective}
     }
 
     // Konfigurasi endpoint & credentials (Prioritas: Database ai_settings -> Fallback Env)
-    const activeAi = await getActiveAiConfig("chat");
-    const gatewayUrl = activeAi.endpointUrl;
-    const apiKey = activeAi.apiKey;
-    const model = activeAi.modelId;
-    const enableThinking = activeAi.enableThinking;
-    const reasoningEffort = activeAi.reasoningEffort;
-    const temperature = activeAi.temperature;
-    const maxTokens = activeAi.maxTokens;
+    let activeAi = await getActiveAiConfig("chat");
+    let gatewayUrl = activeAi.endpointUrl;
+    let apiKey = activeAi.apiKey;
+    let model = activeAi.modelId;
+    let enableThinking = activeAi.enableThinking;
+    let reasoningEffort = activeAi.reasoningEffort;
+    let temperature = activeAi.temperature;
+    let maxTokens = activeAi.maxTokens;
 
-    const headers: Record<string, string> = {
-      "Content-Type": "application/json",
+    const getHeaders = (key: string) => {
+      const h: Record<string, string> = { "Content-Type": "application/json" };
+      if (key) h["Authorization"] = `Bearer ${key}`;
+      return h;
     };
-    if (apiKey) {
-      headers["Authorization"] = `Bearer ${apiKey}`;
-    }
 
-    // Request payload ke Cloudflare AI Gateway
-    const response = await fetch(gatewayUrl, {
+    // Panggil model pada AI Gateway aktif
+    let response = await fetch(gatewayUrl, {
       method: "POST",
-      headers,
+      headers: getHeaders(apiKey),
       signal: req.signal,
       body: JSON.stringify({
         model,
@@ -420,6 +419,50 @@ ${securityDirective}
         chat_template_kwargs: { enable_thinking: enableThinking },
       }),
     });
+
+    // Otomatis failover ke provider cadangan bila provider utama mengalami gangguan 502/503/server error
+    if (!response.ok || !response.body) {
+      if (response.status >= 500) {
+        console.warn(
+          `[chat] Provider utama ${activeAi.providerId} (${model}) gagal HTTP ${response.status}. Mencoba failover provider...`,
+        );
+        const fallbackAi = await getFallbackAiConfig(activeAi);
+        if (fallbackAi && fallbackAi.providerId !== activeAi.providerId) {
+          activeAi = fallbackAi;
+          gatewayUrl = activeAi.endpointUrl;
+          apiKey = activeAi.apiKey;
+          model = activeAi.modelId;
+          enableThinking = activeAi.enableThinking;
+          reasoningEffort = activeAi.reasoningEffort;
+          temperature = activeAi.temperature;
+          maxTokens = activeAi.maxTokens;
+
+          const fbResponse = await fetch(gatewayUrl, {
+            method: "POST",
+            headers: getHeaders(apiKey),
+            signal: req.signal,
+            body: JSON.stringify({
+              model,
+              messages: [
+                { role: "system", content: dynamicSystemPrompt },
+                ...recentMessages,
+              ],
+              stream: true,
+              max_tokens: maxTokens,
+              temperature: temperature,
+              enable_thinking: enableThinking,
+              thinking: enableThinking,
+              reasoning_effort: reasoningEffort,
+              chat_template_kwargs: { enable_thinking: enableThinking },
+            }),
+          }).catch(() => null);
+
+          if (fbResponse && fbResponse.ok && fbResponse.body) {
+            response = fbResponse;
+          }
+        }
+      }
+    }
 
     if (!response.ok || !response.body) {
       const errorText = await response.text().catch(() => "");

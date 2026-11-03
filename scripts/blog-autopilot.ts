@@ -470,7 +470,60 @@ async function getProviderTargets(): Promise<ProviderTarget[]> {
     const targets: ProviderTarget[] = [];
 
     // 1. Target utama (berdasarkan DB setting aktif atau fallback env)
-    const primary = await getActiveAiConfig("blog");
+    let primary = await getActiveAiConfig("blog");
+
+    // Jika DATABASE_URL tidak diset di environment lokal/CI, sinkronkan pilihan admin dari endpoint /api/ai/active-config
+    if (!process.env.DATABASE_URL) {
+        const rawUrl =
+            process.env.NEXT_PUBLIC_BASE_URL ||
+            process.env.VERCEL_PROJECT_PRODUCTION_URL ||
+            "https://ajoroby.is-a.dev";
+        const baseUrl = (rawUrl.startsWith("http") ? rawUrl : `https://${rawUrl}`).replace(/\/+$/, "");
+        try {
+            const res = await fetchWithTimeout(`${baseUrl}/api/ai/active-config?task=blog`, {}, 3_000);
+            if (res.ok) {
+                const json = (await res.json()) as {
+                    success: boolean;
+                    isDbDriven: boolean;
+                    providerId: string;
+                    providerName: string;
+                    modelId: string;
+                    endpointUrl: string;
+                };
+                if (json.success && json.isDbDriven) {
+                    let apiKey = "";
+                    if (json.providerId === "cloudflare") {
+                        apiKey =
+                            process.env.CF_GATEWAY_API_KEY ||
+                            process.env.CHAT_LLM_API_KEY ||
+                            "er_live_dev_user_7b24ca112399adfa4388eac1";
+                    } else {
+                        apiKey =
+                            process.env.AGY_API_KEY ||
+                            process.env.LLM_API_KEY ||
+                            process.env.GEMINI_API_KEY ||
+                            "sk-agy-cloud-only-token-8060";
+                    }
+                    primary = {
+                        task: "blog",
+                        providerId: json.providerId,
+                        providerName: json.providerName,
+                        modelId: json.modelId,
+                        endpointUrl: json.endpointUrl,
+                        apiKey,
+                        enableThinking: false,
+                        reasoningEffort: "medium",
+                        temperature: 0.95,
+                        maxTokens: 8192,
+                        isDbDriven: true,
+                    };
+                    log(`konfigurasi blog sinkron dari admin: provider=${json.providerId}, model=${json.modelId}`);
+                }
+            }
+        } catch (e) {
+            log(`pemeriksaan config aktif API dilewati: ${(e as Error).message}`);
+        }
+    }
     const primaryCleanBase = primary.endpointUrl.replace(/\/chat\/completions$/, "");
     const primaryModels = await resolveModelsForTarget(
         primaryCleanBase,

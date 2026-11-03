@@ -58,7 +58,7 @@ describe("POST /api/chat", () => {
   it("returns error response if upstream LLM fails", async () => {
     const fetchSpy = vi
       .spyOn(globalThis, "fetch")
-      .mockResolvedValueOnce(
+      .mockResolvedValue(
         new Response("Service Unavailable", { status: 503 }),
       );
 
@@ -74,6 +74,48 @@ describe("POST /api/chat", () => {
     expect(res.status).toBe(503);
     const json = await res.json();
     expect(json.error).toBe("Gagal terhubung ke AI Gateway.");
+
+    fetchSpy.mockRestore();
+  });
+
+  it("fails over to secondary provider if primary returns 503", async () => {
+    const mockSSE = [
+      'data: {"choices":[{"delta":{"content":"Halo dari fallback!"}}]}\n\n',
+      "data: [DONE]\n\n",
+    ].join("");
+    const encoder = new TextEncoder();
+    const fallbackStream = new ReadableStream({
+      start(controller) {
+        controller.enqueue(encoder.encode(mockSSE));
+        controller.close();
+      },
+    });
+
+    let callCount = 0;
+    const fetchSpy = vi.spyOn(globalThis, "fetch").mockImplementation(async () => {
+      callCount += 1;
+      if (callCount === 1) {
+        return new Response("Primary Gateway 502 Bad Gateway", { status: 502 });
+      }
+      return new Response(fallbackStream, {
+        status: 200,
+        headers: { "Content-Type": "text/event-stream" },
+      });
+    });
+
+    const req = new Request("http://localhost:3000/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        messages: [{ role: "user", content: "Halo" }],
+      }),
+    });
+
+    const res = await POST(req);
+    expect(res.status).toBe(200);
+    const text = await res.text();
+    expect(text).toBe("Halo dari fallback!");
+    expect(callCount).toBe(2);
 
     fetchSpy.mockRestore();
   });
