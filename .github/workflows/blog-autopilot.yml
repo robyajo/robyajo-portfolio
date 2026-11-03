@@ -56,7 +56,6 @@ jobs:
           AGY_API_KEY: ${{ secrets.AGY_API_KEY }}
           LLM_API_KEY: ${{ secrets.AGY_API_KEY || secrets.LLM_API_KEY || secrets.API_KEY || secrets.CF_GATEWAY_API_KEY || secrets.GEMINI_API_KEY }}
           LLM_BASE_URL: ${{ secrets.LLM_BASE_URL || secrets.AGY_BASE_URL || 'https://er-ai-api.mooo.com' }}
-          LLM_MODELS: ${{ secrets.LLM_MODELS }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           NEXT_PUBLIC_BASE_URL: https://ajoroby.is-a.dev
           INPUT_TOPIC: ${{ inputs.topic }}
