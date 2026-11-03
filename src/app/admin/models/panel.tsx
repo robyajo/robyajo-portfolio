@@ -589,7 +589,7 @@ export function AdminModelsPanel({
 
       {/* Modal Tambah Model */}
       <Dialog open={isAddModelOpen} onOpenChange={setIsAddModelOpen}>
-        <DialogContent className="sm:max-w-[540px]">
+        <DialogContent className="sm:max-w-[640px] max-h-[92vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Tambah Model AI Kustom</DialogTitle>
             <DialogDescription>
@@ -604,6 +604,7 @@ export function AdminModelsPanel({
               enabled: true,
             }}
             providers={data.providers}
+            existingModels={data.models}
             onSubmit={handleCreateModel}
             onCancel={() => setIsAddModelOpen(false)}
             submitting={submitting}
@@ -627,6 +628,7 @@ export function AdminModelsPanel({
             <ModelForm
               initial={editingModel}
               providers={data.providers}
+              existingModels={data.models}
               onSubmit={handleUpdateModel}
               onCancel={() => setEditingModel(null)}
               submitting={submitting}
