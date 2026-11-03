@@ -22,6 +22,7 @@ import {
     writeFileSync,
 } from "node:fs";
 import { join } from "node:path";
+import { getActiveAiConfig, getFallbackAiConfig } from "../src/lib/ai-config";
 
 const ROOT = process.cwd();
 const BLOG_DIR = join(ROOT, "content/blog");
@@ -36,8 +37,20 @@ const MAX_WORDS = 2200;
 const MIN_LINKS = 3;
 const MAX_TITLE = 70;
 
-const DEFAULT_MODELS = [
+const DEFAULT_ER_MODELS = [
     "gemini-3.8-flash-medium",
+    "gemini-3.8-flash-high",
+    "gemini-3.8-flash",
+    "gemini-3.8-flash-low",
+    "claude-sonnet-4-6",
+    "gpt-oss-120b-medium",
+];
+
+const DEFAULT_CF_MODELS = [
+    "@cf/zai-org/glm-4.7-flash",
+    "@cf/qwen/qwen3-30b-a3b-fp8",
+    "@cf/openai/gpt-oss-20b",
+    "@cf/google/gemma-4-26b-a4b-it",
 ];
 
 const BANNED_PHRASES = [
@@ -391,31 +404,35 @@ function buildUserPrompt(
         .join("\n");
 }
 
-function getLlmConfig() {
-    const candidates = [
-        process.env.AGY_API_KEY,
-        process.env.LLM_API_KEY,
-        process.env.API_KEY,
-        process.env.GEMINI_API_KEY,
-    ];
-    const apiKey = candidates.find((k) => typeof k === "string" && k.trim().length > 0);
-
-    const urlCandidates = [
-        process.env.AGY_BASE_URL,
-        process.env.LLM_BASE_URL,
-    ];
-    const rawCandidate = urlCandidates.find((u) => typeof u === "string" && u.trim().length > 0) || "https://er-ai-api.mooo.com";
-    const cleaned = rawCandidate.trim().replace(/\/+$/, "");
-    const baseUrl = cleaned.endsWith("/agy/v1") ? cleaned : `${cleaned}/agy/v1`;
-
-    return { apiKey, baseUrl };
+interface ProviderTarget {
+    providerId: string;
+    providerName: string;
+    baseUrl: string;
+    apiKey: string;
+    models: string[];
 }
 
-async function resolveModels(baseUrl: string, apiKey?: string): Promise<string[]> {
-    const specifiedModels = process.env.BLOG_LLM_MODEL ?? process.env.LLM_MODELS;
+async function resolveModelsForTarget(
+    baseUrl: string,
+    apiKey: string,
+    providerId: string,
+    preferredModel?: string,
+): Promise<string[]> {
+    const specifiedModels =
+        providerId === "cloudflare"
+            ? (process.env.BLOG_CF_MODEL ?? process.env.CF_GATEWAY_MODEL)
+            : (process.env.BLOG_LLM_MODEL ?? process.env.LLM_MODELS);
     if (specifiedModels && specifiedModels.trim().length > 0) {
         return specifiedModels.split(",").map((m) => m.trim()).filter(Boolean);
     }
+
+    const defaultList = providerId === "cloudflare" ? DEFAULT_CF_MODELS : DEFAULT_ER_MODELS;
+    const resolved: string[] = [];
+
+    if (preferredModel && !resolved.includes(preferredModel)) {
+        resolved.push(preferredModel);
+    }
+
     if (apiKey) {
         try {
             const response = await fetchWithTimeout(
@@ -431,26 +448,76 @@ async function resolveModels(baseUrl: string, apiKey?: string): Promise<string[]
                 const data = (await response.json()) as { data?: { id: string }[] };
                 if (Array.isArray(data?.data) && data.data.length > 0) {
                     const ids = data.data.map((m) => m.id);
-                    if (ids.includes("gemini-3.8-flash-medium")) {
-                        log("model gemini-3.8-flash-medium terverifikasi tersedia di server.");
-                        return ["gemini-3.8-flash-medium"];
+                    for (const id of ids) {
+                        if (!resolved.includes(id)) resolved.push(id);
                     }
-                    log(`model server terdeteksi: ${ids.join(", ")}`);
+                    log(`model server terdeteksi pada ${providerId}: ${ids.slice(0, 5).join(", ")}`);
                 }
             }
         } catch (err) {
-            log(`verifikasi model dilewati (${(err as Error).message}), memakai model default.`);
+            log(`verifikasi model ${providerId} dilewati (${(err as Error).message}), memakai model default.`);
         }
     }
-    return DEFAULT_MODELS;
+
+    for (const d of defaultList) {
+        if (!resolved.includes(d)) resolved.push(d);
+    }
+
+    return resolved;
 }
 
-async function callModel(
+async function getProviderTargets(): Promise<ProviderTarget[]> {
+    const targets: ProviderTarget[] = [];
+
+    // 1. Target utama (berdasarkan DB setting aktif atau fallback env)
+    const primary = await getActiveAiConfig("blog");
+    const primaryCleanBase = primary.endpointUrl.replace(/\/chat\/completions$/, "");
+    const primaryModels = await resolveModelsForTarget(
+        primaryCleanBase,
+        primary.apiKey,
+        primary.providerId,
+        primary.modelId,
+    );
+
+    targets.push({
+        providerId: primary.providerId,
+        providerName: primary.providerName,
+        baseUrl: primaryCleanBase,
+        apiKey: primary.apiKey,
+        models: primaryModels,
+    });
+
+    // 2. Target cadangan (failover otomatis antar provider bila terjadi HTTP 502/down)
+    const fallback = await getFallbackAiConfig(primary);
+    if (fallback && fallback.providerId !== primary.providerId) {
+        const fallbackCleanBase = fallback.endpointUrl.replace(/\/chat\/completions$/, "");
+        const fallbackModels = await resolveModelsForTarget(
+            fallbackCleanBase,
+            fallback.apiKey,
+            fallback.providerId,
+            fallback.modelId,
+        );
+
+        targets.push({
+            providerId: fallback.providerId,
+            providerName: fallback.providerName,
+            baseUrl: fallbackCleanBase,
+            apiKey: fallback.apiKey,
+            models: fallbackModels,
+        });
+    }
+
+    return targets;
+}
+
+async function callSingleProvider(
     messages: { role: string; content: string }[],
-    models: string[],
+    target: ProviderTarget,
 ): Promise<string> {
-    const { apiKey, baseUrl } = getLlmConfig();
-    if (!apiKey) fail("AGY_API_KEY / LLM_API_KEY / GEMINI_API_KEY tidak diset");
+    const { apiKey, baseUrl, models, providerName } = target;
+    if (!apiKey) {
+        throw new Error(`Kunci API untuk provider ${providerName} tidak diset`);
+    }
 
     let lastError = "";
     for (let round = 0; round < 2; round += 1) {
@@ -477,8 +544,8 @@ async function callModel(
                 if (!response.ok) {
                     const raw = await response.text();
                     lastError = `${model}: HTTP ${response.status} ${raw.slice(0, 160)}`;
-                    log(lastError);
-                    await sleep(2_500);
+                    log(`[${providerName}] ${lastError}`);
+                    await sleep(2_000);
                     continue;
                 }
 
@@ -511,7 +578,7 @@ async function callModel(
                                     const data = JSON.parse(trimmed.slice(6));
                                     if (data.error) {
                                         const errMsg = data.error.message || JSON.stringify(data.error);
-                                        log(`[stream error ${model}] ${errMsg}`);
+                                        log(`[${providerName} stream error ${model}] ${errMsg}`);
                                         lastError = `${model}: ${errMsg}`;
                                     }
                                     const textDelta =
@@ -538,20 +605,41 @@ async function callModel(
 
                 if (!content) {
                     lastError = `${model}: balasan kosong`;
-                    log(lastError);
+                    log(`[${providerName}] ${lastError}`);
                     continue;
                 }
-                log(`model terpakai: ${model}`);
+                log(`model terpakai: ${model} (${providerName})`);
                 return content;
             } catch (error) {
                 lastError = `${model}: ${(error as Error).message}`;
-                log(lastError);
-                await sleep(2_500);
+                log(`[${providerName}] ${lastError}`);
+                await sleep(2_000);
             }
         }
-        log("semua model gagal pada putaran ini, mencoba lagi…");
+        log(`semua model pada ${providerName} gagal pada putaran ini, mencoba lagi…`);
     }
-    fail(`gagal memanggil model (${lastError})`);
+
+    throw new Error(`semua model pada ${providerName} gagal (${lastError})`);
+}
+
+async function callModel(
+    messages: { role: string; content: string }[],
+    targets: ProviderTarget[],
+): Promise<string> {
+    let lastError = "";
+    for (const target of targets) {
+        try {
+            log(`memanggil model lewat ${target.providerName}...`);
+            return await callSingleProvider(messages, target);
+        } catch (err) {
+            lastError = (err as Error).message;
+            log(`percobaan pada ${target.providerName} gagal: ${lastError}`);
+            if (targets.indexOf(target) < targets.length - 1) {
+                log(`beralih otomatis ke provider cadangan (failover)...`);
+            }
+        }
+    }
+    fail(`gagal memanggil semua provider AI (${lastError})`);
 }
 
 function repairJson(text: string): string {
@@ -958,15 +1046,15 @@ async function main(): Promise<void> {
         published.topics,
     );
 
-    const { apiKey, baseUrl } = getLlmConfig();
-    const models = await resolveModels(baseUrl, apiKey);
+    const targets = await getProviderTargets();
+    log(`target provider siap: ${targets.map((t) => `${t.providerName} [${t.models.slice(0, 3).join(", ")}]`).join(" -> ")}`);
 
     const content = await callModel(
         [
             { role: "system", content: systemPrompt },
             { role: "user", content: userPrompt },
         ],
-        models,
+        targets,
     );
     let data = parseGenerated(content);
     let problems = await collectProblems(
@@ -990,7 +1078,7 @@ async function main(): Promise<void> {
                 { role: "system", content: systemPrompt },
                 { role: "user", content: feedback },
             ],
-            models,
+            targets,
         );
         data = parseGenerated(retry);
         problems = await collectProblems(

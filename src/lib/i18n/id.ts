@@ -211,6 +211,7 @@ const id = {
       links: "Tautan",
       messages: "Pesan",
       blog: "Blog",
+      aiModels: "Model AI",
     },
     visitor: {
       title: "Pengunjung",

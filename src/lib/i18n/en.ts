@@ -212,6 +212,7 @@ const en: Dictionary = {
       links: "Links",
       messages: "Messages",
       blog: "Blog",
+      aiModels: "AI Models",
     },
     visitor: {
       title: "Visitors",

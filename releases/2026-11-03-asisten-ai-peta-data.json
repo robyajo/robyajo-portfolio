@@ -64,6 +64,16 @@
       "type": "improvement",
       "id": "Penyempurnaan responsivitas panel asisten pada layar ponsel serta optimasi keterbacaan warna teks dan kode pada mode malam (dark mode).",
       "en": "Refined assistant panel responsiveness on mobile devices and optimized text and syntax contrast across dark mode."
+    },
+    {
+      "type": "new",
+      "id": "Panel manajemen model kecerdasan artifisial dan penyedia layanan di area pengelola, memungkinkan sinkronisasi otomatis daftar model, penambahan model kustom, serta pengaturan fleksibel pemilihan model yang bertugas untuk asisten percakapan dan penulis artikel.",
+      "en": "Artificial intelligence model and provider management panel in the administration area, enabling automated model list synchronization, custom model creation, and flexible task assignment for the conversation assistant and article writer."
+    },
+    {
+      "type": "improvement",
+      "id": "Peningkatan keandalan penulis artikel otomatis dengan mekanisme failover multi-penyedia cerdas, memastikan proses penulisan tetap berhasil secara mulus meskipun salah satu layanan penyedia mengalami kendala koneksi atau gangguan jaringan.",
+      "en": "Enhanced automated article generation resilience with smart multi-provider failover, ensuring drafting succeeds seamlessly even if a primary provider service experiences connection timeouts or gateway interruptions."
     }
   ]
 }

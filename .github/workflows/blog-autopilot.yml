@@ -1,51 +1,39 @@
 name: Blog Autopilot
 
-# Menulis satu artikel teknologi & AI per hari berdasarkan berita terbaru,
-# dwibahasa (Indonesia utama + Inggris), lalu commit ke `master` supaya
-# terbit lewat Vercel.
-#
-# Rahasia yang dibutuhkan (Settings -> Secrets and variables -> Actions):
-#   AGY_API_KEY / LLM_API_KEY (wajib)  kunci API layanan Antigravity CLI (agy-rest)
-#   LLM_BASE_URL              (opsional) endpoint remote, default: https://er-ai-api.mooo.com/agy/v1
-#   LLM_MODELS                (opsional) urutan model; bila kosong akan query dinamis ke /models
-#   ACTIVITY_PROJECT_KEYS     (opsional) untuk sinkronisasi ke API kegiatan
-#   DATABASE_URL              (opsional) bila ingin verifikasi `next build` penuh
-#
-# Tanpa DATABASE_URL, verifikasi tetap berjalan (tipe + kompilasi MDX) dan
-# build penuh diserahkan ke Vercel.
-
 on:
   schedule:
-    # 02:00 UTC = 09:00 WIB
-    - cron: "0 2 * * *"
+    # Setiap hari pukul 00:30 UTC = 07:30 WIB (pagi, jam santai orang membaca)
+    - cron: "30 0 * * *"
   workflow_dispatch:
     inputs:
       topic:
-        description: "Paksa topik (biarkan kosong untuk memilih otomatis)"
+        description: "Topik spesifik (opsional; kosongkan untuk otomatis dari berita/rotasi pilar)"
         required: false
-        default: ""
+        type: string
       dry_run:
-        description: "Uji coba saja (tidak menulis berkas)"
-        type: boolean
+        description: "Jalankan tanpa menulis file / commit / sinkronisasi"
         required: false
+        type: boolean
         default: false
       force:
-        description: "Paksa tulis artikel baru meskipun sudah ada artikel hari ini"
-        type: boolean
+        description: "Paksa tulis meskipun hari ini sudah ada artikel"
         required: false
+        type: boolean
         default: false
-
-permissions:
-  contents: write
-  issues: write
 
 concurrency:
   group: blog-autopilot
   cancel-in-progress: false
 
+permissions:
+  contents: write
+  issues: write
+
 jobs:
-  generate:
+  run:
     runs-on: ubuntu-latest
+    timeout-minutes: 25
+
     steps:
       - uses: actions/checkout@v7
         with:
@@ -62,10 +50,13 @@ jobs:
 
       - name: Tulis artikel
         env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          CF_GATEWAY_API_KEY: ${{ secrets.CF_GATEWAY_API_KEY }}
+          CF_GATEWAY_URL: ${{ secrets.CF_GATEWAY_URL }}
           AGY_API_KEY: ${{ secrets.AGY_API_KEY }}
-          LLM_API_KEY: ${{ secrets.AGY_API_KEY || secrets.LLM_API_KEY || secrets.API_KEY || secrets.GEMINI_API_KEY }}
+          LLM_API_KEY: ${{ secrets.AGY_API_KEY || secrets.LLM_API_KEY || secrets.API_KEY || secrets.CF_GATEWAY_API_KEY || secrets.GEMINI_API_KEY }}
           LLM_BASE_URL: ${{ secrets.LLM_BASE_URL || secrets.AGY_BASE_URL || 'https://er-ai-api.mooo.com' }}
-          LLM_MODELS: ${{ secrets.LLM_MODELS || 'gemini-3.8-flash-medium' }}
+          LLM_MODELS: ${{ secrets.LLM_MODELS }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           NEXT_PUBLIC_BASE_URL: https://ajoroby.is-a.dev
           INPUT_TOPIC: ${{ inputs.topic }}
@@ -119,12 +110,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          DATE=$(date -u +%Y-%m-%d)
-          TITLE="Blog Autopilot gagal ${DATE}"
-          BODY="Penulisan artikel otomatis untuk ${DATE} gagal. Lihat log: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          NUMBER=$(gh issue list --state open --search "in:title \"${TITLE}\"" --json number --jq '.[0].number // empty')
-          if [ -n "$NUMBER" ]; then
-            gh issue comment "$NUMBER" --body "$BODY"
-          else
-            gh issue create --title "$TITLE" --body "$BODY"
-          fi
+          gh issue create \
+            --title "Blog Autopilot gagal: $(date +'%Y-%m-%d')" \
+            --body "Workflow gagal pada run: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" \
+            --label "bug" || true

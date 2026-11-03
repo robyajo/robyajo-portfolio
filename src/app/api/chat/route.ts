@@ -1,4 +1,5 @@
 import { siteConfig } from "@/lib/config";
+import { getActiveAiConfig } from "@/lib/ai-config";
 import { getProjectBySlug } from "@/lib/projects";
 import { getAuth } from "@/lib/auth";
 import { NextResponse } from "next/server";
@@ -263,8 +264,15 @@ export async function POST(req: Request) {
     let dynamicSystemPrompt = SYSTEM_PROMPT;
 
     // Autentikasi server-side: cek apakah pengguna adalah Admin (Roby)
-    const auth = await getAuth();
-    const isAdmin = auth.role === "admin";
+    let isAdmin = false;
+    let authName = "Roby";
+    try {
+      const auth = await getAuth();
+      isAdmin = auth.role === "admin";
+      authName = auth.name || "Roby";
+    } catch {
+      // Abaikan jika dipanggil di luar request context (mis. unit test)
+    }
 
     if (context?.projectSlug) {
       try {
@@ -339,7 +347,7 @@ ATURAN KEAMANAN TINGKAT TINGGI (REPOSITORI TERTUTUP / PRIVAT):
           } else if (isAdmin) {
             securityDirective = `
 OTORISASI ADMIN AKTIF (ROBY - PEMILIK SISTEM):
-- Pengguna ini telah terverifikasi sebagai ADMIN / PEMILIK (${auth.name || "Roby"}).
+- Pengguna ini telah terverifikasi sebagai ADMIN / PEMILIK (${authName}).
 - Untuk proyek "${project.title}" (${isPrivate ? "Status: Repo Privat" : "Status: Repo Publik"}), Anda memiliki izin penuh untuk:
   1. Mencari, menginspeksi, dan menganalisis kode sumber, fungsi, method, class, dan alur data di repositori ini.
   2. Memberikan bantuan teknis mendalam: debugging, penalaran arsitektur, refactoring, dan optimasi logika.
@@ -375,31 +383,15 @@ ${securityDirective}
       }
     }
 
-    // Konfigurasi endpoint & credentials (Prioritas: CF Gateway -> Fallback)
-    const gatewayUrl =
-      process.env.CF_GATEWAY_URL ||
-      siteConfig.llmApiUrl ||
-      "https://er-ai-gateway.duckdns.org/v1/chat/completions";
-
-    const apiKey =
-      process.env.CF_GATEWAY_API_KEY ||
-      process.env.CHAT_LLM_API_KEY ||
-      process.env.LLAMA_API_KEY ||
-      "er_live_dev_user_7b24ca112399adfa4388eac1";
-
-    const model =
-      process.env.CF_GATEWAY_MODEL ||
-      process.env.CHAT_LLM_MODEL ||
-      siteConfig.llmModel ||
-      "@cf/zai-org/glm-4.7-flash";
-
-    const enableThinking =
-      process.env.CF_GATEWAY_ENABLE_THINKING !== undefined
-        ? process.env.CF_GATEWAY_ENABLE_THINKING === "true"
-        : false;
-
-    const reasoningEffort =
-      process.env.CF_GATEWAY_REASONING_EFFORT || "medium";
+    // Konfigurasi endpoint & credentials (Prioritas: Database ai_settings -> Fallback Env)
+    const activeAi = await getActiveAiConfig("chat");
+    const gatewayUrl = activeAi.endpointUrl;
+    const apiKey = activeAi.apiKey;
+    const model = activeAi.modelId;
+    const enableThinking = activeAi.enableThinking;
+    const reasoningEffort = activeAi.reasoningEffort;
+    const temperature = activeAi.temperature;
+    const maxTokens = activeAi.maxTokens;
 
     const headers: Record<string, string> = {
       "Content-Type": "application/json",
@@ -420,8 +412,8 @@ ${securityDirective}
           ...recentMessages,
         ],
         stream: true,
-        max_tokens: 1024,
-        temperature: 0.7,
+        max_tokens: maxTokens,
+        temperature: temperature,
         enable_thinking: enableThinking,
         thinking: enableThinking,
         reasoning_effort: reasoningEffort,

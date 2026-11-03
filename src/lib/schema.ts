@@ -1,320 +1,387 @@
 import {
-    pgTable,
-    varchar,
-    timestamp,
-    primaryKey,
-    index,
-    serial,
-    boolean,
-    text,
-    jsonb,
-    date,
-    integer,
-    unique,
-    type AnyPgColumn,
+  pgTable,
+  varchar,
+  timestamp,
+  primaryKey,
+  index,
+  serial,
+  boolean,
+  text,
+  jsonb,
+  date,
+  integer,
+  unique,
+  type AnyPgColumn,
 } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
 
 export const users = pgTable(
-    "users",
-    {
-        id: serial("id").primaryKey(),
-        email: varchar("email", { length: 320 }).notNull().unique(),
-        name: varchar("name", { length: 256 }),
-        image: varchar("image", { length: 2048 }),
-        passwordHash: varchar("password_hash", { length: 256 }).notNull(),
-        role: varchar("role", { length: 16 }).default("guest").notNull(),
-        createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
-        updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
-    },
-    (table) => [
-        index("users_email_idx").on(table.email),
-    ],
+  "users",
+  {
+    id: serial("id").primaryKey(),
+    email: varchar("email", { length: 320 }).notNull().unique(),
+    name: varchar("name", { length: 256 }),
+    image: varchar("image", { length: 2048 }),
+    passwordHash: varchar("password_hash", { length: 256 }).notNull(),
+    role: varchar("role", { length: 16 }).default("guest").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [index("users_email_idx").on(table.email)],
 );
 
 export type UserRole = "guest" | "admin";
 
 export const syncProjects = pgTable(
-    "sync_projects",
-    {
-        id: serial("id").primaryKey(),
-        /** Kunci auth bersama — satu kunci boleh menaungi banyak proyek (beda nama). */
-        key: varchar("key", { length: 64 }).notNull(),
-        name: varchar("name", { length: 256 }).notNull(),
-        url: varchar("url", { length: 2048 }),
-        description: text("description"),
-        lastActivityAt: timestamp("last_activity_at", { withTimezone: true }),
-        createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
-        updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
-    },
-    (table) => [
-        index("sync_projects_name_idx").on(table.name),
-        index("sync_projects_key_name_idx").on(table.key, table.name),
-    ],
+  "sync_projects",
+  {
+    id: serial("id").primaryKey(),
+    /** Kunci auth bersama — satu kunci boleh menaungi banyak proyek (beda nama). */
+    key: varchar("key", { length: 64 }).notNull(),
+    name: varchar("name", { length: 256 }).notNull(),
+    url: varchar("url", { length: 2048 }),
+    description: text("description"),
+    lastActivityAt: timestamp("last_activity_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    index("sync_projects_name_idx").on(table.name),
+    index("sync_projects_key_name_idx").on(table.key, table.name),
+  ],
 );
 
 export const activities = pgTable(
-    "activities",
-    {
-        id: serial("id").primaryKey(),
-        projectKey: varchar("project_key", { length: 64 }).notNull(),
-        projectName: varchar("project_name", { length: 256 }).notNull(),
-        /** Kunci stabil dari pengirim (mis. nama berkas rilis) — untuk update, bukan duplikat. */
-        externalId: varchar("external_id", { length: 256 }),
-        kind: varchar("kind", { length: 32 }).default("update").notNull(),
-        titleId: text("title_id").notNull(),
-        titleEn: text("title_en").notNull(),
-        bodyId: text("body_id"),
-        bodyEn: text("body_en"),
-        url: varchar("url", { length: 2048 }),
-        occurredAt: timestamp("occurred_at", { withTimezone: true }).defaultNow().notNull(),
-        createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
-    },
-    (table) => [
-        index("activities_project_idx").on(table.projectKey),
-        index("activities_occurred_idx").on(table.occurredAt),
-        index("activities_project_external_idx").on(table.projectKey, table.externalId),
-    ],
+  "activities",
+  {
+    id: serial("id").primaryKey(),
+    projectKey: varchar("project_key", { length: 64 }).notNull(),
+    projectName: varchar("project_name", { length: 256 }).notNull(),
+    /** Kunci stabil dari pengirim (mis. nama berkas rilis) — untuk update, bukan duplikat. */
+    externalId: varchar("external_id", { length: 256 }),
+    kind: varchar("kind", { length: 32 }).default("update").notNull(),
+    titleId: text("title_id").notNull(),
+    titleEn: text("title_en").notNull(),
+    bodyId: text("body_id"),
+    bodyEn: text("body_en"),
+    url: varchar("url", { length: 2048 }),
+    occurredAt: timestamp("occurred_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    index("activities_project_idx").on(table.projectKey),
+    index("activities_occurred_idx").on(table.occurredAt),
+    index("activities_project_external_idx").on(
+      table.projectKey,
+      table.externalId,
+    ),
+  ],
 );
 
 export const blogPosts = pgTable(
-    "blog_posts",
-    {
-        id: serial("id").primaryKey(),
-        slug: varchar("slug", { length: 256 }).notNull(),
-        createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
-        updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
-    },
-    (table) => [
-        unique("blog_posts_slug_unique").on(table.slug),
-    ],
+  "blog_posts",
+  {
+    id: serial("id").primaryKey(),
+    slug: varchar("slug", { length: 256 }).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [unique("blog_posts_slug_unique").on(table.slug)],
 );
 
 export const blogCategories = pgTable(
-    "blog_categories",
-    {
-        id: serial("id").primaryKey(),
-        /** Nilai yang dipakai frontmatter artikel: `category: <slug>`. */
-        slug: varchar("slug", { length: 64 }).notNull(),
-        nameId: varchar("name_id", { length: 120 }).notNull(),
-        nameEn: varchar("name_en", { length: 120 }).notNull(),
-        descriptionId: text("description_id"),
-        descriptionEn: text("description_en"),
-        sortOrder: integer("sort_order").default(0).notNull(),
-        visible: boolean("visible").default(true).notNull(),
-        createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
-        updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
-    },
-    (table) => [
-        unique("blog_categories_slug_unique").on(table.slug),
-        index("blog_categories_sort_idx").on(table.sortOrder),
-    ],
+  "blog_categories",
+  {
+    id: serial("id").primaryKey(),
+    /** Nilai yang dipakai frontmatter artikel: `category: <slug>`. */
+    slug: varchar("slug", { length: 64 }).notNull(),
+    nameId: varchar("name_id", { length: 120 }).notNull(),
+    nameEn: varchar("name_en", { length: 120 }).notNull(),
+    descriptionId: text("description_id"),
+    descriptionEn: text("description_en"),
+    sortOrder: integer("sort_order").default(0).notNull(),
+    visible: boolean("visible").default(true).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    unique("blog_categories_slug_unique").on(table.slug),
+    index("blog_categories_sort_idx").on(table.sortOrder),
+  ],
 );
 
 export const blogTags = pgTable(
-    "blog_tags",
-    {
-        id: serial("id").primaryKey(),
-        /** Nama tampil — inilah yang ditulis di frontmatter `tags: [...]`. */
-        name: varchar("name", { length: 64 }).notNull(),
-        slug: varchar("slug", { length: 64 }).notNull(),
-        description: text("description"),
-        sortOrder: integer("sort_order").default(0).notNull(),
-        visible: boolean("visible").default(true).notNull(),
-        createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
-        updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
-    },
-    (table) => [
-        unique("blog_tags_name_unique").on(table.name),
-        unique("blog_tags_slug_unique").on(table.slug),
-        index("blog_tags_sort_idx").on(table.sortOrder),
-    ],
+  "blog_tags",
+  {
+    id: serial("id").primaryKey(),
+    /** Nama tampil — inilah yang ditulis di frontmatter `tags: [...]`. */
+    name: varchar("name", { length: 64 }).notNull(),
+    slug: varchar("slug", { length: 64 }).notNull(),
+    description: text("description"),
+    sortOrder: integer("sort_order").default(0).notNull(),
+    visible: boolean("visible").default(true).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    unique("blog_tags_name_unique").on(table.name),
+    unique("blog_tags_slug_unique").on(table.slug),
+    index("blog_tags_sort_idx").on(table.sortOrder),
+  ],
 );
 
 export const blogReactions = pgTable(
-    "blog_reactions",
-    {
-        postId: integer("post_id")
-            .notNull()
-            .references(() => blogPosts.id, { onDelete: "cascade", onUpdate: "cascade" }),
-        ipHash: varchar("ip_hash", { length: 64 }).notNull(),
-        mood: varchar("mood", { length: 32 }).notNull(),
-        createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
-        updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
-    },
-    (table) => [
-        primaryKey({ columns: [table.postId, table.ipHash] }),
-        index("blog_reactions_post_idx").on(table.postId),
-    ],
+  "blog_reactions",
+  {
+    postId: integer("post_id")
+      .notNull()
+      .references(() => blogPosts.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    ipHash: varchar("ip_hash", { length: 64 }).notNull(),
+    mood: varchar("mood", { length: 32 }).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    primaryKey({ columns: [table.postId, table.ipHash] }),
+    index("blog_reactions_post_idx").on(table.postId),
+  ],
 );
 
 export const blogReads = pgTable(
-    "blog_reads",
-    {
-        postId: integer("post_id")
-            .notNull()
-            .references(() => blogPosts.id, { onDelete: "cascade", onUpdate: "cascade" }),
-        ipHash: varchar("ip_hash", { length: 64 }).notNull(),
-        createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
-    },
-    (table) => [
-        primaryKey({ columns: [table.postId, table.ipHash] }),
-        index("blog_reads_post_idx").on(table.postId),
-    ],
+  "blog_reads",
+  {
+    postId: integer("post_id")
+      .notNull()
+      .references(() => blogPosts.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    ipHash: varchar("ip_hash", { length: 64 }).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    primaryKey({ columns: [table.postId, table.ipHash] }),
+    index("blog_reads_post_idx").on(table.postId),
+  ],
 );
 
 export const projectViews = pgTable(
-    "project_views",
-    {
-        projectId: integer("project_id")
-            .notNull()
-            .references(() => projects.id, { onDelete: "cascade", onUpdate: "cascade" }),
-        ipHash: varchar("ip_hash", { length: 64 }).notNull(),
-        createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
-    },
-    (table) => [
-        primaryKey({ columns: [table.projectId, table.ipHash] }),
-        index("project_views_project_idx").on(table.projectId),
-    ],
+  "project_views",
+  {
+    projectId: integer("project_id")
+      .notNull()
+      .references(() => projects.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    ipHash: varchar("ip_hash", { length: 64 }).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    primaryKey({ columns: [table.projectId, table.ipHash] }),
+    index("project_views_project_idx").on(table.projectId),
+  ],
 );
 
 export const guestbookEntries = pgTable(
-    "guestbook_entries",
-    {
-        id: serial("id").primaryKey(),
-        userId: varchar("user_id", { length: 256 }).notNull(),
-        authorName: varchar("author_name", { length: 256 }),
-        authorImage: varchar("author_image", { length: 2048 }),
-        message: text("message").notNull(),
-        isPinned: boolean("is_pinned").default(false).notNull(),
-        isDeleted: boolean("is_deleted").default(false).notNull(),
-        createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
-        updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
-    },
-    (table) => [
-        index("guestbook_entries_user_idx").on(table.userId),
-        index("guestbook_entries_created_at_idx").on(table.createdAt),
-    ],
+  "guestbook_entries",
+  {
+    id: serial("id").primaryKey(),
+    userId: varchar("user_id", { length: 256 }).notNull(),
+    authorName: varchar("author_name", { length: 256 }),
+    authorImage: varchar("author_image", { length: 2048 }),
+    message: text("message").notNull(),
+    isPinned: boolean("is_pinned").default(false).notNull(),
+    isDeleted: boolean("is_deleted").default(false).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    index("guestbook_entries_user_idx").on(table.userId),
+    index("guestbook_entries_created_at_idx").on(table.createdAt),
+  ],
 );
 
 export const guestbookLikes = pgTable(
-    "guestbook_likes",
-    {
-        entryId: integer("entry_id")
-            .notNull()
-            .references(() => guestbookEntries.id, { onDelete: "cascade" }),
-        userId: varchar("user_id", { length: 256 }).notNull(),
-        createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
-    },
-    (table) => [
-        primaryKey({ columns: [table.entryId, table.userId] }),
-        index("guestbook_likes_entry_idx").on(table.entryId),
-    ],
+  "guestbook_likes",
+  {
+    entryId: integer("entry_id")
+      .notNull()
+      .references(() => guestbookEntries.id, { onDelete: "cascade" }),
+    userId: varchar("user_id", { length: 256 }).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    primaryKey({ columns: [table.entryId, table.userId] }),
+    index("guestbook_likes_entry_idx").on(table.entryId),
+  ],
 );
 
 export const contactMessages = pgTable(
-    "contact_messages",
-    {
-        id: serial("id").primaryKey(),
-        name: varchar("name", { length: 120 }).notNull(),
-        email: varchar("email", { length: 254 }).notNull(),
-        subject: varchar("subject", { length: 160 }),
-        message: text("message").notNull(),
-        ipHash: varchar("ip_hash", { length: 64 }).notNull(),
-        isRead: boolean("is_read").default(false).notNull(),
-        createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
-    },
-    (table) => [
-        index("contact_messages_created_at_idx").on(table.createdAt),
-        index("contact_messages_ip_created_idx").on(table.ipHash, table.createdAt),
-    ],
+  "contact_messages",
+  {
+    id: serial("id").primaryKey(),
+    name: varchar("name", { length: 120 }).notNull(),
+    email: varchar("email", { length: 254 }).notNull(),
+    subject: varchar("subject", { length: 160 }),
+    message: text("message").notNull(),
+    ipHash: varchar("ip_hash", { length: 64 }).notNull(),
+    isRead: boolean("is_read").default(false).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    index("contact_messages_created_at_idx").on(table.createdAt),
+    index("contact_messages_ip_created_idx").on(table.ipHash, table.createdAt),
+  ],
 );
 
 export const blogComments = pgTable(
-    "blog_comments",
-    {
-        id: serial("id").primaryKey(),
-        postId: integer("post_id")
-            .notNull()
-            .references(() => blogPosts.id, { onDelete: "cascade", onUpdate: "cascade" }),
-        parentId: integer("parent_id").references(
-            (): AnyPgColumn => blogComments.id,
-            { onDelete: "cascade" },
-        ),
-        userId: varchar("user_id", { length: 256 }).notNull(),
-        authorName: varchar("author_name", { length: 256 }),
-        authorImage: varchar("author_image", { length: 2048 }),
-        body: text("body").notNull(),
-        isPinned: boolean("is_pinned").default(false).notNull(),
-        isDeleted: boolean("is_deleted").default(false).notNull(),
-        createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
-        updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
-    },
-    (table) => [
-        index("blog_comments_post_idx").on(table.postId),
-        index("blog_comments_parent_idx").on(table.parentId),
-        index("blog_comments_pinned_idx").on(table.isPinned),
-    ],
+  "blog_comments",
+  {
+    id: serial("id").primaryKey(),
+    postId: integer("post_id")
+      .notNull()
+      .references(() => blogPosts.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    parentId: integer("parent_id").references(
+      (): AnyPgColumn => blogComments.id,
+      { onDelete: "cascade" },
+    ),
+    userId: varchar("user_id", { length: 256 }).notNull(),
+    authorName: varchar("author_name", { length: 256 }),
+    authorImage: varchar("author_image", { length: 2048 }),
+    body: text("body").notNull(),
+    isPinned: boolean("is_pinned").default(false).notNull(),
+    isDeleted: boolean("is_deleted").default(false).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    index("blog_comments_post_idx").on(table.postId),
+    index("blog_comments_parent_idx").on(table.parentId),
+    index("blog_comments_pinned_idx").on(table.isPinned),
+  ],
 );
 
 export const blogCommentLikes = pgTable(
-    "blog_comment_likes",
-    {
-        commentId: integer("comment_id")
-            .notNull()
-            .references(() => blogComments.id, { onDelete: "cascade" }),
-        userId: varchar("user_id", { length: 256 }).notNull(),
-        createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
-    },
-    (table) => [
-        primaryKey({ columns: [table.commentId, table.userId] }),
-        index("blog_comment_likes_comment_idx").on(table.commentId),
-    ],
+  "blog_comment_likes",
+  {
+    commentId: integer("comment_id")
+      .notNull()
+      .references(() => blogComments.id, { onDelete: "cascade" }),
+    userId: varchar("user_id", { length: 256 }).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    primaryKey({ columns: [table.commentId, table.userId] }),
+    index("blog_comment_likes_comment_idx").on(table.commentId),
+  ],
 );
 
 export const projects = pgTable(
-    "projects",
-    {
-        id: serial("id").primaryKey(),
-        title: varchar("title", { length: 256 }).notNull(),
-        slug: varchar("slug", { length: 256 }).notNull().unique(),
-        /** Kunci X-project: aktivitas berkunci ini tampil di detail proyek. */
-        syncKey: varchar("sync_key", { length: 64 }),
-        description: text("description").notNull(),
-        highlights: text("highlights").array().notNull().default(sql`'{}'::text[]`),
-        /** Case study: the problem this project solved. */
-        problem: text("problem"),
-        /** Case study: what the owner personally did. */
-        role: text("role"),
-        /** Case study: the measurable or visible result. */
-        outcome: text("outcome"),
-        period: varchar("period", { length: 64 }),
-        /** Short impact metrics, e.g. [{ label: "Response time", value: "-40%" }]. */
-        metrics: jsonb("metrics")
-            .$type<{ label: string; value: string }[]>()
-            .notNull()
-            .default(sql`'[]'::jsonb`),
-        /** Screenshot URLs shown as a gallery on the project page. */
-        gallery: text("gallery").array().notNull().default(sql`'{}'::text[]`),
-        live: varchar("live", { length: 512 }),
-        /** Status tautan live — "private" menyembunyikan tautan demo publik. */
-        liveVisibility: varchar("live_visibility", { length: 16 })
-            .notNull()
-            .default("public"),
-        github: varchar("github", { length: 512 }),
-        /** Status repositori — "private" menyembunyikan tautan repo & demo publik. */
-        repoVisibility: varchar("repo_visibility", { length: 16 })
-            .notNull()
-            .default("public"),
-        enabled: boolean("enabled").default(true).notNull(),
-        sortOrder: integer("sort_order").default(0).notNull(),
-        createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
-        updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
-    },
-    (table) => [
-        index("projects_enabled_idx").on(table.enabled),
-        index("projects_sort_order_idx").on(table.sortOrder),
-    ],
+  "projects",
+  {
+    id: serial("id").primaryKey(),
+    title: varchar("title", { length: 256 }).notNull(),
+    slug: varchar("slug", { length: 256 }).notNull().unique(),
+    /** Kunci X-project: aktivitas berkunci ini tampil di detail proyek. */
+    syncKey: varchar("sync_key", { length: 64 }),
+    description: text("description").notNull(),
+    highlights: text("highlights")
+      .array()
+      .notNull()
+      .default(sql`'{}'::text[]`),
+    /** Case study: the problem this project solved. */
+    problem: text("problem"),
+    /** Case study: what the owner personally did. */
+    role: text("role"),
+    /** Case study: the measurable or visible result. */
+    outcome: text("outcome"),
+    period: varchar("period", { length: 64 }),
+    /** Short impact metrics, e.g. [{ label: "Response time", value: "-40%" }]. */
+    metrics: jsonb("metrics")
+      .$type<{ label: string; value: string }[]>()
+      .notNull()
+      .default(sql`'[]'::jsonb`),
+    /** Screenshot URLs shown as a gallery on the project page. */
+    gallery: text("gallery")
+      .array()
+      .notNull()
+      .default(sql`'{}'::text[]`),
+    live: varchar("live", { length: 512 }),
+    /** Status tautan live — "private" menyembunyikan tautan demo publik. */
+    liveVisibility: varchar("live_visibility", { length: 16 })
+      .notNull()
+      .default("public"),
+    github: varchar("github", { length: 512 }),
+    /** Status repositori — "private" menyembunyikan tautan repo & demo publik. */
+    repoVisibility: varchar("repo_visibility", { length: 16 })
+      .notNull()
+      .default("public"),
+    enabled: boolean("enabled").default(true).notNull(),
+    sortOrder: integer("sort_order").default(0).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    index("projects_enabled_idx").on(table.enabled),
+    index("projects_sort_order_idx").on(table.sortOrder),
+  ],
 );
 
 /**
@@ -323,96 +390,191 @@ export const projects = pgTable(
  * kapitalisasi yang berhamburan.
  */
 export const projectStacks = pgTable(
-    "project_stacks",
-    {
-        id: serial("id").primaryKey(),
-        name: varchar("name", { length: 64 }).notNull(),
-        slug: varchar("slug", { length: 64 }).notNull(),
-        description: text("description"),
-        sortOrder: integer("sort_order").default(0).notNull(),
-        visible: boolean("visible").default(true).notNull(),
-        createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
-        updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
-    },
-    (table) => [
-        unique("project_stacks_name_unique").on(table.name),
-        unique("project_stacks_slug_unique").on(table.slug),
-        index("project_stacks_visible_idx").on(table.visible),
-    ],
+  "project_stacks",
+  {
+    id: serial("id").primaryKey(),
+    name: varchar("name", { length: 64 }).notNull(),
+    slug: varchar("slug", { length: 64 }).notNull(),
+    description: text("description"),
+    sortOrder: integer("sort_order").default(0).notNull(),
+    visible: boolean("visible").default(true).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    unique("project_stacks_name_unique").on(table.name),
+    unique("project_stacks_slug_unique").on(table.slug),
+    index("project_stacks_visible_idx").on(table.visible),
+  ],
 );
 
 export const links = pgTable(
-    "links",
-    {
-        id: serial("id").primaryKey(),
-        target: varchar("target", { length: 2048 }).notNull(),
-        title: varchar("title", { length: 256 }),
-        description: text("description"),
-        ogEnabled: boolean("og_enabled").default(false).notNull(),
-        ogImage: varchar("og_image", { length: 2048 }),
-        permanent: boolean("permanent").default(false).notNull(),
-        enabled: boolean("enabled").default(true).notNull(),
-        clicks: integer("clicks").default(0).notNull(),
-        createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
-        updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
-    },
-    (table) => [
-        index("links_enabled_idx").on(table.enabled),
-    ],
+  "links",
+  {
+    id: serial("id").primaryKey(),
+    target: varchar("target", { length: 2048 }).notNull(),
+    title: varchar("title", { length: 256 }),
+    description: text("description"),
+    ogEnabled: boolean("og_enabled").default(false).notNull(),
+    ogImage: varchar("og_image", { length: 2048 }),
+    permanent: boolean("permanent").default(false).notNull(),
+    enabled: boolean("enabled").default(true).notNull(),
+    clicks: integer("clicks").default(0).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [index("links_enabled_idx").on(table.enabled)],
 );
 
 export const linkSlugs = pgTable(
-    "link_slugs",
-    {
-        id: serial("id").primaryKey(),
-        linkId: integer("link_id")
-            .notNull()
-            .references(() => links.id, { onDelete: "cascade", onUpdate: "cascade" }),
-        tag: varchar("tag", { length: 64 }).default("").notNull(),
-        slug: varchar("slug", { length: 128 }).notNull(),
-        isPrimary: boolean("is_primary").default(false).notNull(),
-        createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
-    },
-    (table) => [
-        unique("link_slugs_tag_slug_unique").on(table.tag, table.slug),
-        index("link_slugs_link_idx").on(table.linkId),
-    ],
+  "link_slugs",
+  {
+    id: serial("id").primaryKey(),
+    linkId: integer("link_id")
+      .notNull()
+      .references(() => links.id, { onDelete: "cascade", onUpdate: "cascade" }),
+    tag: varchar("tag", { length: 64 }).default("").notNull(),
+    slug: varchar("slug", { length: 128 }).notNull(),
+    isPrimary: boolean("is_primary").default(false).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    unique("link_slugs_tag_slug_unique").on(table.tag, table.slug),
+    index("link_slugs_link_idx").on(table.linkId),
+  ],
 );
 
 export const visitors = pgTable(
-    "visitors",
-    {
-        /** Hash satu arah dari IP + perangkat (user-agent) + salt sisi server. */
-        hash: varchar("hash", { length: 64 }).primaryKey(),
-        views: integer("views").default(1).notNull(),
-        firstSeenAt: timestamp("first_seen_at", { withTimezone: true }).defaultNow().notNull(),
-        lastSeenAt: timestamp("last_seen_at", { withTimezone: true }).defaultNow().notNull(),
-        country: varchar("country", { length: 64 }),
-        region: varchar("region", { length: 128 }),
-        city: varchar("city", { length: 128 }),
-        device: varchar("device", { length: 128 }),
-        browser: varchar("browser", { length: 64 }),
-        os: varchar("os", { length: 64 }),
-        formFactor: varchar("form_factor", { length: 32 }),
-        userAgent: text("user_agent"),
-    },
-    (table) => [
-        index("visitors_last_seen_idx").on(table.lastSeenAt),
-    ],
+  "visitors",
+  {
+    /** Hash satu arah dari IP + perangkat (user-agent) + salt sisi server. */
+    hash: varchar("hash", { length: 64 }).primaryKey(),
+    views: integer("views").default(1).notNull(),
+    firstSeenAt: timestamp("first_seen_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    lastSeenAt: timestamp("last_seen_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    country: varchar("country", { length: 64 }),
+    region: varchar("region", { length: 128 }),
+    city: varchar("city", { length: 128 }),
+    device: varchar("device", { length: 128 }),
+    browser: varchar("browser", { length: 64 }),
+    os: varchar("os", { length: 64 }),
+    formFactor: varchar("form_factor", { length: 32 }),
+    userAgent: text("user_agent"),
+  },
+  (table) => [index("visitors_last_seen_idx").on(table.lastSeenAt)],
 );
 
 /** Log kunjungan harian per perangkat anonim: dasar grafik 7 hari, 30 hari, 12 bulan. */
 export const visitorDays = pgTable(
-    "visitor_days",
-    {
-        /** Hash satu arah perangkat (sama seperti visitors.hash). */
-        hash: varchar("hash", { length: 64 }).notNull(),
-        /** Tanggal kunjungan (UTC). */
-        day: date("day").notNull(),
-        count: integer("count").default(1).notNull(),
-    },
-    (table) => [
-        primaryKey({ columns: [table.hash, table.day] }),
-        index("visitor_days_day_idx").on(table.day),
-    ],
+  "visitor_days",
+  {
+    /** Hash satu arah perangkat (sama seperti visitors.hash). */
+    hash: varchar("hash", { length: 64 }).notNull(),
+    /** Tanggal kunjungan (UTC). */
+    day: date("day").notNull(),
+    count: integer("count").default(1).notNull(),
+  },
+  (table) => [
+    primaryKey({ columns: [table.hash, table.day] }),
+    index("visitor_days_day_idx").on(table.day),
+  ],
 );
+
+/** ============================================================
+ * AI Providers, Models, dan Konfigurasi Penugasan (Chat & Blog)
+ * ============================================================ */
+
+export const aiProviders = pgTable(
+  "ai_providers",
+  {
+    id: varchar("id", { length: 64 }).primaryKey(),
+    name: varchar("name", { length: 128 }).notNull(),
+    baseUrl: varchar("base_url", { length: 512 }).notNull(),
+    apiKey: text("api_key"),
+    description: text("description"),
+    enabled: boolean("enabled").default(true).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [index("ai_providers_enabled_idx").on(table.enabled)],
+);
+
+export const aiModels = pgTable(
+  "ai_models",
+  {
+    id: serial("id").primaryKey(),
+    providerId: varchar("provider_id", { length: 64 })
+      .notNull()
+      .references(() => aiProviders.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    modelId: varchar("model_id", { length: 128 }).notNull(),
+    name: varchar("name", { length: 128 }).notNull(),
+    family: varchar("family", { length: 64 }),
+    description: text("description"),
+    isThinkingSupported: boolean("is_thinking_supported")
+      .default(false)
+      .notNull(),
+    reasoningEffort: varchar("reasoning_effort", { length: 32 })
+      .default("medium")
+      .notNull(),
+    pricing: jsonb("pricing"),
+    features: jsonb("features"),
+    enabled: boolean("enabled").default(true).notNull(),
+    sortOrder: integer("sort_order").default(0).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    unique("ai_models_provider_model_unique").on(
+      table.providerId,
+      table.modelId,
+    ),
+    index("ai_models_provider_idx").on(table.providerId),
+    index("ai_models_enabled_idx").on(table.enabled),
+  ],
+);
+
+export const aiSettings = pgTable("ai_settings", {
+  task: varchar("task", { length: 64 }).primaryKey(), // 'chat' | 'blog'
+  providerId: varchar("provider_id", { length: 64 })
+    .notNull()
+    .references(() => aiProviders.id, {
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    }),
+  modelId: varchar("model_id", { length: 128 }).notNull(),
+  enableThinking: boolean("enable_thinking").default(false).notNull(),
+  reasoningEffort: varchar("reasoning_effort", { length: 32 })
+    .default("medium")
+    .notNull(),
+  temperature: varchar("temperature", { length: 16 }).default("0.7").notNull(),
+  maxTokens: integer("max_tokens").default(2048).notNull(),
+  systemPrompt: text("system_prompt"),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+});

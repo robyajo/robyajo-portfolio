@@ -47,7 +47,7 @@ describe("POST /api/chat", () => {
 
     const res = await POST(req);
     expect(res.status).toBe(200);
-    expect(res.headers.get("content-type")).toContain("text/plain");
+    expect(res.headers.get("content-type")).toContain("text/event-stream");
 
     const text = await res.text();
     expect(text).toBe("Halo Roby!");
@@ -56,9 +56,11 @@ describe("POST /api/chat", () => {
   });
 
   it("returns error response if upstream LLM fails", async () => {
-    const fetchSpy = vi.spyOn(globalThis, "fetch").mockResolvedValueOnce(
-      new Response("Service Unavailable", { status: 503 }),
-    );
+    const fetchSpy = vi
+      .spyOn(globalThis, "fetch")
+      .mockResolvedValueOnce(
+        new Response("Service Unavailable", { status: 503 }),
+      );
 
     const req = new Request("http://localhost:3000/api/chat", {
       method: "POST",
@@ -71,7 +73,7 @@ describe("POST /api/chat", () => {
     const res = await POST(req);
     expect(res.status).toBe(503);
     const json = await res.json();
-    expect(json.error).toBe("Gagal terhubung ke server AI.");
+    expect(json.error).toBe("Gagal terhubung ke AI Gateway.");
 
     fetchSpy.mockRestore();
   });
