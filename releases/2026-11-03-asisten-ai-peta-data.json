@@ -79,6 +79,11 @@
       "type": "new",
       "id": "Fitur deteksi model otomatis dari API Gateway saat menambah model baru di panel admin, dilengkapi indikator status visual pembeda antara model yang sudah terdaftar dan model baru yang siap ditambahkan dalam satu sentuhan.",
       "en": "Live gateway model discovery feature when adding models in the admin panel, complete with visual status indicators distinguishing existing models from newly available models ready to be added with a single tap."
+    },
+    {
+      "type": "new",
+      "id": "Fitur uji percakapan interaktif (Test Chat) untuk setiap penyedia AI di panel admin, memungkinkan pengelola menguji respons model secara langsung dengan SSE streaming, pengukuran latensi respons, preset prompt, serta diagnostik pesan galat hulu.",
+      "en": "Interactive Test Chat feature for each AI provider in the admin panel, enabling administrators to test model responses live with SSE streaming, response latency benchmarks, prompt presets, and upstream error diagnostics."
     }
   ]
 }

@@ -25,6 +25,7 @@ import type {
 import { ModelForm } from "./_components/modelForm";
 import { TaskAssignmentForm } from "./_components/taskAssignmentForm";
 import { ProviderForm } from "./_components/providerForm";
+import { TestChatForm, type TestChatInitialData } from "./_components/testChatForm";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -76,6 +77,7 @@ export function AdminModelsPanel({
   const [isAddModelOpen, setIsAddModelOpen] = useState(false);
   const [editingModel, setEditingModel] = useState<AiModelRow | null>(null);
   const [editingProvider, setEditingProvider] = useState<AiProviderRow | null>(null);
+  const [testingChat, setTestingChat] = useState<TestChatInitialData | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
   // Filter models
@@ -265,6 +267,16 @@ export function AdminModelsPanel({
             Sinkronkan Semua
           </Button>
 
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setTestingChat({}) }
+            className="gap-1.5 text-blue-600 dark:text-blue-400 border-blue-500/30 hover:bg-blue-500/10"
+          >
+            <RobotIcon className="size-4" />
+            Test Chat
+          </Button>
+
           <Button size="sm" onClick={() => setIsAddModelOpen(true)}>
             <PlusIcon className="size-4 mr-1.5" />
             Tambah Model
@@ -374,6 +386,15 @@ export function AdminModelsPanel({
                   </span>
 
                   <div className="flex items-center gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-7 text-xs gap-1 border-blue-500/30 text-blue-600 dark:text-blue-400 hover:bg-blue-500/10"
+                      onClick={() => setTestingChat({ providerId: p.id })}
+                    >
+                      <RobotIcon className="size-3" />
+                      Test Chat
+                    </Button>
                     <Button
                       variant="outline"
                       size="sm"
@@ -562,6 +583,20 @@ export function AdminModelsPanel({
                           <Button
                             variant="ghost"
                             size="icon-sm"
+                            onClick={() =>
+                              setTestingChat({
+                                providerId: m.providerId,
+                                modelId: m.modelId,
+                              })
+                            }
+                            title={`Uji Chat dengan ${m.name}`}
+                            className="text-blue-600 dark:text-blue-400 hover:bg-blue-500/10"
+                          >
+                            <RobotIcon className="size-3.5" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon-sm"
                             onClick={() => setEditingModel(m)}
                             title="Edit Model"
                           >
@@ -632,6 +667,32 @@ export function AdminModelsPanel({
               onSubmit={handleUpdateModel}
               onCancel={() => setEditingModel(null)}
               submitting={submitting}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal Test Chat */}
+      <Dialog
+        open={Boolean(testingChat)}
+        onOpenChange={(open) => !open && setTestingChat(null)}
+      >
+        <DialogContent className="sm:max-w-[640px] max-h-[92vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <RobotIcon className="size-5 text-(--brand-text)" />
+              Uji Coba Model AI (Test Chat)
+            </DialogTitle>
+            <DialogDescription>
+              Kirim pesan uji coba langsung ke model dari provider untuk memverifikasi streaming respons dan waktu latensi.
+            </DialogDescription>
+          </DialogHeader>
+          {testingChat && (
+            <TestChatForm
+              initial={testingChat}
+              providers={data.providers}
+              models={data.models}
+              onCancel={() => setTestingChat(null)}
             />
           )}
         </DialogContent>
