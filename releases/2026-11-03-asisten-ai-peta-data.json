@@ -74,6 +74,11 @@
       "type": "improvement",
       "id": "Peningkatan keandalan penulis artikel otomatis dengan mekanisme failover multi-penyedia cerdas, memastikan proses penulisan tetap berhasil secara mulus meskipun salah satu layanan penyedia mengalami kendala koneksi atau gangguan jaringan.",
       "en": "Enhanced automated article generation resilience with smart multi-provider failover, ensuring drafting succeeds seamlessly even if a primary provider service experiences connection timeouts or gateway interruptions."
+    },
+    {
+      "type": "new",
+      "id": "Fitur deteksi model otomatis dari API Gateway saat menambah model baru di panel admin, dilengkapi indikator status visual pembeda antara model yang sudah terdaftar dan model baru yang siap ditambahkan dalam satu sentuhan.",
+      "en": "Live gateway model discovery feature when adding models in the admin panel, complete with visual status indicators distinguishing existing models from newly available models ready to be added with a single tap."
     }
   ]
 }
