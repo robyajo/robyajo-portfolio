@@ -1,69 +1,51 @@
 export const siteConfig = {
-    name: "Roby Karti S.",
-    domain: "ajoroby.is-a.dev",
-    role: "Fullstack Software Developer",
-    email: "robyfull.dev@gmail.com",
-    description:
-        "Fullstack developer from Pekanbaru, Indonesia. I build city-scale digital services (SuperApp, dashboards, tax systems) with TypeScript, React, Next.js, Laravel, and Go.",
-    baseUrl:
-        process.env.NEXT_PUBLIC_BASE_URL ??
-        (process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL
-            ? `https://${process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL}`
-            : "http://localhost:3000"),
-    availableForHire: true,
-    handle: "robyajo",
-    twitterHandle: "robyajo",
-    githubRepo: "robyajo/robyajo-portfolio",
-    repoUrl: "https://github.com/robyajo/robyajo-portfolio",
-    llmBaseUrl:
-        (
-            process.env.CF_GATEWAY_URL?.replace(/\/v1\/chat\/completions$/, "") ??
-            process.env.LLM_BASE_URL ??
-            "https://er-ai-gateway.duckdns.org"
-        ).replace(/\/+$/, ""),
-    get llmApiUrl(): string {
-        return (
-            process.env.CF_GATEWAY_URL ??
-            process.env.LLM_API_URL ??
-            "https://er-ai-gateway.duckdns.org/v1/chat/completions"
-        );
+  name: "Roby Karti S.",
+  domain: "ajoroby.is-a.dev",
+  role: "Fullstack Software Developer",
+  email: "robyfull.dev@gmail.com",
+  description:
+    "Fullstack developer from Pekanbaru, Indonesia. I build city-scale digital services (SuperApp, dashboards, tax systems) with TypeScript, React, Next.js, Laravel, and Go.",
+  baseUrl:
+    process.env.NEXT_PUBLIC_BASE_URL ??
+    (process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL}`
+      : "http://localhost:3000"),
+  availableForHire: true,
+  handle: "robyajo",
+  twitterHandle: "robyajo",
+  githubRepo: "robyajo/robyajo-portfolio",
+  repoUrl: "https://github.com/robyajo/robyajo-portfolio",
+  sameAs: [
+    "https://github.com/robyajo",
+    "https://x.com/roby_karti",
+    "https://id.linkedin.com/in/robykartis",
+    "https://www.instagram.com/roby_karti",
+    "https://robyajo.fyi",
+  ] as const,
+  resumeURL:
+    "https://github.com/robyajo/robyajo-portfolio/releases/latest/download/Roby_Karti_S_Resume.pdf",
+  nav: [
+    { href: "/projects", label: "Projects" },
+    { href: "/blogs", label: "Blogs" },
+    { href: "/about", label: "About" },
+    { href: "/resume", label: "Resume" },
+    { href: "/guestbook", label: "Guestbook" },
+  ] as const,
+  social: [
+    {
+      platform: "github",
+      href: "https://github.com/robyajo",
+      label: "GitHub",
     },
-    llmModel:
-        process.env.CF_GATEWAY_MODEL ??
-        process.env.CHAT_LLM_MODEL ??
-        process.env.LLM_MODEL ??
-        "@cf/zai-org/glm-4.7-flash",
-    sameAs: [
-        "https://github.com/robyajo",
-        "https://x.com/roby_karti",
-        "https://id.linkedin.com/in/robykartis",
-        "https://www.instagram.com/roby_karti",
-        "https://robyajo.fyi",
-    ] as const,
-    resumeURL:
-        "https://github.com/robyajo/robyajo-portfolio/releases/latest/download/Roby_Karti_S_Resume.pdf",
-    nav: [
-        { href: "/projects", label: "Projects" },
-        { href: "/blogs", label: "Blogs" },
-        { href: "/about", label: "About" },
-        { href: "/resume", label: "Resume" },
-        { href: "/guestbook", label: "Guestbook" },
-    ] as const,
-    social: [
-        {
-            platform: "github",
-            href: "https://github.com/robyajo",
-            label: "GitHub",
-        },
-        {
-            platform: "x",
-            href: "https://x.com/roby_karti",
-            label: "X",
-        },
-        {
-            platform: "linkedin",
-            href: "https://id.linkedin.com/in/robykartis",
-            label: "LinkedIn",
-        },
-    ] as const,
+    {
+      platform: "x",
+      href: "https://x.com/roby_karti",
+      label: "X",
+    },
+    {
+      platform: "linkedin",
+      href: "https://id.linkedin.com/in/robykartis",
+      label: "LinkedIn",
+    },
+  ] as const,
 } as const;
