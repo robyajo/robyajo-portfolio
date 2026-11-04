@@ -244,6 +244,7 @@ function ChatInnerGateway({
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
+            channel: "assistant",
             messages: payloadMessages,
             currentPath: pathname,
             projectSlug: currentProjectSlug,

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, useEffect, useRef } from "react";
 import {
   ChatCircleIcon,
   UsersIcon,
@@ -53,6 +53,23 @@ export function ChatLogsPanel({
   const [selectedLog, setSelectedLog] = useState<AiChatLog | null>(null);
   const [copiedText, setCopiedText] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const [autoRefresh, setAutoRefresh] = useState(true);
+  const searchRef = useRef(search);
+  const channelRef = useRef(channel);
+
+  useEffect(() => {
+    searchRef.current = search;
+    channelRef.current = channel;
+  }, [search, channel]);
+
+  useEffect(() => {
+    if (!autoRefresh) return;
+    const interval = setInterval(() => {
+      if (document.hidden) return;
+      reloadData(channelRef.current, searchRef.current, 1);
+    }, 12000);
+    return () => clearInterval(interval);
+  }, [autoRefresh]);
 
   const reloadData = (newChannel = channel, newSearch = search, page = 1) => {
     startTransition(async () => {
@@ -237,6 +254,24 @@ export function ChatLogsPanel({
               className="h-8 pl-8 text-xs"
             />
           </form>
+
+          <Button
+            size="sm"
+            variant={autoRefresh ? "secondary" : "outline"}
+            onClick={() => setAutoRefresh((prev) => !prev)}
+            className="h-8 px-2.5 text-xs gap-1.5 font-mono"
+            title={autoRefresh ? "Auto-refresh aktif setiap 12 detik" : "Auto-refresh dijeda"}
+          >
+            <span
+              className={cn(
+                "h-2 w-2 rounded-full",
+                autoRefresh ? "bg-emerald-500 animate-pulse" : "bg-muted-foreground",
+              )}
+            />
+            <span className="text-[11px] hidden sm:inline">
+              {autoRefresh ? "Live 12d" : "Dijeda"}
+            </span>
+          </Button>
 
           <Button
             size="sm"

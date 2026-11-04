@@ -1,0 +1,35 @@
+{
+  "date": "2026-11-05",
+  "type": "fix",
+  "title": {
+    "id": "Penyempurnaan Logging Obrolan Bot Asisten AI & Mode Live Refresh Dasbor Admin",
+    "en": "AI Assistant Chat Logging Fix & Live Auto-Refresh Admin Dashboard"
+  },
+  "body": {
+    "id": "Memperbaiki pencatatan log obrolan dari bot asisten AI agar terekam sempurna ke database Neon Postgres tanpa terpotong oleh lifecycle serverless, menetapkan kanal 'assistant' secara eksplisit terpisah dari Markas 3D, serta menghadirkan fitur pembaruan otomatis (Live Auto-Refresh 12 detik) di panel admin.",
+    "en": "Resolved AI assistant chat logging ensuring robust persistence to Neon Postgres without serverless termination cuts, explicitly segregated 'assistant' channel from 3D HQ, and introduced 12-second live auto-refresh in the admin chat logs panel."
+  },
+  "items": [
+    {
+      "type": "fix",
+      "id": "Penyelarasan Kanal Asisten AI: Mengirim parameter saluran 'assistant' secara eksplisit dari antarmuka bot melayang, sehingga percakapan bot asisten tidak lagi keliru tercatat sebagai kanal 'markas' saat dibuka di rute /markas.",
+      "en": "AI Assistant Channel Segregation: Explicitly dispatched 'assistant' channel payload from floating bot UI, preventing assistant dialogues from incorrectly labeling as 'markas' when visited on /markas route."
+    },
+    {
+      "type": "fix",
+      "id": "Jaminan Penyimpanan Data Serverless: Memastikan proses simpan log (await doSaveChatLog) selesai sepenuhnya sebelum aliran respons (stream controller) ditutup, mencegah platform serverless mematikan proses sebelum data tersimpan di database.",
+      "en": "Serverless Data Persistence Guarantee: Ensured chat log persistence completes (await doSaveChatLog) before the stream controller closes, preventing serverless runtimes from killing the process before DB write finishes."
+    },
+    {
+      "type": "improvement",
+      "id": "Pencatatan Log Saat Percakapan Dibatalkan (Abort/Cancel): Jika pengunjung menghentikan jawaban AI di tengah jalan (tombol stop atau tutup jendela), prompt dan teks yang sempat dijawab tetap tersimpan rapi dengan label pembatalan.",
+      "en": "Logging on Interrupted Streams: If a visitor halts the AI generation midway, prompt and partial output are cleanly captured with an aborted label."
+    },
+    {
+      "type": "new",
+      "id": "Mode Live Auto-Refresh di Panel Admin: Dasbor Log Chat AI (/admin/chat-logs) kini dilengkapi toggle Live Auto-Refresh setiap 12 detik yang otomatis memperbarui daftar percakapan baru secara real-time tanpa perlu memuat ulang browser.",
+      "en": "Live Auto-Refresh Mode in Admin Dashboard: The AI Chat Logs dashboard (/admin/chat-logs) now features a 12-second Live Auto-Refresh toggle that continuously pulls new conversations in real-time without manual page reloads."
+    }
+  ],
+  "source_key": "web"
+}

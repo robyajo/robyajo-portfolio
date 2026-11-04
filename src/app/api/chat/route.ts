@@ -406,7 +406,12 @@ Pengunjung saat ini sedang berada langsung di halaman di atas. Jika pengunjung m
 ============================================================`;
     }
 
-    const channel: "assistant" | "markas" = (body?.channel === "markas" || activePathname === "/markas") ? "markas" : "assistant";
+    const channel: "assistant" | "markas" =
+      body?.channel === "assistant"
+        ? "assistant"
+        : body?.channel === "markas" || activePathname === "/markas"
+          ? "markas"
+          : "assistant";
 
     // Konfigurasi endpoint & credentials (Prioritas: Database ai_settings -> Fallback Env)
     let activeAi = await getActiveAiConfig("chat");
@@ -516,12 +521,32 @@ Pengunjung saat ini sedang berada langsung di halaman di atas. Jika pengunjung m
     const decoder = new TextDecoder();
     const encoder = new TextEncoder();
 
+    let hasLogged = false;
+    let fullAiResponse = "";
+
+    const doSaveChatLog = async (fallbackResponse?: string) => {
+      if (hasLogged || !lastUserPrompt) return;
+      hasLogged = true;
+      try {
+        await logChatMessage({
+          channel,
+          headers: req.headers,
+          userPrompt: lastUserPrompt,
+          aiResponse: fullAiResponse || fallbackResponse || "",
+          path: activePathname,
+          provider: activeAi.providerName || activeAi.providerId || "Default",
+          modelId: model,
+        });
+      } catch (err) {
+        console.error("[chat] Gagal mencatat log obrolan AI:", err);
+      }
+    };
+
     const stream = new ReadableStream({
       async start(controller) {
         let buffer = "";
         let insideThinkTag = false;
         let isThinkingProcess = false;
-        let fullAiResponse = "";
 
         try {
           while (true) {
@@ -586,22 +611,13 @@ Pengunjung saat ini sedang berada langsung di halaman di atas. Jika pengunjung m
         } catch (err) {
           controller.error(err);
         } finally {
+          await doSaveChatLog();
           controller.close();
-          if (lastUserPrompt) {
-            void logChatMessage({
-              channel,
-              headers: req.headers,
-              userPrompt: lastUserPrompt,
-              aiResponse: fullAiResponse,
-              path: activePathname,
-              provider: activeAi.providerName || activeAi.providerId || "Default",
-              modelId: model,
-            });
-          }
         }
       },
-      cancel() {
+      async cancel() {
         reader.cancel().catch(() => { });
+        await doSaveChatLog("[Dibatalkan pengguna / Aborted]");
       },
     });
 
