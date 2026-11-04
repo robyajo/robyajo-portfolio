@@ -109,6 +109,11 @@
       "type": "new",
       "id": "Tulisan baru: \"Membongkar Pipeline Genomik: Saat Developer Membaca Data Sel\". Selengkapnya di https://ajoroby.is-a.dev/blogs/bioinformatics-developer-tooling-genomic-pipelines",
       "en": "New article: \"Demystifying Genomic Pipelines: When Developers Parse Cellular Data\". Read it at https://ajoroby.is-a.dev/blogs/bioinformatics-developer-tooling-genomic-pipelines"
+    },
+    {
+      "type": "new",
+      "id": "Integrasi 17 Ilustrasi Isometrik Teranimasi (Illos.dev): Menyematkan koleksi lengkap 17 ilustrasi SVG isometrik gratis berlisensi komersial ke dalam portofolio (API Gateway, Firewall/WAF, Database, CI/CD Pipeline, Containers, Encryption, Job Queue, 2FA, Cron, Migrasi, Git Version Control, Notifikasi, Analitik, Uploads, Email, Image Processing, dan Billing) lengkap dengan galeri interaktif di halaman /branding serta dukungan komponen langsung di artikel blog MDX.",
+      "en": "Integration of 17 Animated Isometric Illustrations (Illos.dev): Added the complete collection of 17 free commercial-use isometric SVG illustrations (API Gateway, Firewall/WAF, Database, CI/CD Pipeline, Containers, Encryption, Job Queue, 2FA, Cron, Migration, Git Version Control, Notifications, Analytics, Uploads, Email, Image Processing, and Billing) with an interactive showcase on /branding and direct MDX component support in blog posts."
     }
   ],
   "source_key": "web"

@@ -9,6 +9,7 @@ import {
 } from "@/components/layouts/page";
 import { LogoDownloadCard } from "@/app/(site)/branding/logo-download-card";
 import { BrandingOGPreview } from "@/app/(site)/branding/branding-og-preview";
+import { IsometricShowcase } from "@/app/(site)/branding/isometric-showcase";
 import {
     CricketDoodle,
     GroupGlyph,
@@ -531,6 +532,22 @@ export default async function BrandingPage() {
                         {b.motionOutroSuffix}
                     </TypographyLead>
                 </div>
+            </Section>
+
+            <Section aria-label="Ilustrasi Isometrik Rekayasa Sistem">
+                <SectionHeader>Rekayasa Sistem (Ilustrasi Isometrik)</SectionHeader>
+                <div className="mb-8 max-w-3xl space-y-2">
+                    <TypographyLead>
+                        Koleksi 17 ilustrasi teknis isometrik beranimasi dari{" "}
+                        <TypographyMark>Illos.dev</TypographyMark> yang menggambarkan
+                        arsitektur infrastruktur, keamanan, database, dan siklus DevOps.
+                    </TypographyLead>
+                    <TypographyMuted className="text-sm">
+                        Dibangun dengan format SVG murni, hemat daya (otomatis jeda di luar viewport),
+                        berputar mulus saat kursor diarahkan, serta beradaptasi otomatis terhadap palet mode terang dan gelap.
+                    </TypographyMuted>
+                </div>
+                <IsometricShowcase />
             </Section>
 
             <Section aria-label={b.og}>

@@ -126,6 +126,10 @@
   --z-rail: 20;
   --z-header: 50;
   --z-skip-link: 60;
+  --illos-dark: 0;
+  --illos-ground: #ffffff;
+  --illos-ink: #18181b;
+  --illos-accent: #0d9488;
 }
 
 .dark {
@@ -170,6 +174,10 @@
   --color-notice: oklch(0.75 0.17 296);
   --brand-text: oklch(0.72 0.15 155);
   --warning-foreground: oklch(0.828 0.189 84.429);
+  --illos-dark: 1;
+  --illos-ground: #18181b;
+  --illos-ink: #f4f4f5;
+  --illos-accent: #14b8a6;
 }
 
 @media (width >= 40rem) {
