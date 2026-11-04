@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "illos": {
+      "type": "http",
+      "url": "https://illos.dev/mcp"
+    }
+  }
+}
