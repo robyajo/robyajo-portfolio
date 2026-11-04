@@ -26,7 +26,7 @@ import {
   SignOutIcon,
   XIcon,
 } from "@/components/shared/icons";
-import { setChatOpen } from "@/lib/chat-store";
+import { setChatOpen, useChatOpen } from "@/lib/chat-store";
 import { LogoMascot } from "@/components/shared/logo-mascot";
 import {
   CommentBubble,
@@ -337,6 +337,7 @@ export function FloatingHub({ repoCard }: { repoCard: React.ReactNode }) {
   const dict = useDictionary();
   const hub = dict.hub;
   const isMobile = useIsMobile();
+  const chatOpen = useChatOpen();
   const [open, setOpen] = useState(false);
   const [boundary, setBoundary] = useState<Element | null>(null);
   const fabRef = useRef<HTMLButtonElement>(null);
@@ -351,7 +352,8 @@ export function FloatingHub({ repoCard }: { repoCard: React.ReactNode }) {
     setOpen((prev) => !prev);
   }, [wasDragged]);
 
-  if (!position) return null;
+  // Hide floating hub when AI chat sidebar is open so it doesn't obstruct chat controls
+  if (chatOpen || !position) return null;
 
   const fab = (
     <Button

@@ -1,22 +1,46 @@
+"use client";
+
 import { SectionMargins } from "@/components/layouts/section-margins";
 import { cn } from "@/lib/cn";
+import { useChatExpanded, useChatOpen } from "@/lib/chat-store";
 import { ComponentPropsWithRef, forwardRef } from "react";
 
 export const PageLayout = forwardRef<
     HTMLDivElement,
     ComponentPropsWithRef<"div">
->(({ className, children, ...props }, ref) => (
-    <div
-        ref={ref}
-        className={cn(
-            "relative z-10 min-h-screen w-full overflow-x-clip",
-            className,
-        )}
-        {...props}
-    >
-        {children}
-    </div>
-));
+>(({ className, children, ...props }, ref) => {
+    const chatOpen = useChatOpen();
+    const chatExpanded = useChatExpanded();
+
+    const sidebarWidthClass = chatExpanded
+        ? "md:w-[680px] lg:w-[760px] xl:w-[840px]"
+        : "md:w-[460px] lg:w-[500px] xl:w-[540px]";
+
+    return (
+        <div className="relative flex min-h-screen w-full overflow-x-clip">
+            {/* Website main content area that physically compresses and shifts */}
+            <div
+                ref={ref}
+                className={cn(
+                    "relative z-10 flex min-h-screen flex-1 min-w-0 flex-col transition-[width] duration-300 ease-in-out",
+                    className,
+                )}
+                {...props}
+            >
+                {children}
+            </div>
+
+            {/* Document flow spacer gap for desktop dock that physically pushes the website layout */}
+            <div
+                aria-hidden="true"
+                className={cn(
+                    "hidden shrink-0 transition-[width] duration-300 ease-in-out md:block pointer-events-none",
+                    chatOpen ? sidebarWidthClass : "w-0",
+                )}
+            />
+        </div>
+    );
+});
 PageLayout.displayName = "PageLayout";
 
 export const Content = forwardRef<HTMLElement, ComponentPropsWithRef<"main">>(

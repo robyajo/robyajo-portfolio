@@ -2,6 +2,7 @@ import { siteConfig } from "@/lib/config";
 import { getActiveAiConfig, getFallbackAiConfig } from "@/lib/ai-config";
 import { getProjectBySlug } from "@/lib/projects";
 import { getAuth } from "@/lib/auth";
+import { getPageChatTemplate } from "@/lib/page-chat-context";
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
@@ -381,6 +382,26 @@ ${securityDirective}
       } catch (err) {
         console.error("Failed to load project context for chat:", err);
       }
+    }
+
+    // Konteks Halaman Aktif yang sedang dikunjungi pengunjung
+    const activePathname =
+      context?.pathname ||
+      (typeof body?.currentPath === "string" ? body.currentPath : null);
+
+    if (activePathname && !context?.projectSlug) {
+      const pageInfo = getPageChatTemplate(activePathname);
+      dynamicSystemPrompt += `\n\n============================================================
+INFORMASI HALAMAN YANG SEDANG DIKUNJUNGI PENGUNJUNG:
+- Halaman Aktif: ${pageInfo.title.id} (${activePathname})
+- Ringkasan Halaman: ${pageInfo.summary.id}
+- Sapaan Konteks: ${pageInfo.welcomeGreeting.id}
+- Template Pertanyaan Cepat Halaman Ini:
+${pageInfo.prompts.map((p) => `  * ${p.id}`).join("\n")}
+
+PANDUAN KONTEKS:
+Pengunjung saat ini sedang berada langsung di halaman di atas. Jika pengunjung menanyakan hal-hal terkait halaman ini, isi halaman ini, atau mengklik template pertanyaan di atas, prioritaskan menjelaskan konteks halaman ini secara ramah, terstruktur, dan sertakan tautan Markdown internal yang relevan.
+============================================================`;
     }
 
     // Konfigurasi endpoint & credentials (Prioritas: Database ai_settings -> Fallback Env)

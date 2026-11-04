@@ -1,9 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useDictionary } from "@/lib/i18n/provider";
-import { useConsent, writeConsent } from "@/lib/consent";
+import { useConsent, writeConsent, type ConsentChoice } from "@/lib/consent";
 
 function CookieIcon() {
     return (
@@ -25,38 +26,52 @@ function CookieIcon() {
 
 export function CookieConsent() {
     const dict = useDictionary().consent;
-    // Pilihan dibaca lewat hook SSR-safe agar hasil SSR dan hidrasi konsisten.
     const choice = useConsent();
+    const [dismissed, setDismissed] = useState(false);
 
-    if (choice) return null;
+    if (choice || dismissed) return null;
+
+    const handleChoice = (c: ConsentChoice) => {
+        setDismissed(true);
+        writeConsent(c);
+    };
 
     return (
         <div
             role="region"
             aria-label={dict.ariaLabel}
-            className="fixed inset-x-3 bottom-3 z-[60] mx-auto flex max-w-7xl flex-col gap-3 rounded-xl border border-line bg-background/95 p-4 shadow-lg backdrop-blur sm:flex-row sm:items-center sm:gap-4 sm:p-5"
+            className="fixed inset-x-3 bottom-3 z-[80] mx-auto flex max-w-7xl flex-col gap-3 rounded-xl border border-line bg-background/95 p-4 shadow-2xl backdrop-blur-md sm:flex-row sm:items-center sm:gap-4 sm:p-5 pointer-events-auto"
         >
-            <CookieIcon />
-            <div className="flex flex-col gap-1">
-                <span className="text-sm text-muted-foreground">
-                    {dict.body}{" "}
-                    <Link
-                        href="/privacy-policy"
-                        className="underline underline-offset-2 hover:text-foreground"
-                    >
-                        {dict.more}
-                    </Link>
-                </span>
+            <div className="flex items-start gap-2.5 sm:items-center sm:gap-3">
+                <CookieIcon />
+                <div className="flex flex-col gap-1">
+                    <span className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                        {dict.body}{" "}
+                        <Link
+                            href="/privacy-policy"
+                            className="underline underline-offset-2 hover:text-foreground text-foreground/90 font-medium"
+                        >
+                            {dict.more}
+                        </Link>
+                    </span>
+                </div>
             </div>
-            <div className="flex shrink-0 items-center gap-2 sm:ml-auto">
+            <div className="flex w-full shrink-0 items-center gap-2 sm:w-auto sm:ml-auto">
                 <Button
+                    type="button"
                     variant="outline"
                     size="sm"
-                    onClick={() => writeConsent("declined")}
+                    className="flex-1 sm:flex-none h-9 px-4 active:scale-95 transition-transform"
+                    onClick={() => handleChoice("declined")}
                 >
                     {dict.decline}
                 </Button>
-                <Button size="sm" onClick={() => writeConsent("accepted")}>
+                <Button
+                    type="button"
+                    size="sm"
+                    className="flex-1 sm:flex-none h-9 px-4 active:scale-95 transition-transform"
+                    onClick={() => handleChoice("accepted")}
+                >
                     {dict.accept}
                 </Button>
             </div>

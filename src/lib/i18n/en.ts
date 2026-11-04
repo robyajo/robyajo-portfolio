@@ -7,6 +7,7 @@ const en: Dictionary = {
     about: "About",
     resume: "Resume",
     guestbook: "Guestbook",
+    markas: "HQ",
   },
   header: {
     mainNav: "Main navigation",
@@ -65,7 +66,40 @@ const en: Dictionary = {
         label: "Resume",
         note: "the serious one",
       },
+      markas: {
+        label: "3D HQ",
+        note: "AI agent office",
+      },
+      about: {
+        label: "About Me",
+        note: "career & ethos",
+      },
+      now: {
+        label: "Now",
+        note: "active focus",
+      },
+      uses: {
+        label: "Uses",
+        note: "gear & setup",
+      },
+      activity: {
+        label: "Activity",
+        note: "system log",
+      },
+      contact: {
+        label: "Contact",
+        note: "let us connect",
+      },
+      changelog: {
+        label: "Changelog",
+        note: "release history",
+      },
+      branding: {
+        label: "Branding",
+        note: "logos & assets",
+      },
     },
+    otherPages: "Explore More Pages:",
   },
   common: {
     loading: "Loading…",
@@ -803,6 +837,25 @@ const en: Dictionary = {
     askAiTitle: "ER AI Assistant",
     askAiSub: "Q&A about portfolio, projects & tech stack",
   },
+  markas: {
+    title: "AI Agent Headquarters & Command Center",
+    subtitle: "3D Agent Workspace Visualization, Subagent Monitor & Interactive AI Workflow Terminal.",
+    lead: "Observe AI agents working in the virtual headquarters in real-time, or trigger architecture & DevOps workflows for interactive collaboration.",
+    badge: "3D LIVE ENVIRONMENT",
+    leadDev: "Team Lead (Lead Architect)",
+    subagentsTitle: "Subagents & Specialists",
+    workflowTerminal: "Interactive Workflow Terminal",
+    workflowTerminalSub: "Select preset pipelines or run custom instructions with streaming AI reasoning.",
+    taskBoard: "Pipeline Task Board",
+    resetCamera: "Reset Camera View",
+    autoRotate: "Auto Rotate",
+    liveStatus: "Session Status",
+    idle: "Lounging in HQ",
+    thinking: "Analyzing Specs",
+    working: "Typing & Executing",
+    success: "Task Completed",
+    presetLabel: "Preset Workflows:",
+  },
   chat: {
     title: "ER AI Assistant",
     subtitle: "Interactive portfolio assistant for Roby Karti S.",
@@ -821,6 +874,8 @@ const en: Dictionary = {
     clear: "Clear chat",
     clearConfirm: "Clear conversation history?",
     close: "Close",
+    minimize: "Minimize sidebar (keep conversation)",
+    closeAndReset: "Close & reset (start fresh)",
     errorFailed:
       "Sorry, failed to get a response from the AI server. Please try again or reach out to Roby directly via the contact page.",
     suggestionsTitle: "Frequently asked questions:",
@@ -855,6 +910,8 @@ const en: Dictionary = {
     robotWorking: "Writing code & explanations...",
     robotSuccess: "Response ready successfully!",
     robotInteractiveHint: "Click robot to see it in action!",
+    activePageLabel: "Active Page:",
+    pageTemplateTitle: "Page Information Template:",
   },
   auth: {
     signIn: "Sign in",

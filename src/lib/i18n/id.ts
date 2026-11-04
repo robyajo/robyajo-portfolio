@@ -5,6 +5,7 @@ const id = {
     about: "Tentang",
     resume: "Resume",
     guestbook: "Buku Tamu",
+    markas: "Markas",
   },
   header: {
     mainNav: "Navigasi utama",
@@ -63,7 +64,40 @@ const id = {
         label: "Resume",
         note: "yang lebih formal",
       },
+      markas: {
+        label: "Markas 3D",
+        note: "kantor agen AI",
+      },
+      about: {
+        label: "Tentang Saya",
+        note: "karier & etos",
+      },
+      now: {
+        label: "Sekarang",
+        note: "fokus terkini",
+      },
+      uses: {
+        label: "Perkakas",
+        note: "gear & setup",
+      },
+      activity: {
+        label: "Linimasa",
+        note: "kegiatan sistem",
+      },
+      contact: {
+        label: "Kontak",
+        note: "mari berdiskusi",
+      },
+      changelog: {
+        label: "Catatan Rilis",
+        note: "riwayat versi",
+      },
+      branding: {
+        label: "Branding",
+        note: "logo & aset",
+      },
     },
+    otherPages: "Jelajahi Halaman Lainnya:",
   },
   common: {
     loading: "Memuat…",
@@ -805,6 +839,25 @@ const id = {
     askAiTitle: "ER AI Assistant",
     askAiSub: "Tanya jawab seputar portfolio, proyek & stack",
   },
+  markas: {
+    title: "Markas Agen AI & Command Center",
+    subtitle: "Visualisasi 3D Ruang Kerja Agen, Pemantau Subagent & Terminal Interaktif Workflow AI Roby Karti S.",
+    lead: "Pantau agen AI yang bekerja di meja markas virtual secara real-time, atau pilih workflow arsitektur & DevOps untuk memulai kolaborasi interaktif.",
+    badge: "3D LIVE ENVIRONMENT",
+    leadDev: "Ketua Tim (Lead Architect)",
+    subagentsTitle: "Subagent & Tim Spesialis",
+    workflowTerminal: "Terminal Workflow Interaktif",
+    workflowTerminalSub: "Pilih preset pipeline atau jalankan instruksi kustom dengan streaming reasoning AI.",
+    taskBoard: "Papan Tugas (Pipeline Board)",
+    resetCamera: "Reset Sudut Kamera",
+    autoRotate: "Putar Otomatis",
+    liveStatus: "Status Sesi",
+    idle: "Santai di Lounge",
+    thinking: "Menganalisis Spesifikasi",
+    working: "Mengetik & Eksekusi",
+    success: "Tugas Selesai",
+    presetLabel: "Preset Workflow:",
+  },
   chat: {
     title: "ER AI Assistant",
     subtitle: "Asisten interaktif portfolio Roby Karti S.",
@@ -823,6 +876,8 @@ const id = {
     clear: "Bersihkan obrolan",
     clearConfirm: "Bersihkan riwayat percakapan?",
     close: "Tutup",
+    minimize: "Sembunyikan bilah sisi (obrolan tersimpan)",
+    closeAndReset: "Tutup & mulai baru (hapus percakapan)",
     errorFailed:
       "Maaf, gagal mendapatkan respons dari server AI. Silakan coba lagi atau hubungi Roby langsung lewat halaman kontak.",
     suggestionsTitle: "Pertanyaan yang sering ditanyakan:",
@@ -857,6 +912,8 @@ const id = {
     robotWorking: "Sedang menulis kode & penjelasan...",
     robotSuccess: "Jawaban selesai disiapkan!",
     robotInteractiveHint: "Klik robot untuk melihat animasi!",
+    activePageLabel: "Halaman Aktif:",
+    pageTemplateTitle: "Template Informasi Halaman:",
   },
   auth: {
     signIn: "Masuk",

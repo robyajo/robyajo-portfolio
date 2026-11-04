@@ -13,6 +13,7 @@ const listeners = new Set<() => void>();
 
 export function readConsent(): Consent {
     try {
+        if (typeof window === "undefined" || !window.localStorage) return null;
         const value = window.localStorage.getItem(CONSENT_STORAGE_KEY);
         return value === "accepted" || value === "declined" ? value : null;
     } catch {
@@ -22,21 +23,32 @@ export function readConsent(): Consent {
 
 export function writeConsent(choice: ConsentChoice): void {
     try {
-        window.localStorage.setItem(CONSENT_STORAGE_KEY, choice);
+        if (typeof window !== "undefined" && window.localStorage) {
+            window.localStorage.setItem(CONSENT_STORAGE_KEY, choice);
+        }
     } catch {}
     for (const listener of listeners) listener();
+    if (typeof window !== "undefined") {
+        try {
+            window.dispatchEvent(new Event(CONSENT_EVENT));
+        } catch {}
+    }
 }
 
 function subscribe(callback: () => void): () => void {
     const notify = () => callback();
     listeners.add(notify);
-    window.addEventListener(CONSENT_EVENT, notify);
-    window.addEventListener("storage", (event) => {
-        if (event.key === CONSENT_STORAGE_KEY) notify();
-    });
+    if (typeof window !== "undefined") {
+        window.addEventListener(CONSENT_EVENT, notify);
+        window.addEventListener("storage", (event) => {
+            if (event.key === CONSENT_STORAGE_KEY) notify();
+        });
+    }
     return () => {
         listeners.delete(notify);
-        window.removeEventListener(CONSENT_EVENT, notify);
+        if (typeof window !== "undefined") {
+            window.removeEventListener(CONSENT_EVENT, notify);
+        }
     };
 }
 

@@ -2,6 +2,7 @@
 
 import {
   BookOpenIcon,
+  BriefcaseIcon,
   CodeIcon,
   EnvelopeIcon,
   FileTextIcon,
@@ -23,9 +24,10 @@ export function getCategoryIcon(id: string) {
       return (
         <CodeIcon className="size-3.5 text-(--brand-text)" aria-hidden="true" />
       );
+    case "experience":
     case "resume":
       return (
-        <FileTextIcon
+        <BriefcaseIcon
           className="size-3.5 text-(--brand-text)"
           aria-hidden="true"
         />
@@ -61,24 +63,55 @@ export function getCategoryIcon(id: string) {
   }
 }
 
-interface QuickCategory {
+export interface QuickCategory {
   id: string;
   label: string;
   prompt: string;
 }
 
-interface ChatCategoryNavProps {
-  categories: QuickCategory[];
+export const DEFAULT_CHAT_CATEGORIES: QuickCategory[] = [
+  {
+    id: "projects",
+    label: "Karya & Proyek Unggulan",
+    prompt: "Ceritakan tentang proyek-proyek unggulan yang telah dibangun oleh Roby Karti S.",
+  },
+  {
+    id: "experience",
+    label: "Pengalaman & Karier IT",
+    prompt: "Bagaimana rekam jejak pengalaman kerja Roby di pemerintahan (Diskominfo) dan perbankan?",
+  },
+  {
+    id: "stack",
+    label: "Tech Stack & Arsitektur",
+    prompt: "Teknologi, bahasa pemrograman, dan infrastruktur server apa yang dikuasai Roby?",
+  },
+  {
+    id: "blogs",
+    label: "Artikel Blog & Catatan Teknis",
+    prompt: "Artikel teknis menarik apa saja yang ditulis Roby di blog portfolio ini?",
+  },
+  {
+    id: "contact",
+    label: "Kontak & Kerja Sama",
+    prompt: "Bagaimana cara menghubungi Roby untuk tawaran kerja atau kolaborasi proyek?",
+  },
+];
+
+export interface ChatCategoryNavProps {
+  categories?: QuickCategory[];
   title?: string;
-  onSelect: (prompt: string) => void;
+  onSelect?: (prompt: string) => void;
+  onSelectPrompt?: (prompt: string) => void;
 }
 
 export function ChatCategoryNav({
-  categories,
+  categories = DEFAULT_CHAT_CATEGORIES,
   title,
   onSelect,
+  onSelectPrompt,
 }: ChatCategoryNavProps) {
-  if (!categories || categories.length === 0) return null;
+  const handleSelect = onSelectPrompt || onSelect;
+  if (!categories || categories.length === 0 || !handleSelect) return null;
 
   return (
     <div className="flex flex-col gap-2.5">
@@ -91,7 +124,7 @@ export function ChatCategoryNav({
           <button
             key={cat.id}
             type="button"
-            onClick={() => onSelect(cat.prompt)}
+            onClick={() => handleSelect(cat.prompt)}
             className="group flex items-center gap-2 rounded-lg border border-border/80 bg-background/80 dark:bg-card/70 p-2 text-left text-xs transition-all hover:border-(--brand-text)/50 hover:bg-muted/60 active:scale-95 shadow-xs"
           >
             <span className="flex size-6 shrink-0 items-center justify-center rounded-md border border-border/60 bg-muted/80 dark:bg-muted/50 transition-transform group-hover:scale-105 group-hover:border-(--brand-text)/40">

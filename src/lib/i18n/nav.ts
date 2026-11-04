@@ -1,6 +1,13 @@
 import type { Dictionary } from "./id";
 
-const NAV_KEYS = ["/projects", "/blogs", "/about", "/resume", "/guestbook"] as const;
+const NAV_KEYS = [
+  "/projects",
+  "/blogs",
+  "/about",
+  "/resume",
+  "/markas",
+  "/guestbook",
+] as const;
 export type NavHref = (typeof NAV_KEYS)[number];
 
 export function navLabel(href: string, dict: Dictionary): string {
@@ -13,6 +20,8 @@ export function navLabel(href: string, dict: Dictionary): string {
       return dict.nav.about;
     case "/resume":
       return dict.nav.resume;
+    case "/markas":
+      return dict.nav.markas;
     case "/guestbook":
       return dict.nav.guestbook;
     case "/admin":

@@ -25,7 +25,7 @@ export const aiModelSchema = z.object({
 export type AiModelInput = z.infer<typeof aiModelSchema>;
 
 export const aiSettingSchema = z.object({
-  task: z.enum(["chat", "blog"]),
+  task: z.string().min(1, "Task identifier wajib diisi"),
   providerId: z.string().min(1, "Provider wajib dipilih"),
   modelId: z.string().min(1, "Model ID wajib dipilih"),
   enableThinking: z.boolean().default(false),
@@ -66,7 +66,7 @@ export interface AiProviderRow {
 }
 
 export interface AiSettingRow {
-  task: "chat" | "blog";
+  task: string;
   providerId: string;
   modelId: string;
   enableThinking: boolean;
@@ -75,4 +75,15 @@ export interface AiSettingRow {
   maxTokens: number;
   systemPrompt: string | null;
   updatedAt: Date;
+}
+
+export interface MarkasAgentMetadata {
+  id: string;
+  name: string;
+  role: string;
+  badge: string;
+  specialty: string;
+  defaultTask: string;
+  avatarIcon?: string;
+  promptDirective?: string;
 }

@@ -235,22 +235,22 @@ export function OnlinePing() {
   );
 }
 
-export function Signpost() {
+export function Signpost({ className }: { className?: string } = {}) {
   return (
     <svg
-      viewBox="0 0 288 248"
+      viewBox="0 0 288 288"
       aria-hidden="true"
-      className="absolute inset-0 size-full overflow-visible"
+      className={cn("absolute inset-0 size-full overflow-visible", className)}
     >
       <ellipse
         cx="144"
-        cy="226"
+        cy="266"
         rx="112"
-        ry="9"
+        ry="10"
         className="fill-foreground/5"
       />
       <path
-        d="M70 226 q3 -9 6 0 q3 -12 6 0 M196 225 q3 -8 6 0 q3 -11 6 0 q3 -7 6 0"
+        d="M70 266 q3 -9 6 0 q3 -12 6 0 M196 265 q3 -8 6 0 q3 -11 6 0 q3 -7 6 0"
         fill="none"
         strokeWidth="1.4"
         strokeLinecap="round"
@@ -261,25 +261,25 @@ export function Signpost() {
         x="138"
         y="14"
         width="12"
-        height="214"
+        height="254"
         rx="2"
         className="fill-muted stroke-foreground/20"
       />
       <path
-        d="M142 30 V210 M146 60 V190"
+        d="M142 30 V250 M146 60 V230"
         strokeWidth="0.8"
         className="stroke-foreground/10"
       />
       <g className="animate-pin-bounce">
         <path
-          d="M232 222 c-6 -7 -9 -11 -9 -15 a9 9 0 0 1 18 0 c0 4 -3 8 -9 15 z"
+          d="M232 262 c-6 -7 -9 -11 -9 -15 a9 9 0 0 1 18 0 c0 4 -3 8 -9 15 z"
           className="fill-(--brand)"
         />
-        <circle cx="232" cy="207" r="3" className="fill-background" />
+        <circle cx="232" cy="247" r="3" className="fill-background" />
       </g>
       <text
         x="232"
-        y="242"
+        y="282"
         fontSize="8"
         textAnchor="middle"
         className={`${isoType} fill-muted-foreground`}

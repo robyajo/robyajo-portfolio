@@ -1,0 +1,100 @@
+{
+  "date": "2026-11-04",
+  "type": "feature",
+  "title": {
+    "id": "Markas Agen AI 3D: Kanvas Layar Penuh Megah, Panel Chat Transparan Gaya Live Streaming di Dalam Kanvas, dan Mode Sembunyikan/Tampilkan",
+    "en": "3D AI Agent HQ: Full-Screen Giant Canvas, Translucent Live Stream Chat Overlay Inside Canvas, and Hide/Show Mode"
+  },
+  "body": {
+    "id": "Menghadirkan pembaruan besar pada tampilan Markas Agen 3D (/markas): Kanvas 3D kini tampil penuh dan sangat luas (tinggi hingga 750px) tanpa terpotong kolom terpisah. Panel chat interaktif dan tracer kini terintegrasi langsung di dalam layar kanvas dengan desain semi-transparan bergaya live video streaming (backdrop-blur modern). Dilengkapi fitur mode Sembunyikan (Hide/Show) chat yang fleksibel dengan tombol pintas dan floating trigger, sehingga seluruh miniatur kantor (Ayah Roby merokok & nonton video, ruang anak di belakang Ayah bersama Bunda Putri & Alyona, bangku santai lounge, kurir, dan layar dinding chart) dapat dinikmati secara leluasa dan sinematik.",
+    "en": "Delivering a major visual upgrade to 3D Agent HQ (/markas): The 3D canvas now spans full-width with a generous height (up to 750px) without split column constraints. The interactive chat & tracer panel is integrated directly inside the canvas with a translucent live video streaming aesthetic (modern backdrop-blur). Equipped with a flexible Hide/Show toggle button and floating trigger, letting users immerse themselves in the entire office miniature (Ayah Roby smoking & streaming, kids playroom behind Ayah with Bunda Putri & Alyona, lounge sofa, courier, and giant wall charts) in a cinematic view."
+  },
+  "items": [
+    {
+      "type": "new",
+      "id": "Kanvas 3D Layar Penuh & Megah: Kanvas miniatur kantor kini membentang penuh (full-width) dengan ketinggian hingga 750px di desktop, membuat setiap detail karakter, meja pimpinan, ruang anak, dan lounge sofa terlihat jauh lebih besar dan jelas.",
+      "en": "Giant Full-Width 3D Canvas: The office miniature canvas now spans full-width with up to 750px height on desktop, rendering all character details, executive desks, kids corner, and lounge sofa noticeably bigger and sharper."
+    },
+    {
+      "type": "new",
+      "id": "Panel Chat Transparan Gaya Live Video Streaming di Dalam Kanvas: Panel obrolan dan tracer kini melayang elegan langsung di dalam kanvas dengan estetika semi-transparan (bg-slate-950/45 backdrop-blur-md border-white/15), menyerupai chat live stream interaktif.",
+      "en": "Translucent Live Stream Chat Overlay Inside Canvas: The chat and tracer panel floats elegantly inside the 3D canvas with a translucent glass aesthetic (bg-slate-950/45 backdrop-blur-md border-white/15), mimicking interactive video stream chats."
+    },
+    {
+      "type": "new",
+      "id": "Mode Sembunyikan/Tampilkan Panel Chat (Hide/Show): Pengguna dapat menyembunyikan panel chat kapan saja lewat tombol 'Sembunyikan Chat' di bar atas maupun tombol '✕ Sembunyikan' di header panel untuk menikmati dunia 3D tanpa halangan, serta membukanya kembali via tombol melayang.",
+      "en": "Hide/Show Chat Panel Mode: Users can toggle or minimize the chat panel anytime via the top-bar 'Sembunyikan Chat' button or header close button for an unobstructed 3D view, easily reopening it via a floating trigger."
+    },
+    {
+      "type": "new",
+      "id": "Ruangan Bermain Anak di Belakang Meja Ayah Roby: Karpet puzzle pastel, tenda bermain teepee Alyona, rak balok susun, dan Kursi Santai Mewah Wingback Bunda Putri kini tertata hangat tepat di belakang meja kerja Ayah Roby.",
+      "en": "Kids Playroom Positioned Behind Ayah Roby's Desk: Pastel puzzle mat, Alyona's teepee tent, toy block shelf, and Bunda Putri's luxury wingback chair are now warmly located right behind Ayah Roby's executive desk."
+    },
+    {
+      "type": "new",
+      "id": "Model 3D Bunda Putri Duduk di Ruangan Anak dengan Desain Feminin Anggun: Model 3D Bunda Putri kini berwujud wanita dewasa elegan (siluet ramping, rok midi rose-gold, kalung mutiara berkilau, rambut hitam panjang bergelombang melewati bahu, jepit mawar pink, rona pipi, dan cangkir teh), duduk tepat di kursi wingback mewah di dalam ruangan bermain anak di belakang meja kerja Ayah Roby.",
+      "en": "3D Bunda Putri Model Seated in Kids Playroom with Elegant Feminine Design: Bunda Putri now features a realistic graceful female silhouette (slender posture, rose-gold midi skirt, lustrous pearl necklace, flowing long wavy black hair over shoulders, pink rose hair-pin, blush cheeks, and porcelain teacup), seated properly on her luxury wingback chair inside the kids playroom behind Ayah Roby."
+    },
+    {
+      "type": "new",
+      "id": "Model 3D Alyona Berwujud Anak Perempuan Mungil Menggemaskan: Model 3D Alyona tampil sebagai anak perempuan mungil ceria dengan gaun pesta anak kuning cerah berkerah renda putih, pita merah muda besar di belakang pinggang dress, gaya rambut kuncir dua kembar (twin pigtails) dengan ikat pita merah muda, kaus kaki renda putih, sepatu Mary Jane perempuan, serta memeluk boneka teddy bear berbulu.",
+      "en": "3D Alyona Model Rendered as an Adorable Little Girl: Alyona now features a petite, cute little girl design with a flared sunny-yellow dress, white lace collar, big pink waist bow, twin pigtails with pink ribbons, white lace socks, shiny Mary Jane shoes, and a cuddly teddy bear in her arm as she hops around the playroom."
+    },
+    {
+      "type": "new",
+      "id": "Bangku Santai Kantor Tetap di Tempat Sebelumnya: Area santai lounge tetap dilengkapi Executive Lounge Sofa 3-seater empuk dengan bantal aksen emas/zamrud, karpet lounge arang, meja kopi kayu walnut, dispenser air galon, dan standing floor lamp untuk rehat tim dev.",
+      "en": "Office Lounge Sofa Remains in Original Spot: The lounge area retains its 3-seater plush Executive Sofa with gold/emerald cushions, charcoal rug, walnut coffee table, water dispenser, and standing lamp for developer relaxation."
+    },
+    {
+      "type": "new",
+      "id": "Kedatangan Kurir & Tracer Multi-Agen Bertahap: Saat prompting masuk, Kurir Express langsung mengantar berkas tugas ke meja komando dan memicu Tracer 9 langkah dari setiap agen model yang mendeskripsikan tindakan masing-masing hingga selesai.",
+      "en": "Courier Arrival & Multi-Agent Step Tracer: When a prompt is submitted, Courier Express rushes to deliver the task dossier to the lead desk, triggering a 9-step Multi-Agent Tracer detailing actions across every model until finished."
+    },
+    {
+      "type": "new",
+      "id": "Timer Tunggu 3 Menit Pasca Selesai: Setelah tugas selesai dieksekusi, countdown timer 180 detik aktif di header panel. Jika tidak ada respons/prompt baru selama 3 menit, sistem otomatis melanjutkan kembali obrolan santai tim.",
+      "en": "3-Minute Cooldown Countdown Timer: Once task execution finishes, a 180-second countdown activates. If no new prompt is received within 3 minutes, casual team conversations automatically resume."
+    },
+    {
+      "type": "improvement",
+      "id": "Optimalisasi Stabilitas Rutinitas Model 3D: Scene Three.js kini diisolasi sepenuhnya dari re-render state chat sehingga pergantian pesan obrolan tidak lagi me-reset posisi, animasi berjalan, maupun rutinitas kerja agen.",
+      "en": "3D Model Routine Stability: The Three.js scene is now strictly decoupled from chat state re-renders, preventing model positions, walking animations, and office routines from resetting on new messages."
+    },
+    {
+      "type": "improvement",
+      "id": "Penyesuaian Durasi Percakapan Santai & Deteksi Halaman Aktif: Durasi antar obrolan random diperpanjang menjadi 22-32 detik agar natural dan tidak spam, serta otomatis dijeda saat tab diminimize (document.hidden) dan berhenti total saat meninggalkan rute /markas.",
+      "en": "Casual Chatter Cadence & Page Visibility Guard: Conversation intervals relaxed to 22-32 seconds to prevent spam feel, automatically pausing when the tab is hidden and stopping completely when navigating away from /markas."
+    },
+    {
+      "type": "new",
+      "id": "Template Informasi Halaman Aktif pada Chat Bot Asisten AI: Asisten AI kini secara dinamis mendeteksi halaman yang sedang dibuka pengunjung di seluruh situs (Beranda, Tentang Saya, Proyek, Resume, Blog, Markas 3D, Now, Uses, Guestbook, Kontak, dll.). Menampilkan kartu template informasi halaman aktif lengkap dengan ringkasan isi halaman dan 4 template pertanyaan cepat sekali klik, serta otomatis menyuntikkan konteks halaman ke backend AI.",
+      "en": "Active Page Information Template in AI Assistant Chat: The AI assistant now dynamically detects which page visitors are browsing across the entire portfolio (Home, About, Projects, Resume, Blogs, 3D HQ, Now, Uses, Guestbook, Contact, etc.). It renders an Active Page Information Template card complete with page summaries and 4 one-click quick inquiry templates, automatically injecting live page context into the backend AI reasoning engine."
+    },
+    {
+      "type": "new",
+      "id": "Penambahan Seluruh Navigasi Halaman pada Penunjuk Arah EndOfPage: Papan penunjuk arah (Signpost) dan penjelajahan di ujung setiap halaman kini mencakup seluruh destinasi rute portofolio yang belum ada sebelumnya (Markas 3D, Tentang Saya, Sekarang, Perkakas, Linimasa, Kontak, Catatan Rilis, dan Branding) lengkap dengan baris chips navigasi cepat.",
+      "en": "Expanded EndOfPage Navigation Signpost & Directory: The decorative signpost and page footer directory now encompass all missing portfolio routes (3D HQ, About Me, Now, Uses, Activity Log, Contact, Changelog, and Branding), complemented by one-click quick navigation chips."
+    },
+    {
+      "type": "improvement",
+      "id": "Peningkatan Animasi & Pertambahan Bilah Arah Signpost: Jumlah bilah papan penunjuk arah di tiang kayu ditambah dari 3 menjadi 5 arah destinasi aktif + 1 bilah kembali ke atas, dilengkapi animasi ayunan angin dinamis (staggered delay) pada setiap bilah serta tombol interaktif Putar Arah untuk merotasi destinasi secara bergantian.",
+      "en": "Enhanced Signpost Planks Capacity & Staggered Wind Sway Animation: Signpost plank capacity increased from 3 to 5 active destination planks + 1 back-to-top plank, enriched with staggered wind sway animations across all planks and an interactive Rotate Directions button to cycle destinations dynamically."
+    },
+    {
+      "type": "improvement",
+      "id": "Pemurnian Stack Trace Murni 8 Agen Teknis: Menghapus Bunda Putri dan Alyona dari daftar pekerjaan Stack Trace (karena Bunda Putri dan Alyona adalah keluarga tercinta di ruang bermain anak, bukan agen koding/audit). Stack Trace kini murni memuat 8 tahapan alur teknis komprehensif: Kurir Express -> Roby Pimpinan -> Buruang Lead -> Koncek Backend -> Biawak Frontend -> Bonta Security -> Bala DevOps -> Roby Finalisasi.",
+      "en": "Refined 8-Step Pure Technical Stack Trace: Removed Bunda Putri and Alyona from technical execution steps (as they are beloved family in the kids playroom, not dev/audit agents). The Stack Trace now purely tracks 8 comprehensive technical milestones: Courier Express -> Roby Lead -> Buruang Lead -> Koncek Backend -> Biawak Frontend -> Bonta Security -> Bala DevOps -> Roby Synthesis."
+    },
+    {
+      "type": "new",
+      "id": "Visualisasi Live Banner & Aktivitas Real-Time pada Stack Trace: Stack Trace kini menampilkan banner interaktif serta rincian spesifik apa yang sedang dikerjakan secara real-time oleh agen yang sedang aktif (badge ⚡ SEDANG BEKERJA berkedip, ringkasan aksi di header trigger, dan highlight baris yang kontras).",
+      "en": "Live Banner & Real-Time Action Visualization in Stack Trace: The Stack Trace now renders a prominent active banner and detailed real-time action description for the currently executing agent (pulsing ⚡ ACTIVE badge, live trigger summary, and contrast line highlight)."
+    },
+    {
+      "type": "improvement",
+      "id": "Model Agen 3D Langsung Duduk Bekerja di Meja Masing-Masing: Begitu instruksi prompt diproses, seluruh model agen teknis (Roby, Buruang, Koncek, Biawak, Bonta, Bala) secara instan langsung berada di kursi mejanya, duduk dan mengetik koding secara intensif tanpa jeda berjalan santai, serta terkunci dari keliling kantor hingga tugas selesai.",
+      "en": "Instant Seated Work Routine for 3D Agents: As soon as a prompt is triggered, all technical agent models (Roby, Buruang, Koncek, Biawak, Bonta, Bala) immediately teleport to their respective desk chairs, seated and typing intensely at full speed without walking delays, locked in place until tasks conclude."
+    }
+  ],
+  "source_key": "web"
+}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState,  useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import type {
@@ -24,6 +24,7 @@ import type {
 } from "@/lib/ai-schema";
 import { ModelForm } from "./_components/modelForm";
 import { TaskAssignmentForm } from "./_components/taskAssignmentForm";
+import { MarkasAgentForm } from "./_components/markasAgentForm";
 import { ProviderForm } from "./_components/providerForm";
 import { TestChatForm, type TestChatInitialData } from "./_components/testChatForm";
 import { Button } from "@/components/ui/button";
@@ -322,11 +323,22 @@ export function AdminModelsPanel({
         </div>
       </section>
 
-      {/* Bagian 2: Status Provider Terdaftar */}
+      {/* Bagian 2: Pengaturan Tim Markas AI (Roby, Buruang, Koncek, Biawak, Bonta, Bala) */}
+      <section className="flex flex-col gap-4">
+        <MarkasAgentForm
+          settings={data.settings}
+          providers={data.providers}
+          models={data.models}
+          onSubmit={handleSaveTaskAssignment}
+          submitting={submitting}
+        />
+      </section>
+
+      {/* Bagian 3: Status Provider Terdaftar */}
       <section className="flex flex-col gap-4">
         <div>
           <h2 className="text-lg font-semibold tracking-tight">
-            2. Provider AI Terhubung
+            3. Provider AI Terhubung
           </h2>
           <p className="text-xs text-muted-foreground">
             Daftar gateway yang terintegrasi untuk melayani komputasi model AI.
@@ -429,7 +441,7 @@ export function AdminModelsPanel({
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div>
             <h2 className="text-lg font-semibold tracking-tight">
-              3. Katalog Model AI ({filteredModels.length} Model)
+              4. Katalog Model AI ({filteredModels.length} Model)
             </h2>
             <p className="text-xs text-muted-foreground">
               Daftar seluruh model AI yang tersimpan di database. Anda dapat menambah, mengedit, atau menonaktifkan model kapan saja.

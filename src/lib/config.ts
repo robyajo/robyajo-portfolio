@@ -29,6 +29,7 @@ export const siteConfig = {
     { href: "/blogs", label: "Blogs" },
     { href: "/about", label: "About" },
     { href: "/resume", label: "Resume" },
+    { href: "/markas", label: "Markas" },
     { href: "/guestbook", label: "Guestbook" },
   ] as const,
   social: [

@@ -270,3 +270,124 @@ function getEnvFallback(task: "chat" | "blog"): ResolvedAiConfig {
     isDbDriven: false,
   };
 }
+
+export interface ConfiguredMarkasAgent {
+  id: string;
+  name: string;
+  role: string;
+  badge: string;
+  icon: string;
+  model: string;
+  provider: string;
+  specialty: string;
+  defaultTask: string;
+}
+
+const DEFAULT_AGENTS_LIST: ConfiguredMarkasAgent[] = [
+  {
+    id: "roby",
+    name: "Roby Karti S.",
+    role: "Pimpinan & Lead Architect",
+    badge: "PIMPINAN",
+    icon: "👨‍💻",
+    model: "@cf/zai-org/glm-4.7-flash",
+    provider: "Cloudflare AI Gateway",
+    specialty: "Fullstack, Cloud Architecture & Direction",
+    defaultTask: "Pimpinan Roby mengarahkan koordinasi arsitektur sistem",
+  },
+  {
+    id: "buruang",
+    name: "Buruang",
+    role: "Kepala Proyek",
+    badge: "PROJECT LEAD",
+    icon: "📋",
+    model: "@cf/qwen/qwen3-30b-a3b-fp8",
+    provider: "Cloudflare AI Gateway",
+    specialty: "Quality Control, Audit 25+ Proyek & Milestones",
+    defaultTask: "Buruang memeriksa seluruh kelaikan proyek portofolio",
+  },
+  {
+    id: "koncek",
+    name: "Koncek",
+    role: "Backend Specialist",
+    badge: "BACKEND",
+    icon: "🐹",
+    model: "@cf/zai-org/glm-4.7-flash",
+    provider: "Cloudflare AI Gateway",
+    specialty: "Golang, PostgreSQL, Redis, REST & gRPC",
+    defaultTask: "Koncek mengoptimalkan backend API & database pool",
+  },
+  {
+    id: "biawak",
+    name: "Biawak",
+    role: "Frontend Specialist",
+    badge: "FRONTEND",
+    icon: "🦎",
+    model: "@cf/zai-org/glm-4.7-flash",
+    provider: "Cloudflare AI Gateway",
+    specialty: "Next.js, React, Tailwind CSS, 3D WebGL",
+    defaultTask: "Biawak memoles tampilan UI responsif dan animasi 3D",
+  },
+  {
+    id: "bonta",
+    name: "Bonta",
+    role: "Security Specialist",
+    badge: "SECURITY",
+    icon: "🛡️",
+    model: "@cf/qwen/qwen3-30b-a3b-fp8",
+    provider: "Cloudflare AI Gateway",
+    specialty: "WAF, OWASP Hardening, Anti-DDoS, SSL",
+    defaultTask: "Bonta mengaudit keamanan WAF dan rate limiting",
+  },
+  {
+    id: "bala",
+    name: "Bala",
+    role: "Support Specialist",
+    badge: "SUPPORT",
+    icon: "🎧",
+    model: "@cf/zai-org/glm-4.7-flash",
+    provider: "Cloudflare AI Gateway",
+    specialty: "Customer Care, Uptime VPS, Ticketing Inbox",
+    defaultTask: "Bala memantau uptime dan menangani tiket bantuan",
+  },
+];
+
+export async function getMarkasAgentsConfig(): Promise<ConfiguredMarkasAgent[]> {
+  if (!process.env.DATABASE_URL) {
+    return DEFAULT_AGENTS_LIST;
+  }
+
+  try {
+    const settings = await db.select().from(aiSettings);
+    const settingsMap = new Map<string, typeof settings[0]>();
+    settings.forEach((s) => settingsMap.set(s.task, s));
+
+    return DEFAULT_AGENTS_LIST.map((agent) => {
+      const dbSetting = settingsMap.get("markas_" + agent.id);
+      if (!dbSetting) return agent;
+
+      let meta: any = {};
+      if (dbSetting.systemPrompt) {
+        try {
+          if (dbSetting.systemPrompt.startsWith("{")) {
+            meta = JSON.parse(dbSetting.systemPrompt);
+          }
+        } catch {}
+      }
+
+      return {
+        ...agent,
+        name: meta.name || agent.name,
+        role: meta.role || agent.role,
+        badge: meta.badge || agent.badge,
+        specialty: meta.specialty || agent.specialty,
+        defaultTask: meta.defaultTask || agent.defaultTask,
+        model: dbSetting.modelId || agent.model,
+        provider: dbSetting.providerId || agent.provider,
+      };
+    });
+  } catch (err) {
+    console.warn("[ai-config] Gagal membaca konfigurasi agen markas:", (err as Error).message);
+    return DEFAULT_AGENTS_LIST;
+  }
+}

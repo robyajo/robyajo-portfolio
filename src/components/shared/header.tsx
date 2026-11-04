@@ -18,6 +18,7 @@ import { TypographySmall } from "@/components/ui/typography";
 import { siteConfig } from "@/lib/config";
 import { cn } from "@/lib/cn";
 import { setCommandMenuOpen } from "@/lib/command-menu-store";
+import { useChatExpanded, useChatOpen } from "@/lib/chat-store";
 import { useIsMac } from "@/hooks/use-is-mac";
 import { useSession } from "next-auth/react";
 import {
@@ -34,6 +35,7 @@ function isActive(pathname: string, href: string) {
     if (href === "/blogs")
         return pathname.startsWith("/blogs/") || pathname.startsWith("/blog/");
     if (href === "/projects") return pathname.startsWith("/projects/");
+    if (href === "/markas") return pathname.startsWith("/markas");
     if (href === "/guestbook") return pathname.startsWith("/guestbook");
     if (href === "/admin") return pathname.startsWith("/admin");
     return false;
@@ -100,6 +102,8 @@ export function Header() {
     const pathname = usePathname();
     const dict = useDictionary();
     const { data: session } = useSession();
+    const chatOpen = useChatOpen();
+    const chatExpanded = useChatExpanded();
     const isAdmin = session?.user?.role === "admin";
     const navLinks = isAdmin
         ? [
@@ -116,15 +120,6 @@ export function Header() {
     const isMac = useIsMac();
     const menuRef = useRef<HTMLDivElement>(null);
     const triggerRef = useRef<HTMLButtonElement>(null);
-
-    useEffect(() => {
-        const mq = window.matchMedia("(min-width: 768px)");
-        const closeOnDesktop = (event: MediaQueryListEvent) => {
-            if (event.matches) setOpenPath(null);
-        };
-        mq.addEventListener("change", closeOnDesktop);
-        return () => mq.removeEventListener("change", closeOnDesktop);
-    }, []);
 
     useEffect(() => {
         if (!open) return;
@@ -152,7 +147,15 @@ export function Header() {
     }, [open]);
 
     return (
-        <header className="fixed inset-x-0 top-0 z-50 border-b border-line bg-background/80 backdrop-blur [view-transition-name:site-header]">
+        <header
+            className={cn(
+                "fixed inset-x-0 top-0 z-30 border-b border-line bg-background/80 backdrop-blur transition-[right] duration-300 ease-in-out [view-transition-name:site-header]",
+                chatOpen &&
+                    (chatExpanded
+                        ? "md:right-[680px] lg:right-[760px] xl:right-[840px]"
+                        : "md:right-[460px] lg:right-[500px] xl:right-[540px]"),
+            )}
+        >
             <div className="relative mx-auto max-w-7xl border-x border-line bg-background">
                 <div className="flex h-14 items-center justify-between px-gutter">
                     <Link
@@ -178,15 +181,12 @@ export function Header() {
                                         <NavigationMenuItem key={link.href}>
                                             <NavigationMenuLink
                                                 asChild
-                                                data-current={
-                                                    active || undefined
-                                                }
-                                                className="relative text-muted-foreground hover:text-foreground hover:bg-accent rounded-md px-3 py-2 transition-[color,background-color,rotate] data-current:-rotate-2 data-current:bg-(--brand)/10 data-current:font-medium data-current:text-foreground data-current:ring-1 data-current:ring-(--brand)/35 data-current:hover:rotate-0 data-current:hover:bg-(--brand)/15 data-current:animate-note-swing"
+                                                className="group/nav-link relative"
                                             >
                                                 <Link
                                                     href={link.href}
                                                     aria-current={
-                                                        pathname === link.href
+                                                        active && pathname === link.href
                                                             ? "page"
                                                             : active
                                                               ? "true"
@@ -218,92 +218,91 @@ export function Header() {
                                 isMac={isMac}
                                 dictLabel={dict.header.searchCommands}
                             />
-                            <ThemeToggle className="h-8.5 rounded-r-full py-0 pr-0.75 pl-1 pointer-coarse:h-11" />
-                            <LanguageToggle className="ml-1" />
+                            <LanguageToggle />
+                            <ThemeToggle />
                         </ButtonGroup>
 
-                        <ButtonGroup className="md:hidden">
+                        <Button
+                            ref={triggerRef}
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            className="md:hidden"
+                            aria-expanded={open}
+                            aria-controls="mobile-nav-panel"
+                            aria-label={
+                                open
+                                    ? dict.header.closeMenu
+                                    : dict.header.openMenu
+                            }
+                            onClick={() => setOpen(!open)}
+                        >
+                            {open ? (
+                                <XIcon aria-hidden="true" className="size-5" />
+                            ) : (
+                                <ListIcon aria-hidden="true" className="size-5" />
+                            )}
+                        </Button>
+                    </div>
+                </div>
+
+                {open && (
+                    <div
+                        ref={menuRef}
+                        id="mobile-nav-panel"
+                        aria-label={dict.header.mobileNav}
+                        className="animate-in fade-in-0 slide-in-from-top-2 border-t border-line bg-background px-gutter py-4 md:hidden"
+                    >
+                        <nav
+                            aria-label={dict.header.mobileNav}
+                            className="flex flex-col gap-1 pb-3"
+                        >
+                            {navLinks.map((link) => {
+                                const active = isActive(pathname, link.href);
+                                return (
+                                    <Link
+                                        key={link.href}
+                                        href={link.href}
+                                        aria-current={
+                                            active && pathname === link.href
+                                                ? "page"
+                                                : active
+                                                  ? "true"
+                                                  : undefined
+                                        }
+                                        className={cn(
+                                            "flex items-center justify-between rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                                            active
+                                                ? "bg-muted text-foreground"
+                                                : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                                        )}
+                                        onClick={() => setOpen(false)}
+                                    >
+                                        <span>
+                                            {navLabel(link.href, dict)}
+                                        </span>
+                                        {active && (
+                                            <span
+                                                aria-hidden="true"
+                                                className="size-1.5 rounded-full bg-(--brand)"
+                                            />
+                                        )}
+                                    </Link>
+                                );
+                            })}
+                        </nav>
+                        <div className="flex items-center justify-between border-t border-line pt-3">
                             <CommandMenuButton
                                 isMac={isMac}
                                 dictLabel={dict.header.searchCommands}
                             />
-                            <Button
-                                ref={triggerRef}
-                                className="size-8.5 rounded-r-full pointer-coarse:size-11"
-                                variant="outline"
-                                size="icon"
-                                aria-label={
-                                    open
-                                        ? dict.header.closeMenu
-                                        : dict.header.openMenu
-                                }
-                                aria-expanded={open}
-                                aria-controls="mobile-nav"
-                                onClick={() => setOpen(!open)}
-                            >
-                                {open ? (
-                                    <XIcon aria-hidden="true" />
-                                ) : (
-                                    <ListIcon aria-hidden="true" />
-                                )}
-                            </Button>
-                        </ButtonGroup>
-                    </div>
-                </div>
-
-                <div
-                    ref={menuRef}
-                    id="mobile-nav"
-                    className={cn(
-                        "absolute -inset-x-px top-full mt-px overflow-hidden border border-t-0 border-line bg-background shadow-md transition duration-200 ease-out md:hidden",
-                        open
-                            ? "visible translate-y-0 opacity-100"
-                            : "pointer-events-none invisible -translate-y-1 opacity-0",
-                    )}
-                >
-                    <nav
-                        className="flex flex-col divide-y"
-                        aria-label={dict.header.mobileNav}
-                    >
-                        {navLinks.map((link) => {
-                            const active = isActive(pathname, link.href);
-                            return (
-                                <Link
-                                    key={link.href}
-                                    href={link.href}
-                                    onClick={() => setOpen(false)}
-                                    className="text-foreground hover:text-muted-foreground hover:bg-accent px-6 py-3.5 transition-colors"
-                                    aria-current={
-                                        pathname === link.href
-                                            ? "page"
-                                            : active
-                                              ? "true"
-                                              : undefined
-                                    }
-                                >
-                                    <span className="flex items-center gap-2">
-                                        <TypographySmall>
-                                            {navLabel(link.href, dict)}
-                                        </TypographySmall>
-                                        {active && <NavPin key={pathname} />}
-                                    </span>
-                                </Link>
-                            );
-                        })}
-                        <div className="flex items-center justify-between gap-2 px-6 py-3.5">
-                            <TypographySmall
-                                className="text-foreground"
-                                id="theme-label"
-                            >
-                                {dict.header.theme}
-                            </TypographySmall>
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-1">
                                 <LanguageToggle />
-                                <ThemeToggle aria-labelledby="theme-label" />
+                                <ThemeToggle />
                             </div>
                         </div>
-                    </nav>
-                </div>
+                    </div>
+                )}
             </div>
         </header>
     );

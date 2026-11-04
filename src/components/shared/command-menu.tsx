@@ -50,6 +50,7 @@ const NAV_ICONS = {
   "/blogs": BookOpenIcon,
   "/about": UserIcon,
   "/resume": FileTextIcon,
+  "/markas": RobotIcon,
   "/guestbook": PencilIcon,
 } as const;
 
