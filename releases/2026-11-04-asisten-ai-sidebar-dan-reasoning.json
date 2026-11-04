@@ -119,6 +119,11 @@
       "type": "new",
       "id": "Galeri & Dasbor Manajemen Aset SVG di Panel Admin (/admin/svg): Panel admin terpadu untuk mengelola, menginspeksi, dan menguji seluruh aset SVG portofolio. Dilengkapi galeri live preview animasi 17 ilustrasi isometrik dengan filter kategori dan pencarian, modal inspeksi kode XML SVG dengan tombol salin cuplikan MDX serta unduh file, generator kustomisasi kartu SVG dinamis (badge GitHub profile) dengan pengalihan tema terang/gelap, serta panduan praktis penggunaan di konten blog.",
       "en": "SVG Asset Management & Gallery Dashboard in Admin Panel (/admin/svg): Unified admin console for managing, previewing, and testing all portfolio SVG assets. Features live animation previews of 17 isometric illustrations with category filters and search, raw XML inspection modals with one-click MDX snippet copy and file download, a dynamic SVG card customizer (GitHub profile badges) with light/dark preview toggles, and MDX usage guidelines."
+    },
+    {
+      "type": "security",
+      "id": "Penguatan Keamanan Galeri Aset SVG: Penambahan validasi berbasis daftar resmi pada fitur pratinjau kode SVG untuk mencegah akses berkas di luar folder yang ditentukan.",
+      "en": "SVG Asset Gallery Security Hardening: Enforced strict allowlist validation on SVG code preview requests to prevent unauthorized file access outside designated folders."
     }
   ],
   "source_key": "web"

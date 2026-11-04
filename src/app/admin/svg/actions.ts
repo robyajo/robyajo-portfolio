@@ -140,7 +140,12 @@ export async function getSvgDashboardData(): Promise<SvgDashboardData> {
 export async function getRawSvgAction(id: string): Promise<string> {
   await assertAdmin();
 
-  const filePath = path.join(process.cwd(), "public/illustrations/isometric", `${id}.svg`);
+  const illustration = FREE_ISOMETRIC_ILLUSTRATIONS.find((item) => item.id === id);
+  if (!illustration) {
+    throw new Error(`ID ilustrasi tidak valid atau tidak ditemukan: ${id}`);
+  }
+
+  const filePath = path.join(process.cwd(), "public/illustrations/isometric", `${illustration.id}.svg`);
   try {
     return await fs.readFile(filePath, "utf8");
   } catch (err) {

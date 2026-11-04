@@ -37,4 +37,8 @@ describe("Admin SVG Actions", () => {
   it("throws an error when reading a nonexistent SVG", async () => {
     await expect(getRawSvgAction("nonexistent-file-id")).rejects.toThrow();
   });
+
+  it("rejects path traversal attempts when reading SVG", async () => {
+    await expect(getRawSvgAction("../../../package")).rejects.toThrow();
+  });
 });
