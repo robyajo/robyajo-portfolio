@@ -114,6 +114,11 @@
       "type": "new",
       "id": "Integrasi 17 Ilustrasi Isometrik Teranimasi (Illos.dev): Menyematkan koleksi lengkap 17 ilustrasi SVG isometrik gratis berlisensi komersial ke dalam portofolio (API Gateway, Firewall/WAF, Database, CI/CD Pipeline, Containers, Encryption, Job Queue, 2FA, Cron, Migrasi, Git Version Control, Notifikasi, Analitik, Uploads, Email, Image Processing, dan Billing) lengkap dengan galeri interaktif di halaman /branding serta dukungan komponen langsung di artikel blog MDX.",
       "en": "Integration of 17 Animated Isometric Illustrations (Illos.dev): Added the complete collection of 17 free commercial-use isometric SVG illustrations (API Gateway, Firewall/WAF, Database, CI/CD Pipeline, Containers, Encryption, Job Queue, 2FA, Cron, Migration, Git Version Control, Notifications, Analytics, Uploads, Email, Image Processing, and Billing) with an interactive showcase on /branding and direct MDX component support in blog posts."
+    },
+    {
+      "type": "new",
+      "id": "Galeri & Dasbor Manajemen Aset SVG di Panel Admin (/admin/svg): Panel admin terpadu untuk mengelola, menginspeksi, dan menguji seluruh aset SVG portofolio. Dilengkapi galeri live preview animasi 17 ilustrasi isometrik dengan filter kategori dan pencarian, modal inspeksi kode XML SVG dengan tombol salin cuplikan MDX serta unduh file, generator kustomisasi kartu SVG dinamis (badge GitHub profile) dengan pengalihan tema terang/gelap, serta panduan praktis penggunaan di konten blog.",
+      "en": "SVG Asset Management & Gallery Dashboard in Admin Panel (/admin/svg): Unified admin console for managing, previewing, and testing all portfolio SVG assets. Features live animation previews of 17 isometric illustrations with category filters and search, raw XML inspection modals with one-click MDX snippet copy and file download, a dynamic SVG card customizer (GitHub profile badges) with light/dark preview toggles, and MDX usage guidelines."
     }
   ],
   "source_key": "web"

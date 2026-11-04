@@ -25,6 +25,7 @@ import {
   FolderOpenIcon,
   UsersIcon,
   RobotIcon,
+  ImageIcon,
 } from "@/components/shared/icons";
 import { LogoIcon } from "@/components/shared/logo-icon";
 import { useSafeSignOut as useSignOut } from "@/components/shared/auth-session";
@@ -46,6 +47,7 @@ function useNavItems() {
     { title: t.blog, href: "/admin/blog", icon: PencilIcon },
     { title: (t as any).aiModels || "Model AI", href: "/admin/models", icon: RobotIcon },
     { title: "Log Chat AI", href: "/admin/chat-logs", icon: ChatCircleIcon },
+    { title: (t as any).svgAssets || "Aset SVG", href: "/admin/svg", icon: ImageIcon },
   ];
 }
 

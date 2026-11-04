@@ -247,6 +247,7 @@ const en: Dictionary = {
       messages: "Messages",
       blog: "Blog",
       aiModels: "AI Models",
+      svgAssets: "SVG Assets",
     },
     visitor: {
       title: "Visitors",

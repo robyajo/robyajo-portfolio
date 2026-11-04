@@ -246,6 +246,7 @@ const id = {
       messages: "Pesan",
       blog: "Blog",
       aiModels: "Model AI",
+      svgAssets: "Aset SVG",
     },
     visitor: {
       title: "Pengunjung",
