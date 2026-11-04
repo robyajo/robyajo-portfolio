@@ -30,6 +30,8 @@ export {
   ClockIcon,
   CodeIcon,
   CopyIcon,
+  DesktopIcon,
+  DeviceMobileIcon,
   DotsThreeIcon,
   DownloadIcon,
   EnvelopeIcon,

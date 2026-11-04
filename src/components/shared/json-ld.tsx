@@ -64,11 +64,30 @@ const schemaPublisher = {
 function buildPerson(): WithContext<Person> {
   return {
     "@context": SCHEMA_CONTEXT,
-    ...schemaAuthor,
-    alternateName: siteConfig.handle,
+    "@type": "Person",
+    name: siteConfig.name,
+    givenName: "Roby",
+    familyName: "Karti",
+    additionalName: "S.",
+    alternateName: [
+      ...siteConfig.aliases,
+    ],
+    url: siteConfig.baseUrl,
     image: profileImageUrl,
     jobTitle: siteConfig.role,
     description: siteConfig.description,
+    knowsAbout: [
+      "Web Development",
+      "Fullstack Development",
+      "Software Engineering",
+      "TypeScript",
+      "React",
+      "Next.js",
+      "Laravel",
+      "Go",
+      "PostgreSQL",
+      "Tailwind CSS",
+    ],
     sameAs: [...siteConfig.sameAs],
   };
 }
@@ -105,6 +124,7 @@ function buildWebPage(
     url: canonicalUrl,
     isPartOf: { "@type": "WebSite", url: siteConfig.baseUrl },
     author: schemaAuthor,
+    mainEntity: buildPerson(),
   };
 }
 
@@ -164,19 +184,23 @@ function buildItemList(
       position: index + 1,
       name: item.name,
       ...(item.url && { url: item.url }),
-      ...(item.date && { datePublished: item.date }),
+      ...(item.date && { dateCreated: item.date }),
     })),
   };
 }
 
-function resolveSchema(props: SchemaProps): AnySchema {
+function buildSchema(props: SchemaProps): AnySchema {
   switch (props.type) {
     case "person":
       return buildPerson();
     case "website":
       return buildWebSite();
     case "webpage":
-      return buildWebPage(props.title, props.description, props.canonicalUrl);
+      return buildWebPage(
+        props.title,
+        props.description,
+        props.canonicalUrl,
+      );
     case "article":
       return buildBlogPosting(props);
     case "breadcrumb":
@@ -187,11 +211,12 @@ function resolveSchema(props: SchemaProps): AnySchema {
 }
 
 export function JsonLd(props: SchemaProps) {
+  const schema = buildSchema(props);
   return (
     <script
       type="application/ld+json"
       dangerouslySetInnerHTML={{
-        __html: escapeInlineScript(JSON.stringify(resolveSchema(props))),
+        __html: escapeInlineScript(JSON.stringify(schema)),
       }}
     />
   );

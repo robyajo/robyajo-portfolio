@@ -578,3 +578,40 @@ export const aiSettings = pgTable("ai_settings", {
     .defaultNow()
     .notNull(),
 });
+
+/** ============================================================
+ * Log Percakapan AI (Asisten AI & AI Markas 3D)
+ * Mencatat IP, perangkat, browser, OS, lokasi, prompt, & respons AI.
+ * ============================================================ */
+
+export const aiChatLogs = pgTable(
+  "ai_chat_logs",
+  {
+    id: serial("id").primaryKey(),
+    channel: varchar("channel", { length: 32 }).default("assistant").notNull(), // "assistant" | "markas"
+    ip: varchar("ip", { length: 64 }).notNull(),
+    device: varchar("device", { length: 128 }),
+    browser: varchar("browser", { length: 64 }),
+    os: varchar("os", { length: 64 }),
+    formFactor: varchar("form_factor", { length: 32 }),
+    country: varchar("country", { length: 64 }),
+    region: varchar("region", { length: 128 }),
+    city: varchar("city", { length: 128 }),
+    userAgent: text("user_agent"),
+    userPrompt: text("user_prompt").notNull(),
+    aiResponse: text("ai_response"),
+    path: varchar("path", { length: 256 }),
+    modelId: varchar("model_id", { length: 128 }),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    index("ai_chat_logs_created_at_idx").on(table.createdAt),
+    index("ai_chat_logs_channel_idx").on(table.channel),
+    index("ai_chat_logs_ip_idx").on(table.ip),
+  ],
+);
+
+export type AiChatLog = typeof aiChatLogs.$inferSelect;
+export type NewAiChatLog = typeof aiChatLogs.$inferInsert;

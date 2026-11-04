@@ -1,3 +1,4 @@
+import { logChatMessage } from "@/lib/chat-logger";
 import { siteConfig } from "@/lib/config";
 import { getActiveAiConfig, getFallbackAiConfig } from "@/lib/ai-config";
 import { getProjectBySlug } from "@/lib/projects";
@@ -241,6 +242,7 @@ export async function POST(req: Request) {
     const rawMessages: ChatMessage[] = Array.isArray(body?.messages)
       ? body.messages
       : [];
+    const lastUserPrompt = String([...rawMessages].reverse().find((m) => m.role === "user")?.content || "").trim();
 
     if (rawMessages.length === 0) {
       return NextResponse.json(
@@ -404,6 +406,8 @@ Pengunjung saat ini sedang berada langsung di halaman di atas. Jika pengunjung m
 ============================================================`;
     }
 
+    const channel: "assistant" | "markas" = (body?.channel === "markas" || activePathname === "/markas") ? "markas" : "assistant";
+
     // Konfigurasi endpoint & credentials (Prioritas: Database ai_settings -> Fallback Env)
     let activeAi = await getActiveAiConfig("chat");
     let gatewayUrl = activeAi.endpointUrl;
@@ -487,6 +491,16 @@ Pengunjung saat ini sedang berada langsung di halaman di atas. Jika pengunjung m
 
     if (!response.ok || !response.body) {
       const errorText = await response.text().catch(() => "");
+      if (lastUserPrompt) {
+        void logChatMessage({
+          channel,
+          headers: req.headers,
+          userPrompt: lastUserPrompt,
+          aiResponse: `[GATEWAY_ERROR ${response.status}] ${errorText.slice(0, 500)}`,
+          path: activePathname,
+          modelId: model,
+        });
+      }
       return NextResponse.json(
         {
           error: "Gagal terhubung ke AI Gateway.",
@@ -506,6 +520,7 @@ Pengunjung saat ini sedang berada langsung di halaman di atas. Jika pengunjung m
         let buffer = "";
         let insideThinkTag = false;
         let isThinkingProcess = false;
+        let fullAiResponse = "";
 
         try {
           while (true) {
@@ -558,6 +573,7 @@ Pengunjung saat ini sedang berada langsung di halaman di atas. Jika pengunjung m
                       continue;
                     }
 
+                    fullAiResponse += textDelta;
                     controller.enqueue(encoder.encode(textDelta));
                   }
                 } catch {
@@ -570,6 +586,16 @@ Pengunjung saat ini sedang berada langsung di halaman di atas. Jika pengunjung m
           controller.error(err);
         } finally {
           controller.close();
+          if (lastUserPrompt) {
+            void logChatMessage({
+              channel,
+              headers: req.headers,
+              userPrompt: lastUserPrompt,
+              aiResponse: fullAiResponse,
+              path: activePathname,
+              modelId: model,
+            });
+          }
         }
       },
       cancel() {

@@ -45,6 +45,7 @@ function useNavItems() {
     { title: t.links, href: "/admin/links", icon: LinkIcon },
     { title: t.blog, href: "/admin/blog", icon: PencilIcon },
     { title: (t as any).aiModels || "Model AI", href: "/admin/models", icon: RobotIcon },
+    { title: "Log Chat AI", href: "/admin/chat-logs", icon: ChatCircleIcon },
   ];
 }
 

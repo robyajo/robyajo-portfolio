@@ -18,7 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
   return {
     ...buildMeta({
-    locale,
+      locale,
       title: siteConfig.name,
       pageTitle: homeTitle,
       description: siteConfig.description,
@@ -33,6 +33,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function Page() {
   return (
     <>
+      <JsonLd type="person" />
       <JsonLd
         type="webpage"
         title={siteConfig.name}

@@ -71,11 +71,18 @@ export function buildMeta(
         ? `${siteConfig.baseUrl}${params.canonicalPath}`
         : siteConfig.baseUrl;
     const type = params.type ?? "website";
-    const keywords = [
-        ...(params.tags ?? []),
-        params.role ?? siteConfig.role,
-        siteConfig.name,
-    ].filter(Boolean);
+    const keywords = Array.from(
+        new Set([
+            ...siteConfig.aliases,
+            ...(params.tags ?? []),
+            params.role ?? siteConfig.role,
+            siteConfig.name,
+            "Portfolio Roby Karti",
+            "Roby Developer",
+            "Fullstack Software Developer",
+            "Software Engineer Pekanbaru",
+        ]),
+    ).filter(Boolean);
 
     return {
         title,

@@ -2,12 +2,12 @@
   "date": "2026-11-04",
   "type": "feature",
   "title": {
-    "id": "Markas Agen AI 3D: Kanvas Layar Penuh Megah, Panel Chat Transparan Gaya Live Streaming di Dalam Kanvas, dan Mode Sembunyikan/Tampilkan",
-    "en": "3D AI Agent HQ: Full-Screen Giant Canvas, Translucent Live Stream Chat Overlay Inside Canvas, and Hide/Show Mode"
+    "id": "Markas Agen AI 3D Kanvas Layar Penuh, Logging Percakapan AI dengan Panel Admin, dan Optimasi SEO Identitas 'Roby Karti'",
+    "en": "3D AI Agent HQ Full Canvas, AI Chat Logging with Admin Panel, and 'Roby Karti' Entity SEO Optimization"
   },
   "body": {
-    "id": "Menghadirkan pembaruan besar pada tampilan Markas Agen 3D (/markas): Kanvas 3D kini tampil penuh dan sangat luas (tinggi hingga 750px) tanpa terpotong kolom terpisah. Panel chat interaktif dan tracer kini terintegrasi langsung di dalam layar kanvas dengan desain semi-transparan bergaya live video streaming (backdrop-blur modern). Dilengkapi fitur mode Sembunyikan (Hide/Show) chat yang fleksibel dengan tombol pintas dan floating trigger, sehingga seluruh miniatur kantor (Ayah Roby merokok & nonton video, ruang anak di belakang Ayah bersama Bunda Putri & Alyona, bangku santai lounge, kurir, dan layar dinding chart) dapat dinikmati secara leluasa dan sinematik.",
-    "en": "Delivering a major visual upgrade to 3D Agent HQ (/markas): The 3D canvas now spans full-width with a generous height (up to 750px) without split column constraints. The interactive chat & tracer panel is integrated directly inside the canvas with a translucent live video streaming aesthetic (modern backdrop-blur). Equipped with a flexible Hide/Show toggle button and floating trigger, letting users immerse themselves in the entire office miniature (Ayah Roby smoking & streaming, kids playroom behind Ayah with Bunda Putri & Alyona, lounge sofa, courier, and giant wall charts) in a cinematic view."
+    "id": "Menghadirkan pembaruan besar pada tampilan Markas Agen 3D (/markas) dengan kanvas luas dan panel chat transparan gaya live streaming, sistem logging obrolan AI menyeluruh (merekam IP, perangkat, channel, serta prompt dan jawaban) dengan dasbor Admin khusus (/admin/chat-logs), serta optimasi SEO komprehensif pada struktur metadata dan Schema.org Person agar kata kunci pencarian 'Roby Karti', 'Roby Karti S', dan 'Roby' terindeks optimal di peringkat teratas mesin pencari.",
+    "en": "Delivering a major upgrade across 3D AI Agent HQ (/markas) with full-width canvas and live-streaming translucent chat overlay, comprehensive AI chat logging (recording client IP, device, channel, prompt, and response) with a dedicated Admin dashboard (/admin/chat-logs), and extensive SEO optimization via structured Person Schema.org and canonical metadata ensuring high search ranking for 'Roby Karti', 'Roby Karti S', and 'Roby'."
   },
   "items": [
     {
@@ -94,6 +94,16 @@
       "type": "improvement",
       "id": "Model Agen 3D Langsung Duduk Bekerja di Meja Masing-Masing: Begitu instruksi prompt diproses, seluruh model agen teknis (Roby, Buruang, Koncek, Biawak, Bonta, Bala) secara instan langsung berada di kursi mejanya, duduk dan mengetik koding secara intensif tanpa jeda berjalan santai, serta terkunci dari keliling kantor hingga tugas selesai.",
       "en": "Instant Seated Work Routine for 3D Agents: As soon as a prompt is triggered, all technical agent models (Roby, Buruang, Koncek, Biawak, Bonta, Bala) immediately teleport to their respective desk chairs, seated and typing intensely at full speed without walking delays, locked in place until tasks conclude."
+    },
+    {
+      "type": "new",
+      "id": "Logging Percakapan AI & Panel Dasbor Admin (/admin/chat-logs): Seluruh interaksi obrolan pengunjung dari Asisten AI bot maupun AI Markas 3D otomatis tersimpan rapi ke database Neon Postgres, mencatat alamat IP pengunjung, tipe perangkat (Mobile/Desktop), browser, sistem operasi, lokasi perkiraan, serta prompt dan respons lengkap dengan modal detail dan filter saluran obrolan.",
+      "en": "AI Chat Logging & Admin Dashboard Panel (/admin/chat-logs): Every visitor conversation from both AI Assistant and 3D HQ AI is automatically logged into the Neon Postgres database, capturing visitor IP, device type (Mobile/Desktop), browser, OS, geolocation, prompt, and AI response, accessible via a rich Admin dashboard with detailed dialogs and channel filtering."
+    },
+    {
+      "type": "improvement",
+      "id": "Optimasi SEO Entitas 'Roby Karti' & Schema Person: Penerapan JSON-LD Schema Person dengan alias nama lengkap ('Roby Karti', 'Roby Karti S', 'Roby', 'Ajo Roby', 'robyajo'), penautan entitas ke WebPage, normalisasi domain kanonikal ajoroby.is-a.dev pada lingkungan produksi, serta perluasan kata kunci pencarian agar profil tampil di peringkat teratas Google.",
+      "en": "SEO Entity Optimization for 'Roby Karti' & Person Schema: Deployed structured JSON-LD Person Schema with comprehensive name aliases ('Roby Karti', 'Roby Karti S', 'Roby', 'Ajo Roby', 'robyajo'), explicit entity linkage to WebPage, canonical URL normalization to ajoroby.is-a.dev in production, and enriched meta keywords for top search engine rankings."
     }
   ],
   "source_key": "web"

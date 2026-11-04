@@ -5,11 +5,22 @@ export const siteConfig = {
   email: "robyfull.dev@gmail.com",
   description:
     "Fullstack developer from Pekanbaru, Indonesia. I build city-scale digital services (SuperApp, dashboards, tax systems) with TypeScript, React, Next.js, Laravel, and Go.",
+  aliases: [
+    "Roby Karti",
+    "Roby Karti S",
+    "Roby Karti S.",
+    "Roby",
+    "Ajo Roby",
+    "robyajo",
+    "Roby Karti S., S.Kom.",
+  ] as const,
   baseUrl:
     process.env.NEXT_PUBLIC_BASE_URL ??
-    (process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL
-      ? `https://${process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL}`
-      : "http://localhost:3000"),
+    (process.env.NODE_ENV === "production"
+      ? "https://ajoroby.is-a.dev"
+      : process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL
+        ? `https://${process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL}`
+        : "http://localhost:3000"),
   availableForHire: true,
   handle: "robyajo",
   twitterHandle: "robyajo",
