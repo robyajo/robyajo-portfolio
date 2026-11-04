@@ -179,7 +179,7 @@ export function EndOfPage() {
         <div className="mt-2 flex flex-col gap-2 pt-3 border-t border-border/50">
           <div className="flex items-center justify-between">
             <span className="font-pixel text-3xs uppercase tracking-widest text-muted-foreground/80">
-              // {t.otherPages || "Jelajahi Halaman Lainnya:"}
+              {"// "}{t.otherPages || "Jelajahi Halaman Lainnya:"}
             </span>
             <button
               type="button"

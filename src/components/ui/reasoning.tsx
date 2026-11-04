@@ -32,14 +32,15 @@ export function Reasoning({
   className,
 }: ReasoningProps) {
   // Default to open while streaming, closed once finished
+  const [prevIsStreaming, setPrevIsStreaming] = React.useState(isStreaming);
   const [open, setOpen] = React.useState<boolean>(isStreaming);
 
-  // When streaming starts or completes, sync open state if user hasn't explicitly overridden
-  React.useEffect(() => {
+  if (isStreaming !== prevIsStreaming) {
+    setPrevIsStreaming(isStreaming);
     if (isStreaming) {
       setOpen(true);
     }
-  }, [isStreaming]);
+  }
 
   if (!text && !isStreaming) {
     return null;

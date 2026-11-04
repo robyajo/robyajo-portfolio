@@ -1166,7 +1166,7 @@ function MediaPlayerVolumeIndicator(props: DivProps) {
             <SpeakerLowIcon className="size-6" />
           )}
           <span className="font-medium text-sm tabular-nums">
-            {mediaMuted ? useDictionary().viewer.mute : `${volumePercentage}%`}
+            {mediaMuted ? v.mute : `${volumePercentage}%`}
           </span>
         </div>
         <div className="flex items-center gap-1">
@@ -1242,7 +1242,7 @@ function MediaPlayerPlay(props: React.ComponentProps<typeof Button>) {
 
   return (
     <MediaPlayerTooltip
-      tooltip={mediaPaused ? useDictionary().viewer.play : useDictionary().viewer.pause}
+      tooltip={mediaPaused ? v.play : v.pause}
       shortcut="Space"
     >
       <Button

@@ -384,7 +384,7 @@ export function FormattedContent({
                   <div key={bIdx} className="mt-3 first:mt-0 pt-0.5">
                     <Tag className="flex items-center gap-2 border-l-2 border-(--brand-text) pl-2.5 font-display text-sm font-bold tracking-tight text-foreground">
                       <span className="font-pixel text-3xs uppercase tracking-widest text-(--brand-text)/70 select-none">
-                        // 0{block.level}
+                        {"// "}0{block.level}
                       </span>
                       <span>
                         <InlineRenderer

@@ -124,6 +124,11 @@
       "type": "security",
       "id": "Penguatan Keamanan Galeri Aset SVG: Penambahan validasi berbasis daftar resmi pada fitur pratinjau kode SVG untuk mencegah akses berkas di luar folder yang ditentukan.",
       "en": "SVG Asset Gallery Security Hardening: Enforced strict allowlist validation on SVG code preview requests to prevent unauthorized file access outside designated folders."
+    },
+    {
+      "type": "fix",
+      "id": "Perbaikan Stabilitas Pemutar Media & Reaktivitas Komponen: Mengatasi kendala pada tombol kontrol pemutar media, menyinkronkan penyesuaian zona waktu saat pergantian bahasa, serta mengoptimalkan responsivitas antarmuka agar pemuatan halaman tetap mulus.",
+      "en": "Media Player Stability & Component Reactivity Fixes: Resolved control button issues on media player components, synchronized timezone offset adjustments across language switches, and optimized interface responsiveness for smooth page performance."
     }
   ],
   "source_key": "web"

@@ -465,7 +465,7 @@ export function TestChatForm({
           ) : (
             <div className="flex flex-col items-center justify-center h-28 text-muted-foreground text-center gap-1">
               <SparkleIcon className="size-5 opacity-40" />
-              <span>Belum ada pesan uji. Klik tombol "Kirim Uji Model" di atas.</span>
+              <span>Belum ada pesan uji. Klik tombol &quot;Kirim Uji Model&quot; di atas.</span>
             </div>
           )}
         </div>

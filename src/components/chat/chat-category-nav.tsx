@@ -117,7 +117,7 @@ export function ChatCategoryNav({
     <div className="flex flex-col gap-2.5">
       <span className="flex items-center gap-1.5 font-pixel text-3xs uppercase tracking-widest text-muted-foreground">
         <SparkleIcon className="size-3 text-(--brand-text)" />
-        // {title || "Jelajahi Berdasarkan Topik:"}
+        {"// "}{title || "Jelajahi Berdasarkan Topik:"}
       </span>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         {categories.map((cat) => (

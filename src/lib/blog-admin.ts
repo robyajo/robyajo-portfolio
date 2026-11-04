@@ -84,7 +84,7 @@ export function usesFilesystemWrites(): boolean {
 }
 
 function localPath(repoPath: string): string {
-    return path.join(process.cwd(), repoPath);
+    return path.join(/*turbopackIgnore: true*/ process.cwd(), repoPath);
 }
 
 async function githubFetch(

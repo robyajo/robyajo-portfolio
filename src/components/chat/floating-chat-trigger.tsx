@@ -52,7 +52,7 @@ export function FloatingChatTrigger({ onClick }: FloatingChatTriggerProps) {
             </span>
           </div>
           <span className="font-mono text-3xs text-muted-foreground transition-colors group-hover:text-foreground">
-            // {chatDict.triggerSubtitle || "Buka Asisten AI"}
+            {"// "}{chatDict.triggerSubtitle || "Buka Asisten AI"}
           </span>
         </div>
 

@@ -626,7 +626,7 @@ function ChatInnerGateway({
                       ) : parsed.isThinkingActive ? (
                         <div className="mt-2 flex items-center gap-2 font-mono text-2xs text-muted-foreground animate-pulse">
                           <span className="size-1.5 rounded-full bg-(--brand-text) animate-ping" />
-                          <span>// Sedang menganalisis konteks & merumuskan jawaban...</span>
+                          <span>{"// "}Sedang menganalisis konteks & merumuskan jawaban...</span>
                         </div>
                       ) : loading ? (
                         <div className="flex items-center gap-2.5 py-1 text-muted-foreground font-mono text-xs">
@@ -721,7 +721,7 @@ function ChatInnerGateway({
           <div className="flex items-center justify-between px-1 font-pixel text-3xs uppercase tracking-wider text-muted-foreground/80">
             <span className="flex items-center gap-1.5">
               <RobotIcon className="size-3 text-(--brand-text)" />
-              // {chatDict.disclaimer}
+              {"// "}{chatDict.disclaimer}
             </span>
             <span className="hidden sm:inline-block font-mono opacity-70">
               Enter ↵

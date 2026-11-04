@@ -237,7 +237,7 @@ export function PostEngagement({
         .then(() => true)
         .catch(() => false);
     },
-    [user, slug, postComment],
+    [user, slug, postComment, t],
   );
 
   const handleCommentDelete = useCallback(
@@ -272,7 +272,7 @@ export function PostEngagement({
       setBaseComments((prev) => patchLike(prev, id, liked));
       likeComment.mutate({ id, liked });
     },
-    [currentUserId, baseComments, likeComment],
+    [currentUserId, baseComments, likeComment, t],
   );
 
   const totalComments = comments.reduce(

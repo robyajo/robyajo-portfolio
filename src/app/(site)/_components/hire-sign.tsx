@@ -61,7 +61,7 @@ export function HireSign() {
       2800,
     );
     return () => clearInterval(id);
-  }, []);
+  }, [PHRASES.length]);
 
   return (
     <a

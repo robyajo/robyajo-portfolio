@@ -86,7 +86,7 @@ export function LocationTag({
     updateTime();
     const interval = setInterval(updateTime, 60000);
     return () => clearInterval(interval);
-  }, [timezone]);
+  }, [timezone, loc.sameTime]);
 
   const offsetLabel =
     time.offset === loc.sameTime

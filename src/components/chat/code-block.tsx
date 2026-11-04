@@ -202,11 +202,11 @@ export function CodeBlock({
             </span>
             {isIncomplete ? (
               <span className="font-pixel text-3xs uppercase tracking-wider text-(--brand-text) animate-pulse">
-                // STREAMING...
+                {"// STREAMING..."}
               </span>
             ) : (
               <span className="font-pixel text-3xs uppercase tracking-wider text-muted-foreground/70">
-                // {lines.length} {lines.length === 1 ? "LOC" : "LINES"}
+                {"// "}{lines.length} {lines.length === 1 ? "LOC" : "LINES"}
               </span>
             )}
           </div>
