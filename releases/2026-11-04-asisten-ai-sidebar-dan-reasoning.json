@@ -6,8 +6,8 @@
     "en": "3D AI Agent HQ Full Canvas, AI Chat Logging with Admin Panel, and 'Roby Karti' Entity SEO Optimization"
   },
   "body": {
-    "id": "Menghadirkan pembaruan besar pada tampilan Markas Agen 3D (/markas) dengan kanvas luas dan panel chat transparan gaya live streaming, sistem logging obrolan AI menyeluruh (merekam IP, perangkat, channel, serta prompt dan jawaban) dengan dasbor Admin khusus (/admin/chat-logs), serta optimasi SEO komprehensif pada struktur metadata dan Schema.org Person agar kata kunci pencarian 'Roby Karti', 'Roby Karti S', dan 'Roby' terindeks optimal di peringkat teratas mesin pencari.",
-    "en": "Delivering a major upgrade across 3D AI Agent HQ (/markas) with full-width canvas and live-streaming translucent chat overlay, comprehensive AI chat logging (recording client IP, device, channel, prompt, and response) with a dedicated Admin dashboard (/admin/chat-logs), and extensive SEO optimization via structured Person Schema.org and canonical metadata ensuring high search ranking for 'Roby Karti', 'Roby Karti S', and 'Roby'."
+    "id": "Menghadirkan pembaruan besar pada tampilan Markas Agen 3D (/markas) dengan kanvas luas dan panel chat transparan gaya live streaming, sistem logging obrolan AI menyeluruh (merekam IP, perangkat, channel, serta prompt dan jawaban) dengan dasbor Admin khusus (/admin/chat-logs), serta optimasi SEO komprehensif pada struktur metadata dan Schema.org Person agar kata kunci pencarian 'Roby Karti', 'Roby Karti S', dan 'Roby' terindeks optimal di peringkat teratas mesin pencari. Artikel terbaru: \"Membongkar Pipeline Genomik: Saat Developer Membaca Data Sel\".",
+    "en": "Delivering a major upgrade across 3D AI Agent HQ (/markas) with full-width canvas and live-streaming translucent chat overlay, comprehensive AI chat logging (recording client IP, device, channel, prompt, and response) with a dedicated Admin dashboard (/admin/chat-logs), and extensive SEO optimization via structured Person Schema.org and canonical metadata ensuring high search ranking for 'Roby Karti', 'Roby Karti S', and 'Roby'. Latest article: \"Demystifying Genomic Pipelines: When Developers Parse Cellular Data\"."
   },
   "items": [
     {
@@ -104,6 +104,11 @@
       "type": "improvement",
       "id": "Optimasi SEO Entitas 'Roby Karti' & Schema Person: Penerapan JSON-LD Schema Person dengan alias nama lengkap ('Roby Karti', 'Roby Karti S', 'Roby', 'Ajo Roby', 'robyajo'), penautan entitas ke WebPage, normalisasi domain kanonikal ajoroby.is-a.dev pada lingkungan produksi, serta perluasan kata kunci pencarian agar profil tampil di peringkat teratas Google.",
       "en": "SEO Entity Optimization for 'Roby Karti' & Person Schema: Deployed structured JSON-LD Person Schema with comprehensive name aliases ('Roby Karti', 'Roby Karti S', 'Roby', 'Ajo Roby', 'robyajo'), explicit entity linkage to WebPage, canonical URL normalization to ajoroby.is-a.dev in production, and enriched meta keywords for top search engine rankings."
+    },
+    {
+      "type": "new",
+      "id": "Tulisan baru: \"Membongkar Pipeline Genomik: Saat Developer Membaca Data Sel\". Selengkapnya di https://ajoroby.is-a.dev/blogs/bioinformatics-developer-tooling-genomic-pipelines",
+      "en": "New article: \"Demystifying Genomic Pipelines: When Developers Parse Cellular Data\". Read it at https://ajoroby.is-a.dev/blogs/bioinformatics-developer-tooling-genomic-pipelines"
     }
   ],
   "source_key": "web"
