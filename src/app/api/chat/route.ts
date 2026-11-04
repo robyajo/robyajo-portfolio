@@ -498,6 +498,7 @@ Pengunjung saat ini sedang berada langsung di halaman di atas. Jika pengunjung m
           userPrompt: lastUserPrompt,
           aiResponse: `[GATEWAY_ERROR ${response.status}] ${errorText.slice(0, 500)}`,
           path: activePathname,
+          provider: activeAi.providerName || activeAi.providerId || "Default",
           modelId: model,
         });
       }
@@ -593,6 +594,7 @@ Pengunjung saat ini sedang berada langsung di halaman di atas. Jika pengunjung m
               userPrompt: lastUserPrompt,
               aiResponse: fullAiResponse,
               path: activePathname,
+              provider: activeAi.providerName || activeAi.providerId || "Default",
               modelId: model,
             });
           }

@@ -271,9 +271,10 @@ export function ChatLogsPanel({
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[150px]">Waktu</TableHead>
-              <TableHead className="w-[110px]">Kanal</TableHead>
-              <TableHead className="w-[190px]">Pengunjung & IP</TableHead>
+              <TableHead className="w-[140px]">Waktu</TableHead>
+              <TableHead className="w-[105px]">Kanal</TableHead>
+              <TableHead className="w-[170px]">Provider & Model</TableHead>
+              <TableHead className="w-[170px]">Pengunjung & IP</TableHead>
               <TableHead className="w-[160px]">Perangkat</TableHead>
               <TableHead>Isi Pertanyaan Pengunjung</TableHead>
               <TableHead className="w-[60px] text-right">Aksi</TableHead>
@@ -283,7 +284,7 @@ export function ChatLogsPanel({
             {data.logs.length === 0 ? (
               <TableRow>
                 <TableCell
-                  colSpan={6}
+                  colSpan={7}
                   className="py-12 text-center text-sm text-muted-foreground"
                 >
                   Belum ada log percakapan AI yang tercatat.
@@ -314,6 +315,21 @@ export function ChatLogsPanel({
                       >
                         {isMarkas ? "🏢 Markas 3D" : "🤖 Asisten"}
                       </Badge>
+                    </TableCell>
+
+                    <TableCell>
+                      <div className="flex flex-col text-xs min-w-0 max-w-[160px]">
+                        <div className="flex items-center gap-1 font-semibold text-primary truncate">
+                          <SparkleIcon className="h-3 w-3 text-amber-500 shrink-0" />
+                          <span className="truncate">{log.provider || "Cloudflare"}</span>
+                        </div>
+                        <span
+                          className="font-mono text-[10px] text-muted-foreground truncate mt-0.5"
+                          title={log.modelId || undefined}
+                        >
+                          {log.modelId ? log.modelId.split("/").pop() : "llama-3.3-70b"}
+                        </span>
+                      </div>
                     </TableCell>
 
                     <TableCell>
@@ -462,6 +478,8 @@ export function ChatLogsPanel({
                             browser: selectedLog.browser,
                             os: selectedLog.os,
                             location: `${selectedLog.city}, ${selectedLog.region}, ${selectedLog.country}`,
+                            provider: selectedLog.provider || "Cloudflare",
+                            modelId: selectedLog.modelId || "llama-3.3-70b-instruct",
                             userAgent: selectedLog.userAgent,
                           },
                           null,
@@ -486,7 +504,7 @@ export function ChatLogsPanel({
                   </button>
                 </div>
 
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 font-mono text-[11px]">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 font-mono text-[11px]">
                   <div>
                     <span className="text-muted-foreground block text-2xs">
                       IP Address
@@ -532,6 +550,23 @@ export function ChatLogsPanel({
                     </span>
                     <strong className="text-foreground">
                       {selectedLog.path || "/"}
+                    </strong>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground block text-2xs">
+                      Provider AI
+                    </span>
+                    <strong className="text-primary flex items-center gap-1">
+                      <SparkleIcon className="h-3 w-3 text-amber-500 shrink-0" />
+                      {selectedLog.provider || "Cloudflare"}
+                    </strong>
+                  </div>
+                  <div className="sm:col-span-2">
+                    <span className="text-muted-foreground block text-2xs">
+                      Model ID
+                    </span>
+                    <strong className="text-foreground break-all text-[10px]">
+                      {selectedLog.modelId || "llama-3.3-70b-instruct"}
                     </strong>
                   </div>
                 </div>

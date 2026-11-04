@@ -97,8 +97,8 @@
     },
     {
       "type": "new",
-      "id": "Logging Percakapan AI & Panel Dasbor Admin (/admin/chat-logs): Seluruh interaksi obrolan pengunjung dari Asisten AI bot maupun AI Markas 3D otomatis tersimpan rapi ke database Neon Postgres, mencatat alamat IP pengunjung, tipe perangkat (Mobile/Desktop), browser, sistem operasi, lokasi perkiraan, serta prompt dan respons lengkap dengan modal detail dan filter saluran obrolan.",
-      "en": "AI Chat Logging & Admin Dashboard Panel (/admin/chat-logs): Every visitor conversation from both AI Assistant and 3D HQ AI is automatically logged into the Neon Postgres database, capturing visitor IP, device type (Mobile/Desktop), browser, OS, geolocation, prompt, and AI response, accessible via a rich Admin dashboard with detailed dialogs and channel filtering."
+      "id": "Logging Percakapan AI & Panel Dasbor Admin (/admin/chat-logs): Seluruh interaksi obrolan pengunjung dari Asisten AI bot maupun AI Markas 3D otomatis tersimpan rapi ke database Neon Postgres, mencatat alamat IP pengunjung, tipe perangkat (Mobile/Desktop), browser, sistem operasi, lokasi perkiraan, provider AI (Cloudflare/OpenRouter/dll), model ID aktif, serta prompt dan respons lengkap dengan kolom Provider & Model, modal detail, dan filter saluran obrolan.",
+      "en": "AI Chat Logging & Admin Dashboard Panel (/admin/chat-logs): Every visitor conversation from both AI Assistant and 3D HQ AI is automatically logged into the Neon Postgres database, capturing visitor IP, device type (Mobile/Desktop), browser, OS, geolocation, active AI provider, model ID, prompt, and AI response, accessible via a rich Admin dashboard with Provider & Model columns, detailed dialogs, and channel filtering."
     },
     {
       "type": "improvement",

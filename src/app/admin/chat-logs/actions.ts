@@ -49,6 +49,9 @@ export async function getChatLogsAction(
       or(
         ilike(aiChatLogs.ip, q),
         ilike(aiChatLogs.userPrompt, q),
+        ilike(aiChatLogs.aiResponse, q),
+        ilike(aiChatLogs.provider, q),
+        ilike(aiChatLogs.modelId, q),
         ilike(aiChatLogs.device, q),
         ilike(aiChatLogs.browser, q),
         ilike(aiChatLogs.os, q),
@@ -118,10 +121,7 @@ export async function deleteChatLogAction(id: number): Promise<{ success: boolea
     revalidatePath("/admin/chat-logs");
     return { success: true };
   } catch (err) {
-    return {
-      success: false,
-      error: err instanceof Error ? err.message : "Gagal menghapus log.",
-    };
+    return { success: false, error: (err as Error).message };
   }
 }
 
@@ -132,9 +132,6 @@ export async function clearAllChatLogsAction(): Promise<{ success: boolean; erro
     revalidatePath("/admin/chat-logs");
     return { success: true };
   } catch (err) {
-    return {
-      success: false,
-      error: err instanceof Error ? err.message : "Gagal membersihkan log.",
-    };
+    return { success: false, error: (err as Error).message };
   }
 }

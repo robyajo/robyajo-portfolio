@@ -9,13 +9,15 @@ export interface LogChatParams {
   userPrompt: string;
   aiResponse?: string;
   path?: string | null;
+  provider?: string | null;
   modelId?: string | null;
 }
 
 /**
  * Mencatat log percakapan dari Asisten AI atau Markas 3D ke database.
  * Menyimpan informasi IP pengunjung, detail perangkat (browser, OS, form factor),
- * geolokasi Vercel (negara, wilayah, kota), isi pesan prompt, dan respons model AI.
+ * geolokasi Vercel (negara, wilayah, kota), isi pesan prompt, respons model AI,
+ * provider AI yang merespons, serta modelId yang digunakan.
  */
 export async function logChatMessage({
   channel = "assistant",
@@ -23,6 +25,7 @@ export async function logChatMessage({
   userPrompt,
   aiResponse,
   path,
+  provider,
   modelId,
 }: LogChatParams): Promise<void> {
   try {
@@ -52,6 +55,7 @@ export async function logChatMessage({
       userPrompt: userPrompt.trim(),
       aiResponse: aiResponse?.trim() || null,
       path: path || null,
+      provider: provider || null,
       modelId: modelId || null,
     };
 

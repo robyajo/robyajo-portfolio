@@ -601,6 +601,7 @@ export const aiChatLogs = pgTable(
     userPrompt: text("user_prompt").notNull(),
     aiResponse: text("ai_response"),
     path: varchar("path", { length: 256 }),
+    provider: varchar("provider", { length: 64 }),
     modelId: varchar("model_id", { length: 128 }),
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()
