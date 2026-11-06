@@ -24,6 +24,9 @@ export const siteConfig = {
       : process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL
         ? `https://${process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL}`
         : "http://localhost:3000"),
+  googleSiteVerification:
+    process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ??
+    "Xsk0uOB08wgF4CBHpkFIsQQ6GZQ1fBH9dg7IXZmJDaA",
   availableForHire: true,
   handle: "robyajo",
   twitterHandle: "robyajo",

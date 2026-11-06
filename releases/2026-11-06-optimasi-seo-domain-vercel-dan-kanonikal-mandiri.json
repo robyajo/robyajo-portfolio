@@ -29,6 +29,11 @@
       "type": "new",
       "id": "Perluasan Kata Kunci Pencarian: Menambahkan variasi kata kunci 'robyajo-portfolio.vercel.app', 'robyajo vercel', dan alias nama ke meta keywords dan Schema JSON-LD.",
       "en": "Expanded Search Keywords: Added 'robyajo-portfolio.vercel.app', 'robyajo vercel', and name aliases to meta keywords and Schema JSON-LD."
+    },
+    {
+      "type": "improvement",
+      "id": "Verifikasi Kepemilikan Situs Mesin Pencari: Menerapkan kode verifikasi kepemilikan portal resmi agar performa indeks, keterbacaan, dan kesehatan tautan dapat dipantau langsung melalui konsol mesin pencari.",
+      "en": "Search Engine Site Ownership Verification: Implemented official portal ownership verification to enable direct monitoring of indexing health, readability, and search visibility via webmaster consoles."
     }
   ],
   "source_key": "web"

@@ -65,7 +65,10 @@ export async function generateMetadata(): Promise<Metadata> {
       alternateLocale: locale === "id" ? ["en_US"] : ["id_ID"],
     },
     metadataBase: new URL(baseUrl),
-  icons: {
+    verification: {
+      google: siteConfig.googleSiteVerification,
+    },
+    icons: {
     icon: [
       {
         url: "/favicon-dark.svg",
