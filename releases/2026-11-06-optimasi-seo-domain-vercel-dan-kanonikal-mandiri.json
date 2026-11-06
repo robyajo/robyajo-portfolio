@@ -6,8 +6,8 @@
     "en": "Vercel Domain Search Indexing & Self-Referencing Canonical Optimization"
   },
   "body": {
-    "id": "Mengoptimalkan struktur kanonikal dan metadata situs agar domain https://robyajo-portfolio.vercel.app ikut terindeks dan dapat tampil di pencarian Google saat mencari kata kunci nama 'Roby Karti' maupun 'robyajo', melalui kanonikal mandiri per domain serta penautan entitas profil.",
-    "en": "Optimized site canonical architecture and metadata enabling https://robyajo-portfolio.vercel.app to be indexed and ranked in Google searches for 'Roby Karti' and 'robyajo' keywords through host-aware self-referencing canonicals and cross-domain entity linking."
+    "id": "Mengoptimalkan struktur kanonikal dan metadata situs agar domain https://robyajo-portfolio.vercel.app ikut terindeks dan dapat tampil di pencarian Google saat mencari kata kunci nama 'Roby Karti' maupun 'robyajo', melalui kanonikal mandiri per domain serta penautan entitas profil. Artikel terbaru: \"Meragukan Kejeniusan Riset AI dan Peluang Nyata Startup\".",
+    "en": "Optimized site canonical architecture and metadata enabling https://robyajo-portfolio.vercel.app to be indexed and ranked in Google searches for 'Roby Karti' and 'robyajo' keywords through host-aware self-referencing canonicals and cross-domain entity linking. Latest article: \"Questioning AI Research Brilliance and Real Startup Paths\"."
   },
   "items": [
     {
@@ -34,6 +34,11 @@
       "type": "improvement",
       "id": "Verifikasi Kepemilikan Situs Mesin Pencari: Menerapkan kode verifikasi kepemilikan portal resmi agar performa indeks, keterbacaan, dan kesehatan tautan dapat dipantau langsung melalui konsol mesin pencari.",
       "en": "Search Engine Site Ownership Verification: Implemented official portal ownership verification to enable direct monitoring of indexing health, readability, and search visibility via webmaster consoles."
+    },
+    {
+      "type": "new",
+      "id": "Tulisan baru: \"Meragukan Kejeniusan Riset AI dan Peluang Nyata Startup\". Selengkapnya di https://ajoroby.is-a.dev/blogs/meragukan-kejeniusan-riset-ai-dan-arah-startup",
+      "en": "New article: \"Questioning AI Research Brilliance and Real Startup Paths\". Read it at https://ajoroby.is-a.dev/blogs/meragukan-kejeniusan-riset-ai-dan-arah-startup"
     }
   ],
   "source_key": "web"
