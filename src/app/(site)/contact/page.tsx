@@ -16,13 +16,16 @@ import {
 } from "@/components/ui/typography";
 import { siteConfig } from "@/lib/config";
 import { buildMeta } from "@/lib/metadata";
+import { getDynamicBaseUrl } from "@/lib/domain";
 import { getDictionary, getLocale } from "@/lib/i18n/server";
 import { ContactForm } from "@/app/(site)/contact/contact-form";
 
 export async function generateMetadata(): Promise<Metadata> {
+  const baseUrl = await getDynamicBaseUrl();
     const content = (await getDictionary()).contactPage;
     const locale = await getLocale();
     return buildMeta({
+    baseUrl,
         locale,
         title: content.title,
         pageTitle: content.pageTitle,

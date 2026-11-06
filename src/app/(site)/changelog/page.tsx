@@ -11,6 +11,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { siteConfig } from "@/lib/config";
 import { buildMeta } from "@/lib/metadata";
+import { getDynamicBaseUrl } from "@/lib/domain";
 import { getDictionary, getLocale } from "@/lib/i18n/server";
 import type { Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/id";
@@ -25,9 +26,11 @@ import type { Metadata } from "next";
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata(): Promise<Metadata> {
+  const baseUrl = await getDynamicBaseUrl();
   const changelog = (await getDictionary()).changelog;
   const locale = await getLocale();
   return buildMeta({
+    baseUrl,
     locale,
     title: changelog.title,
     pageTitle: changelog.title,

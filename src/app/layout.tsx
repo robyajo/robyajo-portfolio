@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { LanguageProvider } from "@/lib/i18n/provider";
 import { getDictionary, getLocale } from "@/lib/i18n/server";
 import { siteConfig } from "@/lib/config";
+import { getDynamicBaseUrl } from "@/lib/domain";
 import { getSearchIndex } from "@/lib/search-index";
 import { ThemeProvider } from "next-themes";
 import type { Metadata, Viewport } from "next";
@@ -51,6 +52,7 @@ const firaCode = Fira_Code({
 export async function generateMetadata(): Promise<Metadata> {
   const dict = await getDictionary();
   const locale = await getLocale();
+  const baseUrl = await getDynamicBaseUrl();
   return {
     title: {
       default: `${siteConfig.name} – ${siteConfig.role}`,
@@ -62,7 +64,7 @@ export async function generateMetadata(): Promise<Metadata> {
       locale: locale === "id" ? "id_ID" : "en_US",
       alternateLocale: locale === "id" ? ["en_US"] : ["id_ID"],
     },
-    metadataBase: new URL(siteConfig.baseUrl),
+    metadataBase: new URL(baseUrl),
   icons: {
     icon: [
       {

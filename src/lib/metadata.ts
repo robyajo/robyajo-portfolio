@@ -56,6 +56,7 @@ export function buildMeta(
     params: OGParams & {
         pageTitle?: string;
         canonicalPath?: string;
+        baseUrl?: string;
         noIndex?: boolean;
         publishedAt?: string;
         updatedAt?: string;
@@ -64,12 +65,13 @@ export function buildMeta(
         alternateLanguages?: Record<string, string>;
     },
 ): Metadata {
+    const activeBaseUrl = params.baseUrl || siteConfig.baseUrl;
     const imageUrl = buildOGUrl(params);
     const title = params.pageTitle ?? params.title ?? siteConfig.name;
     const description = params.description ?? siteConfig.description;
     const canonical = params.canonicalPath
-        ? `${siteConfig.baseUrl}${params.canonicalPath}`
-        : siteConfig.baseUrl;
+        ? `${activeBaseUrl}${params.canonicalPath}`
+        : activeBaseUrl;
     const type = params.type ?? "website";
     const keywords = Array.from(
         new Set([
@@ -81,6 +83,8 @@ export function buildMeta(
             "Roby Developer",
             "Fullstack Software Developer",
             "Software Engineer Pekanbaru",
+            "robyajo vercel",
+            "roby vercel portfolio",
         ]),
     ).filter(Boolean);
 
@@ -89,11 +93,11 @@ export function buildMeta(
         description,
         manifest: "/assets/apps/manifest.json",
         keywords,
-        authors: [{ name: siteConfig.name, url: siteConfig.baseUrl }],
+        authors: [{ name: siteConfig.name, url: activeBaseUrl }],
         creator: siteConfig.name,
         publisher: siteConfig.name,
 
-        metadataBase: new URL(siteConfig.baseUrl),
+        metadataBase: new URL(activeBaseUrl),
         alternates: {
             canonical,
             ...(params.alternateLanguages && {
@@ -102,7 +106,7 @@ export function buildMeta(
             types: {
                 "application/rss+xml": [
                     {
-                        url: `${siteConfig.baseUrl}/feed.xml`,
+                        url: `${activeBaseUrl}/feed.xml`,
                         title: `Blog by ${siteConfig.name}`,
                     },
                 ],
@@ -139,7 +143,7 @@ export function buildMeta(
             ...(type === "article" && {
                 publishedTime: params.publishedAt,
                 modifiedTime: params.updatedAt,
-                authors: [siteConfig.baseUrl],
+                authors: [activeBaseUrl],
                 tags: params.tags,
             }),
         },

@@ -32,6 +32,7 @@ import {
   toTimestamp,
 } from "@/lib/date";
 import { buildMeta } from "@/lib/metadata";
+import { getDynamicBaseUrl } from "@/lib/domain";
 import { source } from "@/lib/source";
 import {
   getVisibleCategories,
@@ -308,18 +309,19 @@ export async function generateMetadata(props: {
   const metaTitle =
     rawTitle.length > 60 ? rawTitle.slice(0, 57).trimEnd() + "…" : rawTitle;
 
+  const baseUrl = await getDynamicBaseUrl();
   const rawDesc = page.data.description ?? "";
   const metaDesc =
     rawDesc.length > 155 ? rawDesc.slice(0, 152).trimEnd() + "…" : rawDesc;
 
-  const selfUrl = `${siteConfig.baseUrl}${page.url}`;
+  const selfUrl = `${baseUrl}${page.url}`;
   const selfLang = page.data.lang ?? "en";
   const sibling = page.data.translation
     ? source.getPage([page.data.translation])
     : undefined;
   const siblingLang = sibling?.data.lang ?? "en";
   const siblingUrl = sibling
-    ? `${siteConfig.baseUrl}${sibling.url}`
+    ? `${baseUrl}${sibling.url}`
     : undefined;
   const alternateLanguages: Record<string, string> = {
     [selfLang === "id" ? "id-ID" : "en-US"]: selfUrl,
@@ -330,6 +332,7 @@ export async function generateMetadata(props: {
   };
 
   return buildMeta({
+    baseUrl,
     title: rawTitle,
     pageTitle: metaTitle,
     description: metaDesc,

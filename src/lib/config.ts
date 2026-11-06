@@ -12,6 +12,9 @@ export const siteConfig = {
     "Roby",
     "Ajo Roby",
     "robyajo",
+    "robyajo-portfolio",
+    "robyajo-portfolio.vercel.app",
+    "robyajo portfolio vercel",
     "Roby Karti S., S.Kom.",
   ] as const,
   baseUrl:
@@ -32,6 +35,8 @@ export const siteConfig = {
     "https://id.linkedin.com/in/robykartis",
     "https://www.instagram.com/roby_karti",
     "https://robyajo.fyi",
+    "https://robyajo-portfolio.vercel.app",
+    "https://ajoroby.is-a.dev",
   ] as const,
   resumeURL:
     "https://github.com/robyajo/robyajo-portfolio/releases/latest/download/Roby_Karti_S_Resume.pdf",

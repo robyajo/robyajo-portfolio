@@ -1,9 +1,11 @@
 import { siteConfig } from "@/lib/config";
+import { getDynamicBaseUrl } from "@/lib/domain";
 import type { MetadataRoute } from "next";
 
-export default function robots(): MetadataRoute.Robots {
+export default async function robots(): Promise<MetadataRoute.Robots> {
+    const baseUrl = await getDynamicBaseUrl();
     return {
         rules: { userAgent: "*", allow: "/", disallow: ["/branding", "/admin", "/login", "/register", "/api"] },
-        sitemap: `${siteConfig.baseUrl}/sitemap.xml`,
+        sitemap: `${baseUrl}/sitemap.xml`,
     };
 }

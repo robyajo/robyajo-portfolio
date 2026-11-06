@@ -11,13 +11,14 @@ import type {
 } from "schema-dts";
 
 type SchemaProps =
-  | { type: "person" }
-  | { type: "website" }
+  | { type: "person"; baseUrl?: string }
+  | { type: "website"; baseUrl?: string }
   | {
       type: "webpage";
       title: string;
       description: string;
       canonicalUrl: string;
+      baseUrl?: string;
     }
   | {
       type: "article";
@@ -28,13 +29,15 @@ type SchemaProps =
       updatedAt?: string;
       tags?: string[];
       inLanguage?: string;
+      baseUrl?: string;
     }
-  | { type: "breadcrumb"; items: { name: string; url: string }[] }
+  | { type: "breadcrumb"; items: { name: string; url: string }[]; baseUrl?: string }
   | {
       type: "itemList";
       name: string;
       description: string;
       items: { name: string; url?: string; date?: string }[];
+      baseUrl?: string;
     };
 
 type ArticleProps = Extract<SchemaProps, { type: "article" }>;
@@ -43,25 +46,9 @@ type AnySchema = WithContext<
 >;
 
 const SCHEMA_CONTEXT = "https://schema.org" as const;
-const profileImageUrl = `${siteConfig.baseUrl}/profile.avif`;
-const schemaAuthor = {
-  "@type": "Person" as const,
-  name: siteConfig.name,
-  url: siteConfig.baseUrl,
-};
-const schemaPublisher = {
-  "@type": "Organization" as const,
-  name: siteConfig.name,
-  url: siteConfig.baseUrl,
-  logo: {
-    "@type": "ImageObject" as const,
-    url: profileImageUrl,
-    width: "460",
-    height: "460",
-  },
-};
 
-function buildPerson(): WithContext<Person> {
+function buildPerson(baseUrl = siteConfig.baseUrl): WithContext<Person> {
+  const profileImageUrl = `${baseUrl}/profile.avif`;
   return {
     "@context": SCHEMA_CONTEXT,
     "@type": "Person",
@@ -72,7 +59,7 @@ function buildPerson(): WithContext<Person> {
     alternateName: [
       ...siteConfig.aliases,
     ],
-    url: siteConfig.baseUrl,
+    url: baseUrl,
     image: profileImageUrl,
     jobTitle: siteConfig.role,
     description: siteConfig.description,
@@ -92,19 +79,29 @@ function buildPerson(): WithContext<Person> {
   };
 }
 
-function buildWebSite(): WithContext<WebSite> {
+function buildWebSite(baseUrl = siteConfig.baseUrl): WithContext<WebSite> {
+  const schemaAuthor = {
+    "@type": "Person" as const,
+    name: siteConfig.name,
+    url: baseUrl,
+  };
   return {
     "@context": SCHEMA_CONTEXT,
     "@type": "WebSite",
     name: siteConfig.name,
-    url: siteConfig.baseUrl,
+    url: baseUrl,
     description: siteConfig.description,
     author: schemaAuthor,
+    sameAs: [
+      "https://ajoroby.is-a.dev",
+      "https://robyajo-portfolio.vercel.app",
+      "https://robyajo.fyi",
+    ],
     potentialAction: {
       "@type": "SearchAction",
       target: {
         "@type": "EntryPoint",
-        urlTemplate: `${siteConfig.baseUrl}/blogs?q={search_term_string}`,
+        urlTemplate: `${baseUrl}/blogs?q={search_term_string}`,
       },
       "query-input": "required name=search_term_string",
     } as never,
@@ -115,16 +112,22 @@ function buildWebPage(
   title: string,
   description: string,
   canonicalUrl: string,
+  baseUrl = siteConfig.baseUrl,
 ): WithContext<WebPage> {
+  const schemaAuthor = {
+    "@type": "Person" as const,
+    name: siteConfig.name,
+    url: baseUrl,
+  };
   return {
     "@context": SCHEMA_CONTEXT,
     "@type": "WebPage",
     name: title,
     description,
     url: canonicalUrl,
-    isPartOf: { "@type": "WebSite", url: siteConfig.baseUrl },
+    isPartOf: { "@type": "WebSite", url: baseUrl },
     author: schemaAuthor,
-    mainEntity: buildPerson(),
+    mainEntity: buildPerson(baseUrl),
   };
 }
 
@@ -136,7 +139,25 @@ function buildBlogPosting({
   updatedAt,
   tags,
   inLanguage,
+  baseUrl = siteConfig.baseUrl,
 }: ArticleProps): WithContext<BlogPosting> {
+  const profileImageUrl = `${baseUrl}/profile.avif`;
+  const schemaAuthor = {
+    "@type": "Person" as const,
+    name: siteConfig.name,
+    url: baseUrl,
+  };
+  const schemaPublisher = {
+    "@type": "Organization" as const,
+    name: siteConfig.name,
+    url: baseUrl,
+    logo: {
+      "@type": "ImageObject" as const,
+      url: profileImageUrl,
+      width: "460",
+      height: "460",
+    },
+  };
   return {
     "@context": SCHEMA_CONTEXT,
     "@type": "BlogPosting",
@@ -190,16 +211,18 @@ function buildItemList(
 }
 
 function buildSchema(props: SchemaProps): AnySchema {
+  const baseUrl = props.baseUrl || siteConfig.baseUrl;
   switch (props.type) {
     case "person":
-      return buildPerson();
+      return buildPerson(baseUrl);
     case "website":
-      return buildWebSite();
+      return buildWebSite(baseUrl);
     case "webpage":
       return buildWebPage(
         props.title,
         props.description,
         props.canonicalUrl,
+        baseUrl,
       );
     case "article":
       return buildBlogPosting(props);

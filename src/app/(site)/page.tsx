@@ -9,6 +9,7 @@ import { Section } from "@/components/layouts/page";
 import { siteConfig } from "@/lib/config";
 import { buildMeta } from "@/lib/metadata";
 import { getDictionary, getLocale } from "@/lib/i18n/server";
+import { getDynamicBaseUrl } from "@/lib/domain";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
@@ -16,9 +17,11 @@ const homeTitle = `${siteConfig.name} – ${siteConfig.role}`;
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
+  const baseUrl = await getDynamicBaseUrl();
   return {
     ...buildMeta({
       locale,
+      baseUrl,
       title: siteConfig.name,
       pageTitle: homeTitle,
       description: siteConfig.description,
@@ -31,14 +34,16 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Page() {
+  const baseUrl = await getDynamicBaseUrl();
   return (
     <>
-      <JsonLd type="person" />
+      <JsonLd type="person" baseUrl={baseUrl} />
       <JsonLd
         type="webpage"
         title={siteConfig.name}
         description={siteConfig.description}
-        canonicalUrl={`${siteConfig.baseUrl}`}
+        canonicalUrl={baseUrl}
+        baseUrl={baseUrl}
       />
       <Hero />
       <BuiltThings />

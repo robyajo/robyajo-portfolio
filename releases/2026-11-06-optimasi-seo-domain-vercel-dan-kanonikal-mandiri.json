@@ -1,0 +1,35 @@
+{
+  "date": "2026-11-06",
+  "type": "improvement",
+  "title": {
+    "id": "Optimasi Pengindeksan Domain Vercel & Penyelarasan Kanonikal Mandiri",
+    "en": "Vercel Domain Search Indexing & Self-Referencing Canonical Optimization"
+  },
+  "body": {
+    "id": "Mengoptimalkan struktur kanonikal dan metadata situs agar domain https://robyajo-portfolio.vercel.app ikut terindeks dan dapat tampil di pencarian Google saat mencari kata kunci nama 'Roby Karti' maupun 'robyajo', melalui kanonikal mandiri per domain serta penautan entitas profil.",
+    "en": "Optimized site canonical architecture and metadata enabling https://robyajo-portfolio.vercel.app to be indexed and ranked in Google searches for 'Roby Karti' and 'robyajo' keywords through host-aware self-referencing canonicals and cross-domain entity linking."
+  },
+  "items": [
+    {
+      "type": "improvement",
+      "id": "Kanonikal Mandiri Dinamis per Domain: Tag kanonikal kini mendeteksi domain yang sedang diakses secara otomatis. Saat Googlebot merayapi domain Vercel, kanonikal mengarah ke domain Vercel itu sendiri sehingga Google tidak lagi menghapus (drop) domain Vercel dari hasil pencarian.",
+      "en": "Dynamic Self-Referencing Canonical per Domain: Canonical tags now dynamically detect incoming request hosts. When Googlebot crawls the Vercel domain, canonical points to itself, preventing Google from deduplicating and omitting the Vercel URL from search results."
+    },
+    {
+      "type": "improvement",
+      "id": "Penautan Entitas Profil (sameAs): Menambahkan https://robyajo-portfolio.vercel.app ke dalam data terstruktur Schema.org Person dan WebSite, menegaskan kepada mesin pencari bahwa domain Vercel dan domain kustom adalah milik entitas yang sama.",
+      "en": "Profile Entity Cross-Linking (sameAs): Registered https://robyajo-portfolio.vercel.app into Schema.org Person and WebSite structured data, declaring to search engines that both domains represent the exact same verified individual and website."
+    },
+    {
+      "type": "improvement",
+      "id": "Peta Situs & Berkas Robot Dinamis: Berkas sitemap.xml dan robots.txt kini menyajikan URL sesuai host yang sedang dibuka, memastikan mesin pencari dapat memvalidasi seluruh rute halaman pada domain Vercel.",
+      "en": "Host-Aware Dynamic Sitemap & Robots: Generated sitemap.xml and robots.txt routes now serve URLs matching the requested host, allowing search engines to crawl and index all pages on the Vercel domain."
+    },
+    {
+      "type": "new",
+      "id": "Perluasan Kata Kunci Pencarian: Menambahkan variasi kata kunci 'robyajo-portfolio.vercel.app', 'robyajo vercel', dan alias nama ke meta keywords dan Schema JSON-LD.",
+      "en": "Expanded Search Keywords: Added 'robyajo-portfolio.vercel.app', 'robyajo vercel', and name aliases to meta keywords and Schema JSON-LD."
+    }
+  ],
+  "source_key": "web"
+}

@@ -1,4 +1,5 @@
 import { siteConfig } from "@/lib/config";
+import { getDynamicBaseUrl } from "@/lib/domain";
 import { source } from "@/lib/source";
 import { getPublicProjects } from "@/lib/projects";
 import type { MetadataRoute } from "next";
@@ -6,6 +7,7 @@ import { toISOString } from "@/lib/date";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const now = new Date();
+    const baseUrl = await getDynamicBaseUrl();
 
     const blogPages = source.getPages().map((page) => {
         const sibling = page.data.translation
@@ -14,13 +16,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         const languages: Record<string, string> = {};
 
         if (page.data.lang && sibling?.data.lang) {
-            languages[page.data.lang] = `${siteConfig.baseUrl}${page.url}`;
-            languages[sibling.data.lang] = `${siteConfig.baseUrl}${sibling.url}`;
+            languages[page.data.lang] = `${baseUrl}${page.url}`;
+            languages[sibling.data.lang] = `${baseUrl}${sibling.url}`;
             languages["x-default"] = languages.id ?? languages.en;
         }
 
         return {
-            url: `${siteConfig.baseUrl}${page.url}`,
+            url: `${baseUrl}${page.url}`,
             lastModified: page.data.lastModified
                 ? toISOString(page.data.lastModified)
                 : page.data.date
@@ -38,7 +40,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     try {
         const projects = await getPublicProjects();
         projectPages = projects.map((p) => ({
-            url: `${siteConfig.baseUrl}/projects/${p.slug}`,
+            url: `${baseUrl}/projects/${p.slug}`,
             lastModified: toISOString(p.updatedAt),
             changeFrequency: "weekly" as const,
             priority: 0.8,
@@ -48,19 +50,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
 
     return [
-        { url: siteConfig.baseUrl, lastModified: now, changeFrequency: "monthly", priority: 1 },
-        { url: `${siteConfig.baseUrl}/blogs`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
-        { url: `${siteConfig.baseUrl}/projects`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
+        { url: baseUrl, lastModified: now, changeFrequency: "monthly", priority: 1 },
+        { url: `${baseUrl}/blogs`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
+        { url: `${baseUrl}/projects`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
         ...projectPages,
-        { url: `${siteConfig.baseUrl}/resume`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
-        { url: `${siteConfig.baseUrl}/about`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
-        { url: `${siteConfig.baseUrl}/contact`, lastModified: now, changeFrequency: "yearly", priority: 0.6 },
-        { url: `${siteConfig.baseUrl}/now`, lastModified: now, changeFrequency: "weekly", priority: 0.6 },
-        { url: `${siteConfig.baseUrl}/uses`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
-        { url: `${siteConfig.baseUrl}/activity`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
-        { url: `${siteConfig.baseUrl}/guestbook`, lastModified: now, changeFrequency: "weekly", priority: 0.6 },
-        { url: `${siteConfig.baseUrl}/changelog`, lastModified: now, changeFrequency: "weekly", priority: 0.5 },
-        { url: `${siteConfig.baseUrl}/privacy-policy`, lastModified: now, changeFrequency: "yearly", priority: 0.1 },
+        { url: `${baseUrl}/resume`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
+        { url: `${baseUrl}/about`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
+        { url: `${baseUrl}/contact`, lastModified: now, changeFrequency: "yearly", priority: 0.6 },
+        { url: `${baseUrl}/now`, lastModified: now, changeFrequency: "weekly", priority: 0.6 },
+        { url: `${baseUrl}/uses`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
+        { url: `${baseUrl}/activity`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
+        { url: `${baseUrl}/guestbook`, lastModified: now, changeFrequency: "weekly", priority: 0.6 },
+        { url: `${baseUrl}/changelog`, lastModified: now, changeFrequency: "weekly", priority: 0.5 },
+        { url: `${baseUrl}/privacy-policy`, lastModified: now, changeFrequency: "yearly", priority: 0.1 },
         ...blogPages,
     ];
 }

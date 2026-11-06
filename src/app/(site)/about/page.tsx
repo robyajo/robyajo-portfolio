@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/typography";
 import { siteConfig } from "@/lib/config";
 import { buildMeta } from "@/lib/metadata";
+import { getDynamicBaseUrl } from "@/lib/domain";
 import { getDictionary, getLocale } from "@/lib/i18n/server";
 import { getStackUsage } from "@/lib/stack-usage";
 import type { Metadata, Route } from "next";
@@ -23,9 +24,11 @@ import Link from "next/link";
 import { Suspense } from "react";
 
 export async function generateMetadata(): Promise<Metadata> {
+  const baseUrl = await getDynamicBaseUrl();
   const content = (await getDictionary()).aboutPage;
   const locale = await getLocale();
   return buildMeta({
+    baseUrl,
     locale,
     title: content.title,
     pageTitle: content.pageTitle,

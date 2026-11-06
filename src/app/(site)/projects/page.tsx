@@ -11,14 +11,17 @@ import {
 } from "@/components/ui/typography";
 import { siteConfig } from "@/lib/config";
 import { buildMeta } from "@/lib/metadata";
+import { getDynamicBaseUrl } from "@/lib/domain";
 import { getDictionary, getLocale } from "@/lib/i18n/server";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
 export async function generateMetadata(): Promise<Metadata> {
+  const baseUrl = await getDynamicBaseUrl();
   const page = (await getDictionary()).projectsPage;
   const locale = await getLocale();
   return buildMeta({
+    baseUrl,
     locale,
     title: page.title,
     pageTitle: page.title,

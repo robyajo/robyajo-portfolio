@@ -10,17 +10,20 @@ import {
 } from "@/components/ui/typography";
 import { siteConfig } from "@/lib/config";
 import { buildMeta } from "@/lib/metadata";
+import { getDynamicBaseUrl } from "@/lib/domain";
 import { getDictionary, getLocale } from "@/lib/i18n/server";
 import { getMarkasAgentsConfig } from "@/lib/ai-config";
 import type { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
+  const baseUrl = await getDynamicBaseUrl();
   const dict = await getDictionary();
   const content = dict.markas;
   const agents = await getMarkasAgentsConfig();
   const locale = await getLocale();
 
   return buildMeta({
+    baseUrl,
     locale,
     title: content.title,
     pageTitle: content.title,

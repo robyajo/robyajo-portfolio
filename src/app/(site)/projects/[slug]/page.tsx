@@ -17,6 +17,7 @@ import { WorkReportButton } from "@/app/(site)/projects/[slug]/report-button";
 import { isAdmin } from "@/lib/assert-admin";
 import { siteConfig } from "@/lib/config";
 import { buildMeta } from "@/lib/metadata";
+import { getDynamicBaseUrl } from "@/lib/domain";
 import { getProjectBySlug } from "@/lib/projects";
 import { trackProjectView, getProjectViewCount } from "@/lib/project-views";
 import { getDictionary, getLocale } from "@/lib/i18n/server";
@@ -37,7 +38,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!project) return {};
   const dict = await getDictionary();
   const locale = await getLocale();
+  const baseUrl = await getDynamicBaseUrl();
   return buildMeta({
+    baseUrl,
     locale,
     title: project.title,
     pageTitle: project.title,
