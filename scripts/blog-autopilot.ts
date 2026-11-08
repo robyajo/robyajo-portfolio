@@ -927,12 +927,11 @@ function updateRelease(
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? "https://ajoroby.is-a.dev";
     const url = `${baseUrl}/blogs/${slug}`;
-    const existing = readdirSync(RELEASES_DIR)
-        .find(
-            (file) =>
-                (file === `${date}.json` || file.startsWith(`${date}-`)) &&
-                file.endsWith(".json"),
-        ) ?? `${date}.json`;
+    const existing = readdirSync(RELEASES_DIR).find(
+        (file) =>
+            (file === `${date}.json` || file.startsWith(`${date}-`)) &&
+            file.endsWith(".json"),
+    );
 
     const item = {
         type: "new",
@@ -1013,8 +1012,10 @@ async function syncActivities(): Promise<void> {
     }
 
     const date = todayISO();
-    const file = readdirSync(RELEASES_DIR).find((name) =>
-        name.startsWith(`${date}-`) && name.endsWith(".json"),
+    const file = readdirSync(RELEASES_DIR).find(
+        (name) =>
+            (name === `${date}.json` || name.startsWith(`${date}-`)) &&
+            name.endsWith(".json"),
     );
     if (!file) {
         log(`berkas rilis ${date} tidak ditemukan; sinkronisasi dilewati`);
