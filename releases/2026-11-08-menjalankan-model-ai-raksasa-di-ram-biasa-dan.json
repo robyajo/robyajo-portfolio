@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-08",
+  "type": "feature",
+  "status": "published",
+  "title": {
+    "id": "Artikel baru: Model AI Raksasa di RAM Biasa dan Aturan Privasi Data",
+    "en": "New article: Running Massive AI on Standard RAM and Data Compliance Needs"
+  },
+  "body": {
+    "id": "Satu tulisan baru ditambahkan ke blog: \"Model AI Raksasa di RAM Biasa dan Aturan Privasi Data\". Tulisannya membahas eksperimen menjalankan model 284b tanpa gpu membuka opsi komputasi lokal bagi pengembang lokal yang terikat aturan data pribadi",
+    "en": "A new article was added to the blog: \"Running Massive AI on Standard RAM and Data Compliance Needs\". It covers techniques that fit huge parameter models into ordinary memory offer a compliant path for local teams facing strict data privacy laws"
+  },
+  "items": [
+    {
+      "type": "new",
+      "id": "Tulisan baru: \"Model AI Raksasa di RAM Biasa dan Aturan Privasi Data\". Selengkapnya di https://ajoroby.is-a.dev/blogs/menjalankan-model-ai-raksasa-di-ram-biasa-dan-tantangan-kepa",
+      "en": "New article: \"Running Massive AI on Standard RAM and Data Compliance Needs\". Read it at https://ajoroby.is-a.dev/blogs/menjalankan-model-ai-raksasa-di-ram-biasa-dan-tantangan-kepa"
+    }
+  ]
+}
