@@ -1,0 +1,7 @@
+.git
+.github
+.agents
+tests
+vitest.config.ts
+knip.config.mjs
+eslint.config.mjs
