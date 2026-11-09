@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-09",
+  "type": "feature",
+  "status": "published",
+  "title": {
+    "id": "Artikel baru: Apple Batasi Budget AI Engineer-nya $200 per Hari",
+    "en": "New article: Apple's $200 Daily AI Budget Cap Tells Us More Than We Think"
+  },
+  "body": {
+    "id": "Satu tulisan baru ditambahkan ke blog: \"Apple Batasi Budget AI Engineer-nya $200 per Hari\". Tulisannya membahas apple membatasi penggunaan ai engineer-nya dengan anggaran $200 per hari — dan ini lebih banyak bicara soal industri daripada soal apple sendiri",
+    "en": "A new article was added to the blog: \"Apple's $200 Daily AI Budget Cap Tells Us More Than We Think\". It covers apple capped engineers at $200 per day for external ai tools — and what that reveals about how the industry is really handling ai adoption"
+  },
+  "items": [
+    {
+      "type": "new",
+      "id": "Tulisan baru: \"Apple Batasi Budget AI Engineer-nya $200 per Hari\". Selengkapnya di https://ajoroby.is-a.dev/blogs/apple-200-dollar-ai-budget-cap",
+      "en": "New article: \"Apple's $200 Daily AI Budget Cap Tells Us More Than We Think\". Read it at https://ajoroby.is-a.dev/blogs/apple-200-dollar-ai-budget-cap"
+    }
+  ]
+}
