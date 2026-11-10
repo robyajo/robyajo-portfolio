@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-10",
+  "type": "feature",
+  "status": "published",
+  "title": {
+    "id": "Artikel baru: Akses Database Makin Mudah, Tapi Privasi Data Sering Bobol",
+    "en": "New article: Database Interfaces Are Getting Better, But Privacy Risks Grow"
+  },
+  "body": {
+    "id": "Satu tulisan baru ditambahkan ke blog: \"Akses Database Makin Mudah, Tapi Privasi Data Sering Bobol\". Tulisannya membahas kemudahan antarmuka database seperti ultorg membawa risiko kebocoran data pengguna bila tata kelola akses internal diabaikan begitu saja",
+    "en": "A new article was added to the blog: \"Database Interfaces Are Getting Better, But Privacy Risks Grow\". It covers visual relational tools like ultorg make database exploration fast, yet neglected internal permissions create critical data leak hazards"
+  },
+  "items": [
+    {
+      "type": "new",
+      "id": "Tulisan baru: \"Akses Database Makin Mudah, Tapi Privasi Data Sering Bobol\". Selengkapnya di https://ajoroby.is-a.dev/blogs/database-ui-dan-ancaman-kebocoran-data-internal",
+      "en": "New article: \"Database Interfaces Are Getting Better, But Privacy Risks Grow\". Read it at https://ajoroby.is-a.dev/blogs/database-ui-dan-ancaman-kebocoran-data-internal"
+    }
+  ]
+}
