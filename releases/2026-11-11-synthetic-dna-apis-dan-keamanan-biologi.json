@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-11",
+  "type": "feature",
+  "status": "published",
+  "title": {
+    "id": "Artikel baru: Ketika Sintesis DNA Berubah Jadi Panggilan API Biasa",
+    "en": "New article: When Synthetic DNA Ordering Turns into Another REST API Call"
+  },
+  "body": {
+    "id": "Satu tulisan baru ditambahkan ke blog: \"Ketika Sintesis DNA Berubah Jadi Panggilan API Biasa\". Tulisannya membahas aturan baru sintesis dna membuka mata kita tentang rumitnya verifikasi data, protokol keamanan api, dan batas fisik perangkat lunak modern",
+    "en": "A new article was added to the blog: \"When Synthetic DNA Ordering Turns into Another REST API Call\". It covers new synthetic dna screening rules reveal how api security, input validation, and verification protocols now govern physical biology"
+  },
+  "items": [
+    {
+      "type": "new",
+      "id": "Tulisan baru: \"Ketika Sintesis DNA Berubah Jadi Panggilan API Biasa\". Selengkapnya di https://ajoroby.is-a.dev/blogs/synthetic-dna-apis-dan-keamanan-biologi",
+      "en": "New article: \"When Synthetic DNA Ordering Turns into Another REST API Call\". Read it at https://ajoroby.is-a.dev/blogs/synthetic-dna-apis-dan-keamanan-biologi"
+    }
+  ]
+}
