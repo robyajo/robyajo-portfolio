@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-12",
+  "type": "feature",
+  "status": "published",
+  "title": {
+    "id": "Artikel baru: Nostalgia Pinball dan Alasan Mesin Fisika Terbuka Masih Relevan",
+    "en": "New article: Pinball Nostalgia and Why Open Source Physics Engines Matter"
+  },
+  "body": {
+    "id": "Satu tulisan baru ditambahkan ke blog: \"Nostalgia Pinball dan Alasan Mesin Fisika Terbuka Masih Relevan\". Tulisannya membahas menengok proyek mesin simulasi pinball open source di linux dan alasan proyek hobi semacam ini penting untuk menjaga memori digital serta belajar fisika",
+    "en": "A new article was added to the blog: \"Pinball Nostalgia and Why Open Source Physics Engines Matter\". It covers exploring an open source pinball physics engine for linux and why community hobby projects remain essential for digital preservation and software craft"
+  },
+  "items": [
+    {
+      "type": "new",
+      "id": "Tulisan baru: \"Nostalgia Pinball dan Alasan Mesin Fisika Terbuka Masih Relevan\". Selengkapnya di https://ajoroby.is-a.dev/blogs/membangun-mesin-simulasi-pinball-foss-dan-arti-preservasi-so",
+      "en": "New article: \"Pinball Nostalgia and Why Open Source Physics Engines Matter\". Read it at https://ajoroby.is-a.dev/blogs/membangun-mesin-simulasi-pinball-foss-dan-arti-preservasi-so"
+    }
+  ]
+}
