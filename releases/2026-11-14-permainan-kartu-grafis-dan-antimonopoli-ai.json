@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-14",
+  "type": "feature",
+  "status": "published",
+  "title": {
+    "id": "Artikel baru: Kala Raksasa GPU Diduga Mengatur Pasokan Sendiri",
+    "en": "New article: When a GPU Titan Reportedly Engineers Its Own Shortage"
+  },
+  "body": {
+    "id": "Satu tulisan baru ditambahkan ke blog: \"Kala Raksasa GPU Diduga Mengatur Pasokan Sendiri\". Tulisannya membahas sorotan regulator terhadap dugaan putaran modal nvidia dan dampaknya bagi pengembang peranti lunak di indonesia",
+    "en": "A new article was added to the blog: \"When a GPU Titan Reportedly Engineers Its Own Shortage\". It covers antitrust investigations into circular ai venture funding and why global hardware bottlenecks matter to developers everywhere"
+  },
+  "items": [
+    {
+      "type": "new",
+      "id": "Tulisan baru: \"Kala Raksasa GPU Diduga Mengatur Pasokan Sendiri\". Selengkapnya di https://ajoroby.is-a.dev/blogs/permainan-kartu-grafis-dan-antimonopoli-ai",
+      "en": "New article: \"When a GPU Titan Reportedly Engineers Its Own Shortage\". Read it at https://ajoroby.is-a.dev/blogs/permainan-kartu-grafis-dan-antimonopoli-ai"
+    }
+  ]
+}
