@@ -1,0 +1,63 @@
+---
+title: "Melihat Angka 600 Token per Detik: Antara Kebutuhan dan Hype"
+description: "Ulasan realistis tentang eksperimen menjalankan model AI besar memakai vLLM di dua workstation canggih dan maknanya untuk developer"
+date: 2026-11-14
+tags:
+    - "Artificial Intelligence"
+    - "Open Source"
+    - "Software Engineering"
+    - "Infrastructure"
+lang: id
+translation: "serving-large-ai-models-vllm-dgx-reality-check-en"
+author: autopilot
+---
+Kabar tentang pengujian inferensi model AI kembali ramai di linimasa developer. Topik yang sedang hangat dibicarakan di komunitas teknologi adalah eksperimen menjalankan model GLM berbobot besar di dua unit Nvidia DGX dengan mesin inferensi [vLLM](https://github.com/vllm-project/vllm), yang diklaim tembus kecepatan lebih dari enam ratus token per detik.
+
+Sebagai developer yang setiap hari berkutat dengan arsitektur backend, dasbor analitik, dan layanan publik di daerah, angka fantastis seperti itu selalu memicu dua rasa penasaran sekaligus. Pertama, rasa kagum pada kemajuan teknik optimasi memori GPU. Kedua, rasa skeptis yang sehat: apakah ini solusi nyata untuk masalah harian kita, atau sekadar pamer tenaga komputasi yang jauh dari realitas operasional kebanyakan tim rekayasa perangkat lunak?
+
+Kita sering melihat grafik performa tinggi bertebaran di media sosial tanpa konteks implementasi yang jujur. Padahal, bagi tim yang harus mempertimbangkan biaya server bulanan, kestabilan latensi, dan kepuasan pengguna akhir, ada banyak celah tersembunyi di balik angka kecepatan mentah.
+
+## Memahami Angka 600 Token per Detik Secara Jernih
+
+Dalam diskusi teknis di [Hacker News](https://news.ycombinator.com/), kecepatan inferensi sering kali disajikan sebagai tolok ukur tunggal keberhasilan sebuah sistem. Pengujian terbaru mencatat angka <TypographyMark>607.8 token per detik</TypographyMark> saat membagi beban kerja model GLM ke dua stasiun kerja DGX.
+
+Bagi pembaca awam, angka ini mungkin terdengar abstrak. Sebagai perbandingan sederhana, kecepatan membaca manusia dewasa rata-rata berkisar antara lima hingga delapan kata per detik. Menghasilkan enam ratus token per detik berarti mesin ini mampu mencetak ratusan kata dalam sekejap mata. Jika model melayani puluhan pengguna sekaligus dalam sistem pesan instan atau asisten otomatis, throughput setinggi ini memang mencegah antrean panjang.
+
+Namun, angka tersebut biasanya dicapai dalam skenario throughput agregat dengan batching paralel yang padat, bukan latensi untuk satu pengguna tunggal. Jika satu permintaan pengguna hanya membutuhkan keluaran dua puluh token per detik untuk tampil nyaman di layar antarmuka pengguna, maka kecepatan super tinggi tersebut hanya terasa manfaatnya ketika server dibanjiri ribuan permintaan serentak.
+
+## Peran Krusial Mesin Inferensi Open Source
+
+Hal yang paling menarik dari perkembangan ini sebenarnya bukan sekadar perangkat kerasnya, melainkan evolusi perangkat lunak di lapis inferensi. Beberapa tahun lalu, mendistribusikan satu model AI raksasa ke beberapa kartu grafis terpisah membutuhkan pengaturan paralelisme tensor manual yang rumit dan rentan galat memori.
+
+Kehadiran pustaka seperti [vLLM](https://github.com/vllm-project/vllm) mengubah lanskap tersebut secara drastis melalui teknik pengelolaan memori cache yang jauh lebih efisien. PagedAttention, konsep yang meminjam prinsip virtual memory pada sistem operasi konvensional, berhasil memangkas pemborosan memori KV-cache yang selama ini menjadi penyebab utama borosnya alokasi memori grafis.
+
+<TypographyMuted as='span'>Optimasi perangkat lunak inferensi terbukti sering kali memberikan lompatan efisiensi yang lebih besar daripada sekadar membeli kartu grafis generasi lebih baru.</TypographyMuted>
+
+Dengan pengelolaan cache yang rapi, pengembang tidak lagi harus bergantung sepenuhnya pada platform inferensi tertutup milik vendor besar. Kemandirian ini penting bagi organisasi yang memiliki regulasi ketat terkait kedaulatan data dan privasi pengguna lokal.
+
+## Menghitung Biaya Nyata di Lapangan
+
+Mari kita bicarakan gajah besar di dalam ruangan: harga dan daya operasional. Dua unit stasiun kerja DGX dari [Nvidia](https://www.nvidia.com/) bukanlah perangkat yang bisa dibeli dengan anggaran belanja server biasa oleh startup skala kecil atau instansi daerah.
+
+Selain harga pembelian unit yang sangat mahal, kebutuhan daya listrik dan pendingin ruangan untuk menjaga stabilitas perangkat tersebut sepanjang waktu sering kali luput dari kalkulasi awal. Di kota-kota berkembang di Indonesia, keandalan pasokan listrik, kapasitas daya gedung, dan pendinginan server room adalah tantangan fisik yang sangat nyata.
+
+| Komponen Evaluasi | Pendekatan Server Sendiri | Pendekatan API Publik |
+| --- | --- | --- |
+| Investasi Awal | Sangat tinggi untuk pengadaan GPU | Nyaris nol |
+| Privasi Data | Terkendali penuh di jaringan lokal | Bergantung pada penyedia cloud |
+| Biaya Listrik dan Perawatan | Menjadi tanggungan tim internal | Sudah termasuk dalam biaya per token |
+| Skalabilitas Beban Puncak | Terbatas pada kapasitas fisik rak | Fleksibel mengikuti permintaan |
+
+Ketika kita melihat tabel perbandingan di atas, jelas bahwa opsi menggelar perangkat keras sendiri hanya masuk akal bagi segelintir sektor: perbankan dengan audit ketat, rumah sakit dengan rekam medis rahasia, atau lembaga pemerintah yang wajib menyimpan seluruh data warganya di dalam negeri.
+
+## Apa yang Relevan untuk Pekerjaan Kita Hari Ini?
+
+Bagi developer yang membangun aplikasi produktivitas, sistem manajemen data, atau bot layanan pelanggan lokal, apakah kita perlu berkecil hati karena tidak memiliki akses ke dua mesin DGX? Jawabannya jelas: sama sekali tidak.
+
+Model terbuka yang diunggah komunitas di [Hugging Face](https://huggingface.co/) kini hadir dalam beragam ukuran yang jauh lebih ramah perangkat keras. Teknik kuantisasi bobot model memungkinkan model berukuran menengah dijalankan di server dengan GPU kelas konsumen atau kartu grafis komputasi tunggal tanpa degradasi kualitas penalaran yang berarti.
+
+Dalam banyak proyek nyata, pengguna akhir tidak menuntut jawaban instan dalam hitungan milidetik. Yang mereka butuhkan adalah jawaban yang akurat, tidak berhalusinasi, memahami konteks percakapan berbahasa Indonesia dengan luwes, dan sistem yang tidak sering tumbang di jam sibuk.
+
+Kemajuan yang dicapai oleh vLLM dan ekosistem model terbuka membuktikan bahwa batas kemampuan komputasi terus didorong maju. Namun, seni rekayasa perangkat lunak yang sesungguhnya adalah memilih alat yang proporsional dengan masalah yang ingin diselesaikan, bukan sekadar mengejar angka tolok ukur tertinggi yang terpampang di pengumuman rilis.
+
+Angka enam ratus token per detik adalah demonstrasi teknik yang mengesankan. Tetapi sebelum tergiur menyalin arsitektur serupa, tanyakan dulu pada kebutuhan sistem kita: apakah aplikasi kita benar-benar butuh kecepatan roket, atau sekadar butuh keandalan yang tenang dan hemat biaya?

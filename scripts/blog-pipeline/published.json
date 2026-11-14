@@ -17,7 +17,8 @@
     "synthetic-dna-apis-dan-keamanan-biologi",
     "membangun-mesin-simulasi-pinball-foss-dan-arti-preservasi-so",
     "ketika-teori-dasar-runtuh-arah-investasi-deep-tech-dan-start",
-    "permainan-kartu-grafis-dan-antimonopoli-ai"
+    "permainan-kartu-grafis-dan-antimonopoli-ai",
+    "serving-large-ai-models-vllm-dgx-reality-check"
   ],
   "titles": [
     "Ketika Algoritma dan AI Mulai Mengatur Urusan Perumahan",
@@ -37,7 +38,8 @@
     "Ketika Sintesis DNA Berubah Jadi Panggilan API Biasa",
     "Nostalgia Pinball dan Alasan Mesin Fisika Terbuka Masih Relevan",
     "Ketika Teori Runtuh: Menakar Arah Investasi Deep Tech dan Startup",
-    "Kala Raksasa GPU Diduga Mengatur Pasokan Sendiri"
+    "Kala Raksasa GPU Diduga Mengatur Pasokan Sendiri",
+    "Melihat Angka 600 Token per Detik: Antara Kebutuhan dan Hype"
   ],
   "topics": [
     "Florida's HOAs and condo associations are making the housing crisis worse",
@@ -57,7 +59,8 @@
     "To deter bioterrorism, U.S. imposes new rules on ordering synthetic DNA",
     "I'm Working on a FOSS Linux Pinbal Simulation Engine",
     "Scientists claim the universe is twice as old as believed",
-    "Nvidia Allegedly Engineered Scarcity by Funding AI Startups to Buy Its GPUs"
+    "Nvidia Allegedly Engineered Scarcity by Funding AI Startups to Buy Its GPUs",
+    "Serving GLM-5.3 at 607.8 tok/s across two Nvidia DGX stations with vLLM"
   ],
   "lastPublishedDate": "2026-11-14"
 }
