@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-15",
+  "type": "feature",
+  "status": "published",
+  "title": {
+    "id": "Artikel baru: Menutup Celah Bocor Data di Balik Fleksibilitas Python",
+    "en": "New article: Closing Data Leak Vulnerabilities in Python Type Systems"
+  },
+  "body": {
+    "id": "Satu tulisan baru ditambahkan ke blog: \"Menutup Celah Bocor Data di Balik Fleksibilitas Python\". Tulisannya membahas kerapuhan tipe data dinamis sering jadi pintu masuk celah keamanan backend dan ai, ini alasan pengetatan tipe variabel makin mendesak",
+    "en": "A new article was added to the blog: \"Closing Data Leak Vulnerabilities in Python Type Systems\". It covers dynamic typing flaws often open backdoors in backend and ai pipelines, showing why strict variable typing is vital for data privacy"
+  },
+  "items": [
+    {
+      "type": "new",
+      "id": "Tulisan baru: \"Menutup Celah Bocor Data di Balik Fleksibilitas Python\". Selengkapnya di https://ajoroby.is-a.dev/blogs/python-type-hints-and-backend-security",
+      "en": "New article: \"Closing Data Leak Vulnerabilities in Python Type Systems\". Read it at https://ajoroby.is-a.dev/blogs/python-type-hints-and-backend-security"
+    }
+  ]
+}
