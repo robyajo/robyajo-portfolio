@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-16",
+  "type": "feature",
+  "status": "published",
+  "title": {
+    "id": "Artikel baru: Ketika Profil Publik Developer Jadi Ladang Panen Penipuan",
+    "en": "New article: When Developer Public Profiles Become a Goldmine for Scammers"
+  },
+  "body": {
+    "id": "Satu tulisan baru ditambahkan ke blog: \"Ketika Profil Publik Developer Jadi Ladang Panen Penipuan\". Tulisannya membahas ulasan praktis cara melindungi kontak publik pengembang dari panen data bot otomatis memakai alat alias dan proteksi web modern",
+    "en": "A new article was added to the blog: \"When Developer Public Profiles Become a Goldmine for Scammers\". It covers a practical evaluation of shielding developer public contact info from automated scrapers using modern alias tools and web defenses"
+  },
+  "items": [
+    {
+      "type": "new",
+      "id": "Tulisan baru: \"Ketika Profil Publik Developer Jadi Ladang Panen Penipuan\". Selengkapnya di https://ajoroby.is-a.dev/blogs/scraped-emails-developer-tools-and-public-profiles",
+      "en": "New article: \"When Developer Public Profiles Become a Goldmine for Scammers\". Read it at https://ajoroby.is-a.dev/blogs/scraped-emails-developer-tools-and-public-profiles"
+    }
+  ]
+}

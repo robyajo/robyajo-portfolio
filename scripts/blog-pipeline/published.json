@@ -19,7 +19,8 @@
     "ketika-teori-dasar-runtuh-arah-investasi-deep-tech-dan-start",
     "permainan-kartu-grafis-dan-antimonopoli-ai",
     "serving-large-ai-models-vllm-dgx-reality-check",
-    "python-type-hints-and-backend-security"
+    "python-type-hints-and-backend-security",
+    "scraped-emails-developer-tools-and-public-profiles"
   ],
   "titles": [
     "Ketika Algoritma dan AI Mulai Mengatur Urusan Perumahan",
@@ -41,7 +42,8 @@
     "Ketika Teori Runtuh: Menakar Arah Investasi Deep Tech dan Startup",
     "Kala Raksasa GPU Diduga Mengatur Pasokan Sendiri",
     "Melihat Angka 600 Token per Detik: Antara Kebutuhan dan Hype",
-    "Menutup Celah Bocor Data di Balik Fleksibilitas Python"
+    "Menutup Celah Bocor Data di Balik Fleksibilitas Python",
+    "Ketika Profil Publik Developer Jadi Ladang Panen Penipuan"
   ],
   "topics": [
     "Florida's HOAs and condo associations are making the housing crisis worse",
@@ -63,7 +65,8 @@
     "Scientists claim the universe is twice as old as believed",
     "Nvidia Allegedly Engineered Scarcity by Funding AI Startups to Buy Its GPUs",
     "Serving GLM-5.3 at 607.8 tok/s across two Nvidia DGX stations with vLLM",
-    "Show HN: Gawain – Require type hints on all Python variables"
+    "Show HN: Gawain – Require type hints on all Python variables",
+    "Tell HN: HN is being scraped for emails to scam"
   ],
-  "lastPublishedDate": "2026-11-15"
+  "lastPublishedDate": "2026-11-16"
 }
