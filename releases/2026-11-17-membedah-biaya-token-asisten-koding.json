@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-17",
+  "type": "feature",
+  "status": "published",
+  "title": {
+    "id": "Artikel baru: Membedah Biaya Token AI yang Sering Bikin Dompet Kaget",
+    "en": "New article: Auditing the Hidden Costs of Terminal AI Assistants"
+  },
+  "body": {
+    "id": "Satu tulisan baru ditambahkan ke blog: \"Membedah Biaya Token AI yang Sering Bikin Dompet Kaget\". Tulisannya membahas catatan santai tentang alat audit konsumsi token seperti tokendoctor dan cara cerdas menghemat biaya asisten kecerdasan buatan harian",
+    "en": "A new article was added to the blog: \"Auditing the Hidden Costs of Terminal AI Assistants\". It covers a grounded reflection on token audit tools like tokendoctor and practical ways to prevent bloated bills from command line coding models"
+  },
+  "items": [
+    {
+      "type": "new",
+      "id": "Tulisan baru: \"Membedah Biaya Token AI yang Sering Bikin Dompet Kaget\". Selengkapnya di https://ajoroby.is-a.dev/blogs/membedah-biaya-token-asisten-koding",
+      "en": "New article: \"Auditing the Hidden Costs of Terminal AI Assistants\". Read it at https://ajoroby.is-a.dev/blogs/membedah-biaya-token-asisten-koding"
+    }
+  ]
+}
