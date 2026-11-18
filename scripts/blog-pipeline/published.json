@@ -21,7 +21,8 @@
     "serving-large-ai-models-vllm-dgx-reality-check",
     "python-type-hints-and-backend-security",
     "scraped-emails-developer-tools-and-public-profiles",
-    "membedah-biaya-token-asisten-koding"
+    "membedah-biaya-token-asisten-koding",
+    "ketika-ai-mematikan-situs-indie-dan-nasib-startup-lokal"
   ],
   "titles": [
     "Ketika Algoritma dan AI Mulai Mengatur Urusan Perumahan",
@@ -45,7 +46,8 @@
     "Melihat Angka 600 Token per Detik: Antara Kebutuhan dan Hype",
     "Menutup Celah Bocor Data di Balik Fleksibilitas Python",
     "Ketika Profil Publik Developer Jadi Ladang Panen Penipuan",
-    "Membedah Biaya Token AI yang Sering Bikin Dompet Kaget"
+    "Membedah Biaya Token AI yang Sering Bikin Dompet Kaget",
+    "Saat Ringkasan AI Mematikan Situs Independen Berusia Satu Dekade"
   ],
   "topics": [
     "Florida's HOAs and condo associations are making the housing crisis worse",
@@ -69,7 +71,8 @@
     "Serving GLM-5.3 at 607.8 tok/s across two Nvidia DGX stations with vLLM",
     "Show HN: Gawain – Require type hints on all Python variables",
     "Tell HN: HN is being scraped for emails to scam",
-    "Tokendoctor – See what your Claude Code use overpays"
+    "Tokendoctor – See what your Claude Code use overpays",
+    "AI is killing All About Berlin"
   ],
-  "lastPublishedDate": "2026-11-17"
+  "lastPublishedDate": "2026-11-18"
 }
