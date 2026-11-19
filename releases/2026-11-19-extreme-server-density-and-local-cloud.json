@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-19",
+  "type": "feature",
+  "status": "published",
+  "title": {
+    "id": "Artikel baru: Efisiensi Ekstrem Server dan Beban Regulasi Cloud Lokal",
+    "en": "New article: Extreme Server Density and the Burden of Local Cloud Rules"
+  },
+  "body": {
+    "id": "Satu tulisan baru ditambahkan ke blog: \"Efisiensi Ekstrem Server dan Beban Regulasi Cloud Lokal\". Tulisannya membahas eksperimen jutaan server dalam satu mesin membuktikan bahwa kepatuhan regulasi data lokal tak harus berujung pada tagihan server yang membengkak",
+    "en": "A new article was added to the blog: \"Extreme Server Density and the Burden of Local Cloud Rules\". It covers running millions of servers on one machine proves that data residency compliance does not need to bankrupt engineering teams with massive bills"
+  },
+  "items": [
+    {
+      "type": "new",
+      "id": "Tulisan baru: \"Efisiensi Ekstrem Server dan Beban Regulasi Cloud Lokal\". Selengkapnya di https://ajoroby.is-a.dev/blogs/extreme-server-density-and-local-cloud-regulations",
+      "en": "New article: \"Extreme Server Density and the Burden of Local Cloud Rules\". Read it at https://ajoroby.is-a.dev/blogs/extreme-server-density-and-local-cloud-regulations"
+    }
+  ]
+}
