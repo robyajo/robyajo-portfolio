@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-20",
+  "type": "feature",
+  "status": "published",
+  "title": {
+    "id": "Artikel baru: Saat Bootloader Dikunci demi Dalih Keamanan AI",
+    "en": "New article: When Bootloaders Are Locked Behind the Banner of AI Security"
+  },
+  "body": {
+    "id": "Satu tulisan baru ditambahkan ke blog: \"Saat Bootloader Dikunci demi Dalih Keamanan AI\". Tulisannya membahas melihat dorongan pembatasan bootloader android oleh raksasa teknologi dan dampaknya pada kebebasan perangkat serta keamanan ai lokal",
+    "en": "A new article was added to the blog: \"When Bootloaders Are Locked Behind the Banner of AI Security\". It covers examining the push against android bootloader unlocking and what tightening hardware controls mean for privacy and local ai ownership"
+  },
+  "items": [
+    {
+      "type": "new",
+      "id": "Tulisan baru: \"Saat Bootloader Dikunci demi Dalih Keamanan AI\". Selengkapnya di https://ajoroby.is-a.dev/blogs/bootloader-unlocking-ai-security-walled-garden",
+      "en": "New article: \"When Bootloaders Are Locked Behind the Banner of AI Security\". Read it at https://ajoroby.is-a.dev/blogs/bootloader-unlocking-ai-security-walled-garden"
+    }
+  ]
+}
