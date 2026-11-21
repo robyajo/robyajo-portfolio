@@ -24,7 +24,8 @@
     "membedah-biaya-token-asisten-koding",
     "ketika-ai-mematikan-situs-indie-dan-nasib-startup-lokal",
     "extreme-server-density-and-local-cloud-regulations",
-    "bootloader-unlocking-ai-security-walled-garden"
+    "bootloader-unlocking-ai-security-walled-garden",
+    "ketika-agen-ai-diberi-akses-terminal-tanpa-pagar"
   ],
   "titles": [
     "Ketika Algoritma dan AI Mulai Mengatur Urusan Perumahan",
@@ -51,7 +52,8 @@
     "Membedah Biaya Token AI yang Sering Bikin Dompet Kaget",
     "Saat Ringkasan AI Mematikan Situs Independen Berusia Satu Dekade",
     "Efisiensi Ekstrem Server dan Beban Regulasi Cloud Lokal",
-    "Saat Bootloader Dikunci demi Dalih Keamanan AI"
+    "Saat Bootloader Dikunci demi Dalih Keamanan AI",
+    "Ketika Agen AI Diberi Akses Terminal Bebas Tanpa Pengaman"
   ],
   "topics": [
     "Florida's HOAs and condo associations are making the housing crisis worse",
@@ -78,7 +80,8 @@
     "Tokendoctor – See what your Claude Code use overpays",
     "AI is killing All About Berlin",
     "15M web servers on one VM – smoltcp, DPDK, AF_XDP",
-    "Google is pushing OEMs against GrapheneOS and bootloader unlocking"
+    "Google is pushing OEMs against GrapheneOS and bootloader unlocking",
+    "ClawDOS – An AI coding agent for DOS"
   ],
-  "lastPublishedDate": "2026-11-20"
+  "lastPublishedDate": "2026-11-21"
 }

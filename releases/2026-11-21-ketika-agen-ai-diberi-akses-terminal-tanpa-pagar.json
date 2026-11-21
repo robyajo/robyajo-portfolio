@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-21",
+  "type": "feature",
+  "status": "published",
+  "title": {
+    "id": "Artikel baru: Ketika Agen AI Diberi Akses Terminal Bebas Tanpa Pengaman",
+    "en": "New article: When AI Coding Agents Run Wild Without Sandbox Guardrails"
+  },
+  "body": {
+    "id": "Satu tulisan baru ditambahkan ke blog: \"Ketika Agen AI Diberi Akses Terminal Bebas Tanpa Pengaman\". Tulisannya membahas bahaya nyata saat agen ai eksekusi perintah terminal tanpa sandbox dan tips membatasi hak akses berkas pribadi",
+    "en": "A new article was added to the blog: \"When AI Coding Agents Run Wild Without Sandbox Guardrails\". It covers understanding the silent security and privacy risks of autonomous terminal agents and how to isolate your private data"
+  },
+  "items": [
+    {
+      "type": "new",
+      "id": "Tulisan baru: \"Ketika Agen AI Diberi Akses Terminal Bebas Tanpa Pengaman\". Selengkapnya di https://ajoroby.is-a.dev/blogs/ketika-agen-ai-diberi-akses-terminal-tanpa-pagar",
+      "en": "New article: \"When AI Coding Agents Run Wild Without Sandbox Guardrails\". Read it at https://ajoroby.is-a.dev/blogs/ketika-agen-ai-diberi-akses-terminal-tanpa-pagar"
+    }
+  ]
+}
