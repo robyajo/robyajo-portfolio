@@ -25,7 +25,8 @@
     "ketika-ai-mematikan-situs-indie-dan-nasib-startup-lokal",
     "extreme-server-density-and-local-cloud-regulations",
     "bootloader-unlocking-ai-security-walled-garden",
-    "ketika-agen-ai-diberi-akses-terminal-tanpa-pagar"
+    "ketika-agen-ai-diberi-akses-terminal-tanpa-pagar",
+    "ai-supply-chain-security-canary-tokens"
   ],
   "titles": [
     "Ketika Algoritma dan AI Mulai Mengatur Urusan Perumahan",
@@ -53,7 +54,8 @@
     "Saat Ringkasan AI Mematikan Situs Independen Berusia Satu Dekade",
     "Efisiensi Ekstrem Server dan Beban Regulasi Cloud Lokal",
     "Saat Bootloader Dikunci demi Dalih Keamanan AI",
-    "Ketika Agen AI Diberi Akses Terminal Bebas Tanpa Pengaman"
+    "Ketika Agen AI Diberi Akses Terminal Bebas Tanpa Pengaman",
+    "Mendeteksi Jebakan di Rantai Pasok AI Menggunakan Canary Tokens"
   ],
   "topics": [
     "Florida's HOAs and condo associations are making the housing crisis worse",
@@ -81,7 +83,8 @@
     "AI is killing All About Berlin",
     "15M web servers on one VM – smoltcp, DPDK, AF_XDP",
     "Google is pushing OEMs against GrapheneOS and bootloader unlocking",
-    "ClawDOS – An AI coding agent for DOS"
+    "ClawDOS – An AI coding agent for DOS",
+    "AI Supply Chain Security: What Canary Tokens Found"
   ],
-  "lastPublishedDate": "2026-11-21"
+  "lastPublishedDate": "2026-11-22"
 }

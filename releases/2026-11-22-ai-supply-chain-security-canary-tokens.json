@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-22",
+  "type": "feature",
+  "status": "published",
+  "title": {
+    "id": "Artikel baru: Mendeteksi Jebakan di Rantai Pasok AI Menggunakan Canary Tokens",
+    "en": "New article: Unmasking AI Supply Chain Risks with Canary Tokens"
+  },
+  "body": {
+    "id": "Satu tulisan baru ditambahkan ke blog: \"Mendeteksi Jebakan di Rantai Pasok AI Menggunakan Canary Tokens\". Tulisannya membahas ulasan praktis penerapan canary tokens untuk mengamankan rantai pasok kecerdasan buatan dari ancaman berkas model palsu",
+    "en": "A new article was added to the blog: \"Unmasking AI Supply Chain Risks with Canary Tokens\". It covers a practical guide to using canary tokens for securing ai pipelines and open-source models against tampering"
+  },
+  "items": [
+    {
+      "type": "new",
+      "id": "Tulisan baru: \"Mendeteksi Jebakan di Rantai Pasok AI Menggunakan Canary Tokens\". Selengkapnya di https://ajoroby.is-a.dev/blogs/ai-supply-chain-security-canary-tokens",
+      "en": "New article: \"Unmasking AI Supply Chain Risks with Canary Tokens\". Read it at https://ajoroby.is-a.dev/blogs/ai-supply-chain-security-canary-tokens"
+    }
+  ]
+}
