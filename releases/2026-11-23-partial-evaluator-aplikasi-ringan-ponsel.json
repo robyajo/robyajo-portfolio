@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-23",
+  "type": "feature",
+  "status": "published",
+  "title": {
+    "id": "Artikel baru: Kodingan C Lambat dan Trik Bikin Aplikasi Harian Ngebut",
+    "en": "New article: Why Old-School C Optimizations Make Budget Phones Usable"
+  },
+  "body": {
+    "id": "Satu tulisan baru ditambahkan ke blog: \"Kodingan C Lambat dan Trik Bikin Aplikasi Harian Ngebut\". Tulisannya membahas bagaimana konsep partial evaluation dari bahasa c diam-diam menyelamatkan performa aplikasi di ponsel murah harian kita",
+    "en": "A new article was added to the blog: \"Why Old-School C Optimizations Make Budget Phones Usable\". It covers how partial evaluation concepts quietly save daily mobile app performance on budget devices across southeast asia"
+  },
+  "items": [
+    {
+      "type": "new",
+      "id": "Tulisan baru: \"Kodingan C Lambat dan Trik Bikin Aplikasi Harian Ngebut\". Selengkapnya di https://ajoroby.is-a.dev/blogs/partial-evaluator-aplikasi-ringan-ponsel",
+      "en": "New article: \"Why Old-School C Optimizations Make Budget Phones Usable\". Read it at https://ajoroby.is-a.dev/blogs/partial-evaluator-aplikasi-ringan-ponsel"
+    }
+  ]
+}

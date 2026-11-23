@@ -26,7 +26,8 @@
     "extreme-server-density-and-local-cloud-regulations",
     "bootloader-unlocking-ai-security-walled-garden",
     "ketika-agen-ai-diberi-akses-terminal-tanpa-pagar",
-    "ai-supply-chain-security-canary-tokens"
+    "ai-supply-chain-security-canary-tokens",
+    "partial-evaluator-aplikasi-ringan-ponsel"
   ],
   "titles": [
     "Ketika Algoritma dan AI Mulai Mengatur Urusan Perumahan",
@@ -55,7 +56,8 @@
     "Efisiensi Ekstrem Server dan Beban Regulasi Cloud Lokal",
     "Saat Bootloader Dikunci demi Dalih Keamanan AI",
     "Ketika Agen AI Diberi Akses Terminal Bebas Tanpa Pengaman",
-    "Mendeteksi Jebakan di Rantai Pasok AI Menggunakan Canary Tokens"
+    "Mendeteksi Jebakan di Rantai Pasok AI Menggunakan Canary Tokens",
+    "Kodingan C Lambat dan Trik Bikin Aplikasi Harian Ngebut"
   ],
   "topics": [
     "Florida's HOAs and condo associations are making the housing crisis worse",
@@ -84,7 +86,8 @@
     "15M web servers on one VM – smoltcp, DPDK, AF_XDP",
     "Google is pushing OEMs against GrapheneOS and bootloader unlocking",
     "ClawDOS – An AI coding agent for DOS",
-    "AI Supply Chain Security: What Canary Tokens Found"
+    "AI Supply Chain Security: What Canary Tokens Found",
+    "A Partial Evaluator for C"
   ],
-  "lastPublishedDate": "2026-11-22"
+  "lastPublishedDate": "2026-11-23"
 }
