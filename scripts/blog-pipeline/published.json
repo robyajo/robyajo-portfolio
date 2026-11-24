@@ -27,7 +27,8 @@
     "bootloader-unlocking-ai-security-walled-garden",
     "ketika-agen-ai-diberi-akses-terminal-tanpa-pagar",
     "ai-supply-chain-security-canary-tokens",
-    "partial-evaluator-aplikasi-ringan-ponsel"
+    "partial-evaluator-aplikasi-ringan-ponsel",
+    "jevons-paradox-ai-tokens-capex"
   ],
   "titles": [
     "Ketika Algoritma dan AI Mulai Mengatur Urusan Perumahan",
@@ -57,7 +58,8 @@
     "Saat Bootloader Dikunci demi Dalih Keamanan AI",
     "Ketika Agen AI Diberi Akses Terminal Bebas Tanpa Pengaman",
     "Mendeteksi Jebakan di Rantai Pasok AI Menggunakan Canary Tokens",
-    "Kodingan C Lambat dan Trik Bikin Aplikasi Harian Ngebut"
+    "Kodingan C Lambat dan Trik Bikin Aplikasi Harian Ngebut",
+    "Paradoks Jevons pada AI: Token Murah Belum Tentu Menutup Capex"
   ],
   "topics": [
     "Florida's HOAs and condo associations are making the housing crisis worse",
@@ -87,7 +89,8 @@
     "Google is pushing OEMs against GrapheneOS and bootloader unlocking",
     "ClawDOS – An AI coding agent for DOS",
     "AI Supply Chain Security: What Canary Tokens Found",
-    "A Partial Evaluator for C"
+    "A Partial Evaluator for C",
+    "Jevons Paradox in AI: Cheaper Tokens Won't Pay for Capex"
   ],
-  "lastPublishedDate": "2026-11-23"
+  "lastPublishedDate": "2026-11-24"
 }

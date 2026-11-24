@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-24",
+  "type": "feature",
+  "status": "published",
+  "title": {
+    "id": "Artikel baru: Paradoks Jevons pada AI: Token Murah Belum Tentu Menutup Capex",
+    "en": "New article: Jevons Paradox in AI: Cheaper Tokens May Never Repay Capex"
+  },
+  "body": {
+    "id": "Satu tulisan baru ditambahkan ke blog: \"Paradoks Jevons pada AI: Token Murah Belum Tentu Menutup Capex\". Tulisannya membahas harga token model kecerdasan buatan anjlok drastis namun belanja modal raksasa teknologi untuk pusat data belum tentu terbayar lunas",
+    "en": "A new article was added to the blog: \"Jevons Paradox in AI: Cheaper Tokens May Never Repay Capex\". It covers plunging inference prices drive massive software usage yet massive cloud infrastructure spending faces an economic reality check"
+  },
+  "items": [
+    {
+      "type": "new",
+      "id": "Tulisan baru: \"Paradoks Jevons pada AI: Token Murah Belum Tentu Menutup Capex\". Selengkapnya di https://ajoroby.is-a.dev/blogs/jevons-paradox-ai-tokens-capex",
+      "en": "New article: \"Jevons Paradox in AI: Cheaper Tokens May Never Repay Capex\". Read it at https://ajoroby.is-a.dev/blogs/jevons-paradox-ai-tokens-capex"
+    }
+  ]
+}
