@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-25",
+  "type": "feature",
+  "status": "published",
+  "title": {
+    "id": "Artikel baru: Ketika Geopolitik Cip AI Menentukan Tagihan Server Kita",
+    "en": "New article: When AI Chip Geopolitics Dictate Our Monthly Server Bills"
+  },
+  "body": {
+    "id": "Satu tulisan baru ditambahkan ke blog: \"Ketika Geopolitik Cip AI Menentukan Tagihan Server Kita\". Tulisannya membahas dinamika regulasi semikonduktor global dan dampaknya terhadap harga sewa gpu serta strategi pengembang ai di indonesia",
+    "en": "A new article was added to the blog: \"When AI Chip Geopolitics Dictate Our Monthly Server Bills\". It covers how global semiconductor regulations and supply chain friction directly hit cloud compute costs for local software teams"
+  },
+  "items": [
+    {
+      "type": "new",
+      "id": "Tulisan baru: \"Ketika Geopolitik Cip AI Menentukan Tagihan Server Kita\". Selengkapnya di https://ajoroby.is-a.dev/blogs/nvidia-geopolitik-dan-biaya-komputasi-lokal",
+      "en": "New article: \"When AI Chip Geopolitics Dictate Our Monthly Server Bills\". Read it at https://ajoroby.is-a.dev/blogs/nvidia-geopolitik-dan-biaya-komputasi-lokal"
+    }
+  ]
+}
