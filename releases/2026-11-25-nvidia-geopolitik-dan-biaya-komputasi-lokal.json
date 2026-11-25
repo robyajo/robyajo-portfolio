@@ -7,14 +7,19 @@
     "en": "New article: When AI Chip Geopolitics Dictate Our Monthly Server Bills"
   },
   "body": {
-    "id": "Satu tulisan baru ditambahkan ke blog: \"Ketika Geopolitik Cip AI Menentukan Tagihan Server Kita\". Tulisannya membahas dinamika regulasi semikonduktor global dan dampaknya terhadap harga sewa gpu serta strategi pengembang ai di indonesia",
-    "en": "A new article was added to the blog: \"When AI Chip Geopolitics Dictate Our Monthly Server Bills\". It covers how global semiconductor regulations and supply chain friction directly hit cloud compute costs for local software teams"
+    "id": "Satu tulisan baru ditambahkan ke blog: \"Ketika Geopolitik Cip AI Menentukan Tagihan Server Kita\". Tulisannya membahas dinamika regulasi semikonduktor global dan dampaknya terhadap harga sewa gpu serta strategi pengembang ai di indonesia Artikel terbaru: \"Windows Loudness EQ di PipeWire dan Pelajaran untuk AI Audio\".",
+    "en": "A new article was added to the blog: \"When AI Chip Geopolitics Dictate Our Monthly Server Bills\". It covers how global semiconductor regulations and supply chain friction directly hit cloud compute costs for local software teams Latest article: \"Windows Loudness EQ in PipeWire and Lessons for Audio AI\"."
   },
   "items": [
     {
       "type": "new",
       "id": "Tulisan baru: \"Ketika Geopolitik Cip AI Menentukan Tagihan Server Kita\". Selengkapnya di https://ajoroby.is-a.dev/blogs/nvidia-geopolitik-dan-biaya-komputasi-lokal",
       "en": "New article: \"When AI Chip Geopolitics Dictate Our Monthly Server Bills\". Read it at https://ajoroby.is-a.dev/blogs/nvidia-geopolitik-dan-biaya-komputasi-lokal"
+    },
+    {
+      "type": "new",
+      "id": "Tulisan baru: \"Windows Loudness EQ di PipeWire dan Pelajaran untuk AI Audio\". Selengkapnya di https://ajoroby.is-a.dev/blogs/loudness-equalization-pipewire-and-dsp-vs-ai",
+      "en": "New article: \"Windows Loudness EQ in PipeWire and Lessons for Audio AI\". Read it at https://ajoroby.is-a.dev/blogs/loudness-equalization-pipewire-and-dsp-vs-ai"
     }
   ]
 }

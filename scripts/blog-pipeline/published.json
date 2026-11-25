@@ -29,7 +29,8 @@
     "ai-supply-chain-security-canary-tokens",
     "partial-evaluator-aplikasi-ringan-ponsel",
     "jevons-paradox-ai-tokens-capex",
-    "nvidia-geopolitik-dan-biaya-komputasi-lokal"
+    "nvidia-geopolitik-dan-biaya-komputasi-lokal",
+    "loudness-equalization-pipewire-and-dsp-vs-ai"
   ],
   "titles": [
     "Ketika Algoritma dan AI Mulai Mengatur Urusan Perumahan",
@@ -61,7 +62,8 @@
     "Mendeteksi Jebakan di Rantai Pasok AI Menggunakan Canary Tokens",
     "Kodingan C Lambat dan Trik Bikin Aplikasi Harian Ngebut",
     "Paradoks Jevons pada AI: Token Murah Belum Tentu Menutup Capex",
-    "Ketika Geopolitik Cip AI Menentukan Tagihan Server Kita"
+    "Ketika Geopolitik Cip AI Menentukan Tagihan Server Kita",
+    "Windows Loudness EQ di PipeWire dan Pelajaran untuk AI Audio"
   ],
   "topics": [
     "Florida's HOAs and condo associations are making the housing crisis worse",
@@ -93,7 +95,8 @@
     "AI Supply Chain Security: What Canary Tokens Found",
     "A Partial Evaluator for C",
     "Jevons Paradox in AI: Cheaper Tokens Won't Pay for Capex",
-    "Trump reportedly says pardoning Jensen Huang is &#8216;an option&#8217;"
+    "Trump reportedly says pardoning Jensen Huang is &#8216;an option&#8217;",
+    "Windows Loudness Equalization, reverse-engineered and ported to PipeWire"
   ],
   "lastPublishedDate": "2026-11-25"
 }
