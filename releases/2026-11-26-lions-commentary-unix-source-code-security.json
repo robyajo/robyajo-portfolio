@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-26",
+  "type": "feature",
+  "status": "published",
+  "title": {
+    "id": "Artikel baru: Rahasia Unix, Fotokopi Liar, dan Ilusi Keamanan di Balik Kode T…",
+    "en": "New article: Unix Underground Copies and Why Hidden Code Cannot Protect Your…"
+  },
+  "body": {
+    "id": "Satu tulisan baru ditambahkan ke blog: \"Rahasia Unix, Fotokopi Liar, dan Ilusi Keamanan di Balik Kode Tertutup\". Tulisannya membahas kisah legendaris buku sistem operasi yang dilarang dan bagaimana transparansi kode sumber menentukan keamanan serta privasi perangkat kita",
+    "en": "A new article was added to the blog: \"Unix Underground Copies and Why Hidden Code Cannot Protect Your Data\". It covers the story of a forbidden operating system book and why real digital security requires transparency rather than trusting proprietary black boxes"
+  },
+  "items": [
+    {
+      "type": "new",
+      "id": "Tulisan baru: \"Rahasia Unix, Fotokopi Liar, dan Ilusi Keamanan di Balik Kode Tertutup\". Selengkapnya di https://ajoroby.is-a.dev/blogs/lions-commentary-unix-source-code-security",
+      "en": "New article: \"Unix Underground Copies and Why Hidden Code Cannot Protect Your Data\". Read it at https://ajoroby.is-a.dev/blogs/lions-commentary-unix-source-code-security"
+    }
+  ]
+}

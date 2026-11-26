@@ -30,7 +30,8 @@
     "partial-evaluator-aplikasi-ringan-ponsel",
     "jevons-paradox-ai-tokens-capex",
     "nvidia-geopolitik-dan-biaya-komputasi-lokal",
-    "loudness-equalization-pipewire-and-dsp-vs-ai"
+    "loudness-equalization-pipewire-and-dsp-vs-ai",
+    "lions-commentary-unix-source-code-security"
   ],
   "titles": [
     "Ketika Algoritma dan AI Mulai Mengatur Urusan Perumahan",
@@ -63,7 +64,8 @@
     "Kodingan C Lambat dan Trik Bikin Aplikasi Harian Ngebut",
     "Paradoks Jevons pada AI: Token Murah Belum Tentu Menutup Capex",
     "Ketika Geopolitik Cip AI Menentukan Tagihan Server Kita",
-    "Windows Loudness EQ di PipeWire dan Pelajaran untuk AI Audio"
+    "Windows Loudness EQ di PipeWire dan Pelajaran untuk AI Audio",
+    "Rahasia Unix, Fotokopi Liar, dan Ilusi Keamanan di Balik Kode Tertutup"
   ],
   "topics": [
     "Florida's HOAs and condo associations are making the housing crisis worse",
@@ -96,7 +98,8 @@
     "A Partial Evaluator for C",
     "Jevons Paradox in AI: Cheaper Tokens Won't Pay for Capex",
     "Trump reportedly says pardoning Jensen Huang is &#8216;an option&#8217;",
-    "Windows Loudness Equalization, reverse-engineered and ported to PipeWire"
+    "Windows Loudness Equalization, reverse-engineered and ported to PipeWire",
+    "Lions' Commentary on Unix: Why It Was Secretly Copied for 20 Years"
   ],
-  "lastPublishedDate": "2026-11-25"
+  "lastPublishedDate": "2026-11-26"
 }
