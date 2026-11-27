@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-27",
+  "type": "feature",
+  "status": "published",
+  "title": {
+    "id": "Artikel baru: Ketika Agen AI Mulai Mengobrol di Belakang Punggung Kita",
+    "en": "New article: When AI Agents Start Gossiping Behind Your Back"
+  },
+  "body": {
+    "id": "Satu tulisan baru ditambahkan ke blog: \"Ketika Agen AI Mulai Mengobrol di Belakang Punggung Kita\". Tulisannya membahas menilik tren arsitektur multi-agent di mana sekumpulan bot ai berdiskusi dan saling melempar konteks sebelum memberi jawaban",
+    "en": "A new article was added to the blog: \"When AI Agents Start Gossiping Behind Your Back\". It covers examining multi-agent group chat patterns where autonomous bots debate and pass context before delivering the final answer"
+  },
+  "items": [
+    {
+      "type": "new",
+      "id": "Tulisan baru: \"Ketika Agen AI Mulai Mengobrol di Belakang Punggung Kita\". Selengkapnya di https://ajoroby.is-a.dev/blogs/ketika-agen-ai-mulai-mengobrol-di-belakang-kita",
+      "en": "New article: \"When AI Agents Start Gossiping Behind Your Back\". Read it at https://ajoroby.is-a.dev/blogs/ketika-agen-ai-mulai-mengobrol-di-belakang-kita"
+    }
+  ]
+}
