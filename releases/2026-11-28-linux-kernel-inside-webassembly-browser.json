@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-28",
+  "type": "feature",
+  "status": "published",
+  "title": {
+    "id": "Artikel baru: Kernel Linux Utuh di Browser: Belajar Koding Tanpa Sewa VPS",
+    "en": "New article: A Real Linux Kernel in the Browser: Learning Code Without VPS Bills"
+  },
+  "body": {
+    "id": "Satu tulisan baru ditambahkan ke blog: \"Kernel Linux Utuh di Browser: Belajar Koding Tanpa Sewa VPS\". Tulisannya membahas kompilasi kernel linux ke webassembly membuka peluang baru untuk belajar sistem operasi langsung lewat peramban tanpa sewa server",
+    "en": "A new article was added to the blog: \"A Real Linux Kernel in the Browser: Learning Code Without VPS Bills\". It covers compiling a genuine linux kernel to webassembly unlocks zero-cost operating system sandboxes right inside modern browser tabs"
+  },
+  "items": [
+    {
+      "type": "new",
+      "id": "Tulisan baru: \"Kernel Linux Utuh di Browser: Belajar Koding Tanpa Sewa VPS\". Selengkapnya di https://ajoroby.is-a.dev/blogs/linux-kernel-inside-webassembly-browser",
+      "en": "New article: \"A Real Linux Kernel in the Browser: Learning Code Without VPS Bills\". Read it at https://ajoroby.is-a.dev/blogs/linux-kernel-inside-webassembly-browser"
+    }
+  ]
+}
